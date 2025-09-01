@@ -61,8 +61,8 @@ int main(int argc, char **argv)
 		usage(program);
 		exit(1);
 	}
-	
-	readFile(inputFile);
 
+	readFile(inputFile);
+	print(WIN_STDOUT, "\n");
 	return 0;
 }
