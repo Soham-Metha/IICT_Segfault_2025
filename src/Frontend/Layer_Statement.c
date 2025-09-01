@@ -5,6 +5,7 @@
 Line_View getNextStmt(String line)
 {
 	Line_View result = { 0 };
+	(void)line;
 	// Token tok;
 	// while (line.len > 0) {
 	// 	tok = getNextToken(&line);
