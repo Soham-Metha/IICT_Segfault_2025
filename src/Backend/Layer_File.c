@@ -100,7 +100,7 @@ void processFile()
 				line = trim(split_str_by_delim(&line,
 							       COMMENT_SYMBOL));
 				print(WIN_STDOUT,
-				      "[LINE] After discarding Comments : %.*s",
+				      "\n[LINE] After discarding Comments : %.*s",
 				      (int)line.len, line.data);
 			}
 		} while (line.len == 0 && file.contents.len > 0);
