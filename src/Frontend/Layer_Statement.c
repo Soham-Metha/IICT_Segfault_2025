@@ -34,7 +34,11 @@ Stmt getNextStmt(String line)
 
 		case TOKEN_TYPE_STR:
 			result.type = STMT_LIT_STR;
-			// result.value.as_str = ;
+			result.value.as_str = tok.text;
+			print(WIN_STDOUT,
+			      "\n[STMT] identified '%.*s'(%s) as a str literal",
+			      tok.text.len, tok.text.data,
+			      getTokenName(tok.type));
 			// assert(0);
 			break;
 		case TOKEN_TYPE_NAME:
