@@ -88,13 +88,19 @@ Stmt getNextStmt(String *line)
 
 		break;
 	}
-	case TOKEN_TYPE_OPEN_PAREN:
 	case TOKEN_TYPE_OPEN_CURLY:
+		result.type = STMT_BLOCK_START;
+		discard_cached_token();
+		break;
+	case TOKEN_TYPE_CLOSING_CURLY:
+		result.type = STMT_BLOCK_END;
+		discard_cached_token();
+		break;
+	case TOKEN_TYPE_OPEN_PAREN:
 	case TOKEN_TYPE_STATEMENT_END:
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_COMMA:
 	case TOKEN_TYPE_CLOSING_PAREN:
-	case TOKEN_TYPE_CLOSING_CURLY:
 		// print(WIN_STDERR,
 		//       "ERROR: exprected a statement but found %s\n",
 		//       getTokenName(tok.type));
