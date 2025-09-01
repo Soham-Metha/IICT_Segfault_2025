@@ -1,7 +1,7 @@
 #include <Wrapper/IO.h>
 #include <stdio.h>
 
-inline void print(int id, const char *str, ...)
+void print(int id, const char *str, ...)
 {
     (void)id; // unused for now
 	va_list args;
