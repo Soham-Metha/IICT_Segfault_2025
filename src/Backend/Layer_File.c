@@ -48,6 +48,7 @@ unsigned int getFileSize(FILE *f, const char *filePath)
 
 void readFile(const char *filePath)
 {
+	print(WIN_STDOUT, "\n[FILE] Reading File %s", file.file_path);
 	FILE *file_ptr = openFile(filePath, "r");
 	unsigned int size = getFileSize(file_ptr, filePath);
 
@@ -80,7 +81,6 @@ void readFile(const char *filePath)
 	file.contents.data = file_contents;
 	file.file_path = filePath;
 
-	print(WIN_STDOUT, "\n[FILE] Reading File %s", file.file_path);
 	processFile();
 }
 
@@ -88,8 +88,8 @@ void processFile()
 {
 	file.line_num = 1;
 	while (file.contents.len > 0) {
+		print(WIN_STDOUT, "\n[LINE] Reading Line %u", file.line_num);
 		String line = { 0 };
-		print(WIN_STDOUT, "\n[LINE] Read Line %u", file.line_num);
 		do {
 			line = trim(split_str_by_delim(&file.contents, '\n'));
 			line = trim(split_str_by_delim(&line, COMMENT_SYMBOL));
