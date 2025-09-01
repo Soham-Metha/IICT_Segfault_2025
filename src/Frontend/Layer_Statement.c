@@ -7,13 +7,13 @@
 Stmt getNextStmt(String line)
 {
 	Stmt result = { 0 };
-	line = trim(line);
-	Token tok = getNextToken(&line);
 	// while (line.len > 0) {
 	// 	print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
 	// 	      tok.text.len, tok.text.data, getTokenName(tok.type));
 	// }
 	while (line.len > 0) {
+		line = trim(line);
+		Token tok = getNextToken(&line);
 		switch (tok.type) {
 		case TOKEN_TYPE_CHAR:
 			discard_cached_token();
