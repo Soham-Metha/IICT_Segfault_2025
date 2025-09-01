@@ -38,23 +38,20 @@ const char *getTokenName(TokenType type)
 
 Stmt getNextStmt(String line)
 {
+	Stmt result = { 0 };
 	line = trim(line);
 	Token tok = getNextToken(&line);
-	while (line.len > 0) {
-		print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
-		      tok.text.len, tok.text.data, getTokenName(tok.type));
-	}
+	// while (line.len > 0) {
+	// 	print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
+	// 	      tok.text.len, tok.text.data, getTokenName(tok.type));
+	// }
 
-	Stmt result = { 0 };
+	print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
+	      tok.text.len, tok.text.data, getTokenName(tok.type));
 
 	switch (tok.type) {
-	case TOKEN_TYPE_STR:
-		result.type = STMT_LIT_STR;
-		result.value.as_str =
-			ParseStrFromSasmTokens(tokenizer, location);
-		break;
-
 	case TOKEN_TYPE_CHAR:
+		tok = getNextToken(&line);
 		discard_cached_token();
 
 		if (tok.text.len != 1) {
@@ -67,39 +64,15 @@ Stmt getNextStmt(String line)
 		result.value.as_char = tok.text.data[0];
 		break;
 
-	case TOKEN_TYPE_NAME:
-		discard_cached_token();
-
-		Token next = { 0 };
-		if (fetchCachedSasmTokenFromSasmTokenizer(tokenizer, &next,
-							  location) &&
-		    next.type == TOKEN_TYPE_OPEN_PAREN) {
-			result.type = STMT_FUNCALL;
-			result.value.as_funcall =
-				allocateRegion(region, sizeof(Funcall));
-			result.value.as_funcall->name = tok.text;
-			result.value.as_funcall->args =
-				parseFuncallArgs(region, tokenizer, location);
-		} else {
-			result.value.as_var = tok.text;
-			result.type = STMT_VARIABLE;
-		}
+	case TOKEN_TYPE_STR:
+		result.type = STMT_LIT_STR;
+		// result.value.as_str = ;
+		assert(0);
 		break;
-
+	case TOKEN_TYPE_NAME:
 	case TOKEN_TYPE_NUMBER:
-		return parseNumFromSasmTokens(region, tokenizer, location);
-
 	case TOKEN_TYPE_OPEN_PAREN:
-		discard_cached_token();
-		Stmt stmt = getNextStmt(line);
-
-		if (!moveSasmTokenizerToNextToken(tokenizer, &tok, location) ||
-		    tok.type != TOKEN_TYPE_CLOSING_PAREN) {
-			print(WIN_STDERR, "ERROR: Expected '%s'",
-			      getTokenName(TOKEN_TYPE_CLOSING_PAREN));
-			exit(1);
-		}
-		return stmt;
+		assert(0);
 		break;
 	case TOKEN_TYPE_COMMA:
 	case TOKEN_TYPE_CLOSING_PAREN:
@@ -109,7 +82,7 @@ Stmt getNextStmt(String line)
 		break;
 
 	default:
-		assert(false && "parsePrimaryOfSasmTokens: unreachable");
+		assert(false && ": unreachable");
 		exit(1);
 	}
 
