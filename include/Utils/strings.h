@@ -1,7 +1,7 @@
 #ifndef STRINGS
 #define STRINGS
 
-struct String String;
+typedef struct String String;
 
 struct String {
 	unsigned int len;
