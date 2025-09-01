@@ -91,6 +91,7 @@ void processFile()
 		String line = { 0 };
 		do {
 			file.line_num += 1;
+			file.contents = ltrim(file.contents);
 
 			line = trim(split_str_by_delim(&file.contents, '\n'));
 			print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s",
