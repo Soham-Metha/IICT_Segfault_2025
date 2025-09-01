@@ -1,7 +1,5 @@
 #include <Utils/strings.h>
-#include <stddef.h>
 #include <ctype.h>
-#include <stdbool.h>
 #include <string.h>
 
 String ltrim(String s)
