@@ -23,7 +23,9 @@ String getNextLine()
 		}
 	} while (line.len == 0 && file.contents.len > 0);
 
-	Stmt stmt = getNextStmt(line);
-	(void)stmt;
+	while (line.len > 0) {
+		Stmt stmt = getNextStmt(&line);
+		(void)stmt;
+	}
 	return line;
 }
