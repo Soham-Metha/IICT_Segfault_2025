@@ -35,7 +35,7 @@ Stmt getNextStmt(String line)
 	case TOKEN_TYPE_STR:
 		result.type = STMT_LIT_STR;
 		// result.value.as_str = ;
-		assert(0);
+		// assert(0);
 		break;
 	case TOKEN_TYPE_NAME:
 	case TOKEN_TYPE_NUMBER:
