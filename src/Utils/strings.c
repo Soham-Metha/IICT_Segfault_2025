@@ -42,7 +42,8 @@ bool get_index_of(String str, char c, size_t *index)
 	}
 
 	if (i < str.len) {
-		*index = i;
+		if (index)
+			*index = i;
 		return true;
 	}
 	return false;
