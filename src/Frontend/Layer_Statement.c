@@ -51,7 +51,7 @@ Stmt getNextStmt(String line)
 			print(WIN_STDERR,
 			      "ERROR: exprected a statement but found %s\n",
 			      getTokenName(tok.type));
-			exit(1);
+			// exit(1);
 			break;
 
 		default:
