@@ -46,9 +46,6 @@ Stmt getNextStmt(String line)
 	// 	      tok.text.len, tok.text.data, getTokenName(tok.type));
 	// }
 
-	print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
-	      tok.text.len, tok.text.data, getTokenName(tok.type));
-
 	switch (tok.type) {
 	case TOKEN_TYPE_CHAR:
 		tok = getNextToken(&line);
@@ -59,6 +56,10 @@ Stmt getNextStmt(String line)
 			      "ERROR: the length of char literal has to be exactly one\n");
 			exit(1);
 		}
+
+		print(WIN_STDOUT,
+		      "\n[STMT] identified token '%.*s' as '%s' STMT_LIT_CHAR",
+		      tok.text.len, tok.text.data, getTokenName(tok.type));
 
 		result.type = STMT_LIT_CHAR;
 		result.value.as_char = tok.text.data[0];
