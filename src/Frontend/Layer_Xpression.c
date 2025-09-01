@@ -113,7 +113,11 @@ Token getNextToken(String *line)
 	return token;
 }
 
-void discard_cached_token()
+bool discard_cached_token()
 {
-	cachedToken = false;
+	if (cachedToken) {
+		cachedToken = false;
+		return true;
+	}
+	return false;
 }
