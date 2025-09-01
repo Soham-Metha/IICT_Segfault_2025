@@ -51,18 +51,24 @@ void readFile(const char *filePath)
 	unsigned int size = getFileSize(file_ptr, filePath);
 
 	file_contents = (char *)malloc(size + 1);
-	if (!file_contents) {
-		print(WIN_STDERR, "out of memory while reading %s", filePath);
-		fclose(file_ptr);
-		exit(1);
+	{ // Error handling
+		if (!file_contents) {
+			print(WIN_STDERR, "out of memory while reading %s",
+			      filePath);
+			fclose(file_ptr);
+			exit(1);
+		}
 	}
 
 	size_t readCount = fread(file_contents, 1, size, file_ptr);
-	if (readCount != (size_t)size) {
-		print(WIN_STDERR, "failed to read entire file %s", filePath);
-		free(file_contents);
-		fclose(file_ptr);
-		exit(1);
+	{ // Error handling
+		if (readCount != (size_t)size) {
+			print(WIN_STDERR, "failed to read entire file %s",
+			      filePath);
+			free(file_contents);
+			fclose(file_ptr);
+			exit(1);
+		}
 	}
 
 	file_contents[size] = '\0';
