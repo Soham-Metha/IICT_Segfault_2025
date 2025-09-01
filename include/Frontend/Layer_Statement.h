@@ -11,6 +11,7 @@ enum StmtType {
 	STMT_LIT_CHAR,
 	STMT_LIT_STR,
 	STMT_FUNCALL,
+	STMT_BLOCK,
 	STMT_FUNCALL_DECLARATION,
 };
 
@@ -19,6 +20,8 @@ typedef enum StmtType StmtType;
 typedef union StmtValue StmtValue;
 typedef struct Funcall Funcall;
 typedef struct FuncallArg FuncallArg;
+typedef struct StmtNode StmtNode;
+typedef struct CodeBlock CodeBlock;
 
 union StmtValue {
 	String as_var;
@@ -42,6 +45,16 @@ struct FuncallArg {
 struct Funcall {
 	String name;
 	FuncallArg *args;
+};
+
+struct StmtNode {
+	Stmt statement;
+	StmtNode *next;
+};
+
+struct CodeBlock {
+	StmtNode *begin;
+	StmtNode *end;
 };
 
 Stmt getNextStmt(String *line);
