@@ -7,12 +7,7 @@
 Stmt getNextStmt(String line)
 {
 	Stmt result = { 0 };
-	// while (line.len > 0) {
-	// 	print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
-	// 	      tok.text.len, tok.text.data, getTokenName(tok.type));
-	// }
 	while (line.len > 0) {
-		line = trim(line);
 		Token tok = getNextToken(&line);
 		switch (tok.type) {
 		case TOKEN_TYPE_CHAR:
@@ -66,21 +61,44 @@ Stmt getNextStmt(String line)
 				      getTokenName(tok.type));
 			}
 			break;
+		case TOKEN_TYPE_FUNC:
+			discard_cached_token();
+			Token next = getNextToken(&line);
+			if (next.type != TOKEN_TYPE_NAME) {
+				print(WIN_STDERR,
+				      "ERROR: exprected a function name but found %s\n",
+				      getTokenName(tok.type));
+				exit(1);
+			}
+			discard_cached_token();
+			next = getNextToken(&line);
+			if (next.type != TOKEN_TYPE_OPEN_PAREN) {
+				print(WIN_STDERR,
+				      "ERROR: exprected function arg list but found %s\n",
+				      getTokenName(tok.type));
+				exit(1);
+			}
+			result.type = STMT_FUNCALL_DECLARATION;
+			result.value.as_funcall = malloc(sizeof(Funcall));
+			result.value.as_funcall->name = tok.text;
+			// result.value.as_funcall->args =
+			// 	parseFuncallArgs(); // UNIMPLEMENTED!
+			print(WIN_STDOUT,
+			      "\n[STMT] identified '%.*s'(%s) as a function call declaration",
+			      tok.text.len, tok.text.data,
+			      getTokenName(tok.type));
+
+			break;
 		case TOKEN_TYPE_OPEN_PAREN:
 		case TOKEN_TYPE_OPEN_CURLY:
 		case TOKEN_TYPE_STATEMENT_END:
-		case TOKEN_TYPE_FUNC:
-
-			discard_cached_token();
-			// assert(0);
-			break;
 		case TOKEN_TYPE_NUMBER:
 		case TOKEN_TYPE_COMMA:
 		case TOKEN_TYPE_CLOSING_PAREN:
 		case TOKEN_TYPE_CLOSING_CURLY:
-			print(WIN_STDERR,
-			      "ERROR: exprected a statement but found %s\n",
-			      getTokenName(tok.type));
+			// print(WIN_STDERR,
+			//       "ERROR: exprected a statement but found %s\n",
+			//       getTokenName(tok.type));
 
 			discard_cached_token();
 			// exit(1);

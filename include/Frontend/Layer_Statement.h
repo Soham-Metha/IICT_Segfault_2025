@@ -11,7 +11,7 @@ enum StmtType {
 	STMT_LIT_CHAR,
 	STMT_LIT_STR,
 	STMT_FUNCALL,
-	STMT_FUNCALL_DEFINITION,
+	STMT_FUNCALL_DECLARATION,
 };
 
 typedef struct Stmt Stmt;
