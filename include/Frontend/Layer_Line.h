@@ -37,6 +37,6 @@ struct CodeBlock {
 	StmtNode *end;
 };
 
-String getNextLine(Scope *scope);
+Scope *getNextLine(Scope *scope);
 
 #endif
