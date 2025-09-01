@@ -56,6 +56,6 @@ Stmt getNextStmt(String line)
 			assert(false && ": unreachable");
 			exit(1);
 		}
-	} while (discard_cached_token());
+	} while (line.len > 0);
 	return result;
 }
