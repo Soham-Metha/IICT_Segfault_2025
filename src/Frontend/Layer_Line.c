@@ -34,7 +34,7 @@ void processLine(String line)
 		result.value.as_Directive.name =
 			trim(split_str_by_delim(&line, ' '));
 		result.value.as_Directive.body = trim(line);
-		print(WIN_STDOUT, "[STMT] Identified as a Directive statement");
+		print(WIN_STDOUT, "\n[STMT] Identified as a Directive statement");
 	}
 	(void)result;
 }
