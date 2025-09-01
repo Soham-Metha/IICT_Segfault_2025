@@ -52,11 +52,6 @@ struct StmtNode {
 	StmtNode *next;
 };
 
-struct CodeBlock {
-	StmtNode *begin;
-	StmtNode *end;
-};
-
 Stmt getNextStmt(String *line);
 
 #endif
