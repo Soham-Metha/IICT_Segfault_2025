@@ -13,6 +13,7 @@ Stmt getNextStmt(String line)
 	// }
 	do {
 		line = trim(line);
+		discard_cached_token();
 		Token tok = getNextToken(&line);
 		switch (tok.type) {
 		case TOKEN_TYPE_CHAR:
