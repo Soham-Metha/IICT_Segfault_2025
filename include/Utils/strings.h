@@ -1,5 +1,6 @@
 #ifndef STRINGS
 #define STRINGS
+#include <stddef.h>
 #include <stdbool.h>
 
 typedef struct String String;
