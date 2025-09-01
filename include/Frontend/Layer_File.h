@@ -1,5 +1,6 @@
 #ifndef FILE_LAYER_FRONTEND
 #define FILE_LAYER_FRONTEND
+#include <Utils/strings.h>
 
 typedef struct File_View File_View;
 
