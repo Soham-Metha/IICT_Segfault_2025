@@ -31,7 +31,7 @@ struct Line_View {
 	Line_Value value;
 };
 
-void getNextLine();
+String getNextLine();
 void processLine(String line);
 
 #endif
