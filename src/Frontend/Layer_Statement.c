@@ -6,10 +6,10 @@ Line_View getNextStmt(String line)
 {
 	Line_View result = { 0 };
 	(void)line;
-	// Token tok;
-	// while (line.len > 0) {
-	// 	tok = getNextToken(&line);
-	// 	print("\n[STMT] token %.*s", tok.text.len, tok.text.data);
-	// }
+	Token tok;
+	while (line.len > 0) {
+		tok = getNextToken(&line);
+		print("\n[STMT] token %.*s", tok.text.len, tok.text.data);
+	}
 	return result;
 }
