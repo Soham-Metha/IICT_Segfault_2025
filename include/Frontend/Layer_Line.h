@@ -31,6 +31,11 @@ struct Line_View {
 	Line_Value value;
 };
 
+struct CodeBlock {
+	StmtNode *begin;
+	StmtNode *end;
+};
+
 String getNextLine();
 
 #endif
