@@ -88,7 +88,7 @@ Token getNextToken(String *line)
 			token.text = split_str_by_condition(line, isNumber);
 		} else {
 			print(WIN_STDERR,
-			      "ERROR: Unknown token starts with %c\n",
+			      "ERROR: Unknown token starts with '%c'\n",
 			      line->data[0]);
 			exit(1);
 		}
