@@ -101,7 +101,7 @@ void processFile()
 				line = trim(split_str_by_delim(&line,
 							       COMMENT_SYMBOL));
 				print(WIN_STDOUT,
-				      "\n[LINE] Discard Comment : %.*s",
+				      "\n[LINE] Discard Comments : %.*s",
 				      (int)line.len, line.data);
 			}
 		} while (line.len == 0 && file.contents.len > 0);
