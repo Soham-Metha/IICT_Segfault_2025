@@ -72,10 +72,12 @@ Stmt getNextStmt(String line)
 	case TOKEN_TYPE_NAME:
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_OPEN_PAREN:
+	case TOKEN_TYPE_OPEN_CURLY:
 		assert(0);
 		break;
 	case TOKEN_TYPE_COMMA:
 	case TOKEN_TYPE_CLOSING_PAREN:
+	case TOKEN_TYPE_CLOSING_CURLY:
 		print(WIN_STDERR, "ERROR: exprected a statement but found %s\n",
 		      getTokenName(tok.type));
 		exit(1);
