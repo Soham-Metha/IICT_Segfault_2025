@@ -95,6 +95,6 @@ void processFile()
 			file.line_num += 1;
 		} while (line.len == 0 && file.contents.len > 0);
 		print(WIN_STDOUT, "\n[LINE] Read Line %d : %.*s", file.line_num,
-		      line.data, line.len);
+		      line.len,line.data);
 	}
 }
