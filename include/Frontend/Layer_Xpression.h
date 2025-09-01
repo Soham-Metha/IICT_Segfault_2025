@@ -12,6 +12,7 @@ enum TokenType {
 	TOKEN_TYPE_COMMA
 };
 
+typedef struct Token Token;
 struct Token {
 	TokenType type;
 	String text;
