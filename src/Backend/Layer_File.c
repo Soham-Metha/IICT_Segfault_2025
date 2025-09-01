@@ -48,7 +48,7 @@ unsigned int getFileSize(FILE *f, const char *filePath)
 
 void readFile(const char *filePath)
 {
-	print(WIN_STDOUT, "\n[FILE] Reading File %s", file.file_path);
+	print(WIN_STDOUT, "\n[FILE] Reading File %s", filePath);
 	FILE *file_ptr = openFile(filePath, "r");
 	unsigned int size = getFileSize(file_ptr, filePath);
 
