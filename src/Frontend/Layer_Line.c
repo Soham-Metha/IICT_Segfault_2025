@@ -28,4 +28,5 @@ String getNextLine()
 		Line_View line_v = getNextStmt(line);
 		(void)line_v;
 	}
+	return line;
 }
