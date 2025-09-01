@@ -63,7 +63,7 @@ Token getNextToken(String *line)
 		cachedToken = true;
 
 		print(WIN_STDOUT,
-		      "\n[STMT] identified token '%.*s' as '%s' token type",
+		      "\n[EXPR] identified token '%.*s' as '%s' token type",
 		      token.text.len, token.text.data,
 		      getTokenName(token.type));
 		return token;
@@ -148,7 +148,7 @@ Token getNextToken(String *line)
 	}
 	cache = token;
 	cachedToken = true;
-	print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s' token type",
+	print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",
 	      token.text.len, token.text.data, getTokenName(token.type));
 	return token;
 }
