@@ -28,6 +28,7 @@ Stmt getNextStmt(String line)
 			print(WIN_STDOUT,
 			      "\n[STMT] identified '%c'(%s) as a char literal",
 			      tok.text.data[0], getTokenName(tok.type));
+
 			discard_cached_token();
 			break;
 
@@ -38,6 +39,7 @@ Stmt getNextStmt(String line)
 			      "\n[STMT] identified '%.*s'(%s) as a str literal",
 			      tok.text.len, tok.text.data,
 			      getTokenName(tok.type));
+
 			discard_cached_token();
 			break;
 		case TOKEN_TYPE_NAME:
@@ -64,14 +66,15 @@ Stmt getNextStmt(String line)
 				      getTokenName(tok.type));
 			}
 			break;
-		case TOKEN_TYPE_NUMBER:
 		case TOKEN_TYPE_OPEN_PAREN:
 		case TOKEN_TYPE_OPEN_CURLY:
 		case TOKEN_TYPE_STATEMENT_END:
 		case TOKEN_TYPE_FUNC:
+
 			discard_cached_token();
 			// assert(0);
 			break;
+		case TOKEN_TYPE_NUMBER:
 		case TOKEN_TYPE_COMMA:
 		case TOKEN_TYPE_CLOSING_PAREN:
 		case TOKEN_TYPE_CLOSING_CURLY:
