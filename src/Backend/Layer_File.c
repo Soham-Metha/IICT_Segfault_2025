@@ -79,7 +79,6 @@ void readFile(const char *filePath)
 	file.contents.len = size;
 	file.contents.data = file_contents;
 	file.file_path = filePath;
-	file.line_num = 1;
 
 	print(WIN_STDOUT, "\n[FILE] Reading File %s", file.file_path);
 	processFile();
@@ -87,6 +86,7 @@ void readFile(const char *filePath)
 
 void processFile()
 {
+	file.line_num = 1;
 	while (file.contents.len > 0) {
 		String line = { 0 };
 		do {
