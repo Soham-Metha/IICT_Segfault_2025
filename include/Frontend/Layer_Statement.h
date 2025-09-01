@@ -43,6 +43,6 @@ struct Funcall {
 	FuncallArg *args;
 };
 
-Line_View getNextStmt(String line);
+Stmt getNextStmt(String line);
 
 #endif
