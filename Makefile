@@ -28,5 +28,8 @@ $(eval $(call BUILD_RULE, $(EXEC_FILE), $(MAIN_FILE) $(SRC_FILES)))
 
 all: $(EXEC_FILE)
 
+IN_FILE := examples/helloWorld.iict
+OUT_FILE:= examples/exampleOut
+
 run_all: all
-	@$(EXEC_FILE)
+	@$(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE)
