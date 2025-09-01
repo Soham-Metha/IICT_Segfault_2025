@@ -58,9 +58,9 @@ String getNextLine(Scope *scope)
 		Stmt stmt = getNextStmt(&line);
 		if (stmt.type == STMT_BLOCK_START) {
 			pushScope(scope);
-		} else if (stmt.type == STMT_BLOCK_END) {
 			stmt.value.as_block = &scope->block;
 			pushStatementIntoBlock(&scope->block, stmt);
+		} else if (stmt.type == STMT_BLOCK_END) {
 			popScope(scope);
 		} else {
 			pushStatementIntoBlock(&scope->block, stmt);
