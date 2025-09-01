@@ -13,7 +13,7 @@ enum Line_Type { LINE_TYPE_DIRECTIVE, LINE_TYPE_FUNCTION, LINE_TYPE_COUNT };
 
 struct Line_as_Directive {
 	String name;
-	String Body;
+	String body;
 };
 
 struct Line_as_Function {
