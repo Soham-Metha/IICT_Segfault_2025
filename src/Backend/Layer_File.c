@@ -88,7 +88,7 @@ void processFile()
 {
 	file.line_num = 1;
 	while (file.contents.len > 0) {
-		print(WIN_STDOUT, "\n[LINE] Reading Line %4u", file.line_num);
+		print(WIN_STDOUT, "\n[LINE] Reading Line %3u", file.line_num);
 		String line = { 0 };
 		do {
 			line = trim(split_str_by_delim(&file.contents, '\n'));
