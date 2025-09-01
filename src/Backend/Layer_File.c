@@ -71,10 +71,13 @@ void readFile(const char *filePath)
 		}
 	}
 
+	fclose(file_ptr);
+
 	file_contents[size] = '\0';
 
 	file.contents.len = size;
 	file.contents.data = file_contents;
+    file.file_path = filePath;
+    file.line_num = 0;
 
-	fclose(file_ptr);
 }
