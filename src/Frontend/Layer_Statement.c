@@ -2,6 +2,7 @@
 #include <Frontend/Layer_Xpression.h>
 #include <Wrapper/IO.h>
 #include <assert.h>
+#include <stdlib.h>
 
 const char *getTokenName(TokenType type)
 {
