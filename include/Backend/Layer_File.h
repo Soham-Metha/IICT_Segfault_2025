@@ -11,7 +11,7 @@ struct File_View {
     unsigned int line_num;
 };
 
-void readFile();
+void readFile(const char *filePath);
 void processFile();
 void generateAST();
 
