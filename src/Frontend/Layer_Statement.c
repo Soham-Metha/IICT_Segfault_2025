@@ -9,7 +9,8 @@ Line_View getNextStmt(String line)
 	Token tok;
 	while (line.len > 0) {
 		tok = getNextToken(&line);
-		print("\n[STMT] token %.*s", tok.text.len, tok.text.data);
+		print(WIN_STDOUT, "\n[STMT] token %.*s", tok.text.len,
+		      tok.text.data);
 	}
 	return result;
 }
