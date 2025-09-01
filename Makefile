@@ -19,7 +19,8 @@ endef
 
 MAIN_FILE := ./src/main.c
 EXEC_FILE := $(BUILDS)/a
-SRC_FILES := $(wildcard ./src/Backend/*.c)
+SRC_FILES := $(wildcard ./src/Utils/*.c)
+SRC_FILES += $(wildcard ./src/Backend/*.c)
 SRC_FILES += $(wildcard ./src/Frontend/*.c)
 SRC_FILES += $(wildcard ./src/Middleend/*.c)
 SRC_FILES += $(wildcard ./src/Wrapper/*.c)
