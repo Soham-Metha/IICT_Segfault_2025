@@ -6,7 +6,7 @@
 const char *inputFile = (void *)0;
 const char *outputFile = (void *)0;
 
-void usage(const char *progName)
+static void usage(const char *progName)
 {
 	print(WIN_STDOUT,
 	      "Usage: %s [OPTIONS]                      \n"
