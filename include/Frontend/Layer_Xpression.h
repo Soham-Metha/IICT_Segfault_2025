@@ -18,6 +18,6 @@ struct Token {
 	String text;
 };
 
-void getNextToken(String line);
+void getNextToken(String *line);
 
 #endif
