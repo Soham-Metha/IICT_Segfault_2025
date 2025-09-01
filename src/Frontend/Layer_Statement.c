@@ -1,6 +1,7 @@
 #include <Frontend/Layer_Statement.h>
 #include <Frontend/Layer_Xpression.h>
 #include <Wrapper/IO.h>
+#include <assert.h>
 
 const char *getTokenName(TokenType type)
 {
@@ -26,7 +27,7 @@ const char *getTokenName(TokenType type)
 	case TOKEN_TYPE_FUNC:
 		return "func";
 	default: {
-		assert(false && "getTokenName: unreachable");
+		assert(0 && "getTokenName: unreachable");
 		exit(1);
 	}
 	}
