@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
+
 File_View file;
 
 void readFile(const char *filePath)
