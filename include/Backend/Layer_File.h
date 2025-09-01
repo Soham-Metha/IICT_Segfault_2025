@@ -6,13 +6,13 @@
 typedef struct File_View File_View;
 
 struct File_View {
-    const char* file_path;
+	const char *file_path;
 	String contents;
-    unsigned int line_num;
+	unsigned int line_num;
 };
 
 void readFile(const char *filePath);
-void getNextLine();
+String getNextLine();
 void generateAST();
 
 #endif
