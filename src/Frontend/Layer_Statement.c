@@ -11,7 +11,7 @@ Stmt getNextStmt(String line)
 	// 	print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
 	// 	      tok.text.len, tok.text.data, getTokenName(tok.type));
 	// }
-	do {
+	while (line.len > 0) {
 		line = trim(line);
 		discard_cached_token();
 		Token tok = getNextToken(&line);
@@ -57,6 +57,6 @@ Stmt getNextStmt(String line)
 			assert(false && ": unreachable");
 			exit(1);
 		}
-	} while (line.len > 0);
+	}
 	return result;
 }
