@@ -82,8 +82,9 @@ void readFile(const char *filePath)
 	file.file_path = filePath;
 	file.line_num = 0;
 
+	Scope *global = malloc(sizeof(Scope));
 	while (file.contents.len > 0) {
-		String line = getNextLine();
+		String line = getNextLine(global);
 		(void)line;
 	}
 }
