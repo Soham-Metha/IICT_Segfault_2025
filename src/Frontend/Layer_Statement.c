@@ -47,8 +47,8 @@ Stmt getNextStmt(String line)
 				result.value.as_funcall =
 					malloc(sizeof(Funcall));
 				result.value.as_funcall->name = tok.text;
-				result.value.as_funcall->args =
-					parseFuncallArgs(); // UNIMPLEMENTED!
+				// result.value.as_funcall->args =
+				// 	parseFuncallArgs(); // UNIMPLEMENTED!
 				print(WIN_STDOUT,
 				      "\n[STMT] identified '%.*s'(%s) as a function call",
 				      tok.text.len, tok.text.data,
