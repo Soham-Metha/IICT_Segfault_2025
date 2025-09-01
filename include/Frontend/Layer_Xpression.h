@@ -3,6 +3,6 @@
 #include <Utils/strings.h>
 #include <Layer_Statement.h>
 
-void getNextToken(String *line);
+Token getNextToken(String *line);
 
 #endif
