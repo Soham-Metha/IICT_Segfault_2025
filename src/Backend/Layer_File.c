@@ -48,7 +48,7 @@ unsigned int getFileSize(FILE *f, const char *filePath)
 
 void readFile(const char *filePath)
 {
-	print(WIN_STDOUT, "\n[FILE] Reading File    : %s", filePath);
+	print(WIN_STDOUT, "\n[FILE] Reading File     : %s", filePath);
 	FILE *file_ptr = openFile(filePath, "r");
 	unsigned int size = getFileSize(file_ptr, filePath);
 
@@ -95,6 +95,6 @@ void processFile()
 			line = trim(split_str_by_delim(&line, COMMENT_SYMBOL));
 			file.line_num += 1;
 		} while (line.len == 0 && file.contents.len > 0);
-		print(WIN_STDOUT, ": %.*s", (int)line.len, line.data);
+		print(WIN_STDOUT, " : %.*s", (int)line.len, line.data);
 	}
 }
