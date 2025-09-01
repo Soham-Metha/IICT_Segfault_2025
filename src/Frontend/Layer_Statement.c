@@ -90,10 +90,16 @@ Stmt getNextStmt(String *line)
 	}
 	case TOKEN_TYPE_OPEN_CURLY:
 		result.type = STMT_BLOCK_START;
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%.*s'(%s) as a code block start",
+		      tok.text.len, tok.text.data, getTokenName(tok.type));
 		discard_cached_token();
 		break;
 	case TOKEN_TYPE_CLOSING_CURLY:
 		result.type = STMT_BLOCK_END;
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%.*s'(%s) as a code block end",
+		      tok.text.len, tok.text.data, getTokenName(tok.type));
 		discard_cached_token();
 		break;
 	case TOKEN_TYPE_OPEN_PAREN:
