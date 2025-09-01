@@ -7,7 +7,7 @@ void print(int id, const char *str, ...)
 	va_list args;
 	va_start(args, str);
 
-	printf(str, args);
+	vprintf(str, args);
 
 	va_end(args);
 }
