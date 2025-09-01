@@ -32,6 +32,5 @@ struct Line_View {
 };
 
 String getNextLine();
-void getNextStmt(String line);
 
 #endif
