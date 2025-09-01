@@ -27,6 +27,11 @@ Token getNextToken(String *line)
 		token.text = split_str_by_len(line, 1);
 	} break;
 
+	case ';': {
+		token.type = TOKEN_TYPE_STATEMENT_END;
+		token.text = split_str_by_len(line, 1);
+	} break;
+
 	case ')': {
 		token.type = TOKEN_TYPE_CLOSING_PAREN;
 		token.text = split_str_by_len(line, 1);
