@@ -3,8 +3,39 @@
 #include <Frontend/Layer_Statement.h>
 #include <Utils/strings.h>
 #include <Wrapper/IO.h>
+#include <assert.h>
 
-String getNextLine()
+void pushScope(Scope *curr)
+{
+	Scope *new = malloc(sizeof(Scope));
+	new->prev = curr;
+	curr = new;
+}
+
+void popScope(Scope *curr)
+{
+	assert(curr != NULL);
+	curr = curr->prev;
+}
+
+void pushStatementIntoBlock(CodeBlock *list, Stmt statement)
+{
+	assert(list);
+	StmtNode *stmtNode = malloc(sizeof(StmtNode));
+	stmtNode->statement = statement;
+
+	if (list->end == NULL) {
+		assert(list->begin == NULL);
+		list->begin = stmtNode;
+		list->end = stmtNode;
+	} else {
+		assert(list->begin != NULL);
+		list->end->next = stmtNode;
+		list->end = stmtNode;
+	}
+}
+
+String getNextLine(Scope *scope)
 {
 	String line = { 0 };
 
@@ -25,7 +56,13 @@ String getNextLine()
 
 	while (line.len > 0) {
 		Stmt stmt = getNextStmt(&line);
-		(void)stmt;
+		if (stmt.type == STMT_BLOCK_START) {
+			pushScope(scope);
+		} else if (stmt.type == STMT_BLOCK_END) {
+			popScope(scope);
+		} else {
+			pushStatementIntoBlock(&scope->block, stmt);
+		}
 	}
 	return line;
 }
