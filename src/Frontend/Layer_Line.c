@@ -5,19 +5,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void pushScope(Scope *curr)
-{
-	Scope *new = malloc(sizeof(Scope));
-	new->prev = curr;
-	curr = new;
-}
-
-void popScope(Scope *curr)
-{
-	assert(curr != NULL);
-	curr = curr->prev;
-}
-
 void pushStatementIntoBlock(CodeBlock *list, Stmt statement)
 {
 	assert(list);
@@ -35,7 +22,7 @@ void pushStatementIntoBlock(CodeBlock *list, Stmt statement)
 	}
 }
 
-String getNextLine(Scope *scope)
+bool getNextLine(CodeBlock *blk)
 {
 	String line = { 0 };
 
@@ -56,15 +43,21 @@ String getNextLine(Scope *scope)
 
 	while (line.len > 0) {
 		Stmt stmt = getNextStmt(&line);
-		if (stmt.type == STMT_BLOCK_START) {
-			pushScope(scope);
-			stmt.value.as_block = &scope->block;
-			pushStatementIntoBlock(&scope->block, stmt);
-		} else if (stmt.type == STMT_BLOCK_END) {
-			popScope(scope);
-		} else {
-			pushStatementIntoBlock(&scope->block, stmt);
+		if (stmt.type == STMT_BLOCK_END) {
+			return false;
+		} else if (stmt.type == STMT_BLOCK_START) {
+			stmt.value.as_block = getBlock().begin;
 		}
+		pushStatementIntoBlock(blk, stmt);
 	}
-	return line;
+	return true;
+}
+
+CodeBlock getBlock()
+{
+	CodeBlock result = { 0 };
+	while (file.contents.len > 0) {
+		(void)getNextLine(&result);
+	}
+	return result;
 }
