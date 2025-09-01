@@ -46,7 +46,7 @@ Token getNextToken(String *line)
 
 		size_t index = 0;
 
-		if (getIndexOf(line, '"', &index)) {
+		if (get_index_of(*line, '"', &index)) {
 			String text = split_str_by_len(line, index);
 			split_str_by_len(line, 1);
 			token.type = TOKEN_TYPE_STR;
@@ -62,7 +62,7 @@ Token getNextToken(String *line)
 
 		size_t index = 0;
 
-		if (getIndexOf(line, '\'', &index)) {
+		if (get_index_of(*line, '\'', &index)) {
 			String text = split_str_by_len(line, index);
 			split_str_by_len(line, 1);
 			token.type = TOKEN_TYPE_CHAR;
