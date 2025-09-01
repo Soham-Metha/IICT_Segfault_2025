@@ -21,7 +21,6 @@ typedef union StmtValue StmtValue;
 typedef struct Funcall Funcall;
 typedef struct FuncallArg FuncallArg;
 typedef struct StmtNode StmtNode;
-typedef struct CodeBlock CodeBlock;
 
 union StmtValue {
 	String as_var;
