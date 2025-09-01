@@ -23,7 +23,7 @@ String getNextLine()
 		}
 	} while (line.len == 0 && file.contents.len > 0);
 
-	Line_View line_v = getNextStmt(line);
-	(void)line_v;
+	Stmt stmt = getNextStmt(line);
+	(void)stmt;
 	return line;
 }
