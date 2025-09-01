@@ -32,6 +32,6 @@ struct Line_View {
 };
 
 void getNextLine();
-void processLine();
+void processLine(String line);
 
 #endif
