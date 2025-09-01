@@ -3,6 +3,7 @@
 #include <Utils/strings.h>
 #include <Wrapper/IO.h>
 #include <assert.h>
+#include <stdlib.h>
 
 void pushScope(Scope *curr)
 {
