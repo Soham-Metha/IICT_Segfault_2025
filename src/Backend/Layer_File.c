@@ -80,21 +80,29 @@ void readFile(const char *filePath)
 	file.contents.len = size;
 	file.contents.data = file_contents;
 	file.file_path = filePath;
+	file.line_num = 0;
 
 	processFile();
 }
 
 void processFile()
 {
-	file.line_num = 1;
 	while (file.contents.len > 0) {
-		print(WIN_STDOUT, "\n[LINE] Reading Line %3u", file.line_num);
 		String line = { 0 };
 		do {
-			line = trim(split_str_by_delim(&file.contents, '\n'));
-			line = trim(split_str_by_delim(&line, COMMENT_SYMBOL));
 			file.line_num += 1;
+
+			line = trim(split_str_by_delim(&file.contents, '\n'));
+			print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s",
+			      file.line_num, (int)line.len, line.data);
+
+			if (get_index_of(line, COMMENT_SYMBOL, NULL)) {
+				line = trim(split_str_by_delim(&line,
+							       COMMENT_SYMBOL));
+				print(WIN_STDOUT,
+				      "[LINE] After discarding Comments : %.*s",
+				      (int)line.len, line.data);
+			}
 		} while (line.len == 0 && file.contents.len > 0);
-		print(WIN_STDOUT, " : %.*s", (int)line.len, line.data);
 	}
 }
