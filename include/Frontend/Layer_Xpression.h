@@ -12,6 +12,11 @@ enum TokenType {
 	TOKEN_TYPE_COMMA
 };
 
+struct Token {
+	TokenType type;
+	String text;
+};
+
 void getNextToken(String line);
 
 #endif
