@@ -16,6 +16,11 @@ static bool isNumber(char x)
 Token getNextToken(String *line)
 {
 	Token token = { 0 };
+	if (starts_with(*line, STR("func"))) {
+		token.type = TOKEN_TYPE_FUNC;
+		token.text = split_str_by_len(line, 4);
+		return token;
+	}
 	switch (line->data[0]) {
 	case '(': {
 		token.type = TOKEN_TYPE_OPEN_PAREN;
