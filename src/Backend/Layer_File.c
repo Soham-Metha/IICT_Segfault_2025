@@ -32,7 +32,7 @@ unsigned int getFileSize(FILE *f, const char *filePath)
 		exit(1);
 	}
 
-	unsigned int fileSize = ftell(f);
+	long fileSize = ftell(f);
 
 	if (fileSize < 0) {
 		print(WIN_STDERR, "can't read from file %s", filePath);
@@ -41,7 +41,7 @@ unsigned int getFileSize(FILE *f, const char *filePath)
 
 	rewind(f);
 
-	return fileSize;
+	return (unsigned int)fileSize;
 }
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
