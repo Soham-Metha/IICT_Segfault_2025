@@ -91,10 +91,10 @@ void processFile()
 		String line = { 0 };
 		do {
 			line = trim(split_str_by_delim(&file.contents, '\n'));
+			print(WIN_STDOUT, "\n[LINE] Read Line %u : %.*s",
+			      file.line_num, line.len, line.data);
 			line = trim(split_str_by_delim(&line, COMMENT_SYMBOL));
 			file.line_num += 1;
 		} while (line.len == 0 && file.contents.len > 0);
-		print(WIN_STDOUT, "\n[LINE] Read Line %u : %.*s", file.line_num,
-		      line.len,line.data);
 	}
 }
