@@ -62,10 +62,10 @@ Token getNextToken(String *line)
 		cache = token;
 		cachedToken = true;
 
-		print(WIN_STDOUT,
-		      "\n[EXPR] identified token '%.*s' as '%s' token type",
-		      token.text.len, token.text.data,
-		      getTokenName(token.type));
+		// print(WIN_STDOUT,
+		//       "\n[EXPR] identified token '%.*s' as '%s' token type",
+		//       token.text.len, token.text.data,
+		//       getTokenName(token.type));
 		return token;
 	}
 	switch (line->data[0]) {
@@ -148,8 +148,8 @@ Token getNextToken(String *line)
 	}
 	cache = token;
 	cachedToken = true;
-	print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",
-	      token.text.len, token.text.data, getTokenName(token.type));
+	// print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",
+	//       token.text.len, token.text.data, getTokenName(token.type));
 	return token;
 }
 
