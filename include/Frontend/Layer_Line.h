@@ -11,6 +11,7 @@ typedef struct Line_as_Directive Line_as_Directive;
 typedef struct Line_as_Function Line_as_Function;
 typedef struct CodeBlock CodeBlock;
 typedef struct Scope Scope;
+typedef struct StmtNode StmtNode;
 typedef union Line_Value Line_Value;
 typedef enum Line_Type Line_Type;
 
