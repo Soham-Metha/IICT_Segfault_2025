@@ -8,6 +8,7 @@ Line_View getNextStmt(String line)
 	(void)line;
 	Token tok;
 	while (line.len > 0) {
+		trim(line);
 		tok = getNextToken(&line);
 		print(WIN_STDOUT, "\n[STMT] token %.*s", tok.text.len,
 		      tok.text.data);
