@@ -85,9 +85,9 @@ Stmt getNextStmt(String line)
 			// result.value.as_funcall->args =
 			// 	parseFuncallArgs(); // UNIMPLEMENTED!
 			print(WIN_STDOUT,
-			      "\n[STMT] identified '%.*s'(%s) as a function call declaration",
-			      tok.text.len, tok.text.data,
-			      getTokenName(tok.type));
+			      "\n[STMT] identified '%.*s %.*s'(%s) as a function call declaration",
+			      tok.text.len, tok.text.data, next.text.len,
+			      next.text.data, getTokenName(tok.type));
 
 			break;
 		}
