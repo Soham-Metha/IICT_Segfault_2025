@@ -17,14 +17,20 @@ $1: $2 | $(BUILDS)
 	@printf "\e[32m		[ BUILD COMPLETED ]\t: [ $$@ ] \e[0m\n\n"
 endef
 
-SRC_DIR   := ./src
-MAIN_FILE := $(SRC_DIR)/main.c
+MAIN_FILE := ./src/main.c
 EXEC_FILE := $(BUILDS)/a
-SRC_FILES := $(filter-out $(MAIN_FILE), 	$(wildcard $(SRC_DIR)/*.c) )
+SRC_FILES := $(wildcard ./src/Utils/*.c)
+SRC_FILES += $(wildcard ./src/Backend/*.c)
+SRC_FILES += $(wildcard ./src/Frontend/*.c)
+SRC_FILES += $(wildcard ./src/Middleend/*.c)
+SRC_FILES += $(wildcard ./src/Wrapper/*.c)
 
 $(eval $(call BUILD_RULE, $(EXEC_FILE), $(MAIN_FILE) $(SRC_FILES)))
 
 all: $(EXEC_FILE)
 
+IN_FILE := examples/helloWorld.iict
+OUT_FILE:= examples/exampleOut
+
 run_all: all
-	@$(EXEC_FILE)
+	@$(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE)
