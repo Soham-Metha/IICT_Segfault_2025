@@ -69,6 +69,7 @@ Stmt getNextStmt(String line)
 		case TOKEN_TYPE_OPEN_CURLY:
 		case TOKEN_TYPE_STATEMENT_END:
 		case TOKEN_TYPE_FUNC:
+			discard_cached_token();
 			// assert(0);
 			break;
 		case TOKEN_TYPE_COMMA:
@@ -77,6 +78,8 @@ Stmt getNextStmt(String line)
 			print(WIN_STDERR,
 			      "ERROR: exprected a statement but found %s\n",
 			      getTokenName(tok.type));
+
+			discard_cached_token();
 			// exit(1);
 			break;
 
