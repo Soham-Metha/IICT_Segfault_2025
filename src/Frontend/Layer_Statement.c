@@ -74,6 +74,7 @@ Stmt getNextStmt(String line)
 	case TOKEN_TYPE_OPEN_PAREN:
 	case TOKEN_TYPE_OPEN_CURLY:
 	case TOKEN_TYPE_STATEMENT_END:
+	case TOKEN_TYPE_FUNC:
 		assert(0);
 		break;
 	case TOKEN_TYPE_COMMA:
