@@ -79,7 +79,7 @@ void readFile(const char *filePath)
 	file.contents.len = size;
 	file.contents.data = file_contents;
 	file.file_path = filePath;
-	file.line_num = 0;
+	file.line_num = 1;
 
 	print(WIN_STDOUT, "\n[FILE] Reading File %s", file.file_path);
 	processFile();
@@ -92,7 +92,7 @@ void processFile()
 		do {
 			line = trim(split_str_by_delim(&file.contents, '\n'));
 			print(WIN_STDOUT, "\n[LINE] Read Line %u : %.*s",
-			      file.line_num, line.len, line.data);
+			      file.line_num, (int)line.len, line.data);
 			line = trim(split_str_by_delim(&line, COMMENT_SYMBOL));
 			file.line_num += 1;
 		} while (line.len == 0 && file.contents.len > 0);
