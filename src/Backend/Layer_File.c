@@ -84,6 +84,7 @@ void readFile(const char *filePath)
 
 	while (file.contents.len > 0) {
 		String line = getNextLine();
+		(void)line;
 	}
 }
 
