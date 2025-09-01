@@ -12,6 +12,7 @@ struct File_View {
 };
 
 void readFile();
+void processFile();
 void generateAST();
 
 #endif
