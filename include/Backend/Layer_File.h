@@ -3,6 +3,7 @@
 #include <Utils/strings.h>
 
 typedef struct File_View File_View;
+
 struct File_View {
 	String contents;
 };
