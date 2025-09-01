@@ -16,7 +16,6 @@ Stmt getNextStmt(String line)
 		Token tok = getNextToken(&line);
 		switch (tok.type) {
 		case TOKEN_TYPE_CHAR:
-			discard_cached_token();
 
 			if (tok.text.len != 1) {
 				print(WIN_STDERR,
