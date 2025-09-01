@@ -13,7 +13,6 @@ Stmt getNextStmt(String line)
 	// }
 	while (line.len > 0) {
 		line = trim(line);
-		discard_cached_token();
 		Token tok = getNextToken(&line);
 		switch (tok.type) {
 		case TOKEN_TYPE_CHAR:
@@ -29,7 +28,7 @@ Stmt getNextStmt(String line)
 			print(WIN_STDOUT,
 			      "\n[STMT] identified '%c'(%s) as a char literal",
 			      tok.text.data[0], getTokenName(tok.type));
-
+			discard_cached_token();
 			break;
 
 		case TOKEN_TYPE_STR:
@@ -39,9 +38,32 @@ Stmt getNextStmt(String line)
 			      "\n[STMT] identified '%.*s'(%s) as a str literal",
 			      tok.text.len, tok.text.data,
 			      getTokenName(tok.type));
-			// assert(0);
+			discard_cached_token();
 			break;
 		case TOKEN_TYPE_NAME:
+			Token next = getNextToken(&line);
+			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+				result.type = STMT_FUNCALL;
+				result.value.as_funcall =
+					malloc(sizeof(Funcall));
+				result.value.as_funcall->name = tok.text;
+				result.value.as_funcall->args =
+					parseFuncallArgs(); // UNIMPLEMENTED!
+				print(WIN_STDOUT,
+				      "\n[STMT] identified '%.*s'(%s) as a function call",
+				      tok.text.len, tok.text.data,
+				      getTokenName(tok.type));
+
+				discard_cached_token();
+			} else {
+				result.value.as_var = tok.text;
+				result.type = STMT_VARIABLE;
+				print(WIN_STDOUT,
+				      "\n[STMT] identified '%.*s'(%s) as a variable name",
+				      tok.text.len, tok.text.data,
+				      getTokenName(tok.type));
+			}
+			break;
 		case TOKEN_TYPE_NUMBER:
 		case TOKEN_TYPE_OPEN_PAREN:
 		case TOKEN_TYPE_OPEN_CURLY:
