@@ -12,6 +12,7 @@ struct String {
 };
 
 #define STR(s) ((String){ .len = strlen(s), .data = s })
+#define Str_Fmt(s) s.len, s.data
 
 String ltrim(String s);
 String rtrim(String s);

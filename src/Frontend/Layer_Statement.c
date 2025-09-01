@@ -4,48 +4,120 @@
 #include <assert.h>
 #include <stdlib.h>
 
-const char *getTokenName(TokenType type)
+Stmt getNextStmt(String *line)
 {
-	switch (type) {
-	case TOKEN_TYPE_STR:
-		return "string";
+	Stmt result = { 0 };
+	Token tok = getNextToken(line);
+	switch (tok.type) {
 	case TOKEN_TYPE_CHAR:
-		return "character";
-	case TOKEN_TYPE_NUMBER:
-		return "number";
-	case TOKEN_TYPE_NAME:
-		return "name";
-	case TOKEN_TYPE_OPEN_PAREN:
-		return "open paren";
-	case TOKEN_TYPE_CLOSING_PAREN:
-		return "closing paren";
-	case TOKEN_TYPE_OPEN_CURLY:
-		return "open curly";
-	case TOKEN_TYPE_CLOSING_CURLY:
-		return "closing curly";
-	case TOKEN_TYPE_COMMA:
-		return "comma";
-	case TOKEN_TYPE_FUNC:
-		return "func";
-	case TOKEN_TYPE_STATEMENT_END:
-		return "statement end";
-	default: {
-		assert(0 && "getTokenName: unreachable");
-		exit(1);
-	}
-	}
-}
 
-Line_View getNextStmt(String line)
-{
-	Line_View result = { 0 };
-	(void)line;
-	Token tok;
-	while (line.len > 0) {
-		line = trim(line);
-		tok = getNextToken(&line);
-		print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
+		if (tok.text.len != 1) {
+			print(WIN_STDERR,
+			      "ERROR: the length of char literal has to be exactly one\n");
+			exit(1);
+		}
+
+		result.type = STMT_LIT_CHAR;
+		result.value.as_char = tok.text.data[0];
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%c'(%s) as a char literal",
+		      tok.text.data[0], getTokenName(tok.type));
+
+		discard_cached_token();
+		break;
+
+	case TOKEN_TYPE_STR:
+		result.type = STMT_LIT_STR;
+		result.value.as_str = tok.text;
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%.*s'(%s) as a str literal",
 		      tok.text.len, tok.text.data, getTokenName(tok.type));
+
+		discard_cached_token();
+		break;
+	case TOKEN_TYPE_NAME: {
+		discard_cached_token();
+		Token next = getNextToken(line);
+		if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+			result.type = STMT_FUNCALL;
+			result.value.as_funcall = malloc(sizeof(Funcall));
+			result.value.as_funcall->name = tok.text;
+			// result.value.as_funcall->args =
+			// 	parseFuncallArgs(); // UNIMPLEMENTED!
+			print(WIN_STDOUT,
+			      "\n[STMT] identified '%.*s'(%s) as a function call",
+			      tok.text.len, tok.text.data,
+			      getTokenName(tok.type));
+
+		} else {
+			result.value.as_var = tok.text;
+			result.type = STMT_VARIABLE;
+			print(WIN_STDOUT,
+			      "\n[STMT] identified '%.*s'(%s) as a variable name",
+			      tok.text.len, tok.text.data,
+			      getTokenName(tok.type));
+		}
+		break;
+	}
+	case TOKEN_TYPE_FUNC: {
+		discard_cached_token();
+		Token next = getNextToken(line);
+		if (next.type != TOKEN_TYPE_NAME) {
+			print(WIN_STDERR,
+			      "ERROR: exprected a function name but found %s\n",
+			      getTokenName(tok.type));
+			exit(1);
+		}
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%.*s %.*s'(%s) as a function call declaration",
+		      tok.text.len, tok.text.data, next.text.len,
+		      next.text.data, getTokenName(tok.type));
+		discard_cached_token();
+		next = getNextToken(line);
+		if (next.type != TOKEN_TYPE_OPEN_PAREN) {
+			print(WIN_STDERR,
+			      "ERROR: exprected function arg list but found %s\n",
+			      getTokenName(tok.type));
+			exit(1);
+		}
+		result.type = STMT_FUNCALL_DECLARATION;
+		result.value.as_funcall = malloc(sizeof(Funcall));
+		result.value.as_funcall->name = tok.text;
+		// result.value.as_funcall->args =
+		// 	parseFuncallArgs(); // UNIMPLEMENTED!
+
+		break;
+	}
+	case TOKEN_TYPE_OPEN_CURLY:
+		result.type = STMT_BLOCK_START;
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%.*s'(%s) as a code block start",
+		      tok.text.len, tok.text.data, getTokenName(tok.type));
+		discard_cached_token();
+		break;
+	case TOKEN_TYPE_CLOSING_CURLY:
+		result.type = STMT_BLOCK_END;
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%.*s'(%s) as a code block end",
+		      tok.text.len, tok.text.data, getTokenName(tok.type));
+		discard_cached_token();
+		break;
+	case TOKEN_TYPE_OPEN_PAREN:
+	case TOKEN_TYPE_STATEMENT_END:
+	case TOKEN_TYPE_NUMBER:
+	case TOKEN_TYPE_COMMA:
+	case TOKEN_TYPE_CLOSING_PAREN:
+		// print(WIN_STDERR,
+		//       "ERROR: exprected a statement but found %s\n",
+		//       getTokenName(tok.type));
+
+		discard_cached_token();
+		// exit(1);
+		break;
+
+	default:
+		assert(false && ": unreachable");
+		exit(1);
 	}
 	return result;
 }

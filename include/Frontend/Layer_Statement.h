@@ -2,28 +2,57 @@
 #define STMT_LAYER_FRONTEND
 #include <Frontend/Layer_Line.h>
 #include <Utils/strings.h>
+#include <stdint.h>
 
-enum TokenType {
-	TOKEN_TYPE_STR,
-	TOKEN_TYPE_CHAR,
-	TOKEN_TYPE_NUMBER,
-	TOKEN_TYPE_NAME,
-	TOKEN_TYPE_OPEN_PAREN,
-	TOKEN_TYPE_CLOSING_PAREN,
-	TOKEN_TYPE_OPEN_CURLY,
-	TOKEN_TYPE_CLOSING_CURLY,
-	TOKEN_TYPE_STATEMENT_END,
-	TOKEN_TYPE_FUNC,
-	TOKEN_TYPE_COMMA
+enum StmtType {
+	STMT_VARIABLE,
+	STMT_LIT_INT,
+	STMT_LIT_FLOAT,
+	STMT_LIT_CHAR,
+	STMT_LIT_STR,
+	STMT_FUNCALL,
+	STMT_BLOCK_START,
+	STMT_BLOCK_END,
+	STMT_FUNCALL_DECLARATION,
 };
 
-typedef struct Token Token;
-typedef enum TokenType TokenType;
-struct Token {
-	TokenType type;
-	String text;
+typedef struct Stmt Stmt;
+typedef enum StmtType StmtType;
+typedef union StmtValue StmtValue;
+typedef struct Funcall Funcall;
+typedef struct FuncallArg FuncallArg;
+typedef struct StmtNode StmtNode;
+
+union StmtValue {
+	String as_var;
+	uint64_t as_int;
+	double as_float;
+	char as_char;
+	String as_str;
+	Funcall *as_funcall;
+	StmtNode *as_block;
 };
 
-Line_View getNextStmt(String line);
+struct Stmt {
+	StmtType type;
+	StmtValue value;
+};
+
+struct FuncallArg {
+	FuncallArg *next;
+	Stmt value;
+};
+
+struct Funcall {
+	String name;
+	FuncallArg *args;
+};
+
+struct StmtNode {
+	Stmt statement;
+	StmtNode *next;
+};
+
+Stmt getNextStmt(String *line);
 
 #endif

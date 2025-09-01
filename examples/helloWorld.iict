@@ -1,3 +1,4 @@
+x 'a';
 func hello() {
     print("hi");
 }

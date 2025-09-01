@@ -1,10 +1,28 @@
 #include <Frontend/Layer_Line.h>
 #include <Frontend/Layer_File.h>
-#include <Frontend/Layer_Statement.h>
 #include <Utils/strings.h>
 #include <Wrapper/IO.h>
+#include <assert.h>
+#include <stdlib.h>
 
-String getNextLine()
+void pushStatementIntoBlock(CodeBlock *list, Stmt statement)
+{
+	assert(list);
+	StmtNode *stmtNode = malloc(sizeof(StmtNode));
+	stmtNode->statement = statement;
+
+	if (list->end == NULL) {
+		assert(list->begin == NULL);
+		list->begin = stmtNode;
+		list->end = stmtNode;
+	} else {
+		assert(list->begin != NULL);
+		list->end->next = stmtNode;
+		list->end = stmtNode;
+	}
+}
+
+bool getNextLine(CodeBlock *blk)
 {
 	String line = { 0 };
 
@@ -23,7 +41,23 @@ String getNextLine()
 		}
 	} while (line.len == 0 && file.contents.len > 0);
 
-	Line_View line_v = getNextStmt(line);
-	(void)line_v;
-	return line;
+	while (line.len > 0) {
+		Stmt stmt = getNextStmt(&line);
+		if (stmt.type == STMT_BLOCK_END) {
+			return false;
+		} else if (stmt.type == STMT_BLOCK_START) {
+			stmt.value.as_block = getBlock().begin;
+		}
+		pushStatementIntoBlock(blk, stmt);
+	}
+	return true;
+}
+
+CodeBlock getBlock()
+{
+	CodeBlock result = { 0 };
+	while (file.contents.len > 0) {
+		(void)getNextLine(&result);
+	}
+	return result;
 }
