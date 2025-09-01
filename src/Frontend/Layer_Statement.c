@@ -41,6 +41,7 @@ Stmt getNextStmt(String line)
 			discard_cached_token();
 			break;
 		case TOKEN_TYPE_NAME:
+			discard_cached_token();
 			Token next = getNextToken(&line);
 			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
 				result.type = STMT_FUNCALL;
@@ -54,7 +55,6 @@ Stmt getNextStmt(String line)
 				      tok.text.len, tok.text.data,
 				      getTokenName(tok.type));
 
-				discard_cached_token();
 			} else {
 				result.value.as_var = tok.text;
 				result.type = STMT_VARIABLE;
