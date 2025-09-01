@@ -1,4 +1,5 @@
 #include <Backend/Layer_File.h>
+#include <Utils/strings.h>
 #include <Wrapper/IO.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,7 +78,23 @@ void readFile(const char *filePath)
 
 	file.contents.len = size;
 	file.contents.data = file_contents;
-    file.file_path = filePath;
-    file.line_num = 0;
+	file.file_path = filePath;
+	file.line_num = 0;
 
+	print("\n[FILE] Reading File %s", file.file_path);
+	processFile();
+}
+
+void processFile()
+{
+	while (file.contents.len > 0) {
+		String line = { 0 };
+		do {
+			line = trim(split_str_by_delim(&file.contents, '\n'));
+			line = trim(split_str_by_delim(&line, COMMENT_SYMBOL));
+			file.line_num += 1;
+		} while (line.len == 0 && file.contents.len > 0);
+		print("\n[LINE] Read Line %d : %.*s", file.line_num, line.data,
+		      line.len);
+	}
 }
