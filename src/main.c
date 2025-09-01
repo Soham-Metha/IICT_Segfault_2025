@@ -15,7 +15,6 @@ void usage(const char *progName)
 	      "    -h                Provide this helper\n"
 	      "\n",
 	      progName);
-	exit(1);
 }
 
 char *getNextCmdLineArg(int *argc, char ***argv)
@@ -40,8 +39,11 @@ void processFlag(const char *prog, const char *flag, int *argc, char ***argv)
 		outputFile = getNextCmdLineArg(argc, argv);
 		return;
 	case 'h':
+		usage(prog);
+		exit(0);
 	default:
 		usage(prog);
+		exit(1);
 	}
 }
 
@@ -56,6 +58,7 @@ int main(int argc, char **argv)
 
 	if (!inputFile || !outputFile) {
 		usage(program);
+		exit(1);
 	}
 
 	return 0;
