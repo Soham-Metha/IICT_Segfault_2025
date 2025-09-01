@@ -63,6 +63,6 @@ int main(int argc, char **argv)
 	}
 
 	readFile(inputFile);
-	print(WIN_STDOUT, "\n");
+	print(WIN_STDOUT, "\n\n");
 	return 0;
 }
