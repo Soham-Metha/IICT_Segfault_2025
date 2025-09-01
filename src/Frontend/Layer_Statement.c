@@ -27,6 +27,8 @@ const char *getTokenName(TokenType type)
 		return "comma";
 	case TOKEN_TYPE_FUNC:
 		return "func";
+	case TOKEN_TYPE_STATEMENT_END:
+		return "statement end";
 	default: {
 		assert(0 && "getTokenName: unreachable");
 		exit(1);
