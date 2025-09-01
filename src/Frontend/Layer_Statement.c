@@ -27,6 +27,9 @@ Stmt getNextStmt(String line)
 
 		result.type = STMT_LIT_CHAR;
 		result.value.as_char = tok.text.data[0];
+		print(WIN_STDOUT, "[STMT] identified '%c' as a char literal",
+		      tok.text.data[0]);
+
 		break;
 
 	case TOKEN_TYPE_STR:
