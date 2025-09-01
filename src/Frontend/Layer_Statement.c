@@ -71,6 +71,10 @@ Stmt getNextStmt(String line)
 				      getTokenName(tok.type));
 				exit(1);
 			}
+			print(WIN_STDOUT,
+			      "\n[STMT] identified '%.*s %.*s'(%s) as a function call declaration",
+			      tok.text.len, tok.text.data, next.text.len,
+			      next.text.data, getTokenName(tok.type));
 			discard_cached_token();
 			next = getNextToken(&line);
 			if (next.type != TOKEN_TYPE_OPEN_PAREN) {
@@ -84,10 +88,6 @@ Stmt getNextStmt(String line)
 			result.value.as_funcall->name = tok.text;
 			// result.value.as_funcall->args =
 			// 	parseFuncallArgs(); // UNIMPLEMENTED!
-			print(WIN_STDOUT,
-			      "\n[STMT] identified '%.*s %.*s'(%s) as a function call declaration",
-			      tok.text.len, tok.text.data, next.text.len,
-			      next.text.data, getTokenName(tok.type));
 
 			break;
 		}
