@@ -4,5 +4,6 @@
 #include <Frontend/Layer_Statement.h>
 
 Token getNextToken(String *line);
+void discard_cached_token();
 
 #endif

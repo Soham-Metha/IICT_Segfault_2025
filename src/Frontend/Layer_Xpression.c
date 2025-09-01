@@ -3,6 +3,9 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+Token cache;
+bool cachedToken = false;
+
 static bool isName(char x)
 {
 	return isalnum(x) || x == '_';
@@ -15,10 +18,16 @@ static bool isNumber(char x)
 
 Token getNextToken(String *line)
 {
+	if (cachedToken) {
+		return cache;
+	}
+
 	Token token = { 0 };
 	if (starts_with(*line, STR("func"))) {
 		token.type = TOKEN_TYPE_FUNC;
 		token.text = split_str_by_len(line, 4);
+		cache = token;
+		cachedToken = true;
 		return token;
 	}
 	switch (line->data[0]) {
@@ -99,5 +108,12 @@ Token getNextToken(String *line)
 		}
 	}
 	}
+	cache = token;
+	cachedToken = true;
 	return token;
+}
+
+void discard_cached_token()
+{
+	cachedToken = false;
 }
