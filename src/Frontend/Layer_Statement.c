@@ -37,7 +37,7 @@ Stmt getNextStmt(String line)
 
 			discard_cached_token();
 			break;
-		case TOKEN_TYPE_NAME:
+		case TOKEN_TYPE_NAME: {
 			discard_cached_token();
 			Token next = getNextToken(&line);
 			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
@@ -61,7 +61,8 @@ Stmt getNextStmt(String line)
 				      getTokenName(tok.type));
 			}
 			break;
-		case TOKEN_TYPE_FUNC:
+		}
+		case TOKEN_TYPE_FUNC: {
 			discard_cached_token();
 			Token next = getNextToken(&line);
 			if (next.type != TOKEN_TYPE_NAME) {
@@ -89,6 +90,7 @@ Stmt getNextStmt(String line)
 			      getTokenName(tok.type));
 
 			break;
+		}
 		case TOKEN_TYPE_OPEN_PAREN:
 		case TOKEN_TYPE_OPEN_CURLY:
 		case TOKEN_TYPE_STATEMENT_END:
