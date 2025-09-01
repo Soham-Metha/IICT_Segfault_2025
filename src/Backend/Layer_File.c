@@ -82,28 +82,26 @@ void readFile(const char *filePath)
 	file.file_path = filePath;
 	file.line_num = 0;
 
-	processFile();
+	while (file.contents.len > 0) {
+		String line = getNextLine();
+	}
 }
 
-void processFile()
+String getNextLine()
 {
-	while (file.contents.len > 0) {
-		String line = { 0 };
-		do {
-			file.line_num += 1;
-			file.contents = ltrim(file.contents);
+	String line = { 0 };
+	do {
+		file.line_num += 1;
+		file.contents = ltrim(file.contents);
 
-			line = trim(split_str_by_delim(&file.contents, '\n'));
-			print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s",
-			      file.line_num, (int)line.len, line.data);
+		line = trim(split_str_by_delim(&file.contents, '\n'));
+		print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s",
+		      file.line_num, (int)line.len, line.data);
 
-			if (get_index_of(line, COMMENT_SYMBOL, NULL)) {
-				line = trim(split_str_by_delim(&line,
-							       COMMENT_SYMBOL));
-				print(WIN_STDOUT,
-				      "\n[LINE] Discard Comments : %.*s",
-				      (int)line.len, line.data);
-			}
-		} while (line.len == 0 && file.contents.len > 0);
-	}
+		if (get_index_of(line, COMMENT_SYMBOL, NULL)) {
+			line = trim(split_str_by_delim(&line, COMMENT_SYMBOL));
+			print(WIN_STDOUT, "\n[LINE] Discard Comments : %.*s",
+			      (int)line.len, line.data);
+		}
+	} while (line.len == 0 && file.contents.len > 0);
 }

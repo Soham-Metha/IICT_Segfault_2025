@@ -12,7 +12,7 @@ struct File_View {
 };
 
 void readFile(const char *filePath);
-void processFile();
+void getNextLine();
 void generateAST();
 
 #endif
