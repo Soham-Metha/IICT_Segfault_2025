@@ -2,6 +2,7 @@
 #define LINE_LAYER_FRONTEND
 #define COMMENT_SYMBOL '%'
 #include <Utils/strings.h>
+#include <Frontend/Layer_Statement.h>
 
 enum Line_Type { LINE_TYPE_DIRECTIVE, LINE_TYPE_FUNCTION, LINE_TYPE_COUNT };
 
@@ -35,6 +36,11 @@ struct Line_View {
 struct CodeBlock {
 	StmtNode *begin;
 	StmtNode *end;
+};
+
+struct Scope {
+	CodeBlock block;
+	Scope *prev;
 };
 
 String getNextLine(Scope *scope);
