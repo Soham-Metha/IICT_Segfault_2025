@@ -5,7 +5,9 @@
 typedef struct File_View File_View;
 
 struct File_View {
+    const char* file_path;
 	String contents;
+    unsigned int line_num;
 };
 
 void readFile();
