@@ -4,38 +4,6 @@
 #include <assert.h>
 #include <stdlib.h>
 
-const char *getTokenName(TokenType type)
-{
-	switch (type) {
-	case TOKEN_TYPE_STR:
-		return "string";
-	case TOKEN_TYPE_CHAR:
-		return "character";
-	case TOKEN_TYPE_NUMBER:
-		return "number";
-	case TOKEN_TYPE_NAME:
-		return "name";
-	case TOKEN_TYPE_OPEN_PAREN:
-		return "open paren";
-	case TOKEN_TYPE_CLOSING_PAREN:
-		return "closing paren";
-	case TOKEN_TYPE_OPEN_CURLY:
-		return "open curly";
-	case TOKEN_TYPE_CLOSING_CURLY:
-		return "closing curly";
-	case TOKEN_TYPE_COMMA:
-		return "comma";
-	case TOKEN_TYPE_FUNC:
-		return "func";
-	case TOKEN_TYPE_STATEMENT_END:
-		return "statement end";
-	default: {
-		assert(0 && "getTokenName: unreachable");
-		exit(1);
-	}
-	}
-}
-
 Stmt getNextStmt(String line)
 {
 	Stmt result = { 0 };
@@ -56,10 +24,6 @@ Stmt getNextStmt(String line)
 			      "ERROR: the length of char literal has to be exactly one\n");
 			exit(1);
 		}
-
-		print(WIN_STDOUT,
-		      "\n[STMT] identified token '%.*s' as '%s' STMT_LIT_CHAR",
-		      tok.text.len, tok.text.data, getTokenName(tok.type));
 
 		result.type = STMT_LIT_CHAR;
 		result.value.as_char = tok.text.data[0];
