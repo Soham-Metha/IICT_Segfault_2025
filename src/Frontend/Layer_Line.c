@@ -3,7 +3,7 @@
 #include <Utils/strings.h>
 #include <Wrapper/IO.h>
 
-void getNextLine()
+String getNextLine()
 {
 	String line = { 0 };
 
@@ -22,10 +22,14 @@ void getNextLine()
 		}
 	} while (line.len == 0 && file.contents.len > 0);
 
-	processLine(line);
+	getNextStmt(line);
+    while (line.len > 0) {
+        Line_View line_v = getNextStmt(line);
+        (void)line_v;
+    }
 }
 
-void processLine(String line)
+void getNextStmt(String line)
 {
 	Line_View result = { 0 };
 	if (starts_with(line, STR("#"))) {
