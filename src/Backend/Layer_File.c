@@ -3,14 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
-
 File_View file;
-
-void readFile(const char *filePath)
-{
-	FILE *file_ptr = openFile(filePath, "r");
-}
+// ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
 FILE *openFile(const char *filePath, const char *mode)
 {
@@ -46,4 +40,34 @@ long getFileSize(FILE *f, const char *filePath)
 	rewind(f);
 
 	return fileSize;
+}
+
+// ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
+
+void readFile(const char *filePath)
+{
+	FILE *file_ptr = openFile(filePath, "r");
+    long size = getFileSize(file_ptr, filePath);
+
+    char *buffer = (char *)malloc(size + 1);
+    if (!buffer) {
+        print(WIN_STDERR, "out of memory while reading %s", filePath);
+        fclose(file_ptr);
+        exit(1);
+    }
+
+    size_t readCount = fread(buffer, 1, size, file_ptr);
+    if (readCount != (size_t)size) {
+        print(WIN_STDERR, "failed to read entire file %s", filePath);
+        free(buffer);
+        fclose(file_ptr);
+        exit(1);
+    }
+
+    buffer[size] = '\0';
+
+    file.contents.len = (unsigned int)size;
+    file.contents.data = buffer;
+
+    fclose(file_ptr);
 }
