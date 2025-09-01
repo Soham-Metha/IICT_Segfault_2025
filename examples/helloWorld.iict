@@ -1,4 +1,5 @@
-'a' "hi"
+'a';
+"hi"
 func hello() {
     print("hi");
 }
