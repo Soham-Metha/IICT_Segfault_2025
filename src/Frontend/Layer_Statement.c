@@ -13,49 +13,50 @@ Stmt getNextStmt(String line)
 	// 	print(WIN_STDOUT, "\n[STMT] identified token '%.*s' as '%s'",
 	// 	      tok.text.len, tok.text.data, getTokenName(tok.type));
 	// }
+	while (line.len > 0) {
+		switch (tok.type) {
+		case TOKEN_TYPE_CHAR:
+			discard_cached_token();
 
-	switch (tok.type) {
-	case TOKEN_TYPE_CHAR:
-		discard_cached_token();
+			if (tok.text.len != 1) {
+				print(WIN_STDERR,
+				      "ERROR: the length of char literal has to be exactly one\n");
+				exit(1);
+			}
 
-		if (tok.text.len != 1) {
+			result.type = STMT_LIT_CHAR;
+			result.value.as_char = tok.text.data[0];
+			// print(WIN_STDOUT, "\n[STMT] identified '%c' as a char literal",
+			//       tok.text.data[0]);
+
+			break;
+
+		case TOKEN_TYPE_STR:
+			result.type = STMT_LIT_STR;
+			// result.value.as_str = ;
+			// assert(0);
+			break;
+		case TOKEN_TYPE_NAME:
+		case TOKEN_TYPE_NUMBER:
+		case TOKEN_TYPE_OPEN_PAREN:
+		case TOKEN_TYPE_OPEN_CURLY:
+		case TOKEN_TYPE_STATEMENT_END:
+		case TOKEN_TYPE_FUNC:
+			// assert(0);
+			break;
+		case TOKEN_TYPE_COMMA:
+		case TOKEN_TYPE_CLOSING_PAREN:
+		case TOKEN_TYPE_CLOSING_CURLY:
 			print(WIN_STDERR,
-			      "ERROR: the length of char literal has to be exactly one\n");
+			      "ERROR: exprected a statement but found %s\n",
+			      getTokenName(tok.type));
+			exit(1);
+			break;
+
+		default:
+			assert(false && ": unreachable");
 			exit(1);
 		}
-
-		result.type = STMT_LIT_CHAR;
-		result.value.as_char = tok.text.data[0];
-		// print(WIN_STDOUT, "\n[STMT] identified '%c' as a char literal",
-		//       tok.text.data[0]);
-
-		break;
-
-	case TOKEN_TYPE_STR:
-		result.type = STMT_LIT_STR;
-		// result.value.as_str = ;
-		// assert(0);
-		break;
-	case TOKEN_TYPE_NAME:
-	case TOKEN_TYPE_NUMBER:
-	case TOKEN_TYPE_OPEN_PAREN:
-	case TOKEN_TYPE_OPEN_CURLY:
-	case TOKEN_TYPE_STATEMENT_END:
-	case TOKEN_TYPE_FUNC:
-		// assert(0);
-		break;
-	case TOKEN_TYPE_COMMA:
-	case TOKEN_TYPE_CLOSING_PAREN:
-	case TOKEN_TYPE_CLOSING_CURLY:
-		print(WIN_STDERR, "ERROR: exprected a statement but found %s\n",
-		      getTokenName(tok.type));
-		exit(1);
-		break;
-
-	default:
-		assert(false && ": unreachable");
-		exit(1);
 	}
-
 	return result;
 }
