@@ -25,6 +25,6 @@ struct Token {
 };
 
 Token getNextToken(String *line);
-void discard_cached_token();
+bool discard_cached_token();
 
 #endif
