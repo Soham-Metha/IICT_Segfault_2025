@@ -104,4 +104,5 @@ String getNextLine()
 			      (int)line.len, line.data);
 		}
 	} while (line.len == 0 && file.contents.len > 0);
+	return line;
 }
