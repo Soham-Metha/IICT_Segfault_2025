@@ -9,7 +9,15 @@ Project for IICT Segfault Hackathon 2025.
 ## TODOs
 
 [ ] Project Name!!!
+
+[ ] Language Name!!!
+
+[ ] Compiler Name!!!
+
 [ ] Design AST visuals (Determining Colors, shapes, etc)
+
 [ ] Design the UI wrapper functions (NCurses based)
+
 [ ] i/o function wrappers
+
 [ ] actual compiler
