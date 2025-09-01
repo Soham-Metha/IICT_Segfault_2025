@@ -21,6 +21,7 @@ typedef enum StmtType StmtType;
 typedef union StmtValue StmtValue;
 typedef struct Funcall Funcall;
 typedef struct FuncallArg FuncallArg;
+typedef struct StmtNode StmtNode;
 
 union StmtValue {
 	String as_var;
@@ -29,7 +30,7 @@ union StmtValue {
 	char as_char;
 	String as_str;
 	Funcall *as_funcall;
-	CodeBlock *as_block;
+	StmtNode *as_block;
 };
 
 struct Stmt {
