@@ -50,19 +50,6 @@ bool get_index_of(String str, char c, size_t *index)
 	return false;
 }
 
-bool starts_with(String str, String prefix)
-{
-	if (prefix.len <= str.len) {
-		for (size_t i = 0; i < prefix.len; ++i) {
-			if (prefix.data[i] != str.data[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-	return false;
-}
-
 String split_str_by_delim(String *s, char c)
 {
 	size_t i = 0;
@@ -120,14 +107,26 @@ String split_str_by_len_reversed(String *str, size_t n)
 	return result;
 }
 
-bool ends_with(String str, String expectedSuffix)
+bool starts_with(String str, String prefix)
 {
-	if (expectedSuffix.len <= str.len) {
-		String actualSuffix = { .data = str.data + str.len -
-						expectedSuffix.len,
-					.len = expectedSuffix.len };
+	if (prefix.len <= str.len) {
+		for (size_t i = 0; i < prefix.len; ++i) {
+			if (prefix.data[i] != str.data[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+	return false;
+}
 
-		return compare_str(expectedSuffix, actualSuffix);
+bool ends_with(String str, String expected)
+{
+	if (expected.len <= str.len) {
+		String actual = { .data = str.data + str.len - expected.len,
+				  .len = expected.len };
+
+		return compare_str(expected, actual);
 	}
 
 	return false;
