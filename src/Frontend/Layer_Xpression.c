@@ -51,6 +51,7 @@ const char *getTokenName(TokenType type)
 
 Token getNextToken(String *line)
 {
+	*line = trim(*line);
 	if (cachedToken) {
 		return cache;
 	}
