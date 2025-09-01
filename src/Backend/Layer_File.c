@@ -90,6 +90,7 @@ void readFile(const char *filePath)
 String getNextLine()
 {
 	String line = { 0 };
+
 	do {
 		file.line_num += 1;
 		file.contents = ltrim(file.contents);
@@ -104,5 +105,6 @@ String getNextLine()
 			      (int)line.len, line.data);
 		}
 	} while (line.len == 0 && file.contents.len > 0);
+
 	return line;
 }
