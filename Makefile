@@ -36,4 +36,4 @@ IN_FILE := examples/helloWorld.iict
 OUT_FILE:= examples/exampleOut
 
 run_all: clean all
-	@$(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE)
+	@$(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE) -tui

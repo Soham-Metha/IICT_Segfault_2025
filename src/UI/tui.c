@@ -3,26 +3,15 @@
 #include <string.h>
 #include <ncurses.h>
 #include <assert.h>
+#include <Frontend/Layer_File.h>
 
-// ive just used sample code(like idk how the code will be used as input with corresponding logs, which comes from the compiler itself)
-static const char *sample_code[] = { "int main() {",
-				     "    int x = 42;",
-				     "    if (x > 0) {",
-				     "        printf(\"positive\\n\");",
-				     "    } else {",
-				     "        printf(\"non-positive\\n\");",
-				     "    }",
-				     "    return 0;",
-				     "}",
-				     NULL };
-
-TUI *init_ui(int screen_height, int screen_width)
+TUI *init_ui()
 {
 	initscr();
 	cbreak();
 	noecho();
 	curs_set(0);
-	keypad(stdscr, TRUE);
+	// keypad(stdscr, TRUE);
 	start_color();
 
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
@@ -35,21 +24,17 @@ TUI *init_ui(int screen_height, int screen_width)
 	tui->selected_line = 0;
 	tui->total_lines = 0;
 
-	for (int i = 0; sample_code[i] != NULL && tui->total_lines < MAX_LINES;
-	     i++) {
-		tui->lines[tui->total_lines++] = strdup(sample_code[i]);
-	}
+	int screen_height = getmaxy(stdscr);
+	int screen_width = getmaxx(stdscr);
 
-	int mid_x = screen_width / 2;
-	int log_height = screen_height / 2;
+	int mid_x = (int)(screen_width / 2);
+	int mid_y = (int)(screen_height / 2);
+	int x_by4 = (int)(screen_width / 4);
 
-	tui->program_window = newwin(screen_height, mid_x, 0, 0);
-	tui->log_window = newwin(log_height, screen_width - mid_x, 0, mid_x);
-	tui->ir_window = newwin(screen_height - log_height,
-				(screen_width - mid_x) / 2, log_height, mid_x);
-	tui->mc_window = newwin(screen_height - log_height,
-				(screen_width - mid_x) / 2, log_height,
-				mid_x + (screen_width - mid_x) / 2);
+	tui->program_window = newwin(screen_height, screen_width / 2, 0, 0);
+	tui->log_window = newwin(mid_y, mid_x, 0, mid_x);
+	tui->ir_window = newwin(mid_y, x_by4, mid_y, mid_x);
+	tui->mc_window = newwin(mid_y, x_by4, mid_y, mid_x + x_by4);
 
 	return tui;
 }
@@ -62,17 +47,18 @@ static void draw_program(TUI *tui)
 	mvwprintw(tui->program_window, 0, 2, "[ Program ]");
 	wattroff(tui->program_window, COLOR_PAIR(1));
 
-	for (int i = 0; i < tui->total_lines; i++) {
+	for (unsigned int i = 0; i <= file.line_num; i++) {
 		if (i == tui->selected_line) {
 			wattron(tui->program_window, COLOR_PAIR(2) | A_BOLD);
-			mvwprintw(tui->program_window, i + 1, 2, "%s",
-				  tui->lines[i]);
+			mvwprintw(tui->program_window, i + 1, 2, "%.*s",
+				  Str_Fmt(file.lines[i]));
 			wattroff(tui->program_window, COLOR_PAIR(2) | A_BOLD);
 		} else {
-			mvwprintw(tui->program_window, i + 1, 2, "%s",
-				  tui->lines[i]);
+			mvwprintw(tui->program_window, i + 1, 2, "%.*s",
+				  Str_Fmt(file.lines[i]));
 		}
 	}
+
 	wrefresh(tui->program_window);
 }
 
@@ -84,11 +70,11 @@ static void draw_log(TUI *tui)
 	mvwprintw(tui->log_window, 0, 2, "[ Logs ]");
 	wattroff(tui->log_window, COLOR_PAIR(3));
 
-	if (tui->total_lines > 0) {
-		mvwprintw(tui->log_window, 1, 1, "Selected line %d : %s",
-			  tui->selected_line + 1,
-			  tui->lines[tui->selected_line]);
-	}
+	// if (tui->total_lines > 0) {
+	// 	mvwprintw(tui->log_window, 1, 1, "Selected line %d : %s",
+	// 		  tui->selected_line + 1,
+	// 		  tui->lines[tui->selected_line]);
+	// }
 	wrefresh(tui->log_window);
 }
 
@@ -147,8 +133,6 @@ void destroy_ui(TUI *tui)
 	delwin(tui->log_window);
 	delwin(tui->ir_window);
 	delwin(tui->mc_window);
-	for (int i = 0; i < tui->total_lines; i++)
-		free(tui->lines[i]);
 	free(tui);
 	endwin();
 }

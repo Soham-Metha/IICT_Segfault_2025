@@ -14,8 +14,9 @@ void print(int id, const char *str, ...)
 			ast = fopen("ast.dot", "w");
 		}
 		vfprintf(ast, str, args);
-	} else
+	} else {
 		vprintf(str, args);
+	}
 
 	va_end(args);
 }

@@ -84,17 +84,17 @@ cleanup:
 	if (file_ptr) {
 		fclose(file_ptr);
 	}
-	free(file_contents);
+	// free(file_contents);
 	return out;
 }
 
 String file_fetch_next_line()
 {
-	String line 	= { 0 };
-	file.line_num  += 1;
-	file.contents  	= ltrim(file.contents);
-	line 			= split_str_by_delim(&file.contents, '\n');
-	line 			= trim(line);
+	String line 			  = { 0 };
+	file.line_num  			 += 1;
+	line 					  = split_str_by_delim(&file.contents, '\n');
+	file.lines[file.line_num] = (String){.data = line.data, .len = line.len};
+	line 					  = trim(line);
 
 	print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s", file.line_num, Str_Fmt(line));
 

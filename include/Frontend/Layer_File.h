@@ -9,6 +9,7 @@ typedef struct File_View File_View;
 struct File_View {
 	const char *file_path;
 	String contents;
+	String lines[1024]; // hardcoded line count
 	unsigned int line_num;
 };
 
