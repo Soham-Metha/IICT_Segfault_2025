@@ -11,7 +11,7 @@ TUI *init_ui()
 	cbreak();
 	noecho();
 	curs_set(0);
-	// keypad(stdscr, TRUE);
+	keypad(stdscr, TRUE);
 	start_color();
 
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
@@ -22,7 +22,6 @@ TUI *init_ui()
 
 	TUI *tui = malloc(sizeof(TUI));
 	tui->selected_line = 0;
-	tui->total_lines = 0;
 
 	int screen_height = getmaxy(stdscr);
 	int screen_width = getmaxx(stdscr);
@@ -31,31 +30,35 @@ TUI *init_ui()
 	int mid_y = (int)(screen_height / 2);
 	int x_by4 = (int)(screen_width / 4);
 
-	tui->program_window = newwin(screen_height, screen_width / 2, 0, 0);
-	tui->log_window = newwin(mid_y, mid_x, 0, mid_x);
-	tui->ir_window = newwin(mid_y, x_by4, mid_y, mid_x);
-	tui->mc_window = newwin(mid_y, x_by4, mid_y, mid_x + x_by4);
+	tui->program_window =
+		newwin(screen_height - 4, mid_x - 4, 0 + 2, 0 + 2);
+	tui->log_window = newwin(mid_y - 4, mid_x - 4, 0 + 2, mid_x + 2);
+	tui->ir_window = newwin(mid_y - 4, x_by4 - 4, mid_y + 2, mid_x + 2);
+	tui->mc_window =
+		newwin(mid_y - 4, x_by4 - 4, mid_y + 2, mid_x + x_by4 + 2);
 
 	return tui;
 }
 
 static void draw_program(TUI *tui)
 {
+	WINDOW *bounds = newwin(getmaxy(stdscr), getmaxx(stdscr) / 2, 0, 0);
+	box(bounds, 0, 0);
+	wattron(bounds, COLOR_PAIR(1));
+	mvwprintw(bounds, 0, 2, "[ Program ]");
+	wattroff(bounds, COLOR_PAIR(1));
+	wrefresh(bounds);
 	werase(tui->program_window);
-	box(tui->program_window, 0, 0);
-	wattron(tui->program_window, COLOR_PAIR(1));
-	mvwprintw(tui->program_window, 0, 2, "[ Program ]");
-	wattroff(tui->program_window, COLOR_PAIR(1));
 
 	for (unsigned int i = 0; i <= file.line_num; i++) {
 		if (i == tui->selected_line) {
 			wattron(tui->program_window, COLOR_PAIR(2) | A_BOLD);
-			mvwprintw(tui->program_window, i + 1, 2, "%.*s",
-				  Str_Fmt(file.lines[i]));
+			mvwprintw(tui->program_window, i + 1, 2, "%3d | %.*s",
+				  i, Str_Fmt(file.lines[i].line));
 			wattroff(tui->program_window, COLOR_PAIR(2) | A_BOLD);
 		} else {
-			mvwprintw(tui->program_window, i + 1, 2, "%.*s",
-				  Str_Fmt(file.lines[i]));
+			mvwprintw(tui->program_window, i + 1, 2, "%3d | %.*s",
+				  i, Str_Fmt(file.lines[i].line));
 		}
 	}
 
@@ -64,36 +67,61 @@ static void draw_program(TUI *tui)
 
 static void draw_log(TUI *tui)
 {
-	werase(tui->log_window);
-	box(tui->log_window, 0, 0);
-	wattron(tui->log_window, COLOR_PAIR(3));
-	mvwprintw(tui->log_window, 0, 2, "[ Logs ]");
-	wattroff(tui->log_window, COLOR_PAIR(3));
+	int screen_height = getmaxy(stdscr);
+	int screen_width = getmaxx(stdscr);
 
-	// if (tui->total_lines > 0) {
-	// 	mvwprintw(tui->log_window, 1, 1, "Selected line %d : %s",
-	// 		  tui->selected_line + 1,
-	// 		  tui->lines[tui->selected_line]);
-	// }
+	int mid_x = (int)(screen_width / 2);
+	int mid_y = (int)(screen_height / 2);
+
+	WINDOW *bounds = newwin(mid_y, mid_x, 0, mid_x);
+	box(bounds, 0, 0);
+	wattron(bounds, COLOR_PAIR(3));
+	mvwprintw(bounds, 0, 2, "[ Logs ]");
+	wattroff(bounds, COLOR_PAIR(3));
+	wrefresh(bounds);
+	werase(tui->log_window);
+
+	if (file.line_num > 0) {
+		int i = 0;
+		while (file.lines[tui->selected_line].logs[i].len>0) {
+			wprintw(tui->log_window, "%.*s",
+				Str_Fmt(file.lines[tui->selected_line].logs[i]));
+			i++;
+		}
+	}
 	wrefresh(tui->log_window);
 }
 
 static void draw_ir_mc(TUI *tui)
 {
+	int screen_height = getmaxy(stdscr);
+	int screen_width = getmaxx(stdscr);
+
+	int mid_x = (int)(screen_width / 2);
+	int mid_y = (int)(screen_height / 2);
+	int x_by4 = (int)(screen_width / 4);
+
+	WINDOW *bot_l = newwin(mid_y, x_by4, mid_y, mid_x);
+	WINDOW *bot_r = newwin(mid_y, x_by4, mid_y, mid_x + x_by4);
+
+	box(bot_l, 0, 0);
+	wattron(bot_l, COLOR_PAIR(4));
+	mvwprintw(bot_l, 0, 2, "[ IR ]");
+	wattroff(bot_l, COLOR_PAIR(4));
+	box(bot_r, 0, 0);
+	wattron(bot_r, COLOR_PAIR(5));
+	mvwprintw(bot_r, 0, 2, "[ Machine Code ]");
+	wattroff(bot_r, COLOR_PAIR(5));
+
+	wrefresh(bot_l);
+	wrefresh(bot_r);
+
 	werase(tui->ir_window);
-	box(tui->ir_window, 0, 0);
-	wattron(tui->ir_window, COLOR_PAIR(4));
-	mvwprintw(tui->ir_window, 0, 2, "[ IR ]");
-	wattroff(tui->ir_window, COLOR_PAIR(4));
 	mvwprintw(tui->ir_window, 1, 1, "IR for line %d",
 		  tui->selected_line + 1);
 	wrefresh(tui->ir_window);
 
 	werase(tui->mc_window);
-	box(tui->mc_window, 0, 0);
-	wattron(tui->mc_window, COLOR_PAIR(5));
-	mvwprintw(tui->mc_window, 0, 2, "[ Machine Code ]");
-	wattroff(tui->mc_window, COLOR_PAIR(5));
 	mvwprintw(tui->mc_window, 1, 1, "MC for line %d",
 		  tui->selected_line + 1);
 	wrefresh(tui->mc_window);
@@ -115,12 +143,21 @@ void run_ui(TUI *tui)
 		switch (ch) {
 		case KEY_UP:
 			tui->selected_line =
-				(tui->selected_line - 1 + tui->total_lines) %
-				tui->total_lines;
+				(tui->selected_line + (file.line_num)) %
+				(file.line_num + 1);
+			if (!tui->selected_line) {
+				tui->selected_line =
+					(tui->selected_line + (file.line_num)) %
+					(file.line_num + 1);
+			}
 			break;
 		case KEY_DOWN:
 			tui->selected_line =
-				(tui->selected_line + 1) % tui->total_lines;
+				(tui->selected_line + 1) % (file.line_num + 1);
+			if (!tui->selected_line) {
+				tui->selected_line = (tui->selected_line + 1) %
+						     (file.line_num + 1);
+			}
 			break;
 		}
 		refresh_ui(tui);
