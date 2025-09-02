@@ -62,17 +62,9 @@ int main(int argc, char **argv)
     }
 
     if (use_tui) {
-        TUI *tui = tui_init(24, 160);
-
-        char buffer[256];
-        while (1) {
-            tui_get_input(tui, buffer, sizeof(buffer));
-            if (strcmp(buffer, "quit") == 0) break;
-			
-            tui_print_line(tui, buffer);
-        }
-
-        tui_destroy(tui);
+        TUI *tui = init_ui(24, 160);
+		run_ui(tui);
+        destroy_ui(tui);
         return 0;
     }
 
