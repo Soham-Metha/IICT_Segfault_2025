@@ -3,134 +3,173 @@
 #include <string.h>
 #include <ncurses.h>
 #include <assert.h>
+#include <Frontend/Layer_File.h>
 
-// ive just used sample code(like idk how the code will be used as input with corresponding logs, which comes from the compiler itself)
-static const char *sample_code[] = {
-    "int main() {",
-    "    int x = 42;",
-    "    if (x > 0) {",
-    "        printf(\"positive\\n\");",
-    "    } else {",
-    "        printf(\"non-positive\\n\");",
-    "    }",
-    "    return 0;",
-    "}",
-    NULL
-};
+TUI *init_ui()
+{
+	initscr();
+	cbreak();
+	noecho();
+	curs_set(0);
+	keypad(stdscr, TRUE);
+	start_color();
 
-TUI *init_ui(int screen_height, int screen_width) {
-    initscr();
-    cbreak();
-    noecho();
-    curs_set(0);
-    keypad(stdscr, TRUE);
-    start_color();
+	init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	init_pair(2, COLOR_GREEN, COLOR_BLACK);
+	init_pair(3, COLOR_YELLOW, COLOR_BLACK);
+	init_pair(4, COLOR_MAGENTA, COLOR_BLACK);
+	init_pair(5, COLOR_RED, COLOR_BLACK);
 
-    init_pair(1, COLOR_CYAN, COLOR_BLACK);
-    init_pair(2, COLOR_GREEN, COLOR_BLACK);
-    init_pair(3, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(4, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(5, COLOR_RED, COLOR_BLACK);
+	TUI *tui = malloc(sizeof(TUI));
+	tui->selected_line = 0;
 
-    TUI *tui = malloc(sizeof(TUI));
-    tui->selected_line = 0;
-    tui->total_lines = 0;
+	int screen_height = getmaxy(stdscr);
+	int screen_width = getmaxx(stdscr);
 
-    for (int i = 0; sample_code[i] != NULL && tui->total_lines < MAX_LINES; i++) {
-        tui->lines[tui->total_lines++] = strdup(sample_code[i]);
-    }
+	int mid_x = (int)(screen_width / 2);
+	int mid_y = (int)(screen_height / 2);
+	int x_by4 = (int)(screen_width / 4);
 
-    int mid_x = screen_width / 2;
-    int log_height = screen_height / 2;
+	tui->program_window =
+		newwin(screen_height - 4, mid_x - 4, 0 + 2, 0 + 2);
+	tui->log_window = newwin(mid_y - 4, mid_x - 4, 0 + 2, mid_x + 2);
+	tui->ir_window = newwin(mid_y - 4, x_by4 - 4, mid_y + 2, mid_x + 2);
+	tui->mc_window =
+		newwin(mid_y - 4, x_by4 - 4, mid_y + 2, mid_x + x_by4 + 2);
 
-    tui->program_window = newwin(screen_height, mid_x, 0, 0);
-    tui->log_window = newwin(log_height, screen_width - mid_x, 0, mid_x);
-    tui->ir_window = newwin(screen_height - log_height, (screen_width - mid_x) / 2, log_height, mid_x);
-    tui->mc_window = newwin(screen_height - log_height, (screen_width - mid_x) / 2, log_height, mid_x + (screen_width - mid_x) / 2);
-
-    return tui;
+	return tui;
 }
 
-static void draw_program(TUI *tui) {
-    werase(tui->program_window);
-    box(tui->program_window, 0, 0);
-    wattron(tui->program_window, COLOR_PAIR(1));
-    mvwprintw(tui->program_window, 0, 2, "[ Program ]");
-    wattroff(tui->program_window, COLOR_PAIR(1));
+static void draw_program(TUI *tui)
+{
+	WINDOW *bounds = newwin(getmaxy(stdscr), getmaxx(stdscr) / 2, 0, 0);
+	box(bounds, 0, 0);
+	wattron(bounds, COLOR_PAIR(1));
+	mvwprintw(bounds, 0, 2, "[ Program ]");
+	wattroff(bounds, COLOR_PAIR(1));
+	wrefresh(bounds);
+	werase(tui->program_window);
 
-    for (int i = 0; i < tui->total_lines; i++) {
-        if (i == tui->selected_line) {
-            wattron(tui->program_window, COLOR_PAIR(2) | A_BOLD);
-            mvwprintw(tui->program_window, i + 1, 2, "%s", tui->lines[i]);
-            wattroff(tui->program_window, COLOR_PAIR(2) | A_BOLD);
-        } else {
-            mvwprintw(tui->program_window, i + 1, 2, "%s", tui->lines[i]);
-        }
-    }
-    wrefresh(tui->program_window);
+	for (unsigned int i = 0; i <= file.line_num; i++) {
+		if (i == tui->selected_line) {
+			wattron(tui->program_window, COLOR_PAIR(2) | A_BOLD);
+			mvwprintw(tui->program_window, i + 1, 2, "%3d | %.*s",
+				  i, Str_Fmt(file.lines[i].line));
+			wattroff(tui->program_window, COLOR_PAIR(2) | A_BOLD);
+		} else {
+			mvwprintw(tui->program_window, i + 1, 2, "%3d | %.*s",
+				  i, Str_Fmt(file.lines[i].line));
+		}
+	}
+
+	wrefresh(tui->program_window);
 }
 
-static void draw_log(TUI *tui) {
-    werase(tui->log_window);
-    box(tui->log_window, 0, 0);
-    wattron(tui->log_window, COLOR_PAIR(3));
-    mvwprintw(tui->log_window, 0, 2, "[ Logs ]");
-    wattroff(tui->log_window, COLOR_PAIR(3));
+static void draw_log(TUI *tui)
+{
+	int screen_height = getmaxy(stdscr);
+	int screen_width = getmaxx(stdscr);
 
-    if (tui->total_lines > 0) {
-        mvwprintw(tui->log_window, 1, 1, "Selected line %d : %s", 
-                  tui->selected_line + 1, tui->lines[tui->selected_line]);
-    }
-    wrefresh(tui->log_window);
+	int mid_x = (int)(screen_width / 2);
+	int mid_y = (int)(screen_height / 2);
+
+	WINDOW *bounds = newwin(mid_y, mid_x, 0, mid_x);
+	box(bounds, 0, 0);
+	wattron(bounds, COLOR_PAIR(3));
+	mvwprintw(bounds, 0, 2, "[ Logs ]");
+	wattroff(bounds, COLOR_PAIR(3));
+	wrefresh(bounds);
+	werase(tui->log_window);
+
+	if (file.line_num > 0) {
+		int i = 0;
+		while (file.lines[tui->selected_line].logs[i].len>0) {
+			wprintw(tui->log_window, "%.*s",
+				Str_Fmt(file.lines[tui->selected_line].logs[i]));
+			i++;
+		}
+	}
+	wrefresh(tui->log_window);
 }
 
-static void draw_ir_mc(TUI *tui) {
-    werase(tui->ir_window);
-    box(tui->ir_window, 0, 0);
-    wattron(tui->ir_window, COLOR_PAIR(4));
-    mvwprintw(tui->ir_window, 0, 2, "[ IR ]");
-    wattroff(tui->ir_window, COLOR_PAIR(4));
-    mvwprintw(tui->ir_window, 1, 1, "IR for line %d", tui->selected_line + 1);
-    wrefresh(tui->ir_window);
+static void draw_ir_mc(TUI *tui)
+{
+	int screen_height = getmaxy(stdscr);
+	int screen_width = getmaxx(stdscr);
 
-    werase(tui->mc_window);
-    box(tui->mc_window, 0, 0);
-    wattron(tui->mc_window, COLOR_PAIR(5));
-    mvwprintw(tui->mc_window, 0, 2, "[ Machine Code ]");
-    wattroff(tui->mc_window, COLOR_PAIR(5));
-    mvwprintw(tui->mc_window, 1, 1, "MC for line %d", tui->selected_line + 1);
-    wrefresh(tui->mc_window);
+	int mid_x = (int)(screen_width / 2);
+	int mid_y = (int)(screen_height / 2);
+	int x_by4 = (int)(screen_width / 4);
+
+	WINDOW *bot_l = newwin(mid_y, x_by4, mid_y, mid_x);
+	WINDOW *bot_r = newwin(mid_y, x_by4, mid_y, mid_x + x_by4);
+
+	box(bot_l, 0, 0);
+	wattron(bot_l, COLOR_PAIR(4));
+	mvwprintw(bot_l, 0, 2, "[ IR ]");
+	wattroff(bot_l, COLOR_PAIR(4));
+	box(bot_r, 0, 0);
+	wattron(bot_r, COLOR_PAIR(5));
+	mvwprintw(bot_r, 0, 2, "[ Machine Code ]");
+	wattroff(bot_r, COLOR_PAIR(5));
+
+	wrefresh(bot_l);
+	wrefresh(bot_r);
+
+	werase(tui->ir_window);
+	mvwprintw(tui->ir_window, 1, 1, "IR for line %d",
+		  tui->selected_line + 1);
+	wrefresh(tui->ir_window);
+
+	werase(tui->mc_window);
+	mvwprintw(tui->mc_window, 1, 1, "MC for line %d",
+		  tui->selected_line + 1);
+	wrefresh(tui->mc_window);
 }
 
-static void refresh_ui(TUI *tui) {
-    draw_program(tui);
-    draw_log(tui);
-    draw_ir_mc(tui);
+static void refresh_ui(TUI *tui)
+{
+	draw_program(tui);
+	draw_log(tui);
+	draw_ir_mc(tui);
 }
 
-void run_ui(TUI *tui) {
-    int ch;
-    refresh_ui(tui);
+void run_ui(TUI *tui)
+{
+	int ch;
+	refresh_ui(tui);
 
-    while ((ch = getch()) != 'q') {
-        switch (ch) {
-            case KEY_UP:
-                tui->selected_line = (tui->selected_line - 1 + tui->total_lines) % tui->total_lines;
-                break;
-            case KEY_DOWN:
-                tui->selected_line = (tui->selected_line + 1) % tui->total_lines;
-                break;
-        }
-        refresh_ui(tui);
-    }
+	while ((ch = getch()) != 'q') {
+		switch (ch) {
+		case KEY_UP:
+			tui->selected_line =
+				(tui->selected_line + (file.line_num)) %
+				(file.line_num + 1);
+			if (!tui->selected_line) {
+				tui->selected_line =
+					(tui->selected_line + (file.line_num)) %
+					(file.line_num + 1);
+			}
+			break;
+		case KEY_DOWN:
+			tui->selected_line =
+				(tui->selected_line + 1) % (file.line_num + 1);
+			if (!tui->selected_line) {
+				tui->selected_line = (tui->selected_line + 1) %
+						     (file.line_num + 1);
+			}
+			break;
+		}
+		refresh_ui(tui);
+	}
 }
 
-void destroy_ui(TUI *tui) {
-    delwin(tui->program_window);
-    delwin(tui->log_window);
-    delwin(tui->ir_window);
-    delwin(tui->mc_window);
-    for (int i = 0; i < tui->total_lines; i++) free(tui->lines[i]);
-    free(tui);
-    endwin();
+void destroy_ui(TUI *tui)
+{
+	delwin(tui->program_window);
+	delwin(tui->log_window);
+	delwin(tui->ir_window);
+	delwin(tui->mc_window);
+	free(tui);
+	endwin();
 }

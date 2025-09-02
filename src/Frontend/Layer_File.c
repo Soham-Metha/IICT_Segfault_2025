@@ -5,6 +5,8 @@
 #include <stdlib.h>
 
 File_View file;
+String *current_buffer = NULL;
+int *current_buffer_size;
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
 Error file_open(const char *file_path, const char *mode, FILE **out)
@@ -84,17 +86,19 @@ cleanup:
 	if (file_ptr) {
 		fclose(file_ptr);
 	}
-	free(file_contents);
+	// free(file_contents);
 	return out;
 }
 
 String file_fetch_next_line()
 {
-	String line 	= { 0 };
-	file.line_num  += 1;
-	file.contents  	= ltrim(file.contents);
-	line 			= split_str_by_delim(&file.contents, '\n');
-	line 			= trim(line);
+	current_buffer_size				= &file.lines[file.line_num].log_cnt;
+	String line 			  		= { 0 };
+	file.line_num  			 	   += 1;
+	line 					  		= split_str_by_delim(&file.contents, '\n');
+	file.lines[file.line_num].line 	= (String){.data = line.data, .len = line.len};
+	current_buffer					= file.lines[file.line_num].logs;
+	line 					  		= trim(line);
 
 	print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s", file.line_num, Str_Fmt(line));
 
