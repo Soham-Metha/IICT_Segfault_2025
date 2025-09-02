@@ -18,8 +18,6 @@ typedef struct {
 	WINDOW *ir_window;
 	WINDOW *mc_window;
 	unsigned int selected_line;
-	unsigned int total_lines;
-	unsigned int capacity;
 } TUI;
 
 TUI *init_ui();
