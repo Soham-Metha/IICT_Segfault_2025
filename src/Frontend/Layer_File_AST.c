@@ -5,6 +5,8 @@
 #include <inttypes.h>
 #include <assert.h>
 
+static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
+
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
 int __STMT_VARIABLE(int id, String value)
@@ -53,6 +55,7 @@ int __STMT_FUNCALL(int id, const Funcall *funcall)
 
 int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 {
+	(void)id;
 	int clusterId = (*n)++;
 	int clusterNum = (*b)++;
 
@@ -80,8 +83,6 @@ int __STMT_UNKNOWN(int id)
 }
 
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
-
-static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
 
 static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 {
@@ -118,8 +119,10 @@ static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 	for (const StmtNode *cur = stmtNode; cur != NULL; cur = cur->next) {
 		int id = AST_dump_statement(&cur->statement, n, b);
 
-		if (firstId < 0) firstId = id;
-		if (prevId >= 0) print(WIN_AST, "  Expr_%d -> Expr_%d;\n", prevId, id);
+		if (firstId < 0)
+			firstId = id;
+		if (prevId >= 0)
+			print(WIN_AST, "  Expr_%d -> Expr_%d;\n", prevId, id);
 
 		prevId = id;
 	}

@@ -2,3 +2,8 @@ x 'a';
 func hello() {
     print("hi");
 }
+
+x 'b';
+
+{
+    {
