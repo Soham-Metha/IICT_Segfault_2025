@@ -26,6 +26,7 @@ SRC_FILES += $(wildcard ./src/Backend/*.c)
 SRC_FILES += $(wildcard ./src/Frontend/*.c)
 SRC_FILES += $(wildcard ./src/Middleend/*.c)
 SRC_FILES += $(wildcard ./src/Wrapper/*.c)
+SRC_FILES += $(wildcard ./src/UI/*.c)
 
 $(eval $(call BUILD_RULE, $(EXEC_FILE), $(MAIN_FILE) $(SRC_FILES)))
 
