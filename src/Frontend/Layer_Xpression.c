@@ -20,28 +20,17 @@ static bool isNumber(char x)
 const char *token_get_name(TokenType type)
 {
 	switch (type) {
-	case TOKEN_TYPE_STR:
-		return "string";
-	case TOKEN_TYPE_CHAR:
-		return "character";
-	case TOKEN_TYPE_NUMBER:
-		return "number";
-	case TOKEN_TYPE_NAME:
-		return "name";
-	case TOKEN_TYPE_OPEN_PAREN:
-		return "open paren";
-	case TOKEN_TYPE_CLOSING_PAREN:
-		return "closing paren";
-	case TOKEN_TYPE_OPEN_CURLY:
-		return "open curly";
-	case TOKEN_TYPE_CLOSING_CURLY:
-		return "closing curly";
-	case TOKEN_TYPE_COMMA:
-		return "comma";
-	case TOKEN_TYPE_FUNC:
-		return "func";
-	case TOKEN_TYPE_STATEMENT_END:
-		return "statement end";
+	case TOKEN_TYPE_STR: 			return "string";
+	case TOKEN_TYPE_CHAR: 			return "character";
+	case TOKEN_TYPE_NUMBER: 		return "number";
+	case TOKEN_TYPE_NAME: 			return "name";
+	case TOKEN_TYPE_OPEN_PAREN: 	return "open paren";
+	case TOKEN_TYPE_CLOSING_PAREN: 	return "closing paren";
+	case TOKEN_TYPE_OPEN_CURLY: 	return "open curly";
+	case TOKEN_TYPE_CLOSING_CURLY: 	return "closing curly";
+	case TOKEN_TYPE_COMMA: 			return "comma";
+	case TOKEN_TYPE_FUNC: 			return "func";
+	case TOKEN_TYPE_STATEMENT_END: 	return "statement end";
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
@@ -54,8 +43,8 @@ Token token_expect_next(String *line, TokenType expected)
 	Token token = token_fetch_next(line);
 
 	if (!discard_cached_token()) {
-		print(WIN_STDERR, ": ERROR: expected token `%s`\n",
-		      token_get_name(expected));
+		print(WIN_STDERR, 
+			": ERROR: expected token `%s`\n", token_get_name(expected));
 		exit(1);
 	}
 
@@ -71,12 +60,9 @@ Token token_expect_next(String *line, TokenType expected)
 
 Token token_fetch_next(String *line)
 {
-	*line = trim(*line);
-	if (cachedToken) {
-		return cache;
-	}
-
+	if (cachedToken) return cache;
 	Token token = { 0 };
+	(*line) 	= trim(*line);
 
 	switch (line->data[0]) {
 	case '(': {

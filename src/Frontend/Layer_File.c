@@ -76,7 +76,7 @@ Error file_read(const char *file_path)
 	file.file_path 		= file_path;
 	file.line_num 		= 0;
 
-	CodeBlock global 	= block_generate();
+	CodeBlock global 	= codeblock_generate();
 
 	ERROR_CHECK(out, goto cleanup, AST_generate(&global, false));
 
@@ -90,21 +90,13 @@ cleanup:
 
 String file_fetch_next_line()
 {
-	String line = { 0 };
+	String line 	= { 0 };
+	file.line_num  += 1;
+	file.contents  	= ltrim(file.contents);
+	line 			= split_str_by_delim(&file.contents, '\n');
+	line 			= trim(line);
 
-	// if file is empty, return empty line
-	if (file.contents.len <= 0) {
-		return line;
-	}
-	// Preprocessing, increment line number and discard leading blank space
-	file.line_num += 1;
-	file.contents = ltrim(file.contents);
-
-	// read next line & discard its leading/trailing blankspace
-	line = split_str_by_delim(&file.contents, '\n');
-	line = trim(line);
-	print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s", file.line_num,
-	      Str_Fmt(line));
+	print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s", file.line_num, Str_Fmt(line));
 
 	return line;
 }

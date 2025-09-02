@@ -10,8 +10,8 @@ FuncallArg *functions_parse_arglist(String *line)
 	Token token = token_fetch_next(line);
 
 	if (!discard_cached_token() || token.type != TOKEN_TYPE_OPEN_PAREN) {
-		print(WIN_STDERR, " ERROR: expected %s\n",
-		      token_get_name(TOKEN_TYPE_OPEN_PAREN));
+		print(WIN_STDERR, 
+			" ERROR: expected %s\n", token_get_name(TOKEN_TYPE_OPEN_PAREN));
 		exit(1);
 	}
 
@@ -22,22 +22,21 @@ FuncallArg *functions_parse_arglist(String *line)
 	}
 
 	FuncallArg *first = NULL;
-	FuncallArg *last = NULL;
+	FuncallArg *last  = NULL;
 
 	do {
 		FuncallArg *arg = malloc(sizeof(FuncallArg));
-		arg->value = stmt_fetch_next(line);
+		arg->value 		= stmt_fetch_next(line);
 		print(WIN_STDOUT,
 		      "\n[STMT] identified '%.*s'(%s) as a function arg",
-		      Str_Fmt(arg->value.value.as_str),
-		      token_get_name(token.type));
+		      Str_Fmt(arg->value.value.as_str), token_get_name(token.type));
 
 		if (first == NULL) {
-			first = arg;
-			last = arg;
+			first 		= arg;
+			last  		= arg;
 		} else {
-			last->next = arg;
-			last = arg;
+			last->next 	= arg;
+			last 		= arg;
 		}
 
 		token = token_fetch_next(line);
@@ -60,10 +59,11 @@ FuncallArg *functions_parse_arglist(String *line)
 }
 
 // ------------------------------ INDIVIDUAL TOKEN HANDLERS ------------------------------
+
 static inline Stmt __TOKEN_TYPE_CHAR(Token tok)
 {
-	Stmt result = { 0 };
-	result.type = STMT_LIT_CHAR;
+	Stmt result 		 = { 0 };
+	result.type 		 = STMT_LIT_CHAR;
 	result.value.as_char = tok.text.data[0];
 
 	// print(WIN_STDOUT, "\n[STMT] identified '%c'(%s) as a char literal",
@@ -81,8 +81,8 @@ static inline Stmt __TOKEN_TYPE_CHAR(Token tok)
 
 static inline Stmt __TOKEN_TYPE_STR(Token tok)
 {
-	Stmt result = { 0 };
-	result.type = STMT_LIT_STR;
+	Stmt result 		= { 0 };
+	result.type 		= STMT_LIT_STR;
 	result.value.as_str = tok.text;
 
 	// print(WIN_STDOUT, "\n[STMT] identified '%.*s'(%s) as a str literal",
@@ -92,60 +92,11 @@ static inline Stmt __TOKEN_TYPE_STR(Token tok)
 	return result;
 }
 
-static inline Stmt __TOKEN_TYPE_NAME(Token tok, String *line)
-{
-	Stmt result = { 0 };
-
-	discard_cached_token();
-	Token next = token_fetch_next(line);
-
-	// Both variables and functions are 'names', the only difference
-	// between both is that a function name is followed by an open parenthesis
-	// so, if the next token is a paren, then it's a function, else it's a variable!
-	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
-		result.type = STMT_FUNCALL;
-		result.value.as_funcall = malloc(sizeof(Funcall));
-		result.value.as_funcall->name = tok.text;
-		result.value.as_funcall->args = functions_parse_arglist(line);
-
-		print(WIN_STDOUT,
-		      "\n[STMT] identified '%.*s'(%s) as a function call",
-		      tok.text.len, tok.text.data, token_get_name(tok.type));
-	} else {
-		result.value.as_var = tok.text;
-		result.type = STMT_VARIABLE;
-
-		print(WIN_STDOUT,
-		      "\n[STMT] identified '%.*s'(%s) as a variable name",
-		      tok.text.len, tok.text.data, token_get_name(tok.type));
-	}
-	return result;
-}
-
-static inline Stmt __TOKEN_TYPE_FUNC(Token tok, String *line)
-{
-	discard_cached_token();
-	// the 'func' keyword must be followed by a name, and comma
-	// seperated argument list within braces.
-	Token name = token_expect_next(line, TOKEN_TYPE_NAME);
-
-	print(WIN_STDOUT,
-	      "\n[STMT] identified '%.*s %.*s'(%s) as a function call declaration",
-	      Str_Fmt(tok.text), Str_Fmt(name.text), token_get_name(tok.type));
-
-	Stmt result = { 0 };
-	result.type = STMT_FUNCALL_DECLARATION;
-	result.value.as_funcall = malloc(sizeof(Funcall));
-	result.value.as_funcall->name = tok.text;
-	result.value.as_funcall->args = functions_parse_arglist(line);
-	return result;
-}
-
 static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok)
 {
 	(void)tok;
-	Stmt result = { 0 };
-	result.type = STMT_BLOCK_START;
+	Stmt result 		 = { 0 };
+	result.type 		 = STMT_BLOCK_START;
 	result.value.as_char = '{';
 
 	// print(WIN_STDOUT,
@@ -159,14 +110,63 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok)
 static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok)
 {
 	(void)tok;
-	Stmt result = { 0 };
-	result.type = STMT_BLOCK_END;
+	Stmt result 		 = { 0 };
+	result.type 		 = STMT_BLOCK_END;
 	result.value.as_char = '}';
 
 	// print(WIN_STDOUT, "\n[STMT] identified '%.*s'(%s) as a code block end",
 	//       tok.text.len, tok.text.data, token_get_name(tok.type));
 
 	discard_cached_token();
+	return result;
+}
+
+static inline Stmt __TOKEN_TYPE_FUNC(Token tok, String *line)
+{
+	discard_cached_token();
+	Stmt result = { 0 };
+	Token name 	= token_expect_next(line, TOKEN_TYPE_NAME);
+
+	// the 'func' keyword must be followed by a name, and comma
+	// seperated argument list within braces.
+
+	result.type 				  = STMT_FUNCALL_DECL;
+	result.value.as_funcall 	  = malloc(sizeof(Funcall));
+	result.value.as_funcall->name = tok.text;
+	result.value.as_funcall->args = functions_parse_arglist(line);
+
+	print(WIN_STDOUT,
+		"\n[STMT] identified '%.*s %.*s'(%s) as a function call declaration",
+		Str_Fmt(tok.text), Str_Fmt(name.text), token_get_name(tok.type));
+	return result;
+}
+
+static inline Stmt __TOKEN_TYPE_NAME(Token tok, String *line)
+{
+	discard_cached_token();
+	Stmt result = { 0 };
+	Token next 	= token_fetch_next(line);
+
+	// Both variables and functions are 'names', the only difference
+	// between both is that a function name is followed by an open parenthesis
+	// so, if the next token is a paren, then it's a function, else it's a variable!
+	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+		result.type 				  = STMT_FUNCALL;
+		result.value.as_funcall 	  = malloc(sizeof(Funcall));
+		result.value.as_funcall->name = tok.text;
+		result.value.as_funcall->args = functions_parse_arglist(line);
+
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%.*s'(%s) as a function call",
+		      tok.text.len, tok.text.data, token_get_name(tok.type));
+	} else {
+		result.value.as_var = tok.text;
+		result.type 		= STMT_VARIABLE;
+
+		print(WIN_STDOUT,
+		      "\n[STMT] identified '%.*s'(%s) as a variable name",
+		      tok.text.len, tok.text.data, token_get_name(tok.type));
+	}
 	return result;
 }
 
