@@ -33,36 +33,22 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 	return ERR_OK;
 }
 
-String line_fetch_next()
+String line_get_preprocessed_line()
 {
-	String line = { 0 };
+	String line;
 
-	// if file is empty, return empty line
-	if (file.contents.len <= 0) {
-		return line;
-	}
-	// Preprocessing, increment line number and discard leading blank space
-	file.line_num += 1;
-	file.contents = ltrim(file.contents);
+	do {
+		line = file_fetch_next_line();
 
-	// read next line & discard its leading/trailing blankspace
-	line = split_str_by_delim(&file.contents, '\n');
-	line = trim(line);
-	print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s", file.line_num,
-	      Str_Fmt(line));
-
-	// if line contains a comment, discard the comment and trim again
-	if (get_index_of(line, COMMENT_SYMBOL, NULL)) {
+		// discard any comments
 		line = split_str_by_delim(&line, COMMENT_SYMBOL);
 		line = trim(line);
-		print(WIN_STDOUT, "\n[LINE] Discard Comments : %.*s",
-		      Str_Fmt(line));
-	}
 
-	// if, after timming, line is empty, move to next line
-	if (line.len == 0) {
-		return line_fetch_next();
-	}
+		print(WIN_STDOUT, "\n[LINE] After Preprocessing : %.*s",
+		      Str_Fmt(line));
+
+		// if, after timming, line is empty, move to next line
+	} while (line.len == 0);
 
 	return line;
 }
@@ -70,7 +56,7 @@ String line_fetch_next()
 Error line_parse_next(CodeBlock *blk, bool *block_end)
 {
 	Error res = ERR_OK;
-	String line = line_fetch_next();
+	String line = line_get_preprocessed_line();
 
 	// a single line may contain multiple statements,
 	// process each one of them
@@ -78,11 +64,11 @@ Error line_parse_next(CodeBlock *blk, bool *block_end)
 		Stmt stmt = stmt_fetch_next(&line);
 
 		// if statement identifies the start or end of a block,
-		// handle it, the start of the block would be a pointer 
+		// handle it, the start of the block would be a pointer
 		// to that block's linked list of statements, forming
 		// a linked list of linked lists (2D LL) if there is single layer
 		// of nesting, 3D LL for 2 layers of nesting & so on.
-		// the 1st dimension is the global scope & each layer of nesting 
+		// the 1st dimension is the global scope & each layer of nesting
 		// adds another dimension.
 		if (stmt.type == STMT_BLOCK_END) {
 			*block_end = true;

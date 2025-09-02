@@ -81,9 +81,30 @@ Error file_read(const char *file_path)
 	ERROR_CHECK(out, goto cleanup, AST_generate(&global, false));
 
 cleanup:
-    if (file_ptr) {
+	if (file_ptr) {
 		fclose(file_ptr);
 	}
-    free(file_contents);
-    return out;
+	free(file_contents);
+	return out;
+}
+
+String file_fetch_next_line()
+{
+	String line = { 0 };
+
+	// if file is empty, return empty line
+	if (file.contents.len <= 0) {
+		return line;
+	}
+	// Preprocessing, increment line number and discard leading blank space
+	file.line_num += 1;
+	file.contents = ltrim(file.contents);
+
+	// read next line & discard its leading/trailing blankspace
+	line = split_str_by_delim(&file.contents, '\n');
+	line = trim(line);
+	print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s", file.line_num,
+	      Str_Fmt(line));
+
+	return line;
 }
