@@ -97,7 +97,7 @@ static int dump_stmt_node_list(const StmtNode *stmtNode, int *n, int *b)
 	return firstId;
 }
 
-int generateAST(const CodeBlock *blk, bool renderPng)
+int AST_generate(const CodeBlock *blk, bool renderPng)
 {
 	print(WIN_AST, "digraph AST {\n");
 	print(WIN_AST,

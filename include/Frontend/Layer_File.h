@@ -1,5 +1,6 @@
 #ifndef FILE_LAYER_FRONTEND
 #define FILE_LAYER_FRONTEND
+#include <Utils/errors.h>
 #include <Utils/strings.h>
 #include <Frontend/Layer_Line.h>
 
@@ -13,7 +14,7 @@ struct File_View {
 
 extern File_View file;
 
-void readFile(const char *filePath);
-int generateAST(const CodeBlock *blk, bool renderPng);
+Error file_read(const char *filePath);
+int AST_generate(const CodeBlock *blk, bool renderPng);
 
 #endif
