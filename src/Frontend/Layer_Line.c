@@ -75,7 +75,7 @@ Error line_parse_next(CodeBlock *blk, bool *block_end)
 	// a single line may contain multiple statements,
 	// process each one of them
 	while (line.len > 0) {
-		Stmt stmt = getNextStmt(&line);
+		Stmt stmt = stmt_fetch_next(&line);
 
 		// if statement identifies the start or end of a block,
 		// handle it, the start of the block would be a pointer 

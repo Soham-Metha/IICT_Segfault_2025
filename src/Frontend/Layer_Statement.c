@@ -18,7 +18,7 @@ static inline Stmt __TOKEN_TYPE_CHAR(Token tok)
 	result.value.as_char = tok.text.data[0];
 
 	print(WIN_STDOUT, "\n[STMT] identified '%c'(%s) as a char literal",
-	      tok.text.data[0], getTokenName(tok.type));
+	      tok.text.data[0], token_get_name(tok.type));
 
 	discard_cached_token();
 	return result;
@@ -31,7 +31,7 @@ static inline Stmt __TOKEN_TYPE_STR(Token tok)
 	result.value.as_str = tok.text;
 
 	print(WIN_STDOUT, "\n[STMT] identified '%.*s'(%s) as a str literal",
-	      tok.text.len, tok.text.data, getTokenName(tok.type));
+	      tok.text.len, tok.text.data, token_get_name(tok.type));
 
 	discard_cached_token();
 	return result;
@@ -40,7 +40,7 @@ static inline Stmt __TOKEN_TYPE_STR(Token tok)
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, String *line)
 {
 	discard_cached_token();
-	Token next = getNextToken(line);
+	Token next = token_fetch_next(line);
 
 	Stmt result = { 0 };
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
@@ -51,14 +51,14 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, String *line)
 
 		print(WIN_STDOUT,
 		      "\n[STMT] identified '%.*s'(%s) as a function call",
-		      tok.text.len, tok.text.data, getTokenName(tok.type));
+		      tok.text.len, tok.text.data, token_get_name(tok.type));
 	} else {
 		result.value.as_var = tok.text;
 		result.type = STMT_VARIABLE;
 
 		print(WIN_STDOUT,
 		      "\n[STMT] identified '%.*s'(%s) as a variable name",
-		      tok.text.len, tok.text.data, getTokenName(tok.type));
+		      tok.text.len, tok.text.data, token_get_name(tok.type));
 	}
 	return result;
 }
@@ -66,25 +66,25 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, String *line)
 static inline Stmt __TOKEN_TYPE_FUNC(Token tok, String *line)
 {
 	discard_cached_token();
-	Token next = getNextToken(line);
+	Token next = token_fetch_next(line);
 	if (next.type != TOKEN_TYPE_NAME) {
 		print(WIN_STDERR,
 		      "ERROR: expected a function name but found %s\n",
-		      getTokenName(tok.type));
+		      token_get_name(tok.type));
 		exit(1);
 	}
 
 	print(WIN_STDOUT,
 	      "\n[STMT] identified '%.*s %.*s'(%s) as a function call declaration",
 	      tok.text.len, tok.text.data, next.text.len, next.text.data,
-	      getTokenName(tok.type));
+	      token_get_name(tok.type));
 
 	discard_cached_token();
-	next = getNextToken(line);
+	next = token_fetch_next(line);
 	if (next.type != TOKEN_TYPE_OPEN_PAREN) {
 		print(WIN_STDERR,
 		      "ERROR: expected function arg list but found %s\n",
-		      getTokenName(tok.type));
+		      token_get_name(tok.type));
 		exit(1);
 	}
 
@@ -103,7 +103,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok)
 
 	print(WIN_STDOUT,
 	      "\n[STMT] identified '%.*s'(%s) as a code block start",
-	      tok.text.len, tok.text.data, getTokenName(tok.type));
+	      tok.text.len, tok.text.data, token_get_name(tok.type));
 
 	discard_cached_token();
 	return result;
@@ -115,7 +115,7 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok)
 	result.type = STMT_BLOCK_END;
 
 	print(WIN_STDOUT, "\n[STMT] identified '%.*s'(%s) as a code block end",
-	      tok.text.len, tok.text.data, getTokenName(tok.type));
+	      tok.text.len, tok.text.data, token_get_name(tok.type));
 
 	discard_cached_token();
 	return result;
@@ -123,9 +123,9 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok)
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
 
-Stmt getNextStmt(String *line)
+Stmt stmt_fetch_next(String *line)
 {
-	Token tok = getNextToken(line);
+	Token tok = token_fetch_next(line);
 
 	switch (tok.type) {
 	case TOKEN_TYPE_CHAR:

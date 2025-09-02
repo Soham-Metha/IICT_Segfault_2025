@@ -53,6 +53,6 @@ struct StmtNode {
 	StmtNode *next;
 };
 
-Stmt getNextStmt(String *line);
+Stmt stmt_fetch_next(String *line);
 
 #endif

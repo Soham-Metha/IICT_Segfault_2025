@@ -24,8 +24,8 @@ struct Token {
 	String text;
 };
 
-Token getNextToken(String *line);
-const char *getTokenName(TokenType type);
+Token token_fetch_next(String *line);
+const char *token_get_name(TokenType type);
 bool discard_cached_token();
 
 #endif
