@@ -2,6 +2,7 @@
 #define STRINGS
 #include <stddef.h>
 #include <stdbool.h>
+#include <string.h>
 
 typedef struct String String;
 
@@ -9,6 +10,9 @@ struct String {
 	unsigned int len;
 	const char *data;
 };
+
+#define STR(s) ((String){ .len = strlen(s), .data = s })
+#define Str_Fmt(s) s.len, s.data
 
 String ltrim(String s);
 String rtrim(String s);

@@ -1,8 +1,9 @@
-#ifndef FILE_LAYER_BACKEND
-#define FILE_LAYER_BACKEND
+#ifndef FILE_LAYER_FRONTEND
+#define FILE_LAYER_FRONTEND
+#include <Utils/errors.h>
 #include <Utils/strings.h>
+#include <Frontend/Layer_Line.h>
 
-#define COMMENT_SYMBOL '%'
 typedef struct File_View File_View;
 
 struct File_View {
@@ -11,8 +12,9 @@ struct File_View {
 	unsigned int line_num;
 };
 
-void readFile(const char *filePath);
-String getNextLine();
-void generateAST();
+extern File_View file;
+
+Error file_read(const char *filePath);
+Error AST_generate(const CodeBlock *blk, bool renderPng);
 
 #endif

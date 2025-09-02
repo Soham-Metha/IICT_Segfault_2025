@@ -9,7 +9,7 @@ const char *inputFile = (void *)0;
 const char *outputFile = (void *)0;
 int use_tui = 0;
 
-void usage(const char *progName)
+static void usage(const char *progName)
 {
     print(WIN_STDOUT,
           "Usage: %s [OPTIONS]                      \n"
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    readFile(inputFile);
-    print(WIN_STDOUT, "\n\n");
-    return 0;
+	file_read(inputFile);
+	print(WIN_STDOUT, "\n\n");
+	return 0;
 }
