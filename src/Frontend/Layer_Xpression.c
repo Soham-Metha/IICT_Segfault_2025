@@ -20,28 +20,17 @@ static bool isNumber(char x)
 const char *token_get_name(TokenType type)
 {
 	switch (type) {
-	case TOKEN_TYPE_STR:
-		return "string";
-	case TOKEN_TYPE_CHAR:
-		return "character";
-	case TOKEN_TYPE_NUMBER:
-		return "number";
-	case TOKEN_TYPE_NAME:
-		return "name";
-	case TOKEN_TYPE_OPEN_PAREN:
-		return "open paren";
-	case TOKEN_TYPE_CLOSING_PAREN:
-		return "closing paren";
-	case TOKEN_TYPE_OPEN_CURLY:
-		return "open curly";
-	case TOKEN_TYPE_CLOSING_CURLY:
-		return "closing curly";
-	case TOKEN_TYPE_COMMA:
-		return "comma";
-	case TOKEN_TYPE_FUNC:
-		return "func";
-	case TOKEN_TYPE_STATEMENT_END:
-		return "statement end";
+	case TOKEN_TYPE_STR: 			return "string";
+	case TOKEN_TYPE_CHAR: 			return "character";
+	case TOKEN_TYPE_NUMBER: 		return "number";
+	case TOKEN_TYPE_NAME: 			return "name";
+	case TOKEN_TYPE_OPEN_PAREN: 	return "open paren";
+	case TOKEN_TYPE_CLOSING_PAREN: 	return "closing paren";
+	case TOKEN_TYPE_OPEN_CURLY: 	return "open curly";
+	case TOKEN_TYPE_CLOSING_CURLY: 	return "closing curly";
+	case TOKEN_TYPE_COMMA: 			return "comma";
+	case TOKEN_TYPE_FUNC: 			return "func";
+	case TOKEN_TYPE_STATEMENT_END: 	return "statement end";
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
@@ -49,26 +38,32 @@ const char *token_get_name(TokenType type)
 	}
 }
 
+Token token_expect_next(String *line, TokenType expected)
+{
+	Token token = token_fetch_next(line);
+
+	if (!discard_cached_token()) {
+		print(WIN_STDERR, 
+			": ERROR: expected token `%s`\n", token_get_name(expected));
+		exit(1);
+	}
+
+	if (token.type != expected) {
+		print(WIN_STDERR,
+		      ": ERROR: expected token `%s`, but got `%s`\n",
+		      token_get_name(expected), token_get_name(token.type));
+		exit(1);
+	}
+
+	return token;
+}
+
 Token token_fetch_next(String *line)
 {
-	*line = trim(*line);
-	if (cachedToken) {
-		return cache;
-	}
-
+	if (cachedToken) return cache;
 	Token token = { 0 };
-	if (starts_with(*line, STR("func"))) {
-		token.type = TOKEN_TYPE_FUNC;
-		token.text = split_str_by_len(line, 4);
-		cache = token;
-		cachedToken = true;
+	(*line) 	= trim(*line);
 
-		print(WIN_STDOUT,
-		      "\n[EXPR] identified token '%.*s' as '%s' token type",
-		      token.text.len, token.text.data,
-		      token_get_name(token.type));
-		return token;
-	}
 	switch (line->data[0]) {
 	case '(': {
 		token.type = TOKEN_TYPE_OPEN_PAREN;
@@ -101,41 +96,41 @@ Token token_fetch_next(String *line)
 	} break;
 
 	case '"': {
-		split_str_by_len(line, 1);
+		split_str_by_len(line, 1); // discard opening "
 
+		token.type = TOKEN_TYPE_STR;
 		size_t index = 0;
-
-		if (get_index_of(*line, '"', &index)) {
-			String text = split_str_by_len(line, index);
-			split_str_by_len(line, 1);
-			token.type = TOKEN_TYPE_STR;
-			token.text = text;
-		} else {
+		if (!get_index_of(*line, '"', &index)) {
 			print(WIN_STDERR, "ERROR: Could not find closing \"\n");
 			exit(1);
 		}
+		token.text = split_str_by_len(line, index);
+
+		split_str_by_len(line, 1); // discard closing "
 	} break;
 
 	case '\'': {
-		split_str_by_len(line, 1);
+		split_str_by_len(line, 1); // discard opening '
 
+		token.type = TOKEN_TYPE_STR;
 		size_t index = 0;
-
-		if (get_index_of(*line, '\'', &index)) {
-			String text = split_str_by_len(line, index);
-			split_str_by_len(line, 1);
-			token.type = TOKEN_TYPE_CHAR;
-			token.text = text;
-		} else {
+		if (!get_index_of(*line, '\'', &index)) {
 			print(WIN_STDERR, "ERROR: Could not find closing \'\n");
 			exit(1);
 		}
+		token.text = split_str_by_len(line, index);
+
+		split_str_by_len(line, 1); // discard closing '
 	} break;
 
 	default: {
 		if (isalpha(line->data[0])) {
 			token.type = TOKEN_TYPE_NAME;
 			token.text = split_str_by_condition(line, isName);
+
+			if (compare_str(token.text, STR("func"))) {
+				token.type = TOKEN_TYPE_FUNC;
+			}
 		} else if (isdigit(line->data[0]) || line->data[0] == '-') {
 			token.type = TOKEN_TYPE_NUMBER;
 			token.text = split_str_by_condition(line, isNumber);
@@ -147,6 +142,7 @@ Token token_fetch_next(String *line)
 		}
 	}
 	}
+
 	cache = token;
 	cachedToken = true;
 	print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",

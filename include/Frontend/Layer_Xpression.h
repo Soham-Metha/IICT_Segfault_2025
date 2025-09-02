@@ -26,6 +26,7 @@ struct Token {
 
 Token token_fetch_next(String *line);
 const char *token_get_name(TokenType type);
+Token token_expect_next(String *line, TokenType expected);
 bool discard_cached_token();
 
 #endif

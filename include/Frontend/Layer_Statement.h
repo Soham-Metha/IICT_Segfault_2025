@@ -13,7 +13,7 @@ enum StmtType {
 	STMT_FUNCALL,
 	STMT_BLOCK_START,
 	STMT_BLOCK_END,
-	STMT_FUNCALL_DECLARATION,
+	STMT_FUNCALL_DECL,
 };
 
 typedef struct Stmt Stmt;

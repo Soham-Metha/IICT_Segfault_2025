@@ -1,9 +1,13 @@
 x 'a';
 func hello() {
-    print("hi");
+    print("hi","hello");
 }
 
 x 'b';
 
 {
     {
+y;
+
+% comment 1
+% comment 2

@@ -15,6 +15,7 @@ struct File_View {
 extern File_View file;
 
 Error file_read(const char *filePath);
+String file_fetch_next_line();
 Error AST_generate(const CodeBlock *blk, bool renderPng);
 
 #endif

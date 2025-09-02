@@ -12,6 +12,6 @@ struct CodeBlock {
 	StmtNode *end;
 };
 
-CodeBlock block_generate();
+CodeBlock codeblock_generate();
 
 #endif
