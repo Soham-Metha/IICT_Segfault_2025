@@ -17,7 +17,7 @@ static bool isNumber(char x)
 	return isalnum(x) || x == '.' || x == '-';
 }
 
-const char *getTokenName(TokenType type)
+const char *token_get_name(TokenType type)
 {
 	switch (type) {
 	case TOKEN_TYPE_STR:
@@ -43,13 +43,13 @@ const char *getTokenName(TokenType type)
 	case TOKEN_TYPE_STATEMENT_END:
 		return "statement end";
 	default: {
-		assert(0 && "getTokenName: unreachable");
+		assert(0 && "token_get_name: unreachable");
 		exit(1);
 	}
 	}
 }
 
-Token getNextToken(String *line)
+Token token_fetch_next(String *line)
 {
 	*line = trim(*line);
 	if (cachedToken) {
@@ -66,7 +66,7 @@ Token getNextToken(String *line)
 		print(WIN_STDOUT,
 		      "\n[EXPR] identified token '%.*s' as '%s' token type",
 		      token.text.len, token.text.data,
-		      getTokenName(token.type));
+		      token_get_name(token.type));
 		return token;
 	}
 	switch (line->data[0]) {
@@ -150,7 +150,7 @@ Token getNextToken(String *line)
 	cache = token;
 	cachedToken = true;
 	print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",
-	      token.text.len, token.text.data, getTokenName(token.type));
+	      token.text.len, token.text.data, token_get_name(token.type));
 	return token;
 }
 

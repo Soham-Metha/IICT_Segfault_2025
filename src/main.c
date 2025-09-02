@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	readFile(inputFile);
+	file_read(inputFile);
 	print(WIN_STDOUT, "\n\n");
 	return 0;
 }
