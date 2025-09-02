@@ -7,6 +7,7 @@ enum ErrorType {
 	ERR_FILE_CANT_READ,
 	ERR_FILE_TOO_LARGE,
     ERR_RAN_OUT_OF_MEM,
+    ERR_AST_RENDER_ERR,
 };
 
 typedef enum ErrorType Error;

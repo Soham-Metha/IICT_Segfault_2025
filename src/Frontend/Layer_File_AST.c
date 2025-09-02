@@ -129,7 +129,7 @@ static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
 
-int AST_generate(const CodeBlock *blk, bool renderPng)
+Error AST_generate(const CodeBlock *blk, bool renderPng)
 {
 	int node_counter = 0;
 	int block_counter = 0;
@@ -144,7 +144,7 @@ int AST_generate(const CodeBlock *blk, bool renderPng)
 
 	if (renderPng) {
 		int r = system("dot -Tpng ast.dot -o ast.png ");
-		(void)r;
+		ERROR_THROW_IF(ERR_AST_RENDER_ERR, (r != 0))
 	}
-	return 0;
+	return ERR_OK;
 }
