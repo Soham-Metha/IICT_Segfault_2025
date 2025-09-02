@@ -6,6 +6,7 @@
 #include <assert.h>
 
 static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
+static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
@@ -40,16 +41,17 @@ int __STMT_LIT_STR(int id, String value)
 	return id;
 }
 
-int __STMT_FUNCALL(int id, const Funcall *funcall)
+int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
 	print(WIN_AST, AST("hexagon", "lightpink", "%.*s"), id,
 	      Str_Fmt(funcall->name));
 
-	// for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
-	//     int childId = AST_dump_statement(&arg->value, n, b);
-	//     if (childId >= 0)
-	//         print(WIN_AST, "  Expr_%d -> Expr_%d;\n", id, childId);
-	// }
+	for (const FuncallArg *arg = funcall->args; arg != NULL;
+	     arg = arg->next) {
+		int childId = AST_dump_statement(&arg->value, n, b);
+		if (childId >= 0)
+			print(WIN_AST, "  Expr_%d -> Expr_%d;\n", id, childId);
+	}
 	return id;
 }
 
@@ -102,7 +104,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 		return __STMT_LIT_STR(myId, stmt->value.as_str);
 	case STMT_FUNCALL_DECLARATION:
 	case STMT_FUNCALL:
-		return __STMT_FUNCALL(myId, stmt->value.as_funcall);
+		return __STMT_FUNCALL(myId, n, b, stmt->value.as_funcall);
 	case STMT_BLOCK_START:
 		return __STMT_BLOCK(myId, n, b, stmt->value.as_block);
 	case STMT_BLOCK_END:

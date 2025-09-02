@@ -9,6 +9,8 @@ $(BUILDS):
 
 clean: | $(BUILDS)
 	@rm -f $(BUILDS)/*
+	@rm -f ast.dot
+	@rm -f ast.png
 	@printf  "\n\e[36m  CLEANED ALL OBJECT FILES AND EXECUTABLES	\e[0m\n\n"
 
 define BUILD_RULE
@@ -32,5 +34,5 @@ all: $(EXEC_FILE)
 IN_FILE := examples/helloWorld.iict
 OUT_FILE:= examples/exampleOut
 
-run_all: all
+run_all: clean all
 	@$(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE)
