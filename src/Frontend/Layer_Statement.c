@@ -16,7 +16,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	update_indent(1);
 	token = token_fetch_next(ctx);
 	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
-		discard_cached_token();
+		token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
 		log_to_ctx(ctx,
 				  LOG_FORMAT " NO ARGS !",LOG_CTX("[IDENTIFICATION]","[STMT]"));
 		update_indent(-2);
@@ -85,7 +85,7 @@ Var parse_var(Line_Context* ctx)
 		update_indent(-1);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
-		discard_cached_token();
+		token_expect_next(ctx, TOKEN_TYPE_EQUAL);
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
