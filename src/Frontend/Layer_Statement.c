@@ -24,7 +24,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		arg->value 		= stmt_fetch_next(ctx);
 		arg->next		= NULL;
 		log_to_ctx(ctx,
-		      "\n\t\t[STMT] identified above listed tokens as a function arguments!",
+		      "\t\t[STMT] identified above listed tokens as a function arguments!",
 		      token_get_name(token.type));
 
 		if (first == NULL) {
@@ -76,13 +76,13 @@ Var parse_var(Line_Context* ctx)
 		res.mode 	|= VAR_DECL;
 		next 		 = token_fetch_next(ctx);
 
-	log_to_ctx(ctx, "\n\t\t[STMT] is a declaration, type: %.*s", res.type.len,
+	log_to_ctx(ctx, "\t\t[STMT] is a declaration, type: %.*s", res.type.len,
 		res.type.data);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
-		log_to_ctx(ctx, "\n\t\t[STMT] has a definition! ");
+		log_to_ctx(ctx, "\t\t[STMT] has a definition! ");
 	}
 
 	return res;
@@ -97,7 +97,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok, Line_Context* ctx)
 	result.type 		 = STMT_BLOCK_START;
 
 	log_to_ctx(ctx,
-	      "\n\t\t[STMT] starting new code block!");
+	      "\t\t[STMT] starting new code block!");
 
 	discard_cached_token();
 	return result;
@@ -110,7 +110,7 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 	result.type 		 = STMT_BLOCK_END;
 	result.value.as_token= tok;
 
-	log_to_ctx(ctx, "\n\t\t[STMT] reached end of code block");
+	log_to_ctx(ctx, "\t\t[STMT] reached end of code block");
 
 	discard_cached_token();
 	return result;
@@ -118,7 +118,7 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
-	log_to_ctx(ctx, "\n\t\t[STMT] variable name: '%.*s'", tok.text.len,
+	log_to_ctx(ctx, "\t\t[STMT] variable name: '%.*s'", tok.text.len,
 		tok.text.data);
 
 	Stmt result = { 0 };
@@ -134,7 +134,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 		result.value.as_funcall->args = functions_parse_arglist(ctx);
 
 		log_to_ctx(ctx,
-		      "\n\t\t[STMT] identified as a function call",
+		      "\t\t[STMT] identified as a function call",
 		      tok.text.len, tok.text.data, token_get_name(tok.type));
 	}// else {
 	// 	result.value.as_var = tok.text;
