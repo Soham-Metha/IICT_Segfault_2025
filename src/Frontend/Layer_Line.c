@@ -37,24 +37,22 @@ void line_get_preprocessed_line(Line_Context *ctx)
 
 	size_t index;
 	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
-		processed_line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
+		processed_line = trim(split_str_by_delim(&ctx->line, COMMENT_SYMBOL));
 
-		log_to_ctx(ctx, LOG_FORMAT "Comment removed: \"%%%.*s\" ",
-			LOG_CTX("[PREPROCESS]", "[LINE]"),
+		log_to_ctx(ctx, LOG_FORMAT "\"%%%.*s\" ",
+			LOG_CTX("[COMMENT FOUND]", "[LINE]"),
 			Str_Fmt(ctx->line));
 
+		log_to_ctx(ctx, LOG_FORMAT "\"%.*s\"",
+				LOG_CTX("[AFTER REMOVAL]", "[LINE]"),
+				Str_Fmt(ctx->line));
 	}
 
 	ctx->line = trim(processed_line);
-	
-	log_to_ctx(ctx, LOG_FORMAT "After removal:  \"%.*s\"",
-		LOG_CTX("[PREPROCESS]", "[LINE]"),
-		Str_Fmt(ctx->line));
-	
+
 	if (ctx->line.len == 0) {
 		log_to_ctx(ctx, LOG_FORMAT "Line is Blank",
 			LOG_CTX("[PREPROCESS]", "[LINE]"));
-
 	}
 
 }
