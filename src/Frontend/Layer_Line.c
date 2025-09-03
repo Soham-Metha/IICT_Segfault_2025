@@ -70,17 +70,16 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 		ctx = file_fetch_curr_line(context);
 		Stmt statement		= stmt_fetch_next(ctx);
 		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
+			log_to_ctx(ctx, LOG_FORMAT "Defined value: {", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+			update_indent(1);
 			Stmt next = stmt_fetch_next(ctx);
 			statement.value.as_var.defn_val = &next;
 
 			if (next.type==STMT_BLOCK_START) {
-				log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 				next.value.as_block = codeblock_generate(context).begin;
 				ctx = file_fetch_curr_line(context);
-				log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
-			} else {
-				log_to_ctx(ctx, LOG_FORMAT "Defined value: ... waiting for line types to be implemented", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 			}
+			log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 
 		} else if (statement.type == STMT_BLOCK_END) {
 			return true;
