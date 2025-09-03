@@ -43,3 +43,11 @@ void log_to_ctx(Line_Context *ctx, const char *str, ...)
 
 	va_end(args);
 }
+
+int indent = 0;
+const char *space = "\t\t\t\t\t\t\t";
+String get_indent(int change)
+{
+	indent += change;
+	return (String){ .data = space, .len = indent };
+}
