@@ -80,6 +80,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 				ctx = file_fetch_curr_line(context);
 			}
 			log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+			update_indent(-1);
 
 		} else if (statement.type == STMT_BLOCK_END) {
 			return true;
