@@ -18,7 +18,7 @@ void print(int id, const char *str, ...);
 
 void log_to_ctx(Line_Context *ctx, const char *str, ...);
 
-const char *get_indent(int change);
+String get_indent(int change);
 
 #define AST(shape, color, lbl)                      \
 	"  Expr_%d "                                \
