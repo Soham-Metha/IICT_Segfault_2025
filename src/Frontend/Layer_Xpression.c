@@ -160,7 +160,7 @@ Token token_fetch_next(Line_Context* ctx)
 
 	cache = token;
 	cachedToken = true;
-	log_to_ctx(ctx, "\n\t[EXPR] '%.*s' -> '%s' ",
+	log_to_ctx(ctx, LOG_FORMAT "'%.*s' -> '%s' ",LOG_CTX("","[EXPR]"),
 	      token.text.len, token.text.data, token_get_name(token.type));
 	return token;
 }
