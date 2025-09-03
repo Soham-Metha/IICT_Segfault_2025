@@ -9,10 +9,17 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 {
 	// split arguments from single comma seperated string to linked list of strings.
 	Token token = token_expect_next(ctx,TOKEN_TYPE_OPEN_PAREN);
+	update_indent(1);
+	log_to_ctx(ctx,
+		      LOG_FORMAT "- Arguments:",LOG_CTX("[IDENTIFICATION]","[STMT]"));
 
+	update_indent(1);
 	token = token_fetch_next(ctx);
 	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
 		discard_cached_token();
+		log_to_ctx(ctx,
+				  LOG_FORMAT " NO ARGS !",LOG_CTX("[IDENTIFICATION]","[STMT]"));
+		update_indent(-2);
 		return NULL;
 	}
 
