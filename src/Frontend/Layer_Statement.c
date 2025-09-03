@@ -122,7 +122,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
 		log_to_ctx(ctx,
-		      LOG_FORMAT "function call: '%.*s'", LOG_CTX("   [IDENTIFICATION]","[STMT]"),
+		      LOG_FORMAT "function call: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"),
 		      tok.text.len, tok.text.data, token_get_name(tok.type));
 		result.type 				  = STMT_FUNCALL;
 		result.value.as_funcall 	  = malloc(sizeof(Funcall));
@@ -131,7 +131,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 
 	} else {
 		log_to_ctx(ctx, 
-			  LOG_FORMAT "variable:      '%.*s'", LOG_CTX("   [IDENTIFICATION]", "[STMT]"),
+			  LOG_FORMAT "variable:      '%.*s'", LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			  tok.text.len, tok.text.data);
 		result.type                   = STMT_VAR;
 		result.value.as_var           = parse_var(ctx);
