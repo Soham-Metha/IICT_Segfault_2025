@@ -121,22 +121,22 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 	Token next = token_fetch_next(ctx);
 
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+		log_to_ctx(ctx,
+		      LOG_FORMAT "function call: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"),
+		      tok.text.len, tok.text.data, token_get_name(tok.type));
 		result.type 				  = STMT_FUNCALL;
 		result.value.as_funcall 	  = malloc(sizeof(Funcall));
 		result.value.as_funcall->name = tok.text;
 		result.value.as_funcall->args = functions_parse_arglist(ctx);
 
-		log_to_ctx(ctx,
-		      LOG_FORMAT "function call: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"),
-		      tok.text.len, tok.text.data, token_get_name(tok.type));
 	} else {
+		log_to_ctx(ctx, 
+			  LOG_FORMAT "variable:      '%.*s'", LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+			  tok.text.len, tok.text.data);
 		result.type                   = STMT_VAR;
 		result.value.as_var           = parse_var(ctx);
 		result.value.as_var.name      = tok.text;
 
-		log_to_ctx(ctx, 
-			  LOG_FORMAT "variable:      '%.*s'", LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			  tok.text.len, tok.text.data);
 	}
 	// (void)token_expect_next(line,TOKEN_TYPE_STATEMENT_END);
 	return result;
