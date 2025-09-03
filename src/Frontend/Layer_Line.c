@@ -67,7 +67,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 	// there is single layer of nesting, 3D LL for 2 layers of nesting & so on.
 	// the 1st dimension is the global scope, each layer of nesting adds another dimension.
 	while (ctx->line.len > 0) {
-		update_indent(2);
+
 		Stmt statement		= stmt_fetch_next(ctx);
 		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
 			Stmt next = stmt_fetch_next(ctx);
@@ -80,7 +80,6 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			statement.value.as_block = codeblock_generate(context).begin;
 		}
 
-		update_indent(-2);
 		// TODO 1: MEM ALLOC error handling
 		(void)codeblock_append_stmt(blk, statement);
 	}
