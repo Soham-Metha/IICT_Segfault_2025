@@ -79,6 +79,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 				next.value.as_block = codeblock_generate(context).begin;
 				ctx = file_fetch_curr_line(context);
 			}
+
 			update_indent(-1);
 			log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[DEFINITION  END]","[STMT]"));
 
