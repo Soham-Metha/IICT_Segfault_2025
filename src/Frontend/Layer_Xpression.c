@@ -45,6 +45,9 @@ Token token_expect_next(Line_Context* ctx, TokenType expected)
 {
 	Token token = token_fetch_next(ctx);
 
+	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s', Received '%s'",LOG_CTX("[TOKEN CHECK]","[EXPR]"),
+	token_get_name(expected), token_get_name(token.type));
+
 	if (!discard_cached_token()) {
 		print(WIN_STDERR, 
 			": ERROR: expected token `%s`\n", token_get_name(expected));
@@ -160,8 +163,6 @@ Token token_fetch_next(Line_Context* ctx)
 
 	cache = token;
 	cachedToken = true;
-	log_to_ctx(ctx, LOG_FORMAT "'%.*s' -> '%s' ",LOG_CTX("","[EXPR]"),
-	      token.text.len, token.text.data, token_get_name(token.type));
 	return token;
 }
 
