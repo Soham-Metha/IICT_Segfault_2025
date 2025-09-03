@@ -73,7 +73,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			Stmt next = stmt_fetch_next(ctx);
 			statement.value.as_var.defn_val = &next;
 			if (next.type==STMT_BLOCK_START) {
-				statement.value.as_block = codeblock_generate(context).begin;
+				next.value.as_block = codeblock_generate(context).begin;
 			}
 			ctx = file_fetch_curr_line(context);
 			log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
