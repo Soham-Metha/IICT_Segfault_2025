@@ -106,7 +106,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok, Line_Context* ctx)
 	log_to_ctx(ctx,
 	      LOG_FORMAT, LOG_CTX("[BLOCK START]","[STMT]"));
 
-	discard_cached_token();
+	token_expect_next(ctx, TOKEN_TYPE_OPEN_CURLY);
 	return result;
 }
 
@@ -120,14 +120,14 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 	log_to_ctx(ctx,
 		LOG_FORMAT, LOG_CTX("[BLOCK END]","[STMT]"));
 
-	discard_cached_token();
+	token_expect_next(ctx, TOKEN_TYPE_CLOSING_CURLY);
 	return result;
 }
 
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
 	Stmt result = { 0 };
-	discard_cached_token();
+	token_expect_next(ctx, TOKEN_TYPE_NAME);
 	Token next = token_fetch_next(ctx);
 
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
