@@ -48,7 +48,7 @@ int indent = 0;
 char *space = ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;";
 String get_indent()
 {
-	return (String){ .data = space, .len = indent*8 };
+	return (String){ .data = space, .len = indent*4 };
 }
 
 void update_indent(int change)
