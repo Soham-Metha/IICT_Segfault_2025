@@ -70,7 +70,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 		ctx = file_fetch_curr_line(context);
 		Stmt statement		= stmt_fetch_next(ctx);
 		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
-			log_to_ctx(ctx, LOG_FORMAT "Defined value: {", LOG_CTX("[DEFINITION]","[STMT]"));
+			log_to_ctx(ctx, LOG_FORMAT "Defined value: {", LOG_CTX("[DEFINITION START]","[STMT]"));
 			update_indent(1);
 			Stmt next = stmt_fetch_next(ctx);
 			statement.value.as_var.defn_val = &next;
@@ -80,7 +80,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 				ctx = file_fetch_curr_line(context);
 			}
 			update_indent(-1);
-			log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[DEFINITION]","[STMT]"));
+			log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[DEFINITION  END]","[STMT]"));
 
 		} else if (statement.type == STMT_BLOCK_END) {
 			return true;
