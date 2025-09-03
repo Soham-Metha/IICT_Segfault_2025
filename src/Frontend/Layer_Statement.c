@@ -141,7 +141,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 
 	} else {
 		log_to_ctx(ctx, 
-			  LOG_FORMAT "variable:      '%.*s'", LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+			  LOG_FORMAT "variable: '%.*s'", LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			  tok.text.len, tok.text.data);
 		result.type                   = STMT_VAR;
 		result.value.as_var           = parse_var(ctx);
