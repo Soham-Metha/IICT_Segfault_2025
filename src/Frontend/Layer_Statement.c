@@ -65,8 +65,6 @@ String parse_var_decl(Line_Context* ctx)
 Var parse_var(Line_Context* ctx)
 {
 	Var res 	= { 0 };
-	Token name 	= token_expect_next(ctx, TOKEN_TYPE_NAME); // var name
-	res.name 	= name.text;
 	res.mode 	= VAR_ACCS;
 
 	Token next 	= token_fetch_next(ctx);
@@ -118,14 +116,8 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
-	log_to_ctx(ctx, LOG_FORMAT "variable name: '%.*s'", LOG_CTX("","[STMT]"), tok.text.len,
-		tok.text.data);
-
 	Stmt result = { 0 };
-	result.type = STMT_VAR;
-	result.value.as_var = parse_var(ctx);
 	Token next = token_fetch_next(ctx);
-
 
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
 		result.type 				  = STMT_FUNCALL;
@@ -134,12 +126,17 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 		result.value.as_funcall->args = functions_parse_arglist(ctx);
 
 		log_to_ctx(ctx,
-		      LOG_FORMAT "identified as a function call", LOG_CTX("","[STMT]"),
+		      LOG_FORMAT "function call: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"),
 		      tok.text.len, tok.text.data, token_get_name(tok.type));
-	}// else {
-	// 	result.value.as_var = tok.text;
-	// 	result.type 		= STMT_VARIABLE;
+	} else {
+		result.type                   = STMT_VAR;
+		result.value.as_var           = parse_var(ctx);
+		result.value.as_var.name      = tok.text;
 
+		log_to_ctx(ctx, 
+			  LOG_FORMAT "variable:      '%.*s'", LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+			  tok.text.len, tok.text.data);
+	}
 	// (void)token_expect_next(line,TOKEN_TYPE_STATEMENT_END);
 	return result;
 }
