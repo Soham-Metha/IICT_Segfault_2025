@@ -67,17 +67,20 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 	// there is single layer of nesting, 3D LL for 2 layers of nesting & so on.
 	// the 1st dimension is the global scope, each layer of nesting adds another dimension.
 	while (ctx->line.len > 0) {
-
+		ctx = file_fetch_curr_line(context);
 		Stmt statement		= stmt_fetch_next(ctx);
 		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
 			Stmt next = stmt_fetch_next(ctx);
-			if (next.type==STMT_BLOCK_START) {
-				next.value.as_block = codeblock_generate(context).begin;
-			}
 			statement.value.as_var.defn_val = &next;
 
-			ctx = file_fetch_curr_line(context);
-			log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+			if (next.type==STMT_BLOCK_START) {
+				log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+				next.value.as_block = codeblock_generate(context).begin;
+				ctx = file_fetch_curr_line(context);
+				log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+			} else {
+				log_to_ctx(ctx, LOG_FORMAT "Defined value: ... waiting for line types to be implemented", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+			}
 
 		} else if (statement.type == STMT_BLOCK_END) {
 			return true;
