@@ -70,8 +70,8 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 
 		Stmt statement		= stmt_fetch_next(ctx);
 		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
-			Stmt next = stmt_fetch_next(ctx);
 			update_indent(8);
+			Stmt next = stmt_fetch_next(ctx);
 			statement.value.as_var.defn_val = &next;
 			update_indent(-8);
 			log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
