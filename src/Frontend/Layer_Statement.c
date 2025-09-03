@@ -82,6 +82,7 @@ Var parse_var(Line_Context* ctx)
 
 	log_to_ctx(ctx, LOG_FORMAT "- declared type: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"), res.type.len,
 		res.type.data);
+		update_indent(-1);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
 		res.defn_val = NULL;
@@ -89,7 +90,6 @@ Var parse_var(Line_Context* ctx)
 		log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 	}
 
-	update_indent(-1);
 	return res;
 }
 
