@@ -34,7 +34,7 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 void line_get_preprocessed_line(Line_Context *ctx)
 {
 	if (ctx->line.len == 0) {
-		log_to_ctx(ctx, LOG_FORMAT "Line is blank, no processing needed.",
+		log_to_ctx(ctx, LOG_FORMAT "Blank line detected, skipping",
 			LOG_CTX("[PREPROCESSING]", "[LINE]"));
 		return;
 	}
@@ -45,12 +45,9 @@ void line_get_preprocessed_line(Line_Context *ctx)
 	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
 		processed_line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
 
-		log_to_ctx(ctx, LOG_FORMAT " Comment detected -> \"%.*s\" ",
+		log_to_ctx(ctx, LOG_FORMAT " Comment detected -> %%\"%.*s\" ",
 			LOG_CTX("[PREPROCESSING]", "[LINE]"),
 			Str_Fmt(ctx->line));
-		log_to_ctx(ctx, LOG_FORMAT " Removing comments (start='%c')",
-			LOG_CTX("[PREPROCESSING]", "[LINE]"),
-			COMMENT_SYMBOL);
 
 		if (processed_line.len > 0) {
 			log_to_ctx(ctx, LOG_FORMAT "%3u | %.*s ",
