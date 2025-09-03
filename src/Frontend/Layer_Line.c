@@ -34,7 +34,7 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 void line_get_preprocessed_line(Line_Context *ctx)
 {
 	String processed_line = ctx->line;
-	(void)get_indent(1);
+	update_indent(1);
 
 	size_t index;
 	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
@@ -58,7 +58,7 @@ void line_get_preprocessed_line(Line_Context *ctx)
 
 	}
 
-	(void)get_indent(1);
+	update_indent(-1);
 }
 
 bool line_parse_next(CodeBlock *blk, File_Context* context)
