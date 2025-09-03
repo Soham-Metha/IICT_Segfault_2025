@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <Frontend/Layer_Line.h>
 
-#define LOG_CTX(action, ind, lvl) lvl, get_indent(ind), action
+#define LOG_CTX(action, lvl) lvl, get_indent(), action
 #define LOG_FORMAT "%6s | %.*s %-20s "
 
 enum WindowNames { WIN_STDIN, WIN_STDOUT, WIN_STDERR, WIN_AST, WIN_COUNT };
@@ -18,7 +18,8 @@ void print(int id, const char *str, ...);
 
 void log_to_ctx(Line_Context *ctx, const char *str, ...);
 
-String get_indent(int change);
+String get_indent();
+void update_indent(int change);
 
 #define AST(shape, color, lbl)                      \
 	"  Expr_%d "                                \

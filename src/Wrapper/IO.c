@@ -46,8 +46,12 @@ void log_to_ctx(Line_Context *ctx, const char *str, ...)
 
 int indent = 0;
 char *space = "\t\t\t\t\t\t\t";
-String get_indent(int change)
+String get_indent()
+{
+	return (String){ .data = space, .len = indent };
+}
+
+void update_indent(int change)
 {
 	indent += change;
-	return (String){ .data = space, .len = indent };
 }
