@@ -33,6 +33,12 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 
 void line_get_preprocessed_line(Line_Context *ctx)
 {
+	if (ctx->line.len == 0) {
+		log_to_ctx(ctx, LOG_FORMAT "Line is blank, no processing needed.",
+			LOG_CTX("[PREPROCESSING]", "[LINE]"));
+		return;
+	}
+
 	String processed_line = ctx->line;
 
 	size_t index;
@@ -45,16 +51,20 @@ void line_get_preprocessed_line(Line_Context *ctx)
 		log_to_ctx(ctx, LOG_FORMAT " Removing comments (start='%c')",
 			   LOG_CTX("[PREPROCESSING]", "[LINE]"),
 			   COMMENT_SYMBOL);
-		log_to_ctx(ctx, LOG_FORMAT "%3u | %.*s ",
+
+		if (ctx->line.len > 0) {
+			log_to_ctx(ctx, LOG_FORMAT "%3u | %.*s ",
 			   LOG_CTX("[PREPROCESSING]", "[LINE]"), ctx->line_no,
 			   Str_Fmt(processed_line));
+		}
 	}
 
 	ctx->line = trim(processed_line);
 
 	if (ctx->line.len == 0) {
-		log_to_ctx(ctx, LOG_FORMAT "DETECTED BLANK LINE!!",
-			   LOG_CTX("[PREPROCESSING]", "[LINE]"));
+		log_to_ctx(ctx, LOG_FORMAT "Line becomes blank after removal",
+			LOG_CTX("[PREPROCESSING]", "[LINE]"));
+		return;
 	}
 }
 
