@@ -4,7 +4,7 @@
 #include <Frontend/Layer_Line.h>
 
 #define LOG_CTX(action, lvl) action, lvl
-#define LOG_FORMAT " %20s %8s | "
+#define LOG_FORMAT " %15s %6s | "
 
 enum WindowNames { WIN_STDIN, WIN_STDOUT, WIN_STDERR, WIN_AST, WIN_COUNT };
 // stdin will probably remain unused, and other windows may get added as
