@@ -33,13 +33,23 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 
 void line_get_preprocessed_line(Line_Context* ctx)
 {
+	String processed_line;
+
 	size_t index;
 	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
-		ctx->line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
+		processed_line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
 
-		log_to_ctx(ctx, "[LINE] [PREPROCESSED] Removed Comments : %.*s ", Str_Fmt(ctx->line));
+		log_to_ctx(ctx, "[LINE] [PREPROCESSING] Removing Comments! (Comments start with '%c' )", COMMENT_SYMBOL);
+		log_to_ctx(ctx, "[LINE] [PREPROCESSING] Found Comment : %.*s ", Str_Fmt(ctx->line));
+		log_to_ctx(ctx, "[LINE] [PREPROCESSING] %3u | %.*s ",ctx->line_no, Str_Fmt(processed_line));
+
 	}
-	ctx->line = trim(ctx->line);
+
+	ctx->line = trim(processed_line);
+
+	if (ctx->line.len==0) {
+		log_to_ctx(ctx, "[LINE] [PREPROCESSING] DETECTED BLANK LINE!!");
+	}
 }
 
 bool line_parse_next(CodeBlock *blk, File_Context* context)
