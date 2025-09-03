@@ -117,10 +117,10 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 	result.type 		 = STMT_BLOCK_END;
 	result.value.as_token= tok;
 
-	update_indent(10);
+	update_indent(1);
 	log_to_ctx(ctx,
 		LOG_FORMAT, LOG_CTX("[BLOCK END]","[STMT]"));
-	update_indent(-10);
+	update_indent(-1);
 
 	discard_cached_token();
 	return result;
