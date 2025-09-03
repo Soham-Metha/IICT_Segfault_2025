@@ -118,7 +118,7 @@ static void draw_log()
 	if (ctx->line_num > 0) {
 		int i = 0;
 		while (ctx->lines[selected_line].logs[i].len > 0) {
-			wprintw(windows[UI_LOGS], "    > %.*s\n",
+			wprintw(windows[UI_LOGS], "%.*s\n",
 				Str_Fmt(ctx->lines[selected_line].logs[i]));
 			i++;
 		}
