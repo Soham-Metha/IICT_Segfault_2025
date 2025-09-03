@@ -16,7 +16,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	update_indent(1);
 	token = token_fetch_next(ctx);
 	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
-		token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
+		discard_cached_token();
 		log_to_ctx(ctx,
 				  LOG_FORMAT " NO ARGS !",LOG_CTX("[IDENTIFICATION]","[STMT]"));
 		update_indent(-2);
@@ -85,7 +85,7 @@ Var parse_var(Line_Context* ctx)
 		update_indent(-1);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
-		token_expect_next(ctx, TOKEN_TYPE_EQUAL);
+		discard_cached_token();
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
@@ -106,7 +106,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok, Line_Context* ctx)
 	log_to_ctx(ctx,
 	      LOG_FORMAT, LOG_CTX("[BLOCK START]","[STMT]"));
 
-	token_expect_next(ctx, TOKEN_TYPE_OPEN_CURLY);
+	discard_cached_token();
 	return result;
 }
 
@@ -120,14 +120,14 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 	log_to_ctx(ctx,
 		LOG_FORMAT, LOG_CTX("[BLOCK END]","[STMT]"));
 
-	token_expect_next(ctx, TOKEN_TYPE_CLOSING_CURLY);
+	discard_cached_token();
 	return result;
 }
 
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
 	Stmt result = { 0 };
-	token_expect_next(ctx, TOKEN_TYPE_NAME);
+	discard_cached_token();
 	Token next = token_fetch_next(ctx);
 
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
