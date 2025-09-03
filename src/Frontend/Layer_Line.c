@@ -41,7 +41,7 @@ void line_get_preprocessed_line(Line_Context *ctx)
 		processed_line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
 
 		log_to_ctx(ctx, LOG_FORMAT "Comment removed: \"%%%.*s\" ",
-			LOG_CTX("\t[PREPROCESSING]", "[LINE]"),
+			LOG_CTX("  [PREPROCESSING]", "[LINE]"),
 			Str_Fmt(ctx->line));
 
 	}
