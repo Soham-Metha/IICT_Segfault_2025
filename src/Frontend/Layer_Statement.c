@@ -88,7 +88,7 @@ Var parse_var(Line_Context* ctx)
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
 		log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
-		update_indent(8);
+
 	}
 
 	return res;
