@@ -30,9 +30,6 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		FuncallArg *arg = malloc(sizeof(FuncallArg));
 		arg->value 		= stmt_fetch_next(ctx);
 		arg->next		= NULL;
-		log_to_ctx(ctx,
-		      LOG_FORMAT "identified above listed tokens as a function arguments!",LOG_CTX("","[STMT]"),
-		      token_get_name(token.type));
 
 		if (first == NULL) {
 			first 		= arg;
@@ -57,6 +54,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		      token_get_name(TOKEN_TYPE_CLOSING_PAREN));
 		exit(1);
 	}
+	update_indent(-2);
 
 	return first;
 }
