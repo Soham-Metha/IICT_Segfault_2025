@@ -54,7 +54,7 @@ void line_get_preprocessed_line(Line_Context *ctx)
 
 	if (ctx->line.len == 0) {
 		log_to_ctx(ctx, " %20s %8s "
-			"DETECTED BLANK LINE!!" "[PREPROCESSING]", "[LINE]");
+			"DETECTED BLANK LINE!!", "[PREPROCESSING]", "[LINE]");
 	}
 }
 
