@@ -33,11 +33,6 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 
 void line_get_preprocessed_line(Line_Context *ctx)
 {
-	if (ctx->line.len == 0) {
-		log_to_ctx(ctx, LOG_FORMAT "Blank line detected, skipping",
-			LOG_CTX("[PREPROCESSING]", "[LINE]"));
-		return;
-	}
 
 	String processed_line = ctx->line;
 
@@ -50,16 +45,16 @@ void line_get_preprocessed_line(Line_Context *ctx)
 			Str_Fmt(ctx->line));
 
 		if (processed_line.len > 0) {
-			log_to_ctx(ctx, LOG_FORMAT "%.*s ",
+			log_to_ctx(ctx, LOG_FORMAT "%.*s",
 			   LOG_CTX("[PREPROCESSING]", "[LINE]"),
 			   Str_Fmt(processed_line));
 		}
 	}
 
 	ctx->line = trim(processed_line);
-
+	
 	if (ctx->line.len == 0) {
-		log_to_ctx(ctx, LOG_FORMAT "Line becomes blank after removal",
+		log_to_ctx(ctx, LOG_FORMAT "Line is Blank",
 			LOG_CTX("[PREPROCESSING]", "[LINE]"));
 		return;
 	}
