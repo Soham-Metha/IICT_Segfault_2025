@@ -1,6 +1,7 @@
 #include <Wrapper/IO.h>
 #include <Frontend/Layer_File.h>
-#include "UI/tui.h"
+// #include "UI/tui.h"
+#include <Wrapper/UI.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,9 +71,11 @@ int main(int argc, char **argv)
 	file_read(inputFile, &ctx);
 
 	if (use_tui) {
-		TUI *tui = init_ui(&ctx);
-		run_ui(tui);
-		destroy_ui(tui);
+		// TUI *tui = init_ui(&ctx);
+		// run_ui(tui);
+		// destroy_ui(tui);
+		onStartup(&ctx);
+		onShutdown();
 		return 0;
 	}
 

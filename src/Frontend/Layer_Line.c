@@ -33,9 +33,13 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 
 void line_get_preprocessed_line(Line_Context* ctx)
 {
-	ctx->line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
-	ctx->line = trim(ctx->line);
+	size_t index;
+	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
+		ctx->line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
 
+		log_to_ctx(ctx, "[LINE] [PREPROCESSED] Removed Comments : %.*s ", Str_Fmt(ctx->line));
+	}
+	ctx->line = trim(ctx->line);
 }
 
 bool line_parse_next(CodeBlock *blk, File_Context* context)
@@ -76,8 +80,6 @@ CodeBlock codeblock_generate(File_Context* file)
 	while (file->contents.len > 0) {
 		Line_Context* ctx = file_fetch_next_line(file);
 		line_get_preprocessed_line(ctx);
-
-		log_to_ctx(ctx, "\n[LINE] After Preprocessing : %.*s", Str_Fmt(ctx->line));
 
 		block_end 	= line_parse_next(&res,file);
 

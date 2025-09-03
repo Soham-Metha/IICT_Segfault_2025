@@ -94,7 +94,7 @@ Line_Context *file_fetch_next_line(File_Context *file)
 	curr->line_start 	 = curr->line.data;
 	file->line_num 		+= 1;
 
-	log_to_ctx(curr, "\n[LINE] Reading Line %3u : %.*s", file->line_num, Str_Fmt(curr->line));
+	log_to_ctx(curr, "[LINE] %3u | %.*s ", file->line_num, Str_Fmt(curr->line));
 
 	return curr;
 }
