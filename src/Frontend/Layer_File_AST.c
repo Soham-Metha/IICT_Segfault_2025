@@ -1,5 +1,6 @@
 #include <Frontend/Layer_File.h>
 #include <Frontend/Layer_Line.h>
+#include <Frontend/Layer_Statement.h>
 #include <Wrapper/IO.h>
 #include <stdlib.h>
 #include <inttypes.h>
@@ -74,7 +75,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	switch (stmt->type) {
 	case STMT_VAR: 			return __STMT_VARIABLE	(myId, stmt->value.as_var.name);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		return __STMT_TOKEN		(myId,stmt->value.as_token.text);
+	case STMT_TOKEN:		return __STMT_TOKEN		(myId, stmt->value.as_token.text);
 	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
 	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->value.as_block);
 	default: 				return __STMT_UNKNOWN	(myId);

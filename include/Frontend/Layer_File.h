@@ -7,13 +7,6 @@
 typedef struct File_Context File_Context;
 typedef struct Line_Context Line_Context;
 
-struct Line_Context {
-	String line;
-	String logs[128];
-	const char* line_start;
-	int log_cnt;
-};
-
 struct File_Context {
 	const char *file_path;
 	String contents;

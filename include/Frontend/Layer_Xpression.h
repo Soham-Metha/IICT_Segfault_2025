@@ -1,6 +1,7 @@
 #ifndef EXPR_LAYER_FRONTEND
 #define EXPR_LAYER_FRONTEND
 #include <Utils/strings.h>
+#include <Frontend/Layer_Line.h>
 
 enum TokenType {
 	TOKEN_TYPE_STR,
@@ -20,14 +21,15 @@ enum TokenType {
 
 typedef struct Token Token;
 typedef enum TokenType TokenType;
+typedef struct Line_Context Line_Context;
 struct Token {
 	TokenType type;
 	String text;
 };
 
-Token token_fetch_next(String *line);
+Token token_fetch_next(Line_Context* ctx);
 const char *token_get_name(TokenType type);
-Token token_expect_next(String *line, TokenType expected);
+Token token_expect_next(Line_Context* ctx, TokenType expected);
 bool discard_cached_token();
 
 #endif

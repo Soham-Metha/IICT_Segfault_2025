@@ -1,6 +1,5 @@
 #ifndef STMT_LAYER_FRONTEND
 #define STMT_LAYER_FRONTEND
-#include <Frontend/Layer_Line.h>
 #include <Frontend/Layer_Xpression.h>
 #include <Utils/strings.h>
 #include <stdint.h>
@@ -31,32 +30,32 @@ typedef struct StmtNode StmtNode;
 typedef struct Line_Context Line_Context;
 
 struct Var {
-	String name;
+	String  name;
 	varMode mode;
 
 	String type;
-	Stmt *defn_val;
+	Stmt  *defn_val;
 };
 
 union StmtValue {
-	Var as_var;
-	Token as_token;
-	Funcall *as_funcall;
+	Var       as_var;
+	Token     as_token;
+	Funcall  *as_funcall;
 	StmtNode *as_block;
 };
 
 struct Stmt {
-	StmtType type;
+	StmtType  type;
 	StmtValue value;
 };
 
 struct FuncallArg {
 	FuncallArg *next;
-	Stmt value;
+	Stmt        value;
 };
 
 struct Funcall {
-	String name;
+	String      name;
 	FuncallArg *args;
 };
 

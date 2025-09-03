@@ -41,9 +41,9 @@ const char *token_get_name(TokenType type)
 	}
 }
 
-Token token_expect_next(String *line, TokenType expected)
+Token token_expect_next(Line_Context* ctx, TokenType expected)
 {
-	Token token = token_fetch_next(line);
+	Token token = token_fetch_next(ctx);
 
 	if (!discard_cached_token()) {
 		print(WIN_STDERR, 
@@ -61,8 +61,9 @@ Token token_expect_next(String *line, TokenType expected)
 	return token;
 }
 
-Token token_fetch_next(String *line)
+Token token_fetch_next(Line_Context* ctx)
 {
+	String *line = &ctx->line;
 	if (cachedToken) return cache;
 	Token token = { 0 };
 	(*line) 	= trim(*line);
@@ -159,7 +160,7 @@ Token token_fetch_next(String *line)
 
 	cache = token;
 	cachedToken = true;
-	// print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",
+	// log_to_ctx(ctx, "\n\t[EXPR] '%.*s' -> '%s' ",
 	//       token.text.len, token.text.data, token_get_name(token.type));
 	return token;
 }
