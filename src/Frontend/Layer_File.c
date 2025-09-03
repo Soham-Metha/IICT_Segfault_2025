@@ -94,6 +94,7 @@ Line_Context *file_fetch_next_line(File_Context *file)
 	curr->line_start 	 = curr->line.data;
 	file->line_num 		+= 1;
 	curr->line_no		 = file->line_num;
+	curr->line			 = trim(curr->line);
 
 	log_to_ctx(curr, LOG_FORMAT, LOG_CTX("","--xx--"));
 	log_to_ctx(curr, LOG_FORMAT "\"%.*s\"", LOG_CTX("[READING]", "[LINE]"),
