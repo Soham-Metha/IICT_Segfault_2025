@@ -117,6 +117,7 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
 	Stmt result = { 0 };
+	discard_cached_token();
 	Token next = token_fetch_next(ctx);
 
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
