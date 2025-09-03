@@ -95,6 +95,7 @@ Line_Context *file_fetch_next_line(File_Context *file)
 	file->line_num 		+= 1;
 	curr->line_no		 = file->line_num;
 
+	log_to_ctx(curr, LOG_FORMAT, LOG_CTX("",""));
 	log_to_ctx(curr, LOG_FORMAT "\"%.*s\"", LOG_CTX("[READING]", "[LINE]"),
 		    Str_Fmt(curr->line));
 
