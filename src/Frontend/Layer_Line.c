@@ -44,14 +44,16 @@ void line_get_preprocessed_line(Line_Context *ctx)
 			LOG_CTX("[PREPROCESSING]", "[LINE]"),
 			Str_Fmt(ctx->line));
 
-		if (processed_line.len > 0) {
-			log_to_ctx(ctx, LOG_FORMAT "\"%.*s\"",
-			   LOG_CTX("[PREPROCESSING]", "[LINE]"),
-			   Str_Fmt(processed_line));
-		}
 	}
+	log_to_ctx(ctx, LOG_FORMAT "\"Before: %.*s\"",
+		LOG_CTX("[PREPROCESSING]", "[LINE]"),
+		Str_Fmt(ctx->line));
 
 	ctx->line = trim(processed_line);
+	
+	log_to_ctx(ctx, LOG_FORMAT "\"After: %.*s\"",
+		LOG_CTX("[PREPROCESSING]", "[LINE]"),
+		Str_Fmt(ctx->line));
 	
 	if (ctx->line.len == 0) {
 		log_to_ctx(ctx, LOG_FORMAT "Line is Blank",
