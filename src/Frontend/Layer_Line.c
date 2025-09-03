@@ -45,9 +45,6 @@ void line_get_preprocessed_line(Line_Context *ctx)
 			Str_Fmt(ctx->line));
 
 	}
-	log_to_ctx(ctx, LOG_FORMAT "Before: \"%.*s\"",
-		LOG_CTX("[PREPROCESSING]", "[LINE]"),
-		Str_Fmt(ctx->line));
 
 	ctx->line = trim(processed_line);
 	
