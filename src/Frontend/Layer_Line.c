@@ -50,8 +50,8 @@ void line_get_preprocessed_line(Line_Context *ctx)
 			Str_Fmt(ctx->line));
 
 		if (processed_line.len > 0) {
-			log_to_ctx(ctx, LOG_FORMAT "%3u | %.*s ",
-			   LOG_CTX("[PREPROCESSING]", "[LINE]"), ctx->line_no,
+			log_to_ctx(ctx, LOG_FORMAT "%.*s ",
+			   LOG_CTX("[PREPROCESSING]", "[LINE]"),
 			   Str_Fmt(processed_line));
 		}
 	}
