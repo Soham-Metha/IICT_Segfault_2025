@@ -29,7 +29,10 @@ const char *token_get_name(TokenType type)
 	case TOKEN_TYPE_OPEN_CURLY: 	return "open curly";
 	case TOKEN_TYPE_CLOSING_CURLY: 	return "closing curly";
 	case TOKEN_TYPE_COMMA: 			return "comma";
-	case TOKEN_TYPE_FUNC: 			return "func";
+	case TOKEN_TYPE_COLON:			return "colon";
+	case TOKEN_TYPE_EQUAL:			return "equal";
+	case TOKEN_TYPE_EOL:			return "end of line";
+	// case TOKEN_TYPE_FUNC: 			return "func";
 	case TOKEN_TYPE_STATEMENT_END: 	return "statement end";
 	default: {
 		assert(0 && "token_get_name: unreachable");
@@ -38,9 +41,9 @@ const char *token_get_name(TokenType type)
 	}
 }
 
-Token token_expect_next(String *line, TokenType expected)
+Token token_expect_next(Line_Context* ctx, TokenType expected)
 {
-	Token token = token_fetch_next(line);
+	Token token = token_fetch_next(ctx);
 
 	if (!discard_cached_token()) {
 		print(WIN_STDERR, 
@@ -58,11 +61,17 @@ Token token_expect_next(String *line, TokenType expected)
 	return token;
 }
 
-Token token_fetch_next(String *line)
+Token token_fetch_next(Line_Context* ctx)
 {
+	String *line = &ctx->line;
 	if (cachedToken) return cache;
 	Token token = { 0 };
 	(*line) 	= trim(*line);
+
+	if (line->len == 0) {
+		token.type = TOKEN_TYPE_EOL;
+		return token;
+	}
 
 	switch (line->data[0]) {
 	case '(': {
@@ -92,6 +101,16 @@ Token token_fetch_next(String *line)
 
 	case ',': {
 		token.type = TOKEN_TYPE_COMMA;
+		token.text = split_str_by_len(line, 1);
+	} break;
+
+	case ':': {
+		token.type = TOKEN_TYPE_COLON;
+		token.text = split_str_by_len(line, 1);
+	} break;
+
+	case '=': {
+		token.type = TOKEN_TYPE_EQUAL;
 		token.text = split_str_by_len(line, 1);
 	} break;
 
@@ -127,10 +146,6 @@ Token token_fetch_next(String *line)
 		if (isalpha(line->data[0])) {
 			token.type = TOKEN_TYPE_NAME;
 			token.text = split_str_by_condition(line, isName);
-
-			if (compare_str(token.text, STR("func"))) {
-				token.type = TOKEN_TYPE_FUNC;
-			}
 		} else if (isdigit(line->data[0]) || line->data[0] == '-') {
 			token.type = TOKEN_TYPE_NUMBER;
 			token.text = split_str_by_condition(line, isNumber);
@@ -145,8 +160,8 @@ Token token_fetch_next(String *line)
 
 	cache = token;
 	cachedToken = true;
-	print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",
-	      token.text.len, token.text.data, token_get_name(token.type));
+	// log_to_ctx(ctx, "\n\t[EXPR] '%.*s' -> '%s' ",
+	//       token.text.len, token.text.data, token_get_name(token.type));
 	return token;
 }
 

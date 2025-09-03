@@ -66,10 +66,11 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	file_read(inputFile);
+	File_Context ctx = { 0 };
+	file_read(inputFile, &ctx);
 
 	if (use_tui) {
-		TUI *tui = init_ui();
+		TUI *tui = init_ui(&ctx);
 		run_ui(tui);
 		destroy_ui(tui);
 		return 0;

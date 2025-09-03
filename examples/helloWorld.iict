@@ -1,9 +1,10 @@
-x 'a';
-func hello() {
-    print("hi","hello");
-}
+x = 'a';
 
-x 'b';
+hello:func = {
+    print("hi","hello");
+};
+
+x ='b';
 
 {
     {

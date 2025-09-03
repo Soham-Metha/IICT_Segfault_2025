@@ -8,7 +8,7 @@ typedef struct String String;
 
 struct String {
 	unsigned int len;
-	const char *data;
+	char *data;
 };
 
 #define STR(s) ((String){ .len = strlen(s), .data = s })

@@ -1,5 +1,6 @@
 #include <Frontend/Layer_Line.h>
 #include <Frontend/Layer_File.h>
+#include <Frontend/Layer_Statement.h>
 #include <Utils/strings.h>
 #include <Wrapper/IO.h>
 #include <assert.h>
@@ -30,58 +31,58 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 	return ERR_OK;
 }
 
-String line_get_preprocessed_line()
+void line_get_preprocessed_line(Line_Context* ctx)
 {
-	String line;
+	ctx->line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
+	ctx->line = trim(ctx->line);
 
-	line = file_fetch_next_line();
-	line = split_str_by_delim(&line, COMMENT_SYMBOL);
-	line = trim(line);
-
-	print(WIN_STDOUT, "\n[LINE] After Preprocessing : %.*s", Str_Fmt(line));
-
-	return line;
 }
 
-Error line_parse_next(CodeBlock *blk, bool *block_end)
+bool line_parse_next(CodeBlock *blk, File_Context* context)
 {
-	Error res 	= ERR_OK;
-	String line = line_get_preprocessed_line();
+	Line_Context* ctx = file_fetch_curr_line(context);
 
 	// if statement identifies the start or end of a block, handle it,
 	// the start of the block would be a pointer to that block's linked list
 	// of statements, forming a linked list of linked lists (2D LL) if 
 	// there is single layer of nesting, 3D LL for 2 layers of nesting & so on.
 	// the 1st dimension is the global scope, each layer of nesting adds another dimension.
-	while (line.len > 0) {
-		Stmt statement		= stmt_fetch_next(&line);
-		if (statement.type == STMT_BLOCK_END) {
-			*block_end 		= true;
-		} 
-		else if (statement.type == STMT_BLOCK_START) {
-			statement.value.as_block = codeblock_generate().begin;
+	while (ctx->line.len > 0) {
+		Stmt statement		= stmt_fetch_next(ctx);
+		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
+			Stmt next = stmt_fetch_next(ctx);
+			statement.value.as_var.defn_val = &next;
+
+		} else if (statement.type == STMT_BLOCK_END) {
+			return true;
+		} else if (statement.type == STMT_BLOCK_START) {
+			statement.value.as_block = codeblock_generate(context).begin;
 		}
 
-		ERROR_CHECK(res, return res, codeblock_append_stmt(blk, statement));
+		// TODO 1: MEM ALLOC error handling
+		(void)codeblock_append_stmt(blk, statement);
 	}
 
-	return res;
+	return false;
 }
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
 
-CodeBlock codeblock_generate()
+CodeBlock codeblock_generate(File_Context* file)
 {
 	CodeBlock res 	= { 0 };
 	bool block_end 	= false;
 
-	while (file.contents.len > 0) {
-		Error err 	= line_parse_next(&res, &block_end);
-		(void)err;
+	while (file->contents.len > 0) {
+		Line_Context* ctx = file_fetch_next_line(file);
+		line_get_preprocessed_line(ctx);
+
+		log_to_ctx(ctx, "\n[LINE] After Preprocessing : %.*s", Str_Fmt(ctx->line));
+
+		block_end 	= line_parse_next(&res,file);
 
 		if (block_end) break;
 	}
-	// TODO 1: MEM ALLOC error handling
 	// TODO 2: edge case not handled, once file reaches eof, all scopes will 
 	// be automatically closed, for example, if the file only contains '{{',
 	// then it opens 2 layers of nesting, without closing it, this should throw

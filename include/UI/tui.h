@@ -1,6 +1,7 @@
 #ifndef TUI_H
 #define TUI_H
 
+#include <Frontend/Layer_File.h>
 #include <ncurses.h>
 
 #define MAX_LINES 128
@@ -18,6 +19,7 @@ typedef struct {
 	WINDOW *ir_window;
 	WINDOW *mc_window;
 	unsigned int selected_line;
+	File_Context* ctx;
 } TUI;
 
 TUI *init_ui();
