@@ -112,7 +112,6 @@ static void draw_log()
 		wprintw(windows[UI_LOGS],
 			"\n ----x---- LOGS START HERE ----x---- \n");
 	}
-	wprintw(windows[UI_LOGS], "\n");
 	wattroff(windows[UI_LOGS], COLOR_PAIR(1));
 
 	if (ctx->line_num > 0) {
@@ -125,7 +124,7 @@ static void draw_log()
 	}
 
 	wattron(windows[UI_LOGS], COLOR_PAIR(1));
-	wprintw(windows[UI_LOGS], "\n");
+
 	if (selected_line < ctx->line_num - 1) {
 		int i = 0;
 		while (ctx->lines[selected_line + 1].logs[i].len > 0) {
