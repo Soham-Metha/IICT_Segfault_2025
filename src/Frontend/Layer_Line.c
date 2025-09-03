@@ -71,6 +71,8 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
 			Stmt next = stmt_fetch_next(ctx);
 			statement.value.as_var.defn_val = &next;
+			log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+			update_indent(-1);
 
 		} else if (statement.type == STMT_BLOCK_END) {
 			return true;
