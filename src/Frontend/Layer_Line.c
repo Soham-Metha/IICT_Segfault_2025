@@ -45,7 +45,7 @@ void line_get_preprocessed_line(Line_Context *ctx)
 	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
 		processed_line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
 
-		log_to_ctx(ctx, LOG_FORMAT " Comment detected -> %%\"%.*s\" ",
+		log_to_ctx(ctx, LOG_FORMAT "Comment detected -> \"%%%.*s\" ",
 			LOG_CTX("[PREPROCESSING]", "[LINE]"),
 			Str_Fmt(ctx->line));
 
