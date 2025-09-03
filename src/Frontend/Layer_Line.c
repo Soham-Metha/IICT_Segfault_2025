@@ -67,6 +67,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 	// there is single layer of nesting, 3D LL for 2 layers of nesting & so on.
 	// the 1st dimension is the global scope, each layer of nesting adds another dimension.
 	while (ctx->line.len > 0) {
+		update_indent(2);
 		Stmt statement		= stmt_fetch_next(ctx);
 		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
 			Stmt next = stmt_fetch_next(ctx);
@@ -79,6 +80,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			statement.value.as_block = codeblock_generate(context).begin;
 		}
 
+		update_indent(-2);
 		// TODO 1: MEM ALLOC error handling
 		(void)codeblock_append_stmt(blk, statement);
 	}
@@ -93,7 +95,6 @@ CodeBlock codeblock_generate(File_Context* file)
 	CodeBlock res 	= { 0 };
 	bool block_end 	= false;
 
-	update_indent(2);
 	while (file->contents.len > 0) {
 		Line_Context* ctx = file_fetch_next_line(file);
 		line_get_preprocessed_line(ctx);
@@ -102,7 +103,7 @@ CodeBlock codeblock_generate(File_Context* file)
 
 		if (block_end) break;
 	}
-	update_indent(-2);
+
 	// TODO 2: edge case not handled, once file reaches eof, all scopes will 
 	// be automatically closed, for example, if the file only contains '{{',
 	// then it opens 2 layers of nesting, without closing it, this should throw
