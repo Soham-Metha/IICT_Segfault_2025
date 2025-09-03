@@ -86,7 +86,7 @@ Var parse_var(Line_Context* ctx)
 	if (next.type == TOKEN_TYPE_EQUAL) {
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
-		log_to_ctx(ctx, LOG_FORMAT "- definition follows (next statement is the definition) ", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+		log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 	}
 
 	update_indent(-1);
