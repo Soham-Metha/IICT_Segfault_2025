@@ -72,7 +72,6 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			Stmt next = stmt_fetch_next(ctx);
 			statement.value.as_var.defn_val = &next;
 			log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
-			update_indent(-1);
 
 		} else if (statement.type == STMT_BLOCK_END) {
 			return true;
@@ -94,6 +93,7 @@ CodeBlock codeblock_generate(File_Context* file)
 	CodeBlock res 	= { 0 };
 	bool block_end 	= false;
 
+	update_indent(2);
 	while (file->contents.len > 0) {
 		Line_Context* ctx = file_fetch_next_line(file);
 		line_get_preprocessed_line(ctx);
@@ -102,6 +102,7 @@ CodeBlock codeblock_generate(File_Context* file)
 
 		if (block_end) break;
 	}
+	update_indent(-2);
 	// TODO 2: edge case not handled, once file reaches eof, all scopes will 
 	// be automatically closed, for example, if the file only contains '{{',
 	// then it opens 2 layers of nesting, without closing it, this should throw
