@@ -3,9 +3,8 @@
 #include <string.h>
 #include <ncurses.h>
 #include <assert.h>
-#include <Frontend/Layer_File.h>
 
-TUI *init_ui()
+TUI *init_ui(File_Context *ctx)
 {
 	initscr();
 	cbreak();
@@ -36,6 +35,7 @@ TUI *init_ui()
 	tui->ir_window = newwin(mid_y - 4, x_by4 - 4, mid_y + 2, mid_x + 2);
 	tui->mc_window =
 		newwin(mid_y - 4, x_by4 - 4, mid_y + 2, mid_x + x_by4 + 2);
+	tui->ctx = ctx;
 
 	return tui;
 }
@@ -50,16 +50,13 @@ static void draw_program(TUI *tui)
 	wrefresh(bounds);
 	werase(tui->program_window);
 
-	for (unsigned int i = 0; i <= file.line_num; i++) {
+	for (unsigned int i = 0; i < tui->ctx->line_num; i++) {
 		if (i == tui->selected_line) {
 			wattron(tui->program_window, COLOR_PAIR(2) | A_BOLD);
-			mvwprintw(tui->program_window, i + 1, 2, "%3d | %.*s",
-				  i, Str_Fmt(file.lines[i].line));
-			wattroff(tui->program_window, COLOR_PAIR(2) | A_BOLD);
-		} else {
-			mvwprintw(tui->program_window, i + 1, 2, "%3d | %.*s",
-				  i, Str_Fmt(file.lines[i].line));
 		}
+		wprintw(tui->program_window, "%3d | %s\n", i,
+			tui->ctx->lines[i].line_start);
+		wattroff(tui->program_window, COLOR_PAIR(2) | A_BOLD);
 	}
 
 	wrefresh(tui->program_window);
@@ -81,11 +78,12 @@ static void draw_log(TUI *tui)
 	wrefresh(bounds);
 	werase(tui->log_window);
 
-	if (file.line_num > 0) {
+	if (tui->ctx->line_num > 0) {
 		int i = 0;
-		while (file.lines[tui->selected_line].logs[i].len>0) {
+		while (tui->ctx->lines[tui->selected_line].logs[i].len > 0) {
 			wprintw(tui->log_window, "%.*s",
-				Str_Fmt(file.lines[tui->selected_line].logs[i]));
+				Str_Fmt(tui->ctx->lines[tui->selected_line]
+						.logs[i]));
 			i++;
 		}
 	}
@@ -143,21 +141,13 @@ void run_ui(TUI *tui)
 		switch (ch) {
 		case KEY_UP:
 			tui->selected_line =
-				(tui->selected_line + (file.line_num)) %
-				(file.line_num + 1);
-			if (!tui->selected_line) {
-				tui->selected_line =
-					(tui->selected_line + (file.line_num)) %
-					(file.line_num + 1);
-			}
+				(tui->selected_line + tui->ctx->line_num - 1) %
+				tui->ctx->line_num;
+
 			break;
 		case KEY_DOWN:
 			tui->selected_line =
-				(tui->selected_line + 1) % (file.line_num + 1);
-			if (!tui->selected_line) {
-				tui->selected_line = (tui->selected_line + 1) %
-						     (file.line_num + 1);
-			}
+				(tui->selected_line + 1) % tui->ctx->line_num;
 			break;
 		}
 		refresh_ui(tui);

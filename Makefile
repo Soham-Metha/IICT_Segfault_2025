@@ -37,3 +37,6 @@ OUT_FILE:= examples/exampleOut
 
 run_all: clean all
 	@$(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE) -tui
+
+check: clean all
+	@strace $(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE) -tui

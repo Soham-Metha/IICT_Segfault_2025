@@ -3,10 +3,8 @@
 #include <Wrapper/IO.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
-File_View file;
-String *current_buffer = NULL;
-int *current_buffer_size;
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
 Error file_open(const char *file_path, const char *mode, FILE **out)
@@ -58,27 +56,25 @@ Error file_get_contents(FILE *f, size_t n, char **contents)
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
 
-Error file_read(const char *file_path)
+Error file_read(const char *file_path, File_Context *file)
 {
 	char *file_contents = NULL;
 	FILE *file_ptr 		= NULL;
 	size_t size 		= 0;
 	Error out 			= ERR_OK;
 
-	print(WIN_STDOUT, "\n[FILE] Reading File     : %s", file_path);
+	// print(WIN_STDOUT, "\n[FILE] Reading File     : %s", file_path);
 
 	ERROR_CHECK(out, goto cleanup, file_open(file_path, "r", &file_ptr));
 	ERROR_CHECK(out, goto cleanup, file_get_size(file_ptr, &size));
 	ERROR_CHECK(out, goto cleanup, file_get_contents(file_ptr, size, &file_contents));
 
-	fclose(file_ptr);
+	file->contents.len 	= size;
+	file->contents.data = file_contents;
+	file->file_path 	= file_path;
+	file->line_num 		= 0;
 
-	file.contents.len 	= size;
-	file.contents.data 	= file_contents;
-	file.file_path 		= file_path;
-	file.line_num 		= 0;
-
-	CodeBlock global 	= codeblock_generate();
+	CodeBlock global 	= codeblock_generate(file);
 
 	ERROR_CHECK(out, goto cleanup, AST_generate(&global, false));
 
@@ -90,18 +86,21 @@ cleanup:
 	return out;
 }
 
-String file_fetch_next_line()
+Line_Context *file_fetch_next_line(File_Context *file)
 {
-	current_buffer_size				= &file.lines[file.line_num].log_cnt;
-	String line 			  		= { 0 };
-	file.line_num  			 	   += 1;
-	line 					  		= split_str_by_delim(&file.contents, '\n');
-	file.lines[file.line_num].line 	= (String){.data = line.data, .len = line.len};
-	current_buffer					= file.lines[file.line_num].logs;
-	line 					  		= trim(line);
-	split_str_by_len(&file.contents, 1);
+	Line_Context *curr 	 = &(file->lines[file->line_num]);
+	curr->line 			 = split_str_by_delim(&file->contents, '\n');
+	curr->line.data[curr->line.len] = '\0';
+	curr->line_start 	 = curr->line.data;
+	file->line_num 		+= 1;
 
-	print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s", file.line_num, Str_Fmt(line));
+	log_to_ctx(curr, "\n[LINE] Reading Line %3u : %.*s", file->line_num, Str_Fmt(curr->line));
 
-	return line;
+	return curr;
+}
+
+Line_Context* file_fetch_curr_line(File_Context* file)
+{
+	assert(file->line_num);
+	return &file->lines[file->line_num-1];
 }

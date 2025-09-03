@@ -159,8 +159,8 @@ Token token_fetch_next(String *line)
 
 	cache = token;
 	cachedToken = true;
-	print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",
-	      token.text.len, token.text.data, token_get_name(token.type));
+	// print(WIN_STDOUT, "\n[EXPR] identified token '%.*s' as '%s' token type",
+	//       token.text.len, token.text.data, token_get_name(token.type));
 	return token;
 }
 

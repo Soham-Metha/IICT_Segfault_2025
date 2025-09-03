@@ -1,11 +1,13 @@
 #include <Frontend/Layer_Statement.h>
 #include <Frontend/Layer_Xpression.h>
+#include <Frontend/Layer_File.h>
 #include <Wrapper/IO.h>
 #include <assert.h>
 #include <stdlib.h>
 
-FuncallArg *functions_parse_arglist(String *line)
+FuncallArg *functions_parse_arglist(Line_Context *ctx)
 {
+	String* line = &ctx->line;
 	// split arguments from single comma seperated string to linked list of strings.
 	Token token = token_expect_next(line,TOKEN_TYPE_OPEN_PAREN);
 
@@ -20,7 +22,7 @@ FuncallArg *functions_parse_arglist(String *line)
 
 	do {
 		FuncallArg *arg = malloc(sizeof(FuncallArg));
-		arg->value 		= stmt_fetch_next(line);
+		arg->value 		= stmt_fetch_next(ctx);
 		arg->next		= NULL;
 		// print(WIN_STDOUT,
 		//       "\n[STMT] identified '%.*s'(%s) as a function arg",
@@ -61,15 +63,6 @@ String parse_var_decl(String *line)
 	return type.text;
 }
 
-Stmt *parse_var_defn(String *line)
-{
-	(void)token_expect_next(line, TOKEN_TYPE_EQUAL);	// equal
-	Stmt  *val = malloc(sizeof(Stmt));
-	*val 	=   stmt_fetch_next(line); 					// value
-
-	return val;
-}
-
 Var parse_var(String *line)
 {
 	Var res 	= { 0 };
@@ -82,14 +75,10 @@ Var parse_var(String *line)
 		res.type	 = parse_var_decl(line);
 		res.mode 	|= VAR_DECL;
 		next 		 = token_fetch_next(line);
-		print(WIN_STDOUT,
-			  "\n[STMT] identified declaration");
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
-		res.defn_val = parse_var_defn(line);
+		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
-		print(WIN_STDOUT,
-			  "\n[STMT] identified definition");
 	}
 
 	return res;
@@ -102,11 +91,10 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok)
 	(void)tok;
 	Stmt result 		 = { 0 };
 	result.type 		 = STMT_BLOCK_START;
-	result.value.as_block = codeblock_generate().begin;
 
-	print(WIN_STDOUT,
-	      "\n[STMT] identified '%.*s'(%s) as a code block start",
-	      tok.text.len, tok.text.data, token_get_name(tok.type));
+	// print(WIN_STDOUT,
+	//       "\n[STMT] identified '%.*s'(%s) as a code block start",
+	//       tok.text.len, tok.text.data, token_get_name(tok.type));
 
 	discard_cached_token();
 	return result;
@@ -119,15 +107,16 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok)
 	result.type 		 = STMT_BLOCK_END;
 	result.value.as_token= tok;
 
-	print(WIN_STDOUT, "\n[STMT] identified '%.*s'(%s) as a code block end",
-	      tok.text.len, tok.text.data, token_get_name(tok.type));
+	// print(WIN_STDOUT, "\n[STMT] identified '%.*s'(%s) as a code block end",
+	//       tok.text.len, tok.text.data, token_get_name(tok.type));
 
 	discard_cached_token();
 	return result;
 }
 
-static inline Stmt __TOKEN_TYPE_NAME(Token tok, String *line)
+static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
+	String *line = &ctx->line;
 	(void)tok;
 	Stmt result = { 0 };
 	result.type = STMT_VAR;
@@ -141,9 +130,9 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, String *line)
 		result.type 				  = STMT_FUNCALL;
 		result.value.as_funcall 	  = malloc(sizeof(Funcall));
 		result.value.as_funcall->name = tok.text;
-		result.value.as_funcall->args = functions_parse_arglist(line);
+		result.value.as_funcall->args = functions_parse_arglist(ctx);
 
-		print(WIN_STDOUT,
+		log_to_ctx(ctx,
 		      "\n[STMT] identified '%.*s'(%s) as a function call",
 		      tok.text.len, tok.text.data, token_get_name(tok.type));
 	}// else {
@@ -161,14 +150,15 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, String *line)
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
 
-Stmt stmt_fetch_next(String *line)
+Stmt stmt_fetch_next(Line_Context* ctx)
 {
+	String *line = &ctx->line;
 	Token tok = token_fetch_next(line);
 
 	switch (tok.type) {
 	
 	case TOKEN_TYPE_NAME:
-		return __TOKEN_TYPE_NAME(tok, line);
+		return __TOKEN_TYPE_NAME(tok, ctx);
 	case TOKEN_TYPE_OPEN_CURLY:
 		return __TOKEN_TYPE_OPEN_CURLY(tok);
 	case TOKEN_TYPE_CLOSING_CURLY:

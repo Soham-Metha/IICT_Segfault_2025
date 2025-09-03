@@ -10,7 +10,7 @@ enum StmtType {
 	STMT_FUNCALL,
 	STMT_BLOCK_START,
 	STMT_BLOCK_END,
-	STMT_TOKEN
+	STMT_TOKEN,
 };
 
 enum varMode {
@@ -28,6 +28,7 @@ typedef union StmtValue StmtValue;
 typedef struct Funcall Funcall;
 typedef struct FuncallArg FuncallArg;
 typedef struct StmtNode StmtNode;
+typedef struct Line_Context Line_Context;
 
 struct Var {
 	String name;
@@ -64,6 +65,6 @@ struct StmtNode {
 	StmtNode *next;
 };
 
-Stmt stmt_fetch_next(String *line);
+Stmt stmt_fetch_next(Line_Context *ctx);
 
 #endif
