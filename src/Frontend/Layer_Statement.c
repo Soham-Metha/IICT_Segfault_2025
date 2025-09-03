@@ -101,8 +101,9 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok, Line_Context* ctx)
 	Stmt result 		 = { 0 };
 	result.type 		 = STMT_BLOCK_START;
 
+	update_indent(1);
 	log_to_ctx(ctx,
-	      LOG_FORMAT "starting new code block!", LOG_CTX("","[STMT]"));
+	      LOG_FORMAT " {", LOG_CTX("[BLOCK START]","[STMT]"));
 
 	discard_cached_token();
 	return result;
@@ -115,7 +116,9 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 	result.type 		 = STMT_BLOCK_END;
 	result.value.as_token= tok;
 
-	log_to_ctx(ctx, LOG_FORMAT "reached end of code block", LOG_CTX("","[STMT]"));
+	log_to_ctx(ctx,
+		LOG_FORMAT "} ", LOG_CTX("[BLOCK END]","[STMT]"));
+	update_indent(-1);
 
 	discard_cached_token();
 	return result;
