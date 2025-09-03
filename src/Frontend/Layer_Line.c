@@ -49,8 +49,8 @@ void line_get_preprocessed_line(Line_Context *ctx)
 			LOG_CTX("[PREPROCESSING]", "[LINE]"),
 			Str_Fmt(ctx->line));
 		log_to_ctx(ctx, LOG_FORMAT " Removing comments (start='%c')",
-			   LOG_CTX("[PREPROCESSING]", "[LINE]"),
-			   COMMENT_SYMBOL);
+			LOG_CTX("[PREPROCESSING]", "[LINE]"),
+			COMMENT_SYMBOL);
 
 		if (ctx->line.len > 0) {
 			log_to_ctx(ctx, LOG_FORMAT "%3u | %.*s ",
