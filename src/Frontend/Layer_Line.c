@@ -77,7 +77,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			statement.value.as_var.defn_val = &next;
 
 			ctx = file_fetch_curr_line(context);
-			log_to_ctx(ctx, LOG_FORMAT "%d---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"),next.type);
+			log_to_ctx(ctx, LOG_FORMAT "%d---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"),next.value.as_token.type);
 
 		} else if (statement.type == STMT_BLOCK_END) {
 			return true;
