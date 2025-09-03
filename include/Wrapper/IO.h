@@ -3,8 +3,8 @@
 #include <stdarg.h>
 #include <Frontend/Layer_Line.h>
 
-#define LOG_CTX(action, lvl) lvl, action, Str_Fmt(get_indent())
-#define LOG_FORMAT " %6s | %20s %.*s "
+#define LOG_CTX(action, lvl) lvl, Str_Fmt(get_indent()), action
+#define LOG_FORMAT " %6s | %.*s %20s "
 
 enum WindowNames { WIN_STDIN, WIN_STDOUT, WIN_STDERR, WIN_AST, WIN_COUNT };
 // stdin will probably remain unused, and other windows may get added as
