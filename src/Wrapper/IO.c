@@ -44,8 +44,8 @@ void log_to_ctx(Line_Context *ctx, const char *str, ...)
 	va_end(args);
 }
 
-int indent = 1;
-char *space = "..............................";
+int indent = 0;
+char *space = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 String get_indent()
 {
 	return (String){ .data = space, .len = indent*4 };
