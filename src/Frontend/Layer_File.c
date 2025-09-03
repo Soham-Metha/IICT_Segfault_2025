@@ -92,8 +92,8 @@ Line_Context *file_fetch_next_line(File_Context *file)
 	curr->line 			 = split_str_by_delim(&file->contents, '\n');
 	curr->line.data[curr->line.len] = '\0';
 	curr->line_start 	 = curr->line.data;
-	curr->line_no		 = file->line_num;
 	file->line_num 		+= 1;
+	curr->line_no		 = file->line_num;
 
 	log_to_ctx(curr, "[LINE] %3u | %.*s ", file->line_num, Str_Fmt(curr->line));
 
