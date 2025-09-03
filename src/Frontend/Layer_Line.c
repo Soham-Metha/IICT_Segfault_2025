@@ -33,7 +33,7 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 
 void line_get_preprocessed_line(Line_Context* ctx)
 {
-	String processed_line;
+	String processed_line = ctx->line;
 
 	size_t index;
 	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
