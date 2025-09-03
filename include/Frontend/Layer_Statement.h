@@ -1,34 +1,45 @@
 #ifndef STMT_LAYER_FRONTEND
 #define STMT_LAYER_FRONTEND
 #include <Frontend/Layer_Line.h>
+#include <Frontend/Layer_Xpression.h>
 #include <Utils/strings.h>
 #include <stdint.h>
 
 enum StmtType {
-	STMT_VARIABLE,
-	STMT_LIT_INT,
-	STMT_LIT_FLOAT,
-	STMT_LIT_CHAR,
-	STMT_LIT_STR,
+	STMT_VAR,
 	STMT_FUNCALL,
 	STMT_BLOCK_START,
 	STMT_BLOCK_END,
-	STMT_FUNCALL_DECL,
+	STMT_TOKEN
 };
 
+enum varMode {
+	VAR_ACCS,
+	VAR_DECL,
+	VAR_DEFN,
+	VAR_BOTH,
+};
+
+typedef struct Var Var;
 typedef struct Stmt Stmt;
 typedef enum StmtType StmtType;
+typedef enum varMode varMode;
 typedef union StmtValue StmtValue;
 typedef struct Funcall Funcall;
 typedef struct FuncallArg FuncallArg;
 typedef struct StmtNode StmtNode;
 
+struct Var {
+	String name;
+	varMode mode;
+
+	String type;
+	Stmt *defn_val;
+};
+
 union StmtValue {
-	String as_var;
-	uint64_t as_int;
-	double as_float;
-	char as_char;
-	String as_str;
+	Var as_var;
+	Token as_token;
 	Funcall *as_funcall;
 	StmtNode *as_block;
 };

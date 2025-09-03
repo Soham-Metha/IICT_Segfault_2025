@@ -57,9 +57,7 @@ Error line_parse_next(CodeBlock *blk, bool *block_end)
 		Stmt statement		= stmt_fetch_next(&line);
 		if (statement.type == STMT_BLOCK_END) {
 			*block_end 		= true;
-		} 
-		else if (statement.type == STMT_BLOCK_START) {
-			statement.value.as_block = codeblock_generate().begin;
+			return res;
 		}
 
 		ERROR_CHECK(res, return res, codeblock_append_stmt(blk, statement));

@@ -16,27 +16,9 @@ int __STMT_VARIABLE(int id, String value)
 	return id;
 }
 
-int __STMT_LIT_INT(int id, uint64_t value)
+int __STMT_TOKEN(int id, String value)
 {
-	print(WIN_AST, AST("note", "lightblue", PRIu64), id, value);
-	return id;
-}
-
-int __STMT_LIT_FLOAT(int id, double value)
-{
-	print(WIN_AST, AST("note", "lightblue", "%f"), id, value);
-	return id;
-}
-
-int __STMT_LIT_CHAR(int id, char value)
-{
-	print(WIN_AST, AST("note", "lightblue", "%c"), id, value);
-	return id;
-}
-
-int __STMT_LIT_STR(int id, String value)
-{
-	print(WIN_AST, AST("note", "lightblue", "%.*s"), id, Str_Fmt(value));
+	print(WIN_AST, AST("note", "lightblue", "%.*s"), id, value);
 	return id;
 }
 
@@ -90,15 +72,11 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	case STMT_VARIABLE: 	return __STMT_VARIABLE	(myId, stmt->value.as_var);
-	case STMT_LIT_INT: 		return __STMT_LIT_INT	(myId, stmt->value.as_int);
-	case STMT_LIT_FLOAT: 	return __STMT_LIT_FLOAT	(myId, stmt->value.as_float);
-	case STMT_LIT_CHAR: 	return __STMT_LIT_CHAR	(myId, stmt->value.as_char);
-	case STMT_LIT_STR: 		return __STMT_LIT_STR	(myId, stmt->value.as_str);
-	case STMT_FUNCALL_DECL:
+	case STMT_VAR: 			return __STMT_VARIABLE	(myId, stmt->value.as_var.name);
+	case STMT_BLOCK_END:
+	case STMT_TOKEN:		return __STMT_TOKEN		(myId,stmt->value.as_token.text);
 	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
 	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->value.as_block);
-	case STMT_BLOCK_END:
 	default: 				return __STMT_UNKNOWN	(myId);
 	}
 }

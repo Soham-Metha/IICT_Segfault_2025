@@ -1,7 +1,6 @@
 #ifndef EXPR_LAYER_FRONTEND
 #define EXPR_LAYER_FRONTEND
 #include <Utils/strings.h>
-#include <Frontend/Layer_Statement.h>
 
 enum TokenType {
 	TOKEN_TYPE_STR,
@@ -13,8 +12,10 @@ enum TokenType {
 	TOKEN_TYPE_OPEN_CURLY,
 	TOKEN_TYPE_CLOSING_CURLY,
 	TOKEN_TYPE_STATEMENT_END,
-	TOKEN_TYPE_FUNC,
-	TOKEN_TYPE_COMMA
+	TOKEN_TYPE_COMMA,
+	TOKEN_TYPE_COLON,
+	TOKEN_TYPE_EQUAL,
+	TOKEN_TYPE_EOL,
 };
 
 typedef struct Token Token;

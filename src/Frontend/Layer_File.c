@@ -99,6 +99,7 @@ String file_fetch_next_line()
 	file.lines[file.line_num].line 	= (String){.data = line.data, .len = line.len};
 	current_buffer					= file.lines[file.line_num].logs;
 	line 					  		= trim(line);
+	split_str_by_len(&file.contents, 1);
 
 	print(WIN_STDOUT, "\n[LINE] Reading Line %3u : %.*s", file.line_num, Str_Fmt(line));
 

@@ -16,6 +16,8 @@ void print(int id, const char *str, ...)
 			ast = fopen("ast.dot", "w");
 		}
 		vfprintf(ast, str, args);
+	// } else if (id == WIN_STDERR) {
+	// 	vprintf(str, args);
 	} else {
 		// vprintf(str, args);
 		if (current_buffer && current_buffer_size) {
@@ -27,9 +29,9 @@ void print(int id, const char *str, ...)
 			log[size] = '\0';
 			current_buffer[*current_buffer_size] =
 				(String){ .data = log, .len = size };
-			// printf("%.*s\t\t%d \n",
-			//        Str_Fmt(current_buffer[*current_buffer_size]),
-			//        *current_buffer_size);
+			printf("%.*s\t\t%d \n",
+			       Str_Fmt(current_buffer[*current_buffer_size]),
+			       *current_buffer_size);
 			(*current_buffer_size)++;
 		}
 	}
