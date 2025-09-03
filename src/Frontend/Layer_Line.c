@@ -39,22 +39,22 @@ void line_get_preprocessed_line(Line_Context *ctx)
 	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
 		processed_line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
 
-		log_to_ctx(ctx, " %20s %8s "
-			"Removing Comments! (Comments start with '%c' )", "[PREPROCESSING]", "[LINE]", 
-			COMMENT_SYMBOL);
-		log_to_ctx(ctx, " %20s %8s "
-			"Found Comment : %.*s ", "[PREPROCESSING]", "[LINE]", 
-			Str_Fmt(ctx->line));
-		log_to_ctx(ctx, " %20s %8s "
-			"%3u | %.*s ", "[PREPROCESSING]", "[LINE]", 
-			ctx->line_no, Str_Fmt(processed_line));
+		log_to_ctx(ctx, LOG_FORMAT "Removing Comments! (Comments start with '%c' )",
+			   LOG_CTX("[PREPROCESSING]", "[LINE]"),
+			   COMMENT_SYMBOL);
+		log_to_ctx(ctx, LOG_FORMAT "Found Comment : %.*s ",
+			   LOG_CTX("[PREPROCESSING]", "[LINE]"),
+			   Str_Fmt(ctx->line));
+		log_to_ctx(ctx, LOG_FORMAT "%3u | %.*s ",
+			   LOG_CTX("[PREPROCESSING]", "[LINE]"), ctx->line_no,
+			   Str_Fmt(processed_line));
 	}
 
 	ctx->line = trim(processed_line);
 
 	if (ctx->line.len == 0) {
-		log_to_ctx(ctx, " %20s %8s "
-			"DETECTED BLANK LINE!!", "[PREPROCESSING]", "[LINE]");
+		log_to_ctx(ctx, LOG_FORMAT "DETECTED BLANK LINE!!",
+			   LOG_CTX("[PREPROCESSING]", "[LINE]"));
 	}
 }
 
