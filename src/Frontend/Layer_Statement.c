@@ -88,7 +88,7 @@ Var parse_var(Line_Context* ctx)
 		discard_cached_token();
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
-		log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 
 	}
 
