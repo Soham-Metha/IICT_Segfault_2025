@@ -33,15 +33,15 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 
 void line_get_preprocessed_line(Line_Context *ctx)
 {
-
 	String processed_line = ctx->line;
+	(void)get_indent(1);
 
 	size_t index;
 	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
 		processed_line = split_str_by_delim(&ctx->line, COMMENT_SYMBOL);
 
 		log_to_ctx(ctx, LOG_FORMAT "Comment removed: \"%%%.*s\" ",
-			LOG_CTX("   [PREPROCESS]", "[LINE]"),
+			LOG_CTX("[PREPROCESS]", 0, "[LINE]"),
 			Str_Fmt(ctx->line));
 
 	}
@@ -49,14 +49,16 @@ void line_get_preprocessed_line(Line_Context *ctx)
 	ctx->line = trim(processed_line);
 	
 	log_to_ctx(ctx, LOG_FORMAT "After removal:  \"%.*s\"",
-		LOG_CTX("   [PREPROCESS]", "[LINE]"),
+		LOG_CTX("[PREPROCESS]", 0, "[LINE]"),
 		Str_Fmt(ctx->line));
 	
 	if (ctx->line.len == 0) {
 		log_to_ctx(ctx, LOG_FORMAT "Line is Blank",
-			LOG_CTX("   [PREPROCESS]", "[LINE]"));
-		return;
+			LOG_CTX("[PREPROCESS]", 0, "[LINE]"));
+
 	}
+
+	(void)get_indent(1);
 }
 
 bool line_parse_next(CodeBlock *blk, File_Context* context)
