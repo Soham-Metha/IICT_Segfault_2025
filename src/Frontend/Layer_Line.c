@@ -72,9 +72,9 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
 			Stmt next = stmt_fetch_next(ctx);
 			statement.value.as_var.defn_val = &next;
-			ctx = file_fetch_curr_line(context);
-			log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
-
+			Line_Context *next_ctx = file_fetch_curr_line(context);
+			log_to_ctx(next_ctx, LOG_FORMAT "---------------DEFINITION END-----------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+			ctx = next_ctx;
 		} else if (statement.type == STMT_BLOCK_END) {
 			return true;
 		} else if (statement.type == STMT_BLOCK_START) {
