@@ -140,19 +140,19 @@ static int IR_dump_token(int *n, const Token tok)
 
     switch (tok.type)
     {
-    case TOKEN_TYPE_STR: return;
-    case TOKEN_TYPE_CHAR: return;
-    case TOKEN_TYPE_NUMBER: return;
-    case TOKEN_TYPE_NAME: return;
-    case TOKEN_TYPE_OPEN_PAREN: return;
-    case TOKEN_TYPE_CLOSING_PAREN: return;
-    case TOKEN_TYPE_OPEN_CURLY: return;
-    case TOKEN_TYPE_CLOSING_CURLY: return;
-    case TOKEN_TYPE_STATEMENT_END: return;
-    case TOKEN_TYPE_COMMA: return;
-    case TOKEN_TYPE_COLON: return;
-    case TOKEN_TYPE_EQUAL: return;
-    case TOKEN_TYPE_EOL: return;
+    case TOKEN_TYPE_STR: return __TOKEN_TYPE_STR(myId, tok.text);
+    case TOKEN_TYPE_CHAR: return myId;
+    case TOKEN_TYPE_NUMBER: return myId;
+    case TOKEN_TYPE_NAME: return myId;
+    case TOKEN_TYPE_OPEN_PAREN: return myId;
+    case TOKEN_TYPE_CLOSING_PAREN: return myId;
+    case TOKEN_TYPE_OPEN_CURLY: return myId;
+    case TOKEN_TYPE_CLOSING_CURLY: return myId;
+    case TOKEN_TYPE_STATEMENT_END: return myId;
+    case TOKEN_TYPE_COMMA: return myId;
+    case TOKEN_TYPE_COLON: return myId;
+    case TOKEN_TYPE_EQUAL: return myId;
+    case TOKEN_TYPE_EOL: return myId;
 
     default:
         break;
