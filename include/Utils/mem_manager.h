@@ -24,16 +24,12 @@ struct Region {
 
 Partition *partition_create(size_t capacity);
 
-void *region_allocate(Region *region, size_t size);
+void *region_allocate(size_t size);
 
-int region_load_file_into_str(Region *region, String filePath, String *content);
+const char *region_load_string(String str);
 
-const char *region_load_string(Region *region, String str);
+String region_concat_str(const char *a, const char *b);
 
-String region_concat_str(Region *region, const char *a, const char *b);
+void region_clear();
 
-void region_clear(Region *region);
-
-void region_free(Region *region);
-
-const char *convertRegionStrtoCStr(Region *arena, String sv);
+void region_free();

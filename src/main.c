@@ -79,5 +79,6 @@ int main(int argc, char **argv)
 	}
 
 	print(WIN_STDOUT, "\n\n");
+	region_free();
 	return 0;
 }
