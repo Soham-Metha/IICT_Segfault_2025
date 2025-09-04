@@ -69,7 +69,7 @@ static int __TOKEN_TYPE_STR(int id, String str)
 
 // // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-int __STMT_VARIABLE(int id, Var v, int *n, int *b)
+int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 {
 	switch (v.mode) {
 	case VAR_ACCS:
@@ -98,13 +98,13 @@ int __STMT_VARIABLE(int id, Var v, int *n, int *b)
 	return id;
 }
 
-int __STMT_UNKNOWN(int id)
+int IR__STMT_UNKNOWN(int id)
 {
     print(WIN_IR, "");
 	return id;
 }
 
-int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
+int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
     print(WIN_IR, "");
 
@@ -116,7 +116,7 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 	return id;
 }
 
-int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
+int IR__STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 {
 	(void)id;
 	int clusterId  = (*n)++;
@@ -166,12 +166,12 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	case STMT_VAR: 			return __STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
+	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
 	case STMT_BLOCK_END:
 	case STMT_TOKEN:		return IR_dump_token	(n, stmt->value.as_token);
-	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
-	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->value.as_block);
-	default: 				return __STMT_UNKNOWN	(myId);
+	case STMT_FUNCALL:		return IR__STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
+	case STMT_BLOCK_START: 	return IR__STMT_BLOCK		(myId, n, b, stmt->value.as_block);
+	default: 				return IR__STMT_UNKNOWN	(myId);
 	}
 }
 
