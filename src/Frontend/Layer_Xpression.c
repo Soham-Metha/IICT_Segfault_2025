@@ -76,6 +76,7 @@ Token token_fetch_next(Line_Context* ctx)
 		token.type = TOKEN_TYPE_EOL;
 
 		log_to_ctx(ctx, LOG_FORMAT "End of line", LOG_CTX("","[EXPR]"));
+		exit(1);
 		return token;
 	}
 
