@@ -30,6 +30,6 @@ struct Token {
 Token token_fetch_next(Line_Context* ctx);
 const char *token_get_name(TokenType type);
 Token token_expect_next(Line_Context* ctx, TokenType expected);
-bool discard_cached_token();
+bool discard_cached_token(Line_Context* ctx);
 
 #endif
