@@ -186,9 +186,9 @@ void onStartup(File_Context *ctx_in)
 		case KEY_DOWN:
 			selected_line = (selected_line + 1) % ctx->line_num;
 			break;
-		case 'p':
-			mid_x =(mid_x == 1)?LERP(min_x,max_x,0.4):1;
-			break;
+		// case 'p':
+		// 	mid_x =(mid_x == min_x)?LERP(min_x,max_x,0.4):min_x;
+		// 	break;
 		case 'l':
 			mid_y =(mid_y == max_y)?LERP(min_y,max_y,0.5):max_y;
 			break;
