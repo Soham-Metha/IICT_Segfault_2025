@@ -50,13 +50,13 @@ Token token_expect_next(Line_Context* ctx, TokenType expected)
 	update_indent(-1);
 
 	if (!discard_cached_token()) {
-		print(WIN_STDERR, 
+		print(ctx, WIN_STDERR, 
 			": ERROR: expected token `%s`\n", token_get_name(expected));
 		exit(1);
 	}
 
 	if (token.type != expected) {
-		print(WIN_STDERR,
+		print(ctx, WIN_STDERR,
 			  ": ERROR: expected token `%s`, but got `%s`\n",
 			  token_get_name(expected), token_get_name(token.type));
 		exit(1);
@@ -126,7 +126,7 @@ Token token_fetch_next(Line_Context* ctx)
 		token.type = TOKEN_TYPE_STR;
 		size_t index = 0;
 		if (!get_index_of(*line, '"', &index)) {
-			print(WIN_STDERR, "ERROR: Could not find closing \"\n");
+			print(ctx, WIN_STDERR, "ERROR: Could not find closing \"\n");
 			exit(1);
 		}
 		token.text = split_str_by_len(line, index);
@@ -140,7 +140,7 @@ Token token_fetch_next(Line_Context* ctx)
 		token.type = TOKEN_TYPE_CHAR;
 		size_t index = 0;
 		if (!get_index_of(*line, '\'', &index)) {
-			print(WIN_STDERR, "ERROR: Could not find closing \'\n");
+			print(ctx, WIN_STDERR, "ERROR: Could not find closing \'\n");
 			exit(1);
 		}
 		token.text = split_str_by_len(line, index);
@@ -156,7 +156,7 @@ Token token_fetch_next(Line_Context* ctx)
 			token.type = TOKEN_TYPE_NUMBER;
 			token.text = split_str_by_condition(line, isNumber);
 		} else {
-			print(WIN_STDERR,
+			print(ctx, WIN_STDERR,
 				  "ERROR: Unknown token starts with '%c'\n",
 				  line->data[0]);
 			exit(1);
