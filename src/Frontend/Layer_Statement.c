@@ -72,6 +72,7 @@ Var parse_var(Line_Context* ctx)
 	Var res 	= { 0 };
 	res.mode 	= VAR_ACCS;
 
+	update_indent(1);
 	Token next 	= token_fetch_next(ctx);
 	if (next.type == TOKEN_TYPE_COLON) {
 
@@ -79,18 +80,16 @@ Var parse_var(Line_Context* ctx)
 		res.mode 	|= VAR_DECL;
 		next 		 = token_fetch_next(ctx);
 
-		update_indent(1);
 	log_to_ctx(ctx, LOG_FORMAT "- declared type: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"), res.type.len,
 		res.type.data);
-		update_indent(-1);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
 		discard_cached_token(ctx);
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
-
 	}
+	update_indent(-1);
 
 	return res;
 }
