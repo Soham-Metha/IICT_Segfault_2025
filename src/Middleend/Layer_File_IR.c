@@ -71,6 +71,7 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
 int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 {
+
 	switch (v.mode) {
 	case VAR_ACCS:
 		print(WIN_IR, "\nPUSH   %s", v.name);
@@ -164,10 +165,9 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 {
 	assert(stmt != NULL);
 	int myId = (*n)++;
-    (void)b;
 
 	switch (stmt->type) {
-	case STMT_VAR: 			//return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
+	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
 	case STMT_BLOCK_END:
 	case STMT_TOKEN:		// return IR_dump_token	(n, stmt->value.as_token);
 	case STMT_FUNCALL:		// return IR__STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
