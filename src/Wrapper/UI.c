@@ -3,6 +3,7 @@
 
 #define COLOR_GREY 8
 
+#define CTRL(x) (x & 0x1F)
 #define LERP(START, END, T) (START * (1 - T) + END * T)
 #define BOUNDS(x1, y1, x2, y2) (y2 - y1, x2 - x1, y1, x1)
 #define INNER_BOUNDS(x1, y1, x2, y2) BOUNDS(x1 + 1, y1 + 1, x2 - 3, y2 - 3)
@@ -193,42 +194,17 @@ void onStartup(File_Context *ctx_in)
 		case KEY_DOWN:
 			selected_line = (selected_line + 1) % ctx->line_num;
 			break;
-
-		case KEY_MOUSE:
-			if (getmouse(&event) == OK) {
-				if (event.bstate & BUTTON1_PRESSED) {
-					if (abs(event.x - mid_x) <= 1) {
-						resizing_x = true;
-					} else if (abs(event.y - mid_y) <= 0) {
-						resizing_y = true;
-					}
-				}
-
-				if ((event.bstate & REPORT_MOUSE_POSITION) &&
-				    (resizing_x || resizing_y)) {
-					if (resizing_x) {
-						mid_x = event.x;
-						if (mid_x < 20)
-							mid_x = 20;
-						if (mid_x > max_x - 20)
-							mid_x = max_x - 20;
-						x_by4 = LERP(mid_x, max_x, 0.5);
-					}
-					if (resizing_y) {
-						mid_y = event.y;
-						if (mid_y < 5)
-							mid_y = 5;
-						if (mid_y > max_y - 5)
-							mid_y = max_y - 5;
-					}
-
-					refresh_ui();
-				}
-
-				if (event.bstate & BUTTON1_RELEASED) {
-					resizing_x = resizing_y = false;
-				}
-			}
+		case CTRL('a'):
+			mid_x -=1;
+			break;
+		case CTRL('d'):
+			mid_x +=1;
+			break;
+		case CTRL('w'):
+			mid_y +=1;
+			break;
+		case CTRL('s'):
+			mid_y -=1;
 			break;
 		}
 
