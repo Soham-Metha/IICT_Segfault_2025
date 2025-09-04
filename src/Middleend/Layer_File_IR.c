@@ -6,17 +6,17 @@
 #include <inttypes.h>
 #include <assert.h>
 
-// static int IR_dump_token(int *n, const Token tok);
+static int IR_dump_token(int *n, const Token tok);
 static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
 static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
-// static int __TOKEN_TYPE_STR(int id, String str)
-// {
-// 	print(WIN_IR, "\n%%bind    _%d    \"%s\"", id, str);
-// 	print(WIN_IR, "\nPUSH    _%d", id);
-// 	print(WIN_IR, "\nPUSH    len(_%d)", id);
-// 	return id;
-// }
+static int __TOKEN_TYPE_STR(int id, String str)
+{
+	print(WIN_IR, "\n%%bind    _%d    \"%s\"", id, str);
+	print(WIN_IR, "\nPUSH    _%d", id);
+	print(WIN_IR, "\nPUSH    len(_%d)", id);
+	return id;
+}
 
 // static int __TOKEN_TYPE_CHAR(int id, char c)
 // {
@@ -134,31 +134,31 @@ int IR__STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 
 // // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-// static int IR_dump_token(int *n, const Token tok)
-// {
-// 	int myId = (*n)++;
+static int IR_dump_token(int *n, const Token tok)
+{
+	int myId = (*n)++;
 
-//     switch (tok.type)
-//     {
-//     case TOKEN_TYPE_STR: return __TOKEN_TYPE_STR(myId, tok.text);
-//     case TOKEN_TYPE_CHAR: return myId;
-//     case TOKEN_TYPE_NUMBER: return myId;
-//     case TOKEN_TYPE_NAME: return myId;
-//     case TOKEN_TYPE_OPEN_PAREN: return myId;
-//     case TOKEN_TYPE_CLOSING_PAREN: return myId;
-//     case TOKEN_TYPE_OPEN_CURLY: return myId;
-//     case TOKEN_TYPE_CLOSING_CURLY: return myId;
-//     case TOKEN_TYPE_STATEMENT_END: return myId;
-//     case TOKEN_TYPE_COMMA: return myId;
-//     case TOKEN_TYPE_COLON: return myId;
-//     case TOKEN_TYPE_EQUAL: return myId;
-//     case TOKEN_TYPE_EOL: return myId;
+    switch (tok.type)
+    {
+    case TOKEN_TYPE_STR: return __TOKEN_TYPE_STR(myId, tok.text);
+    case TOKEN_TYPE_CHAR: return myId;
+    case TOKEN_TYPE_NUMBER: return myId;
+    case TOKEN_TYPE_NAME: return myId;
+    case TOKEN_TYPE_OPEN_PAREN: return myId;
+    case TOKEN_TYPE_CLOSING_PAREN: return myId;
+    case TOKEN_TYPE_OPEN_CURLY: return myId;
+    case TOKEN_TYPE_CLOSING_CURLY: return myId;
+    case TOKEN_TYPE_STATEMENT_END: return myId;
+    case TOKEN_TYPE_COMMA: return myId;
+    case TOKEN_TYPE_COLON: return myId;
+    case TOKEN_TYPE_EQUAL: return myId;
+    case TOKEN_TYPE_EOL: return myId;
 
-//     default:
-//         break;
-//     }
-//     return myId;
-// }
+    default:
+        break;
+    }
+    return myId;
+}
 
 static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 {
@@ -168,10 +168,10 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 	switch (stmt->type) {
 	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		// return IR_dump_token	(n, stmt->value.as_token);
-	case STMT_FUNCALL:		// return IR__STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
-	case STMT_BLOCK_START: 	// return IR__STMT_BLOCK		(myId, n, b, stmt->value.as_block);
-	default: 				// return IR__STMT_UNKNOWN	(myId);
+	case STMT_TOKEN:		return IR_dump_token	    (n, stmt->value.as_token);
+	case STMT_FUNCALL:		return IR__STMT_FUNCALL	    (myId, n, b, stmt->value.as_funcall);
+	case STMT_BLOCK_START: 	return IR__STMT_BLOCK		(myId, n, b, stmt->value.as_block);
+	default: 				return IR__STMT_UNKNOWN	    (myId);
 	}
     return myId;
 }
