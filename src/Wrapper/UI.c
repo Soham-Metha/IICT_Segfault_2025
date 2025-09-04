@@ -59,16 +59,15 @@ void create_all_windows()
 
 static void draw_bounds()
 {
+	bounds[UI_PROG] = newwin BOUNDS(min_x, min_y, mid_x, max_y);
+	bounds[UI_LOGS] = newwin BOUNDS(mid_x, min_x, max_x, mid_y);
+	bounds[UI_IR] = newwin BOUNDS(mid_x, mid_y, x_by4, max_y);
+	bounds[UI_MC] = newwin BOUNDS(x_by4, mid_y, max_x, max_y);
 
 	windows[UI_PROG] = newwin INNER_BOUNDS(min_x, min_y, mid_x, max_y);
 	windows[UI_LOGS] = newwin INNER_BOUNDS(mid_x, min_x, max_x, mid_y);
 	windows[UI_IR] = newwin INNER_BOUNDS(mid_x, mid_y, x_by4, max_y);
 	windows[UI_MC] = newwin INNER_BOUNDS(x_by4, mid_y, max_x, max_y);
-
-	bounds[UI_PROG] = newwin BOUNDS(min_x, min_y, mid_x, max_y);
-	bounds[UI_LOGS] = newwin BOUNDS(mid_x, min_x, max_x, mid_y);
-	bounds[UI_IR] = newwin BOUNDS(mid_x, mid_y, x_by4, max_y);
-	bounds[UI_MC] = newwin BOUNDS(x_by4, mid_y, max_x, max_y);
 
 	for (int i = 0; i < UI_CNT; i++) {
 		box(bounds[i], 0, 0);
