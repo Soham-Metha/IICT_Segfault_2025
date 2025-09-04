@@ -1,17 +1,9 @@
 #ifndef LINE_LAYER_MIDDLEEND
 #define LINE_LAYER_MIDDLEEND
 
-#include <Middleend/Layer_Statement.h>
+#include <Frontend/Layer_Line.h>
+#include <Utils/errors.h>
 
-typedef struct BlockScope {
-	BlockScope *prev;
-	Var_IR vars[128];
-	int var_count;
-	int fun_count;
-} BlockScope;
-
-typedef struct CodeBlockIR {
-	BlockScope *scope;
-} CodeBlockIR;
+Error IR_generate(const CodeBlock *blk);
 
 #endif
