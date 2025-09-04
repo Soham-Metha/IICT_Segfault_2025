@@ -1,7 +1,7 @@
 #ifndef EXPR_LAYER_FRONTEND
 #define EXPR_LAYER_FRONTEND
 #include <Utils/strings.h>
-#include <Frontend/Layer_Line.h>
+#include <Layer_Line.h>
 
 enum TokenType {
 	TOKEN_TYPE_STR,
