@@ -1,4 +1,7 @@
 
 %scope
-PUSH   x
+%bind    x    _1
+hello:
+%scope
+%bind    x    _7
 %end
