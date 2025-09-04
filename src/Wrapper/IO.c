@@ -23,7 +23,7 @@ void print(int id, const char *str, ...)
 	// 	}
 	// 	vfprintf(myIR, str, args);
 	}else {
-		assert(id == WIN_STDERR);
+		// assert(id == WIN_STDERR);
 		vprintf(str, args);
 	}
 
