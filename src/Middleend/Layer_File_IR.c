@@ -85,7 +85,7 @@ int __STMT_VARIABLE(int id, Var v, int *n, int *b)
 		if (compare_str(v.type, STR("func"))) {
             print(WIN_IR, "\n%s:", v.name);
             print(WIN_IR, "\n%%scope");
-		    IR_dump_statement(v.defn_val, *n, *b);
+		    IR_dump_statement(v.defn_val, n, b);
 		} else {
 	        int child = IR_dump_statement(v.defn_val, *n, *b);
 			print(WIN_IR, "\n%%bind    %s    _%d", v.name, child);
