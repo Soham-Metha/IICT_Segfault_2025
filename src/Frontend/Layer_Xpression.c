@@ -49,7 +49,7 @@ Token token_expect_next(Line_Context* ctx, TokenType expected)
 	token_get_name(expected), token_get_name(token.type));
 	update_indent(-1);
 
-	if (!discard_cached_token()) {
+	if (!discard_cached_token(ctx)) {
 		print(ctx, WIN_STDERR, 
 			": ERROR: expected token `%s`\n", token_get_name(expected));
 		exit(1);
@@ -74,8 +74,6 @@ Token token_fetch_next(Line_Context* ctx)
 
 	if (line->len == 0) {
 		token.type = TOKEN_TYPE_EOL;
-
-		log_to_ctx(ctx, LOG_FORMAT "End of line", LOG_CTX("","[EXPR]"));
 		return token;
 	}
 
@@ -163,16 +161,16 @@ Token token_fetch_next(Line_Context* ctx)
 		}
 	}
 	}
-	log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>",LOG_CTX("","[EXPR]"),token_get_name(token.type),
-		  token.text.len, token.text.data);
 	cache = token;
 	cachedToken = true;
 	return token;
 }
 
-bool discard_cached_token()
+bool discard_cached_token(Line_Context* ctx)
 {
 	if (cachedToken) {
+		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>",LOG_CTX("","[EXPR]"),token_get_name(cache.type),
+			  cache.text.len, cache.text.data);
 		cachedToken = false;
 		return true;
 	}
