@@ -48,19 +48,19 @@ int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 	int clusterNum = (*b)++;
 
 	print(WIN_AST,
-	      "  subgraph cluster_%d {\n"
-	      "    label=\"Code Block %d\";\n"
-	      "    style=filled;\n"
-	      "    color=gray;\n"
-	      "    fillcolor=whitesmoke;\n"
-	      "    fontname=\"Courier\";\n",
-	      clusterId, clusterNum);
+		  "  subgraph cluster_%d {\n"
+		  "    label=\"Code Block %d\";\n"
+		  "    style=filled;\n"
+		  "    color=gray;\n"
+		  "    fillcolor=whitesmoke;\n"
+		  "    fontname=\"Courier\";\n",
+		  clusterId, clusterNum);
 
 	AST_dump_code_block(block, n, b);
 
 	print(WIN_AST, 
 		"  }\n" AST("box3d", "aquamarine", "Code Block %d"),
-	      clusterId, clusterNum);
+		  clusterId, clusterNum);
 
 	return clusterId;
 }
