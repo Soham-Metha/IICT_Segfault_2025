@@ -27,7 +27,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	FuncallArg *last  = NULL;
 
 	do {
-		FuncallArg *arg = malloc(sizeof(FuncallArg));
+		FuncallArg *arg = region_allocate(sizeof(FuncallArg));
 		arg->value 		= stmt_fetch_next(ctx);
 		arg->next		= NULL;
 
@@ -135,7 +135,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 			  LOG_FORMAT "function call: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"),
 			  tok.text.len, tok.text.data, token_get_name(tok.type));
 		result.type 				  = STMT_FUNCALL;
-		result.value.as_funcall 	  = malloc(sizeof(Funcall));
+		result.value.as_funcall 	  = region_allocate(sizeof(Funcall));
 		result.value.as_funcall->name = tok.text;
 		result.value.as_funcall->args = functions_parse_arglist(ctx);
 
