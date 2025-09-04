@@ -1,14 +1,1 @@
-x = 'a'; % comment 0
-
-hello:func = {
-    print("hi","hello");
-};
-
-x ='b';
-
-{
-    {
-y;
-
-% comment 1
-% comment 2
+x
