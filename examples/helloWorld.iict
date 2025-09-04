@@ -1,1 +1,3 @@
-"hi"
+main:proc() = {
+    print("hi");
+}
