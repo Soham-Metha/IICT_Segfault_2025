@@ -164,6 +164,7 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 {
 	assert(stmt != NULL);
 	int myId = (*n)++;
+    (void)b;
 
 	switch (stmt->type) {
 	case STMT_VAR: 			//return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
