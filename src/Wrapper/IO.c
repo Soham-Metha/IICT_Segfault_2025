@@ -17,11 +17,11 @@ void print(int id, const char *str, ...)
 			ast = fopen("ast.dot", "w");
 		}
 		vfprintf(ast, str, args);
-	} else if (id == WIN_IR) {
-		if (!myIR) {
-			myIR = fopen("ir.sasm", "w");
-		}
-		vfprintf(myIR, str, args);
+	// } else if (id == WIN_IR) {
+	// 	if (!myIR) {
+	// 		myIR = fopen("ir.sasm", "w");
+	// 	}
+	// 	vfprintf(myIR, str, args);
 	}else {
 		assert(id == WIN_STDERR);
 		vprintf(str, args);
