@@ -168,10 +168,10 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 	switch (stmt->type) {
 	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		return IR_dump_token	(n, stmt->value.as_token);
-	case STMT_FUNCALL:		return IR__STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
-	case STMT_BLOCK_START: 	return IR__STMT_BLOCK		(myId, n, b, stmt->value.as_block);
-	default: 				return IR__STMT_UNKNOWN	(myId);
+	case STMT_TOKEN:		// return IR_dump_token	(n, stmt->value.as_token);
+	case STMT_FUNCALL:		// return IR__STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
+	case STMT_BLOCK_START: 	// return IR__STMT_BLOCK		(myId, n, b, stmt->value.as_block);
+	default: 				// return IR__STMT_UNKNOWN	(myId);
 	}
 }
 
