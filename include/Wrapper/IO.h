@@ -4,6 +4,7 @@
 #include <Frontend/Layer_Line.h>
 
 #define LOG_CTX(action, lvl) lvl, action, Str_Fmt(get_indent())
+
 #define LOG_FORMAT "\n %6s | %20s %.*s "
 
 enum WindowNames { WIN_STDIN, WIN_STDOUT, WIN_STDERR, WIN_AST, WIN_COUNT };
