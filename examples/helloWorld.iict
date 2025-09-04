@@ -1,3 +1,12 @@
 main:proc() = {
     print("hi");
 };
+main:proc() = {
+    print("hi");
+};
+main:proc() = {
+    print("hi");
+};
+main:proc() = {
+    print("hi");
+};
