@@ -17,7 +17,7 @@ void print(int id, const char *str, ...)
 			ast = fopen("ast.dot", "w");
 		}
 		vfprintf(ast, str, args);
-	} else if (id == WIN_AST) {
+	} else if (id == WIN_IR) {
 		if (!ir) {
 			ir = fopen("ir.sasm", "w");
 		}
