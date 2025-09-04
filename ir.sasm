@@ -1,2 +1,4 @@
+
 %scope
-PUSH   x%end
+PUSH   x
+%end
