@@ -77,23 +77,23 @@ void *region_allocate(size_t size)
 	return region_allocate_aligned(size, sizeof(void *));
 }
 
-const char *region_load_string(String str)
-{
-	char *cstr = region_allocate(str.len + 1);
-	memcpy(cstr, str.data, str.len);
-	cstr[str.len] = '\0';
-	return cstr;
-}
+// const char *region_load_string(String str)
+// {
+// 	char *cstr = region_allocate(str.len + 1);
+// 	memcpy(cstr, str.data, str.len);
+// 	cstr[str.len] = '\0';
+// 	return cstr;
+// }
 
-String region_concat_str(const char *a, const char *b)
-{
-	const size_t aLen = strlen(a);
-	const size_t bLen = strlen(b);
-	char *buf = region_allocate(aLen + bLen);
-	memcpy(buf, a, aLen);
-	memcpy(buf + aLen, b, bLen);
-	return (String){ .len = aLen + bLen, .data = buf };
-}
+// String region_concat_str(const char *a, const char *b)
+// {
+// 	const size_t aLen = strlen(a);
+// 	const size_t bLen = strlen(b);
+// 	char *buf = region_allocate(aLen + bLen);
+// 	memcpy(buf, a, aLen);
+// 	memcpy(buf + aLen, b, bLen);
+// 	return (String){ .len = aLen + bLen, .data = buf };
+// }
 
 void region_clear()
 {

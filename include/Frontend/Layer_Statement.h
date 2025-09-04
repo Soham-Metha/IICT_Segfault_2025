@@ -1,6 +1,6 @@
 #ifndef STMT_LAYER_FRONTEND
 #define STMT_LAYER_FRONTEND
-#include <Layer_Xpression.h>
+#include <Frontend/Layer_Xpression.h>
 #include <Utils/strings.h>
 #include <stdint.h>
 
@@ -65,5 +65,11 @@ struct StmtNode {
 };
 
 Stmt stmt_fetch_next(Line_Context *ctx);
+
+//-------------------------------- MIDDLE END --------------------------------
+typedef struct Var_IR {
+	String name;
+	unsigned int mem_addr;
+} Var_IR;
 
 #endif

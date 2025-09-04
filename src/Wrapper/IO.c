@@ -1,6 +1,6 @@
 #include <Wrapper/IO.h>
 #include <stdio.h>
-#include <Layer_File.h>
+#include <Frontend/Layer_File.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -34,7 +34,7 @@ void log_to_ctx(Line_Context *ctx, const char *str, ...)
 	va_copy(args_copy, args);
 
 	int size = vsnprintf(NULL, 0, str, args_copy);
-	char *log = malloc(size + 1);
+	char *log = region_allocate(size + 1);
 
 	vsnprintf(log, size + 1, str, args);
 
