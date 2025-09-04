@@ -34,11 +34,11 @@ Error file_get_size(FILE *f, size_t *out)
 	return ERR_OK;
 }
 
-Error file_get_contents(FILE *f, size_t n, char **contents)
+Error file_get_contents(File_Context *ctx, FILE *f, size_t n, char **contents)
 {
 	// Try to allocate enough space
 	// Add 1 to size for null termination
-	char *buf = malloc(n + 1);
+	char *buf = region_allocate(&ctx->region, n+1);
 	ERROR_THROW_IF(ERR_RAN_OUT_OF_MEM, (!buf))
 
 	// Now that we have space, try to read contents of the file
@@ -67,7 +67,7 @@ Error file_read(const char *file_path, File_Context *file)
 
 	ERROR_CHECK(out, goto cleanup, file_open(file_path, "r", &file_ptr));
 	ERROR_CHECK(out, goto cleanup, file_get_size(file_ptr, &size));
-	ERROR_CHECK(out, goto cleanup, file_get_contents(file_ptr, size, &file_contents));
+	ERROR_CHECK(out, goto cleanup, file_get_contents(file, file_ptr, size, &file_contents));
 
 	file->contents.len 	= size;
 	file->contents.data = file_contents;

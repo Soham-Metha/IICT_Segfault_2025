@@ -1,0 +1,185 @@
+// #include <Layer_File.h>
+// #include <Layer_Line.h>
+// #include <Layer_Statement.h>
+// #include <Wrapper/IO.h>
+// #include <stdlib.h>
+// #include <inttypes.h>
+// #include <assert.h>
+
+// static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
+// static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
+
+// static int __TOKEN_TYPE_STR(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_CHAR(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_NUMBER(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_NAME(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_OPEN_PAREN(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_CLOSING_PAREN(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_OPEN_CURLY(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_CLOSING_CURLY(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_STATEMENT_END(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_COMMA(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_COLON(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_EQUAL(int id)
+// {
+
+// }
+// static int __TOKEN_TYPE_EOL(int id)
+// {
+
+// }
+
+// // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
+
+// int __STMT_VARIABLE(int id, String value)
+// {
+//     print(WIN_IR, "");
+// 	return id;
+// }
+
+// int __STMT_TOKEN(int id, String value)
+// {
+//     print(WIN_IR, "");
+// 	return id;
+// }
+
+// int __STMT_UNKNOWN(int id)
+// {
+//     print(WIN_IR, "");
+// 	return id;
+// }
+
+// int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
+// {
+//     print(WIN_IR, "");
+
+// 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
+// 		int childId = IR_dump_statement(&arg->value, n, b);
+
+// 		// if (childId >= 0) print(WIN_IR, "  Expr_%d -> Expr_%d;\n", id, childId);
+// 	}
+// 	return id;
+// }
+
+// int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
+// {
+// 	(void)id;
+// 	int clusterId  = (*n)++;
+// 	int clusterNum = (*b)++;
+
+// 	print(WIN_IR, "");
+
+// 	IR_dump_code_block(block, n, b);
+
+// 	print(WIN_IR, "");
+
+// 	return clusterId;
+// }
+
+// // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
+
+// static int IR_dump_token(const Token tok, int *n)
+// {
+// 	int myId = (*n)++;
+
+//     switch (tok.type)
+//     {
+//     case TOKEN_TYPE_STR: return;
+//     case TOKEN_TYPE_CHAR: return;
+//     case TOKEN_TYPE_NUMBER: return;
+//     case TOKEN_TYPE_NAME: return;
+//     case TOKEN_TYPE_OPEN_PAREN: return;
+//     case TOKEN_TYPE_CLOSING_PAREN: return;
+//     case TOKEN_TYPE_OPEN_CURLY: return;
+//     case TOKEN_TYPE_CLOSING_CURLY: return;
+//     case TOKEN_TYPE_STATEMENT_END: return;
+//     case TOKEN_TYPE_COMMA: return;
+//     case TOKEN_TYPE_COLON: return;
+//     case TOKEN_TYPE_EQUAL: return;
+//     case TOKEN_TYPE_EOL: return;
+    
+//     default:
+//         break;
+//     }
+// }
+
+// static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
+// {
+// 	assert(stmt != NULL);
+// 	int myId = (*n)++;
+
+// 	switch (stmt->type) {
+// 	case STMT_VAR: 			return __STMT_VARIABLE	(myId, stmt->value.as_var.name);
+// 	case STMT_BLOCK_END:
+// 	case STMT_TOKEN:		return __STMT_TOKEN		(myId, stmt->value.as_token.text);
+// 	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
+// 	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->value.as_block);
+// 	default: 				return __STMT_UNKNOWN	(myId);
+// 	}
+// }
+
+// static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
+// {
+// 	int firstId = -1;
+// 	int prevId 	= -1;
+
+// 	for (const StmtNode *cur = stmtNode; cur != NULL; cur = cur->next) {
+// 		int id 	= IR_dump_statement(&cur->statement, n, b);
+
+// 		if (firstId < 0) firstId = id;
+
+// 		prevId 	= id;
+// 	}
+
+// 	return firstId;
+// }
+
+// // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
+
+// Error IR_generate(const CodeBlock *blk)
+// {
+// 	int node_counter  = 0;
+// 	int block_counter = 0;
+
+// 	print(WIN_IR, "");
+
+// 	IR_dump_code_block(blk->begin, &node_counter, &block_counter);
+// 	print(WIN_IR, "");
+
+// 	return ERR_OK;
+// }
+
+void IGNORE_ERRORS() {;}

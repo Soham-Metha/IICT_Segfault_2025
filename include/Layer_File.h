@@ -1,6 +1,7 @@
 #ifndef FILE_LAYER_FRONTEND
 #define FILE_LAYER_FRONTEND
 #include <Utils/errors.h>
+#include <Utils/mem_manager.h>
 #include <Utils/strings.h>
 #include <Layer_Line.h>
 
@@ -8,6 +9,7 @@ typedef struct File_Context File_Context;
 typedef struct Line_Context Line_Context;
 
 struct File_Context {
+	Region region;
 	const char *file_path;
 	String contents;
 	Line_Context lines[1024]; // hardcoded line count
