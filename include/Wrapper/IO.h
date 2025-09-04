@@ -22,7 +22,7 @@ enum WindowNames {
  * print a string!
  * id is used to identify the output window where string is to be printed!
  */
-void print(int id, const char *str, ...);
+void print(Line_Context *ctx, int id, const char *str, ...);
 
 void log_to_ctx(Line_Context *ctx, const char *str, ...);
 
