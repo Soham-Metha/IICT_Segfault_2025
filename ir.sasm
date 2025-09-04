@@ -3,5 +3,10 @@
 %bind    x    _1
 hello:
 %scope
-%bind    x    _7
+%bind    x    _9
+%scope
+%scope
+PUSH   y
+%end
+%end
 %end
