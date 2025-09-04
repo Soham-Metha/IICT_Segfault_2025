@@ -5,7 +5,7 @@
 #include <assert.h>
 
 FILE *ast;
-FILE *ir;
+FILE *myIR;
 
 void print(int id, const char *str, ...)
 {
@@ -18,10 +18,10 @@ void print(int id, const char *str, ...)
 		}
 		vfprintf(ast, str, args);
 	} else if (id == WIN_IR) {
-		if (!ir) {
-			ir = fopen("ir.sasm", "w");
+		if (!myIR) {
+			myIR = fopen("ir.sasm", "w");
 		}
-		vfprintf(ir, str, args);
+		vfprintf(myIR, str, args);
 	}else {
 		assert(id == WIN_STDERR);
 		vprintf(str, args);
