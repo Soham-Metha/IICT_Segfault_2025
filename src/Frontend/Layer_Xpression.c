@@ -72,7 +72,7 @@ Token token_fetch_next(Line_Context* ctx)
 	Token token = { 0 };
 	(*line) 	= trim(*line);
 
-	if (line->len == 0) {
+	if (line->len == 0 || line->data[0]=='\0') {
 		token.type = TOKEN_TYPE_EOL;
 
 		log_to_ctx(ctx, LOG_FORMAT "End of line", LOG_CTX("","[EXPR]"));
@@ -157,8 +157,8 @@ Token token_fetch_next(Line_Context* ctx)
 			token.text = split_str_by_condition(line, isNumber);
 		} else {
 			print(ctx, WIN_STDERR,
-				  "ERROR: Unknown token '%c' '%c'\n",
-				  line->data[0],line->data[1]);
+				  "Unknown token starting with '%c'\n",
+				  line->data[0]);
 			exit(1);
 		}
 	}
