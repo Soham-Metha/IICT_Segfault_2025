@@ -164,7 +164,7 @@ Token token_fetch_next(Line_Context* ctx)
 		}
 	}
 	}
-	log_to_ctx(ctx, LOG_FORMAT "%s '%.*s'",LOG_CTX("","[EXPR]"),token_get_name(token.type),
+	log_to_ctx(ctx, "<%s '%.*s'>", token_get_name(token.type),
 		  token.text.len, token.text.data);
 	cache = token;
 	cachedToken = true;
