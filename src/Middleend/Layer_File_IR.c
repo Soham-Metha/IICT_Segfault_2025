@@ -109,8 +109,8 @@ int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
     print(WIN_IR, "");
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
-		int childId = IR_dump_statement(&arg->value, n, b);
-        (void)childId;
+		// int childId = IR_dump_statement(&arg->value, n, b);
+        // (void)childId;
 		// if (childId >= 0) print(WIN_IR, "  Expr_%d -> Expr_%d;\n", id, childId);
 	}
 	return id;
