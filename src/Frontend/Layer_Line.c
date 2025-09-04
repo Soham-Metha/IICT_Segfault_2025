@@ -14,7 +14,7 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 	// so this is just the logic of appending a node to ll
 
 	assert(list);
-	StmtNode *node 		= malloc(sizeof(StmtNode));
+	StmtNode *node 		= region_allocate(sizeof(StmtNode));
 	ERROR_THROW_IF(ERR_RAN_OUT_OF_MEM, (!node));
 	node->statement 	= statement;
 	node->next 			= NULL;
