@@ -181,7 +181,7 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 	int firstId = -1;
 	int prevId 	= -1;
 
-    print(WIN_IR, "%%scope");
+    print(WIN_IR, "\n%%scope");
 	for (const StmtNode *cur = stmtNode; cur != NULL; cur = cur->next) {
 		int id 	= IR_dump_statement(&cur->statement, n, b);
 
@@ -190,7 +190,7 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 		prevId 	= id;
         (void)prevId;
 	}
-    print(WIN_IR, "%%end");
+    print(WIN_IR, "\n%%end");
 
 	return firstId;
 }
