@@ -169,8 +169,10 @@ Token token_fetch_next(Line_Context* ctx)
 bool discard_cached_token(Line_Context* ctx)
 {
 	if (cachedToken) {
+		update_indent(1);
 		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>",LOG_CTX("","[EXPR]"),token_get_name(cache.type),
 			  cache.text.len, cache.text.data);
+		update_indent(-1);
 		cachedToken = false;
 		return true;
 	}
