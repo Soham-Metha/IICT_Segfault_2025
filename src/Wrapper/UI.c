@@ -128,7 +128,7 @@ static void draw_log()
 	if (selected_line < ctx->line_num - 1) {
 		int j = selected_line+1;
 		while (j < ctx->line_num - 1) {
-			int i = 0;
+			unsigned int i = 0;
 			while (ctx->lines[selected_line + 1].logs[i].len > 0) {
 				wprintw(windows[UI_LOGS], "%-*.*s", max_x-mid_x-4,
 					Str_Fmt(ctx->lines[j].logs[i]));
