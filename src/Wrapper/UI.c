@@ -55,15 +55,16 @@ void create_all_windows()
 	mid_x = LERP(min_x, max_x, 0.4);
 	mid_y = LERP(min_y, max_y, 0.5);
 	x_by4 = LERP(mid_x, max_x, 0.5);
+}
+
+static void draw_bounds()
+{
 
 	windows[UI_PROG] = newwin INNER_BOUNDS(min_x, min_y, mid_x, max_y);
 	windows[UI_LOGS] = newwin INNER_BOUNDS(mid_x, min_x, max_x, mid_y);
 	windows[UI_IR] = newwin INNER_BOUNDS(mid_x, mid_y, x_by4, max_y);
 	windows[UI_MC] = newwin INNER_BOUNDS(x_by4, mid_y, max_x, max_y);
-}
 
-static void draw_bounds()
-{
 	bounds[UI_PROG] = newwin BOUNDS(min_x, min_y, mid_x, max_y);
 	bounds[UI_LOGS] = newwin BOUNDS(mid_x, min_x, max_x, mid_y);
 	bounds[UI_IR] = newwin BOUNDS(mid_x, mid_y, x_by4, max_y);
@@ -143,7 +144,7 @@ static void draw_log()
 static void draw_ir_mc()
 {
 	werase(windows[UI_IR]);
-	mvwprintw(windows[UI_IR], 1, 1, "IR for line %d| %d %d", selected_line + 1, mid_x, mid_y);
+	mvwprintw(windows[UI_IR], 1, 1, "IR for line %d", selected_line + 1);
 	wrefresh(windows[UI_IR]);
 
 	werase(windows[UI_MC]);
@@ -168,6 +169,9 @@ void onStartup(File_Context *ctx_in)
 	curs_set(0);
 	keypad(stdscr, TRUE);
 
+	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
+
+	printf("\033[?1003h\n");
 	initColors();
 	create_all_windows();
 
@@ -176,19 +180,64 @@ void onStartup(File_Context *ctx_in)
 	int ch;
 	refresh_ui();
 
+	bool resizing_x = false, resizing_y = false;
+	MEVENT event;
+
 	while ((ch = getch()) != 'q') {
 		switch (ch) {
 		case KEY_UP:
 			selected_line = (selected_line + ctx->line_num - 1) %
 					ctx->line_num;
 			break;
+
 		case KEY_DOWN:
 			selected_line = (selected_line + 1) % ctx->line_num;
 			break;
+
+		case KEY_MOUSE:
+			if (getmouse(&event) == OK) {
+				if (event.bstate & BUTTON1_PRESSED) {
+					if (abs(event.x - mid_x) <= 1) {
+						resizing_x = true;
+					} else if (abs(event.y - mid_y) <= 0) {
+						resizing_y = true;
+					}
+				}
+
+				if ((event.bstate & REPORT_MOUSE_POSITION) &&
+				    (resizing_x || resizing_y)) {
+					if (resizing_x) {
+						mid_x = event.x;
+						if (mid_x < 20)
+							mid_x = 20;
+						if (mid_x > max_x - 20)
+							mid_x = max_x - 20;
+						x_by4 = LERP(mid_x, max_x, 0.5);
+					}
+					if (resizing_y) {
+						mid_y = event.y;
+						if (mid_y < 5)
+							mid_y = 5;
+						if (mid_y > max_y - 5)
+							mid_y = max_y - 5;
+					}
+
+					refresh_ui();
+				}
+
+				if (event.bstate & BUTTON1_RELEASED) {
+					resizing_x = resizing_y = false;
+				}
+			}
+			break;
 		}
+
 		refresh_ui();
 	}
+
+	printf("\033[?1003l\n"); // disable motion tracking
 }
+
 
 void onShutdown()
 {
