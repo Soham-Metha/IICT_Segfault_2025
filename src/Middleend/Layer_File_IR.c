@@ -6,17 +6,17 @@
 #include <inttypes.h>
 #include <assert.h>
 
-static int IR_dump_token(int *n, const Token tok);
+// static int IR_dump_token(int *n, const Token tok);
 static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
 static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
-static int __TOKEN_TYPE_STR(int id, String str)
-{
-	print(WIN_IR, "\n%%bind    _%d    \"%s\"", id, str);
-	print(WIN_IR, "\nPUSH    _%d", id);
-	print(WIN_IR, "\nPUSH    len(_%d)", id);
-	return id;
-}
+// static int __TOKEN_TYPE_STR(int id, String str)
+// {
+// 	print(WIN_IR, "\n%%bind    _%d    \"%s\"", id, str);
+// 	print(WIN_IR, "\nPUSH    _%d", id);
+// 	print(WIN_IR, "\nPUSH    len(_%d)", id);
+// 	return id;
+// }
 
 // static int __TOKEN_TYPE_CHAR(int id, char c)
 // {
