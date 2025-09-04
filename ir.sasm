@@ -1,8 +1,0 @@
-
-%scope
-%scope
-%bind	_11	"hi"
-PUSH	_11
-PUSH	len(_11)
-%end
-%end
