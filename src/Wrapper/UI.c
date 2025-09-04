@@ -104,7 +104,7 @@ static void draw_log()
 	if (selected_line > 0) {
 		int i = 0;
 		while (ctx->lines[selected_line - 1].logs[i].len > 0) {
-			wprintw(windows[UI_LOGS], "%-*.*s", max_x-mid_x-4,
+			wprintw(windows[UI_LOGS], "%.*s",
 				Str_Fmt(ctx->lines[selected_line - 1].logs[i]));
 			i++;
 		}
@@ -117,7 +117,7 @@ static void draw_log()
 	if (ctx->line_num > 0) {
 		int i = 0;
 		while (ctx->lines[selected_line].logs[i].len > 0) {
-			wprintw(windows[UI_LOGS], "%-*.*s", max_x-mid_x-4,
+			wprintw(windows[UI_LOGS], "%.*s",
 				Str_Fmt(ctx->lines[selected_line].logs[i]));
 			i++;
 		}
@@ -129,7 +129,7 @@ static void draw_log()
 	while (j < ctx->line_num) {
 		int i = 0;
 		while (ctx->lines[j].logs[i].len > 0) {
-			wprintw(windows[UI_LOGS], "%-*.*s", max_x-mid_x-10,
+			wprintw(windows[UI_LOGS], "%.*s",
 				Str_Fmt(ctx->lines[j].logs[i]));
 			i++;
 		}
@@ -205,7 +205,6 @@ void onStartup(File_Context *ctx_in)
 		refresh_ui();
 	}
 }
-
 
 void onShutdown()
 {
