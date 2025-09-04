@@ -58,11 +58,6 @@ String split_str_by_delim(String *s, char c)
 
 	String res = split_str_by_len(s, i);
 
-	if (i < s->len) { // discard the delim
-		s->len -= 1;
-		s->data += 1;
-	}
-
 	return res;
 }
 
