@@ -12,9 +12,9 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
 static int __TOKEN_TYPE_STR(int id, String str)
 {
-	print(WIN_IR, "\n%%bind\t_%d\t\"%.*s\"", id, Str_Fmt(str));
-	print(WIN_IR, "\nPUSH\t_%d", id);
-	print(WIN_IR, "\nPUSH\tlen(_%d)", id);
+	print(NULL, WIN_IR, "\n%%bind\t_%d\t\"%.*s\"", id, Str_Fmt(str));
+	print(NULL, WIN_IR, "\nPUSH\t_%d", id);
+	print(NULL, WIN_IR, "\nPUSH\tlen(_%d)", id);
 	return id;
 }
 
@@ -73,22 +73,22 @@ int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 {
 	switch (v.mode) {
 	case VAR_ACCS:
-		print(WIN_IR, "\nPUSH   %.*s", Str_Fmt(v.name));
+		print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v.name));
 		break;
 
 	case VAR_DECL:
-		// print(WIN_IR, "%%bind    %s",v.name);
+		// print(NULL, WIN_IR, "%%bind    %s",v.name);
 		break;
 
 	case VAR_DEFN:
 	case VAR_BOTH:
 		if (compare_str(v.type, STR("func"))) {
-            print(WIN_IR, "\n%.*s:", Str_Fmt(v.name));
-            print(WIN_IR, "\n%%scope");
+            print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v.name));
+            print(NULL, WIN_IR, "\n%%scope");
 		    IR_dump_statement(v.defn_val, n, b);
 		} else {
 	        int child = IR_dump_statement(v.defn_val, n, b);
-			print(WIN_IR, "\n%%bind    %.*s    _%d", Str_Fmt(v.name), child);
+			print(NULL, WIN_IR, "\n%%bind    %.*s    _%d", Str_Fmt(v.name), child);
 		}
 		break;
 	default:
@@ -100,18 +100,18 @@ int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 
 int IR__STMT_UNKNOWN(int id)
 {
-    print(WIN_IR, "");
+    print(NULL, WIN_IR, "");
 	return id;
 }
 
 int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
-    print(WIN_IR, "");
+    print(NULL, WIN_IR, "");
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
 		int childId = IR_dump_statement(&arg->value, n, b);
         (void)childId;
-		// if (childId >= 0) print(WIN_IR, "  Expr_%d -> Expr_%d;\n", id, childId);
+		// if (childId >= 0) print(NULL, WIN_IR, "  Expr_%d -> Expr_%d;\n", id, childId);
 	}
 	return id;
 }
@@ -123,11 +123,11 @@ int IR__STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 	int clusterNum = (*b)++;
     (void)clusterNum;
 
-	print(WIN_IR, "");
+	print(NULL, WIN_IR, "");
 
 	IR_dump_code_block(block, n, b);
 
-	print(WIN_IR, "");
+	print(NULL, WIN_IR, "");
 
 	return clusterId;
 }
@@ -181,7 +181,7 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 	int firstId = -1;
 	int prevId 	= -1;
 
-    print(WIN_IR, "\n%%scope");
+    print(NULL, WIN_IR, "\n%%scope");
 	for (const StmtNode *cur = stmtNode; cur != NULL; cur = cur->next) {
 		int id 	= IR_dump_statement(&cur->statement, n, b);
 
@@ -190,7 +190,7 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 		prevId 	= id;
         (void)prevId;
 	}
-    print(WIN_IR, "\n%%end");
+    print(NULL, WIN_IR, "\n%%end");
 
 	return firstId;
 }
@@ -202,10 +202,10 @@ Error IR_generate(const CodeBlock *blk)
 	int node_counter  = 0;
 	int block_counter = 0;
 
-	// print(WIN_IR, "");
+	// print(NULL, WIN_IR, "");
 
 	IR_dump_code_block(blk->begin, &node_counter, &block_counter);
-	// print(WIN_IR, "");
+	// print(NULL, WIN_IR, "");
 
 	return ERR_OK;
 }
