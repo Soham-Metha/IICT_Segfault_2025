@@ -136,7 +136,7 @@ static void draw_log()
 		j++;
 	}
 	wprintw(windows[UI_LOGS],
-		"\n ----x---- LOGS END HERE ----x---- \n");
+		"\n\n ----x---- LOGS END HERE ----x---- \n");
 	
 	wattroff(windows[UI_LOGS], COLOR_PAIR(1));
 	wrefresh(windows[UI_LOGS]);
