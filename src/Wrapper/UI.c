@@ -125,21 +125,19 @@ static void draw_log()
 
 	wattron(windows[UI_LOGS], COLOR_PAIR(1));
 
-	if (selected_line < ctx->line_num - 1) {
-		unsigned int j = selected_line+1;
-		while (j < ctx->line_num - 1) {
-			int i = 0;
-			while (ctx->lines[selected_line + 1].logs[i].len > 0) {
-				wprintw(windows[UI_LOGS], "%-*.*s", max_x-mid_x-4,
-					Str_Fmt(ctx->lines[j].logs[i]));
-				i++;
-			}
-			j++;
+	unsigned int j = selected_line+1;
+	while (j < ctx->line_num - 1) {
+		int i = 0;
+		while (ctx->lines[selected_line + 1].logs[i].len > 0) {
+			wprintw(windows[UI_LOGS], "%-*.*s", max_x-mid_x-4,
+				Str_Fmt(ctx->lines[j].logs[i]));
+			i++;
 		}
-	} else {
-		wprintw(windows[UI_LOGS],
-			"\n ----x---- LOGS END HERE ----x---- \n");
+		j++;
 	}
+	wprintw(windows[UI_LOGS],
+		"\n ----x---- LOGS END HERE ----x---- \n");
+	
 	wattroff(windows[UI_LOGS], COLOR_PAIR(1));
 	wrefresh(windows[UI_LOGS]);
 }
