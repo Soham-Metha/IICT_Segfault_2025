@@ -187,17 +187,17 @@ void onStartup(File_Context *ctx_in)
 		case KEY_DOWN:
 			selected_line = (selected_line + 1) % ctx->line_num;
 			break;
-		case 'a':
-			mid_x -=1;
+		case 'p':
+			mid_x = 0;
 			break;
-		case 'd':
-			mid_x +=1;
+		case 'l':
+			mid_y = max_y;
 			break;
-		case 'w':
-			mid_y +=1;
+		case 'i':
+			x_by4 = mid_x;
 			break;
-		case 's':
-			mid_y -=1;
+		case 'm':
+			x_by4 = max_x;
 			break;
 		}
 
