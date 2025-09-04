@@ -173,6 +173,7 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 	case STMT_BLOCK_START: 	// return IR__STMT_BLOCK		(myId, n, b, stmt->value.as_block);
 	default: 				// return IR__STMT_UNKNOWN	(myId);
 	}
+    return myId;
 }
 
 static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
