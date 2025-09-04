@@ -78,6 +78,7 @@ Error file_read(const char *file_path, File_Context *file)
 	CodeBlock global 	= codeblock_generate(file);
 
 	ERROR_CHECK(out, goto cleanup, AST_generate(&global, false));
+	ERROR_CHECK(out, goto cleanup,  IR_generate(&global, false));
 
 cleanup:
 	if (file_ptr) {
