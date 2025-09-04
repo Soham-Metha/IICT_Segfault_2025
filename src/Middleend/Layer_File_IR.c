@@ -87,7 +87,7 @@ int __STMT_VARIABLE(int id, Var v, int *n, int *b)
             print(WIN_IR, "\n%%scope");
 		    IR_dump_statement(v.defn_val, n, b);
 		} else {
-	        int child = IR_dump_statement(v.defn_val, *n, *b);
+	        int child = IR_dump_statement(v.defn_val, n, b);
 			print(WIN_IR, "\n%%bind    %s    _%d", v.name, child);
 		}
 		break;
