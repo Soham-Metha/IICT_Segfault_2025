@@ -3,7 +3,6 @@
 
 #define COLOR_GREY 8
 
-#define CTRL(x) (x & 0x1F)
 #define LERP(START, END, T) (START * (1 - T) + END * T)
 #define BOUNDS(x1, y1, x2, y2) (y2 - y1, x2 - x1, y1, x1)
 #define INNER_BOUNDS(x1, y1, x2, y2) BOUNDS(x1 + 1, y1 + 1, x2 - 3, y2 - 3)
@@ -188,16 +187,16 @@ void onStartup(File_Context *ctx_in)
 		case KEY_DOWN:
 			selected_line = (selected_line + 1) % ctx->line_num;
 			break;
-		case CTRL('a'):
+		case 'a':
 			mid_x -=1;
 			break;
-		case CTRL('d'):
+		case 'd':
 			mid_x +=1;
 			break;
-		case CTRL('w'):
+		case 'w':
 			mid_y +=1;
 			break;
-		case CTRL('s'):
+		case 's':
 			mid_y -=1;
 			break;
 		}
