@@ -170,9 +170,6 @@ void onStartup(File_Context *ctx_in)
 	curs_set(0);
 	keypad(stdscr, TRUE);
 
-	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
-
-	printf("\033[?1003h\n");
 	initColors();
 	create_all_windows();
 
@@ -180,9 +177,6 @@ void onStartup(File_Context *ctx_in)
 	selected_line = 0;
 	int ch;
 	refresh_ui();
-
-	bool resizing_x = false, resizing_y = false;
-	MEVENT event;
 
 	while ((ch = getch()) != 'q') {
 		switch (ch) {
@@ -210,8 +204,6 @@ void onStartup(File_Context *ctx_in)
 
 		refresh_ui();
 	}
-
-	printf("\033[?1003l\n"); // disable motion tracking
 }
 
 
