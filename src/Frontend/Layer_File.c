@@ -49,6 +49,11 @@ Error file_get_contents(FILE *f, size_t n, char **contents)
 	}
 
 	// NULL termination!
+	for(int i = 0; i < n; i++) {
+		if (buf[i] == '\n')
+			buf[i] = '\0';
+	}
+
 	buf[n] = '\0';
 
 	*contents = buf;
@@ -92,8 +97,8 @@ Line_Context *file_fetch_next_line(File_Context *file)
 {
 	Line_Context *curr 	 = &(file->lines[file->line_num]);
 	curr->file_name      = file->file_path;
-	curr->line 			 = split_str_by_delim(&file->contents, '\n');
-	curr->line.data[curr->line.len] = '\0';
+	curr->line 			 = split_str_by_delim(&file->contents, '\0');
+	// curr->line.data[curr->line.len] = '\0';
 	curr->line_start 	 = curr->line.data;
 	file->line_num 		+= 1;
 	curr->line_no		 = file->line_num;
