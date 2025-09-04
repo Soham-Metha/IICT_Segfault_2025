@@ -5,6 +5,7 @@
 #include <assert.h>
 
 FILE *ast;
+FILE *ir;
 
 void print(int id, const char *str, ...)
 {
@@ -16,10 +17,14 @@ void print(int id, const char *str, ...)
 			ast = fopen("ast.dot", "w");
 		}
 		vfprintf(ast, str, args);
-	} else if (id == WIN_STDERR) {
-		vprintf(str, args);
-	} else {
+	} else if (id == WIN_AST) {
+		if (!ir) {
+			ir = fopen("ir.sasm", "w");
+		}
+		vfprintf(ir, str, args);
+	}else {
 		assert(id == WIN_STDERR);
+		vprintf(str, args);
 	}
 
 	va_end(args);
