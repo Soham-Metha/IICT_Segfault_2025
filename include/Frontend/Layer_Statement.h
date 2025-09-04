@@ -35,6 +35,7 @@ struct Var {
 
 	String type;
 	Stmt  *defn_val;
+	FuncallArg *arglist;
 };
 
 union StmtValue {
