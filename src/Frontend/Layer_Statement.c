@@ -59,12 +59,16 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	return first;
 }
 
-String parse_var_decl(Line_Context* ctx)
+void parse_var_decl(Line_Context* ctx, Var* out)
 {
 	(void)token_expect_next(ctx, TOKEN_TYPE_COLON);		// colon
 	Token type 	= token_expect_next(ctx, TOKEN_TYPE_NAME); // datatype
 
-	return type.text;
+	out->type = type.text;
+	if (compare_str(type.text, STR("proc")) || compare_str(type.text, STR("struct")) ) {
+		out->arglist = functions_parse_arglist(ctx);
+	}
+
 }
 
 Var parse_var(Line_Context* ctx)
@@ -75,7 +79,7 @@ Var parse_var(Line_Context* ctx)
 	Token next 	= token_fetch_next(ctx);
 	if (next.type == TOKEN_TYPE_COLON) {
 
-		res.type	 = parse_var_decl(ctx);
+		parse_var_decl(ctx, &res);
 		res.mode 	|= VAR_DECL;
 		next 		 = token_fetch_next(ctx);
 
