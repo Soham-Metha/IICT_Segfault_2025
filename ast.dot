@@ -89,13 +89,4 @@ digraph AST {
     fillcolor=whitesmoke;
     fontname="Courier";
   Expr_36 [shape=hexagon style=filled fillcolor=lightpink fontname="Courier" label="print"];
-  Expr_37 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="hi"];
-  Expr_36 -> Expr_37;
-  Expr_38 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_36 -> Expr_38;
-  }
-  Expr_35 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 3"];
-  Expr_33 -> Expr_35;
-  Expr_39 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_35 -> Expr_39;
-}
+  Expr_37 [shape=no
