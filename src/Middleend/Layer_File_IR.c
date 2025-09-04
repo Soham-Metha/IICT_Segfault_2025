@@ -71,7 +71,8 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
 int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 {
-
+    (void)n;
+    (void)b;
 	switch (v.mode) {
 	case VAR_ACCS:
 		// print(WIN_IR, "\nPUSH   %s", v.name);
