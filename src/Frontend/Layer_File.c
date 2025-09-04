@@ -91,6 +91,7 @@ cleanup:
 Line_Context *file_fetch_next_line(File_Context *file)
 {
 	Line_Context *curr 	 = &(file->lines[file->line_num]);
+	curr->file_name      = file->file_path;
 	curr->line 			 = split_str_by_delim(&file->contents, '\n');
 	curr->line.data[curr->line.len] = '\0';
 	curr->line_start 	 = curr->line.data;
