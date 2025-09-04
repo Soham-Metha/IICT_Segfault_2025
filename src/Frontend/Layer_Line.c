@@ -46,9 +46,9 @@ void line_get_preprocessed_line(Line_Context *ctx)
 		log_to_ctx(ctx, LOG_FORMAT "\"%.*s\"",
 				LOG_CTX("[AFTER REMOVAL]", "[LINE]"),
 				Str_Fmt(processed_line));
-	}
 
-	ctx->line = processed_line;
+		ctx->line = processed_line;
+	}
 
 	if (ctx->line.len == 0) {
 		log_to_ctx(ctx, LOG_FORMAT "Line is Blank",
