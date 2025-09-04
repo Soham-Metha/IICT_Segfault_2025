@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
-FILE *ast;
-FILE *myIR;
+FILE *ast = NULL;
+FILE *myIR = NULL;
 
 void print(int id, const char *str, ...)
 {
