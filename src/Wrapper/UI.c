@@ -52,9 +52,9 @@ void create_all_windows()
 	max_y = getmaxy(stdscr);
 	max_x = getmaxx(stdscr);
 
-	mid_x = LERP(min_x, max_x, 0.3);
-	mid_y = LERP(min_y, max_y, 0.4);
-	x_by4 = LERP(mid_x, max_x, 0.4);
+	mid_x = LERP(min_x, max_x, 0.4);
+	mid_y = LERP(min_y, max_y, 0.5);
+	x_by4 = LERP(mid_x, max_x, 0.5);
 
 	windows[UI_PROG] = newwin INNER_BOUNDS(min_x, min_y, mid_x, max_y);
 	windows[UI_LOGS] = newwin INNER_BOUNDS(mid_x, min_x, max_x, mid_y);
@@ -143,44 +143,11 @@ static void draw_log()
 static void draw_ir_mc()
 {
 	werase(windows[UI_IR]);
-	mvwprintw(windows[UI_IR], 1, 1, "IR for line %d", selected_line + 1);
+	mvwprintw(windows[UI_IR], 1, 1, "IR for line %d| %d %d", selected_line + 1, mid_x, mid_y);
 	wrefresh(windows[UI_IR]);
 
 	werase(windows[UI_MC]);
-	// wprintw(windows[UI_MC],"MC for line %d\n", selected_line + 1);
-
-	wprintw(windows[UI_MC],
-"\n                      .,,uod8B8bou,,."
-"\n             ..,uod8BBBBBBBBBBBBBBBBRPFT?l!i:."
-"\n        ,=m8BBBBBBBBBBBBBBBRPFT?!||||||||||||||"
-"\n        !...:!TVBBBRPFT||||||||||!!^^""'   ||||"
-"\n        !.......:!?|||||!!^^""'            ||||"
-"\n        !.........||||                     ||||"
-"\n        !.........||||  ##                 ||||"
-"\n        !.........||||                     ||||"
-"\n        !.........||||                     ||||"
-"\n        !.........||||                     ||||"
-"\n        !.........||||                     ||||"
-"\n        `.........||||                    ,||||"
-"\n         .;.......||||               _.-!!|||||"
-"\n  .,uodWBBBBb.....||||       _.-!!|||||||||!:'"
-"\n!YBBBBBBBBBBBBBBb..!|||:..-!!|||||||!iof68BBBBBb...."
-"\n!..YBBBBBBBBBBBBBBb!!||||||||!iof68BBBBBBRPFT?!::   `."
-"\n!....YBBBBBBBBBBBBBBbaaitf68BBBBBBRPFT?!:::::::::     `."
-"\n!......YBBBBBBBBBBBBBBBBBBBRPFT?!::::::;:!^\"`;:::       `."
-"\n!........YBBBBBBBBBBRPFT?!::::::::::^''...::::::;         iBBbo."
-"\n`..........YBRPFT?!::::::::::::::::::::::::;iof68bo.      WBBBBbo."
-"\n `..........:::::::::::::::::::::::;iof688888888888b.     `YBBBP^'"
-"\n   `........::::::::::::::::;iof688888888888888888888b.     `"
-"\n     `......:::::::::;iof688888888888888888888888888888b."
-"\n       `....:::;iof688888888888888888888888888888888899fT!"
-"\n         `..::!8888888888888888888888888888888899fT|!^\"'"
-"\n           `' !!988888888888888888888888899fT|!^\"'"
-"\n               `!!8888888888888888899fT|!^\"'"
-"\n                 `!988888888899fT|!^\"'"
-"\n                   `!9899fT|!^\"'"
-"\n                     `!^\"'"
-	);
+	mvwprintw(windows[UI_MC], 1, 1, "MC for line %d", selected_line + 1);
 	wrefresh(windows[UI_MC]);
 }
 
@@ -214,7 +181,6 @@ void onStartup(File_Context *ctx_in)
 		case KEY_UP:
 			selected_line = (selected_line + ctx->line_num - 1) %
 					ctx->line_num;
-
 			break;
 		case KEY_DOWN:
 			selected_line = (selected_line + 1) % ctx->line_num;
