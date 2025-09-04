@@ -26,6 +26,7 @@ void print(Line_Context *ctx, int id, const char *str, ...)
 		assert(id == WIN_STDERR);
 		printf("\n\n%s:%d:%ld:",ctx->file_name, ctx->line_no, (ctx->line.data-ctx->line_start));
 		vprintf(str, args);
+		printf("\n");
 	}
 
 	va_end(args);
