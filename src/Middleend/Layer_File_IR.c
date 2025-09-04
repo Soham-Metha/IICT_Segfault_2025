@@ -185,6 +185,7 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 		if (firstId < 0) firstId = id;
 
 		prevId 	= id;
+        (void)prevId;
 	}
 
 	return firstId;
