@@ -180,6 +180,7 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 	int firstId = -1;
 	int prevId 	= -1;
 
+    print(WIN_IR, "%%scope");
 	for (const StmtNode *cur = stmtNode; cur != NULL; cur = cur->next) {
 		int id 	= IR_dump_statement(&cur->statement, n, b);
 
@@ -188,6 +189,7 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 		prevId 	= id;
         (void)prevId;
 	}
+    print(WIN_IR, "%%end");
 
 	return firstId;
 }
@@ -199,10 +201,10 @@ Error IR_generate(const CodeBlock *blk)
 	int node_counter  = 0;
 	int block_counter = 0;
 
-	print(WIN_IR, "");
+	// print(WIN_IR, "");
 
-	IR_dump_code_block(blk->begin, &node_counter, &block_counter);
-	print(WIN_IR, "");
+	// IR_dump_code_block(blk->begin, &node_counter, &block_counter);
+	// print(WIN_IR, "");
 
 	return ERR_OK;
 }
