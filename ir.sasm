@@ -1,0 +1,7 @@
+
+%scope
+%bind    main    _1
+%bind    main    _5
+%bind    main    _9
+%bind    main    _13
+%end

@@ -1,0 +1,21 @@
+digraph AST {
+  splines=ortho;
+  nodesep=0.8;
+  ranksep=0.5;
+  node [fontname="Courier"];
+  Expr_0 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="main"];
+  Expr_1 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_0 -> Expr_1;
+  Expr_2 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="main"];
+  Expr_1 -> Expr_2;
+  Expr_3 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_2 -> Expr_3;
+  Expr_4 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="main"];
+  Expr_3 -> Expr_4;
+  Expr_5 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_4 -> Expr_5;
+  Expr_6 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="main"];
+  Expr_5 -> Expr_6;
+  Expr_7 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_6 -> Expr_7;
+}
