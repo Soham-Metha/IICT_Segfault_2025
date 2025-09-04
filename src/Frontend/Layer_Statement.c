@@ -184,7 +184,8 @@ Stmt stmt_fetch_next(Line_Context* ctx)
 	case TOKEN_TYPE_CLOSING_PAREN:
 	case TOKEN_TYPE_EOL:
 	default:
-		assert(false && ": unreachable");
+		print(ctx, WIN_STDERR, "Unexpected token found!");
+		discard_cached_token(ctx);
 		exit(1);
 	}
 
