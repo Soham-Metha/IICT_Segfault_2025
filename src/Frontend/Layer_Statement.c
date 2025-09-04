@@ -16,7 +16,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	update_indent(1);
 	token = token_fetch_next(ctx);
 	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
-		discard_cached_token();
+		discard_cached_token(ctx);
 		log_to_ctx(ctx,
 				  LOG_FORMAT " NO ARGS !",LOG_CTX("[IDENTIFICATION]","[STMT]"));
 		update_indent(-2);
@@ -40,7 +40,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		}
 
 		token = token_fetch_next(ctx);
-		if (!discard_cached_token()) {
+		if (!discard_cached_token(ctx)) {
 			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
 				  token_get_name(TOKEN_TYPE_CLOSING_PAREN),
 				  token_get_name(TOKEN_TYPE_COMMA));
@@ -85,7 +85,7 @@ Var parse_var(Line_Context* ctx)
 		update_indent(-1);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
-		discard_cached_token();
+		discard_cached_token(ctx);
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
@@ -106,7 +106,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok, Line_Context* ctx)
 	log_to_ctx(ctx,
 		  LOG_FORMAT, LOG_CTX("[BLOCK START]","[STMT]"));
 
-	discard_cached_token();
+	discard_cached_token(ctx);
 	return result;
 }
 
@@ -120,14 +120,14 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 	log_to_ctx(ctx,
 		LOG_FORMAT, LOG_CTX("[BLOCK END]","[STMT]"));
 
-	discard_cached_token();
+	discard_cached_token(ctx);
 	return result;
 }
 
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
 	Stmt result = { 0 };
-	discard_cached_token();
+	discard_cached_token(ctx);
 	Token next = token_fetch_next(ctx);
 
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
@@ -180,7 +180,7 @@ Stmt stmt_fetch_next(Line_Context* ctx)
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
 		result.value.as_token = tok;
-		discard_cached_token();
+		discard_cached_token(ctx);
 		return result;
 	}
 	default:
