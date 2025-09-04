@@ -5,6 +5,7 @@
 
 #define LOG_CTX(action, lvl) lvl, action, Str_Fmt(get_indent())
 
+#define LOG_CTX2(action, lvl) lvl  action get_indent().data
 #define LOG_FORMAT "\n %6s | %20s %.*s "
 
 enum WindowNames {
