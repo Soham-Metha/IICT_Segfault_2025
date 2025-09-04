@@ -2,7 +2,7 @@
 #define FILE_LAYER_FRONTEND
 #include <Utils/errors.h>
 #include <Utils/strings.h>
-#include <Frontend/Layer_Line.h>
+#include <Layer_Line.h>
 
 typedef struct File_Context File_Context;
 typedef struct Line_Context Line_Context;
