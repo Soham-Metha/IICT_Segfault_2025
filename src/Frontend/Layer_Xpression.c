@@ -159,7 +159,7 @@ Token token_fetch_next(Line_Context* ctx)
 			print(ctx, WIN_STDERR,
 				  "ERROR: Unknown token starts with '%c'\n",
 				  line->data[0]);
-			exit(1);
+			// exit(1);
 		}
 	}
 	}
