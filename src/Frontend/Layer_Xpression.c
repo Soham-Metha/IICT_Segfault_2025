@@ -159,7 +159,7 @@ Token token_fetch_next(Line_Context* ctx)
 			print(ctx, WIN_STDERR,
 				  "ERROR: Unknown token '%.*s'\n",
 				  Str_Fmt((*line)));
-			// exit(1);
+			exit(1);
 		}
 	}
 	}
