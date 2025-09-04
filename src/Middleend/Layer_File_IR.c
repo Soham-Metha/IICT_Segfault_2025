@@ -134,31 +134,31 @@ int IR__STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 
 // // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-static int IR_dump_token(int *n, const Token tok)
-{
-	int myId = (*n)++;
+// static int IR_dump_token(int *n, const Token tok)
+// {
+// 	int myId = (*n)++;
 
-    switch (tok.type)
-    {
-    case TOKEN_TYPE_STR: return __TOKEN_TYPE_STR(myId, tok.text);
-    case TOKEN_TYPE_CHAR: return myId;
-    case TOKEN_TYPE_NUMBER: return myId;
-    case TOKEN_TYPE_NAME: return myId;
-    case TOKEN_TYPE_OPEN_PAREN: return myId;
-    case TOKEN_TYPE_CLOSING_PAREN: return myId;
-    case TOKEN_TYPE_OPEN_CURLY: return myId;
-    case TOKEN_TYPE_CLOSING_CURLY: return myId;
-    case TOKEN_TYPE_STATEMENT_END: return myId;
-    case TOKEN_TYPE_COMMA: return myId;
-    case TOKEN_TYPE_COLON: return myId;
-    case TOKEN_TYPE_EQUAL: return myId;
-    case TOKEN_TYPE_EOL: return myId;
+//     switch (tok.type)
+//     {
+//     case TOKEN_TYPE_STR: return __TOKEN_TYPE_STR(myId, tok.text);
+//     case TOKEN_TYPE_CHAR: return myId;
+//     case TOKEN_TYPE_NUMBER: return myId;
+//     case TOKEN_TYPE_NAME: return myId;
+//     case TOKEN_TYPE_OPEN_PAREN: return myId;
+//     case TOKEN_TYPE_CLOSING_PAREN: return myId;
+//     case TOKEN_TYPE_OPEN_CURLY: return myId;
+//     case TOKEN_TYPE_CLOSING_CURLY: return myId;
+//     case TOKEN_TYPE_STATEMENT_END: return myId;
+//     case TOKEN_TYPE_COMMA: return myId;
+//     case TOKEN_TYPE_COLON: return myId;
+//     case TOKEN_TYPE_EQUAL: return myId;
+//     case TOKEN_TYPE_EOL: return myId;
 
-    default:
-        break;
-    }
-    return myId;
-}
+//     default:
+//         break;
+//     }
+//     return myId;
+// }
 
 static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 {
