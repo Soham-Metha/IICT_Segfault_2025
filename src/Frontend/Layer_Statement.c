@@ -187,4 +187,6 @@ Stmt stmt_fetch_next(Line_Context* ctx)
 		assert(false && ": unreachable");
 		exit(1);
 	}
+
+	token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 }
