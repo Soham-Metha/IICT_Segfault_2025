@@ -46,7 +46,7 @@ void log_to_ctx(Line_Context *ctx, const char *str, ...)
 	vsnprintf(log, size + 1, str, args);
 
 	ctx->logs[ctx->log_cnt++] = (String){ .data = log, .len = size };
-	printf("%s",ctx->line_no, log);
+	printf("%s",log);
 
 	va_end(args);
 }
