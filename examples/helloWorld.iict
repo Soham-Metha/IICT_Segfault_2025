@@ -1,4 +1,4 @@
-x = 'a';
+x = 'a'; % comment 0
 
 hello:func = {
     print("hi","hello");

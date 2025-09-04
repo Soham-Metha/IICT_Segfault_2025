@@ -9,10 +9,17 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 {
 	// split arguments from single comma seperated string to linked list of strings.
 	Token token = token_expect_next(ctx,TOKEN_TYPE_OPEN_PAREN);
+	update_indent(1);
+	log_to_ctx(ctx,
+		      LOG_FORMAT "- Arguments:",LOG_CTX("[IDENTIFICATION]","[STMT]"));
 
+	update_indent(1);
 	token = token_fetch_next(ctx);
 	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
 		discard_cached_token();
+		log_to_ctx(ctx,
+				  LOG_FORMAT " NO ARGS !",LOG_CTX("[IDENTIFICATION]","[STMT]"));
+		update_indent(-2);
 		return NULL;
 	}
 
@@ -23,9 +30,6 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		FuncallArg *arg = malloc(sizeof(FuncallArg));
 		arg->value 		= stmt_fetch_next(ctx);
 		arg->next		= NULL;
-		log_to_ctx(ctx,
-		      "\n\t\t[STMT] identified above listed tokens as a function arguments!",
-		      token_get_name(token.type));
 
 		if (first == NULL) {
 			first 		= arg;
@@ -50,6 +54,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		      token_get_name(TOKEN_TYPE_CLOSING_PAREN));
 		exit(1);
 	}
+	update_indent(-2);
 
 	return first;
 }
@@ -65,8 +70,6 @@ String parse_var_decl(Line_Context* ctx)
 Var parse_var(Line_Context* ctx)
 {
 	Var res 	= { 0 };
-	Token name 	= token_expect_next(ctx, TOKEN_TYPE_NAME); // var name
-	res.name 	= name.text;
 	res.mode 	= VAR_ACCS;
 
 	Token next 	= token_fetch_next(ctx);
@@ -76,13 +79,17 @@ Var parse_var(Line_Context* ctx)
 		res.mode 	|= VAR_DECL;
 		next 		 = token_fetch_next(ctx);
 
-	log_to_ctx(ctx, "\n\t\t[STMT] is a declaration, type: %.*s", res.type.len,
+		update_indent(1);
+	log_to_ctx(ctx, LOG_FORMAT "- declared type: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"), res.type.len,
 		res.type.data);
+		update_indent(-1);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
+		discard_cached_token();
 		res.defn_val = NULL;
 		res.mode 	|= VAR_DEFN;
-		log_to_ctx(ctx, "\n\t\t[STMT] has a definition! ");
+		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
+
 	}
 
 	return res;
@@ -97,7 +104,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok, Line_Context* ctx)
 	result.type 		 = STMT_BLOCK_START;
 
 	log_to_ctx(ctx,
-	      "\n\t\t[STMT] starting new code block!");
+	      LOG_FORMAT, LOG_CTX("[BLOCK START]","[STMT]"));
 
 	discard_cached_token();
 	return result;
@@ -110,7 +117,8 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 	result.type 		 = STMT_BLOCK_END;
 	result.value.as_token= tok;
 
-	log_to_ctx(ctx, "\n\t\t[STMT] reached end of code block");
+	log_to_ctx(ctx,
+		LOG_FORMAT, LOG_CTX("[BLOCK END]","[STMT]"));
 
 	discard_cached_token();
 	return result;
@@ -118,28 +126,28 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
-	log_to_ctx(ctx, "\n\t\t[STMT] variable name: '%.*s'", tok.text.len,
-		tok.text.data);
-
 	Stmt result = { 0 };
-	result.type = STMT_VAR;
-	result.value.as_var = parse_var(ctx);
+	discard_cached_token();
 	Token next = token_fetch_next(ctx);
 
-
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+		log_to_ctx(ctx,
+		      LOG_FORMAT "function call: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"),
+		      tok.text.len, tok.text.data, token_get_name(tok.type));
 		result.type 				  = STMT_FUNCALL;
 		result.value.as_funcall 	  = malloc(sizeof(Funcall));
 		result.value.as_funcall->name = tok.text;
 		result.value.as_funcall->args = functions_parse_arglist(ctx);
 
-		log_to_ctx(ctx,
-		      "\n\t\t[STMT] identified as a function call",
-		      tok.text.len, tok.text.data, token_get_name(tok.type));
-	}// else {
-	// 	result.value.as_var = tok.text;
-	// 	result.type 		= STMT_VARIABLE;
+	} else {
+		log_to_ctx(ctx, 
+			  LOG_FORMAT "variable: '%.*s'", LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+			  tok.text.len, tok.text.data);
+		result.type                   = STMT_VAR;
+		result.value.as_var           = parse_var(ctx);
+		result.value.as_var.name      = tok.text;
 
+	}
 	// (void)token_expect_next(line,TOKEN_TYPE_STATEMENT_END);
 	return result;
 }

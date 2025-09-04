@@ -3,6 +3,9 @@
 #include <stdarg.h>
 #include <Frontend/Layer_Line.h>
 
+#define LOG_CTX(action, lvl) lvl, action, Str_Fmt(get_indent())
+#define LOG_FORMAT "\n %6s | %20s %.*s "
+
 enum WindowNames { WIN_STDIN, WIN_STDOUT, WIN_STDERR, WIN_AST, WIN_COUNT };
 // stdin will probably remain unused, and other windows may get added as
 // we improve the UI
@@ -14,6 +17,9 @@ typedef struct Line_Context Line_Context;
 void print(int id, const char *str, ...);
 
 void log_to_ctx(Line_Context *ctx, const char *str, ...);
+
+String get_indent();
+void update_indent(int change);
 
 #define AST(shape, color, lbl)                      \
 	"  Expr_%d "                                \

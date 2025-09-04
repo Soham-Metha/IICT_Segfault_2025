@@ -10,6 +10,7 @@ typedef struct Line_Context Line_Context;
 
 struct Line_Context {
 	String line;
+	unsigned int line_no;
 	String logs[128];
 	const char *line_start;
 	int log_cnt;
