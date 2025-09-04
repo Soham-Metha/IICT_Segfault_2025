@@ -6,7 +6,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
-static int IR_dump_token(const Token tok, int *n);
+static int IR_dump_token(int *n, const Token tok);
 static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
 static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
@@ -98,12 +98,6 @@ int __STMT_VARIABLE(int id, Var v, int *n, int *b)
 	return id;
 }
 
-int __STMT_TOKEN(int id, String value)
-{
-    print(WIN_IR, "");
-	return id;
-}
-
 int __STMT_UNKNOWN(int id)
 {
     print(WIN_IR, "");
@@ -116,7 +110,7 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
 		int childId = IR_dump_statement(&arg->value, n, b);
-
+        (void)childId;
 		// if (childId >= 0) print(WIN_IR, "  Expr_%d -> Expr_%d;\n", id, childId);
 	}
 	return id;
@@ -127,6 +121,7 @@ int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 	(void)id;
 	int clusterId  = (*n)++;
 	int clusterNum = (*b)++;
+    (void)clusterNum;
 
 	print(WIN_IR, "");
 
@@ -139,7 +134,7 @@ int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 
 // // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-static int IR_dump_token(const Token tok, int *n)
+static int IR_dump_token(int *n, const Token tok)
 {
 	int myId = (*n)++;
 
@@ -172,7 +167,7 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 	switch (stmt->type) {
 	case STMT_VAR: 			return __STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		return __STMT_TOKEN		(myId, stmt->value.as_token.text);
+	case STMT_TOKEN:		return IR_dump_token	(myId, stmt->value.as_token);
 	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
 	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->value.as_block);
 	default: 				return __STMT_UNKNOWN	(myId);
