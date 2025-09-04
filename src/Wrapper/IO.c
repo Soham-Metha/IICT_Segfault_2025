@@ -7,7 +7,7 @@
 FILE *ast = NULL;
 FILE *myIR = NULL;
 
-void print(int id, const char *str, ...)
+void print(Line_Context *ctx, int id, const char *str, ...)
 {
 	va_list args;
 	va_start(args, str);
@@ -24,6 +24,7 @@ void print(int id, const char *str, ...)
 		vfprintf(myIR, str, args);
 	}else {
 		assert(id == WIN_STDERR);
+		printf("%d:%d",ctx->line_no,(ctx->line.data-ctx->line_start));
 		vprintf(str, args);
 	}
 
