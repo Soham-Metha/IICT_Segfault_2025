@@ -49,7 +49,7 @@ Error file_get_contents(FILE *f, size_t n, char **contents)
 	}
 
 	// NULL termination!
-	for(int i = 0; i < n; i++) {
+	for(size_t i = 0; i < n; i++) {
 		if (buf[i] == '\n')
 			buf[i] = '\0';
 	}
