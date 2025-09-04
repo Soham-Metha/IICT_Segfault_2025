@@ -24,7 +24,7 @@ void print(Line_Context *ctx, int id, const char *str, ...)
 		vfprintf(myIR, str, args);
 	}else {
 		assert(id == WIN_STDERR);
-		printf("%d:%ld",ctx->line_no,(ctx->line.data-ctx->line_start));
+		printf("%s:%d:%ld:",ctx->file_name, ctx->line_no, (ctx->line.data-ctx->line_start));
 		vprintf(str, args);
 	}
 
