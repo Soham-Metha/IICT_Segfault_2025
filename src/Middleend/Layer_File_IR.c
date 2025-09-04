@@ -198,13 +198,12 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 
 Error IR_generate(const CodeBlock *blk)
 {
-    (void)blk;
-	// int node_counter  = 0;
-	// int block_counter = 0;
+	int node_counter  = 0;
+	int block_counter = 0;
 
 	// print(WIN_IR, "");
 
-	// IR_dump_code_block(blk->begin, &node_counter, &block_counter);
+	IR_dump_code_block(blk->begin, &node_counter, &block_counter);
 	// print(WIN_IR, "");
 
 	return ERR_OK;
