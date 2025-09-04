@@ -43,11 +43,10 @@ const char *token_get_name(TokenType type)
 
 Token token_expect_next(Line_Context* ctx, TokenType expected)
 {
-	Token token = token_fetch_next(ctx);
 	update_indent(1);
+	Token token = token_fetch_next(ctx);
 	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",LOG_CTX("[TOKEN CHECK]","[EXPR]"),
 	token_get_name(expected), token_get_name(token.type));
-	update_indent(-1);
 
 	if (!discard_cached_token(ctx)) {
 		print(ctx, WIN_STDERR, 
@@ -61,6 +60,7 @@ Token token_expect_next(Line_Context* ctx, TokenType expected)
 			  token_get_name(expected), token_get_name(token.type));
 		exit(1);
 	}
+	update_indent(-1);
 
 	return token;
 }
