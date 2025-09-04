@@ -157,6 +157,7 @@ static int IR_dump_token(int *n, const Token tok)
     default:
         break;
     }
+    return myId;
 }
 
 static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
