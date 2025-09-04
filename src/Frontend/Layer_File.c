@@ -99,9 +99,9 @@ Line_Context *file_fetch_next_line(File_Context *file)
 	curr->line_no		 = file->line_num;
 	curr->line			 = trim(curr->line);
 
-	log_to_ctx(curr, LOG_FORMAT "L%d | Bytes remaining %d", LOG_CTX("","--xx--"), file->line_num, file->contents.len);
-	log_to_ctx(curr, LOG_FORMAT "\"%.*s\"", LOG_CTX("[READING]", "[LINE]"),
-			Str_Fmt(curr->line));
+	log_to_ctx(curr, LOG_FORMAT, LOG_CTX("","--xx--"), file->contents.len);
+	log_to_ctx(curr, LOG_FORMAT "\"%.*s\"", LOG_CTX("[READING]", "[L%3u]"),
+			Str_Fmt(curr->line), file->line_num);
 
 	return curr;
 }
