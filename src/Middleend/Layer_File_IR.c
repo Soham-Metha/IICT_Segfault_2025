@@ -75,7 +75,7 @@ int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
     (void)b;
 	switch (v.mode) {
 	case VAR_ACCS:
-		print(WIN_IR, "\nPUSH   %s", v.name);
+		print(WIN_IR, "\nPUSH   %.*s", Str_Fmt(v.name));
 		break;
 
 	case VAR_DECL:
