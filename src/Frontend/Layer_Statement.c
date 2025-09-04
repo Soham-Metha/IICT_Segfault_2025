@@ -41,7 +41,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 
 		token = token_fetch_next(ctx);
 		if (!discard_cached_token()) {
-			print(WIN_STDERR, " ERROR: expected %s or %s\n",
+			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
 				  token_get_name(TOKEN_TYPE_CLOSING_PAREN),
 				  token_get_name(TOKEN_TYPE_COMMA));
 			exit(1);
@@ -50,7 +50,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	} while (token.type == TOKEN_TYPE_COMMA);
 
 	if (token.type != TOKEN_TYPE_CLOSING_PAREN) {
-		print(WIN_STDERR, " ERROR: expected %s\n",
+		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
 			  token_get_name(TOKEN_TYPE_CLOSING_PAREN));
 		exit(1);
 	}
