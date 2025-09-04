@@ -107,11 +107,10 @@ int IR__STMT_UNKNOWN(int id)
 int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
     print(WIN_IR, "");
-    (void)n;
-    (void)b;
+
 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
-		// int childId = IR_dump_statement(&arg->value, n, b);
-        // (void)childId;
+		int childId = IR_dump_statement(&arg->value, n, b);
+        (void)childId;
 		// if (childId >= 0) print(WIN_IR, "  Expr_%d -> Expr_%d;\n", id, childId);
 	}
 	return id;
@@ -167,7 +166,7 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
+	case STMT_VAR: 			//return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
 	case STMT_BLOCK_END:
 	case STMT_TOKEN:		// return IR_dump_token	(n, stmt->value.as_token);
 	case STMT_FUNCALL:		// return IR__STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
