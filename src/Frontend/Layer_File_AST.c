@@ -13,30 +13,30 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
 
 int __STMT_VARIABLE(int id, String value)
 {
-	print(WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id, Str_Fmt(value));
+	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id, Str_Fmt(value));
 	return id;
 }
 
 int __STMT_TOKEN(int id, String value)
 {
-	print(WIN_AST, AST("note", "lightblue", "%.*s"), id, value);
+	print(NULL, WIN_AST, AST("note", "lightblue", "%.*s"), id, value);
 	return id;
 }
 
 int __STMT_UNKNOWN(int id)
 {
-	print(WIN_AST, "  Expr_%d [label=\"Stmt_unknown\"];\n", id);
+	print(NULL, WIN_AST, "  Expr_%d [label=\"Stmt_unknown\"];\n", id);
 	return id;
 }
 
 int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
-	print(WIN_AST, AST("hexagon", "lightpink", "%.*s"), id, Str_Fmt(funcall->name));
+	print(NULL, WIN_AST, AST("hexagon", "lightpink", "%.*s"), id, Str_Fmt(funcall->name));
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
 		int childId = AST_dump_statement(&arg->value, n, b);
 
-		if (childId >= 0) print(WIN_AST, "  Expr_%d -> Expr_%d;\n", id, childId);
+		if (childId >= 0) print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", id, childId);
 	}
 	return id;
 }
@@ -47,7 +47,7 @@ int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 	int clusterId  = (*n)++;
 	int clusterNum = (*b)++;
 
-	print(WIN_AST,
+	print(NULL, WIN_AST,
 		  "  subgraph cluster_%d {\n"
 		  "    label=\"Code Block %d\";\n"
 		  "    style=filled;\n"
@@ -58,7 +58,7 @@ int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 
 	AST_dump_code_block(block, n, b);
 
-	print(WIN_AST, 
+	print(NULL, WIN_AST, 
 		"  }\n" AST("box3d", "aquamarine", "Code Block %d"),
 		  clusterId, clusterNum);
 
@@ -91,7 +91,7 @@ static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 		int id 	= AST_dump_statement(&cur->statement, n, b);
 
 		if (firstId < 0) firstId = id;
-		if (prevId >= 0) print(WIN_AST, "  Expr_%d -> Expr_%d;\n", prevId, id);
+		if (prevId >= 0) print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", prevId, id);
 
 		prevId 	= id;
 	}
@@ -106,7 +106,7 @@ Error AST_generate(const CodeBlock *blk, bool renderPng)
 	int node_counter  = 0;
 	int block_counter = 0;
 
-	print(WIN_AST, 
+	print(NULL, WIN_AST, 
 		"digraph AST {\n"
 		"  splines=ortho;\n"
 		"  nodesep=0.8;\n"
@@ -114,7 +114,7 @@ Error AST_generate(const CodeBlock *blk, bool renderPng)
 		"  node [fontname=\"Courier\"];\n");
 
 	AST_dump_code_block(blk->begin, &node_counter, &block_counter);
-	print(WIN_AST, "}\n");
+	print(NULL, WIN_AST, "}\n");
 
 	if (renderPng) {
 		int r = system("dot -Tpng ast.dot -o ast.png ");
