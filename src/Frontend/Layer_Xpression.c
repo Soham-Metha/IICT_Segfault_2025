@@ -72,11 +72,10 @@ Token token_fetch_next(Line_Context* ctx)
 	Token token = { 0 };
 	(*line) 	= trim(*line);
 
-	if (line->len == 0 || line->data[0]=='\0') {
+	if (line->len == 0) {
 		token.type = TOKEN_TYPE_EOL;
 
 		log_to_ctx(ctx, LOG_FORMAT "End of line", LOG_CTX("","[EXPR]"));
-		exit(1);
 		return token;
 	}
 
@@ -164,7 +163,7 @@ Token token_fetch_next(Line_Context* ctx)
 		}
 	}
 	}
-	log_to_ctx(ctx, "<%s '%.*s'>", token_get_name(token.type),
+	log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>",LOG_CTX("","[EXPR]"),token_get_name(token.type),
 		  token.text.len, token.text.data);
 	cache = token;
 	cachedToken = true;
