@@ -126,7 +126,7 @@ static void draw_log()
 	wattron(windows[UI_LOGS], COLOR_PAIR(1));
 
 	unsigned int j = selected_line+1;
-	while (j < ctx->line_num - 1) {
+	while (j < ctx->line_num) {
 		int i = 0;
 		while (ctx->lines[j].logs[i].len > 0) {
 			wprintw(windows[UI_LOGS], "%-*.*s", max_x-mid_x-10,
