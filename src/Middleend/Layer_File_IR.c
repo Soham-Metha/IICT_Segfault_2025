@@ -71,8 +71,6 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
 int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 {
-    (void)n;
-    (void)b;
 	switch (v.mode) {
 	case VAR_ACCS:
 		print(WIN_IR, "\nPUSH   %.*s", Str_Fmt(v.name));
@@ -84,14 +82,14 @@ int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 
 	case VAR_DEFN:
 	case VAR_BOTH:
-		// if (compare_str(v.type, STR("func"))) {
-        //     print(WIN_IR, "\n%s:", v.name);
-        //     print(WIN_IR, "\n%%scope");
-		//     IR_dump_statement(v.defn_val, n, b);
-		// } else {
-	    //     int child = IR_dump_statement(v.defn_val, n, b);
-		// 	print(WIN_IR, "\n%%bind    %s    _%d", v.name, child);
-		// }
+		if (compare_str(v.type, STR("func"))) {
+            print(WIN_IR, "\n%.*s:", Str_Fmt(v.name));
+            print(WIN_IR, "\n%%scope");
+		    IR_dump_statement(v.defn_val, n, b);
+		} else {
+	        int child = IR_dump_statement(v.defn_val, n, b);
+			print(WIN_IR, "\n%%bind    %.*s    _%d", Str_Fmt(v.name), child);
+		}
 		break;
 	default:
 		break;
