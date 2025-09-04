@@ -198,8 +198,8 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 
 Error IR_generate(const CodeBlock *blk)
 {
-	int node_counter  = 0;
-	int block_counter = 0;
+	// int node_counter  = 0;
+	// int block_counter = 0;
 
 	// print(WIN_IR, "");
 
