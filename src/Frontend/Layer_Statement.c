@@ -167,22 +167,22 @@ Stmt stmt_fetch_next(Line_Context* ctx)
 	case TOKEN_TYPE_CLOSING_CURLY:
 		return __TOKEN_TYPE_CLOSING_CURLY(tok, ctx);
 
-	case TOKEN_TYPE_CHAR:
-	case TOKEN_TYPE_STR:
-	case TOKEN_TYPE_OPEN_PAREN:
-	case TOKEN_TYPE_STATEMENT_END:
-	case TOKEN_TYPE_NUMBER:
-	case TOKEN_TYPE_COMMA:
-	case TOKEN_TYPE_COLON:
-	case TOKEN_TYPE_EQUAL:
-	case TOKEN_TYPE_EOL:
-	case TOKEN_TYPE_CLOSING_PAREN: {
+	case TOKEN_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
 		result.value.as_token = tok;
 		discard_cached_token(ctx);
 		return result;
 	}
+	case TOKEN_TYPE_NUMBER:
+	case TOKEN_TYPE_CHAR:
+	case TOKEN_TYPE_STR:
+	case TOKEN_TYPE_COMMA:
+	case TOKEN_TYPE_COLON:
+	case TOKEN_TYPE_EQUAL:
+	case TOKEN_TYPE_OPEN_PAREN:
+	case TOKEN_TYPE_CLOSING_PAREN:
+	case TOKEN_TYPE_EOL:
 	default:
 		assert(false && ": unreachable");
 		exit(1);
