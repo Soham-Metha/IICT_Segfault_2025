@@ -157,8 +157,8 @@ Token token_fetch_next(Line_Context* ctx)
 			token.text = split_str_by_condition(line, isNumber);
 		} else {
 			print(ctx, WIN_STDERR,
-				  "ERROR: Unknown token starts with '%c'\n",
-				  line->data[0]);
+				  "ERROR: Unknown token '%.*s'\n",
+				  Str_Fmt((*line)));
 			// exit(1);
 		}
 	}
