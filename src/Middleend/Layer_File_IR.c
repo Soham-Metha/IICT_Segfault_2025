@@ -64,12 +64,6 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 
 }
 
-// int IR__STMT_UNKNOWN(int id)
-// {
-//     print(NULL, WIN_IR, "");
-// 	return id;
-// }
-
 void IR__STMT_FUNCALL(Block_Context_IR* ctx)
 {
 	assert(ctx);
