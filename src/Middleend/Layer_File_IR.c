@@ -111,11 +111,12 @@ int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
         print(NULL,WIN_IR,"SETR _%d [L0]", child1);
         print(NULL,WIN_IR,"SETR len(_%d) [QT]", child1);
         print(NULL,WIN_IR,"INVOK 7");
+        return id;
     }
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
 		int childId = IR_dump_statement(&arg->value, n, b);
-        childId;
+        (void)childId;
 		// if (childId >= 0) print(NULL, WIN_IR, "  Expr_%d -> Expr_%d;\n", id, childId);
 	}
 	return id;
