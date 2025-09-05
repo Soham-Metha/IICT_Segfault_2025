@@ -1,10 +1,13 @@
 %entry main
 main:
 %scope
+x:
+VAR DEFN UNIMPLEMENTED!!
 E_5:
-    PUSH "hello,world!"
-    SETR E_5 [L0]
-    SETR len(E_5) [QT]
-    INVOK 7; End of stmt
+PUSH "hello,world!"; End of stmt
+PUSH   x
+SETR E_9 [L0]
+SETR len(E_9) [QT]
+INVOK 7; End of stmt
 %end; End of stmt
 SHUTS
