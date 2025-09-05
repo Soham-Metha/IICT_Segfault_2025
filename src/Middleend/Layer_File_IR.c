@@ -125,7 +125,7 @@ int IR__STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 	int clusterNum = (*b)++;
     (void)clusterNum;
 
-	print(NULL, WIN_IR, "");
+	print(NULL, WIN_IR, "block");
 
 	IR_dump_code_block(block, n, b);
 
