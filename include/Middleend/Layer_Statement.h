@@ -19,7 +19,7 @@ int get_type_from_name(String name);
 
 int get_size_of_type(int type);
 
-int check_var_mutability(int id);
+int get_size_from_id(int id);
 
 bool check_var_type(int id, String type);
 
