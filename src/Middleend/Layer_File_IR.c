@@ -25,7 +25,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 	switch (v->mode) {
 	case VAR_ACCS: {
 		int id = get_var_id(v->name);
-		print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(), id);
+		ctx->b = id;
 	} break;
 
 	case VAR_DECL: {
@@ -84,8 +84,8 @@ void IR__STMT_FUNCALL(Block_Context_IR* ctx)
 
     if (compare_str(funcall->name,STR("write"))) {
         IR_dump_statement(&funcall_ctx);
-        print(NULL,WIN_IR,IR_FORMAT "SETR    E_%d      [L0]", IR_CTX(), funcall_ctx.n++);
-        print(NULL,WIN_IR,IR_FORMAT "SETR    len(E_%d) [QT]", IR_CTX(), funcall_ctx.n++);
+        print(NULL,WIN_IR,IR_FORMAT "SETR    E_%d      [L0]", IR_CTX(), funcall_ctx.b);
+        print(NULL,WIN_IR,IR_FORMAT "SETR    len(E_%d) [QT]", IR_CTX(), funcall_ctx.b);
         print(NULL,WIN_IR,IR_FORMAT "INVOK   7", IR_CTX());
     }
 
