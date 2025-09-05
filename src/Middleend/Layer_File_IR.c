@@ -31,6 +31,8 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		int s = get_size_of_type(get_type_from_name(v->type));
 		if (s) {
 			int id = ctx->n++;
+			print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ",
+			      IR_CTX(), Str_Fmt(v->name));
 			print(NULL, WIN_IR,
 			      IR_FORMAT "%%bind   E_%d    res(%d) ", IR_CTX(),
 			      id, s);
@@ -140,15 +142,15 @@ static void IR_dump_token(Block_Context_IR *ctx)
 	const Token tok = *ctx->next->statement.value.as_token;
 	switch (tok.type) {
 	case TOKEN_TYPE_CHAR:
-		print(NULL, WIN_IR, "'%.*s'", IR_CTX(), Str_Fmt(tok.text));
+		print(NULL, WIN_IR, "'%.*s'", Str_Fmt(tok.text));
 		break;
 	case TOKEN_TYPE_STR:
-		print(NULL, WIN_IR, "\"%.*s\"", IR_CTX(), Str_Fmt(tok.text));
+		print(NULL, WIN_IR, "\"%.*s\"", Str_Fmt(tok.text));
 		break;
 	case TOKEN_TYPE_STATEMENT_END:
-		print(NULL, WIN_IR, "; Line end reached", IR_CTX());
+		print(NULL, WIN_IR, "; Line end reached");
 		break;
-	
+
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_NAME:
 	case TOKEN_TYPE_OPEN_CURLY:
