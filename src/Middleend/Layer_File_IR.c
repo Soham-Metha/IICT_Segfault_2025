@@ -32,7 +32,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		if (s) {
 			int id = ctx->n++;
 			print(NULL, WIN_IR,
-			      IR_FORMAT "%%bind    E_%d    res(%d)", IR_CTX(),
+			      IR_FORMAT "%%bind   E_%d    res(%d)", IR_CTX(),
 			      id, s);
 			push_var_def(v->name, v->type, id);
 		}
