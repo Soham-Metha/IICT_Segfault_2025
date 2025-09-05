@@ -134,12 +134,12 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 	assert(ctx->next != NULL);
 
 	switch (ctx->next->statement.type) {
-	case STMT_VAR: 			return IR__STMT_VARIABLE	(ctx);
+	case STMT_VAR: 			IR__STMT_VARIABLE	(ctx);break;
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		return IR_dump_token	    (ctx);
-	case STMT_FUNCALL:		return IR__STMT_FUNCALL	    (ctx);
-	case STMT_BLOCK_START: 	return IR__STMT_BLOCK		(ctx);
-	default: 				return IR__STMT_UNKNOWN	    (ctx);
+	case STMT_TOKEN:		IR_dump_token	    (ctx);break;
+	case STMT_FUNCALL:		IR__STMT_FUNCALL	    (ctx);break;
+	case STMT_BLOCK_START: 	IR__STMT_BLOCK		(ctx);break;
+	default: 				IR__STMT_UNKNOWN	    (ctx);break;
 	}
 }
 
