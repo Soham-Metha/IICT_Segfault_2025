@@ -44,10 +44,11 @@ static int __TOKEN_TYPE_STR(int id, String str)
 // {
 
 // }
-// static int __TOKEN_TYPE_STATEMENT_END(int id)
-// {
-
-// }
+static int __TOKEN_TYPE_STATEMENT_END(int id)
+{
+    print(NULL,WIN_IR, ";;;;");
+    return id;
+}
 // static int __TOKEN_TYPE_COMMA(int id)
 // {
 
@@ -156,7 +157,7 @@ static int IR_dump_token(int *n, const Token tok)
     case TOKEN_TYPE_CLOSING_PAREN: return myId;
     case TOKEN_TYPE_OPEN_CURLY: return myId;
     case TOKEN_TYPE_CLOSING_CURLY: return myId;
-    case TOKEN_TYPE_STATEMENT_END: return myId;
+    case TOKEN_TYPE_STATEMENT_END: return __TOKEN_TYPE_STATEMENT_END(myId);
     case TOKEN_TYPE_COMMA: return myId;
     case TOKEN_TYPE_COLON: return myId;
     case TOKEN_TYPE_EQUAL: return myId;
