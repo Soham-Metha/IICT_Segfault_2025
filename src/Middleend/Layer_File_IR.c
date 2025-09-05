@@ -53,8 +53,8 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		} else {
 			print(NULL, WIN_IR, "\nE_%d:", ctx->n++);
 		}
-
 		push_var_def(v->name, v->type, ctx->n++);
+		IR_dump_statement(ctx);
 		break;
 	default:
 		break;
