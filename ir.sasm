@@ -1,0 +1,9 @@
+%entry main
+%scope
+main:
+%scope
+%bind	_5	"hi"
+PUSH	_5
+PUSH	len(_5)
+%end
+%end

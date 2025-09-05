@@ -68,11 +68,11 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 	// the 1st dimension is the global scope, each layer of nesting adds another dimension.
 	while (ctx->line.len > 0) {
 		Stmt statement		= stmt_fetch_next(ctx);
-		if (statement.type == STMT_VAR && (statement.value.as_var.mode & VAR_DEFN)) {
+		if (statement.type == STMT_VAR && (statement.value.as_var->mode & VAR_DEFN)) {
 			log_to_ctx(ctx, LOG_FORMAT "Defined value: {", LOG_CTX("[DEFINITION START]","[STMT]"));
 			update_indent(1);
 			Stmt next = stmt_fetch_next(ctx);
-			statement.value.as_var.defn_val = &next;
+			statement.value.as_var->defn_val = &next;
 
 			if (next.type==STMT_BLOCK_START) {
 				next.value.as_block = codeblock_generate(context).begin;

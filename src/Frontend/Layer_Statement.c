@@ -71,27 +71,27 @@ void parse_var_decl(Line_Context* ctx, Var* out)
 
 }
 
-Var parse_var(Line_Context* ctx)
+Var *parse_var(Line_Context* ctx)
 {
-	Var res 	= { 0 };
-	res.mode 	= VAR_ACCS;
+	Var *res 	= region_allocate(sizeof(Var));
+	res->mode 	= VAR_ACCS;
 
 	Token next 	= token_fetch_next(ctx);
 	if (next.type == TOKEN_TYPE_COLON) {
 
-		parse_var_decl(ctx, &res);
-		res.mode 	|= VAR_DECL;
+		parse_var_decl(ctx, res);
+		res->mode 	|= VAR_DECL;
 		next 		 = token_fetch_next(ctx);
 
 		update_indent(1);
-	log_to_ctx(ctx, LOG_FORMAT "- declared type: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"), res.type.len,
-		res.type.data);
+	log_to_ctx(ctx, LOG_FORMAT "- declared type: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"), res->type.len,
+		res->type.data);
 		update_indent(-1);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
 		discard_cached_token(ctx);
-		res.defn_val = NULL;
-		res.mode 	|= VAR_DEFN;
+		res->defn_val = NULL;
+		res->mode 	|= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 
 	}
@@ -119,7 +119,7 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context* ctx)
 	(void)tok;
 	Stmt result 		 = { 0 };
 	result.type 		 = STMT_BLOCK_END;
-	result.value.as_token= tok;
+	// result.value.as_token= tok;
 
 	log_to_ctx(ctx,
 		LOG_FORMAT, LOG_CTX("[BLOCK END]","[STMT]"));
@@ -149,7 +149,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 			  tok.text.len, tok.text.data);
 		result.type                   = STMT_VAR;
 		result.value.as_var           = parse_var(ctx);
-		result.value.as_var.name      = tok.text;
+		result.value.as_var->name      = tok.text;
 
 	}
 	// (void)token_expect_next(line,TOKEN_TYPE_STATEMENT_END);
@@ -177,7 +177,8 @@ Stmt stmt_fetch_next(Line_Context* ctx)
 	case TOKEN_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
-		result.value.as_token = tok;
+		result.value.as_token = region_allocate(sizeof(Token));
+		*result.value.as_token = (Token){.type=tok.type, .text = tok.text};
 		discard_cached_token(ctx);
 		return result;
 	}

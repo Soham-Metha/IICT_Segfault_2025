@@ -77,8 +77,8 @@ Error file_read(const char *file_path, File_Context *file)
 
 	CodeBlock global 	= codeblock_generate(file);
 
-	AST_generate(&global, true);
 	IR_generate(&global);
+	AST_generate(&global, true);
 
 
 cleanup:

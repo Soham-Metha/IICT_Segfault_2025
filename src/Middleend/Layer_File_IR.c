@@ -87,11 +87,8 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 
 	case VAR_DEFN:
 	case VAR_BOTH:
-    print(NULL,WIN_IR, "DUMPING %d", v->defn_val->type);
-        IR_dump_statement(v->defn_val, n, b);
-        print(NULL,WIN_IR, "Done");
+    int child = IR_dump_statement(v->defn_val, n, b);
 		if (!compare_str(v->type, STR("func"))) {
-	        int child = IR_dump_statement(v->defn_val, n, b);
 			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!", Str_Fmt(v->name), child);
 		}
 		break;
@@ -127,7 +124,7 @@ int IR__STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 	int clusterNum = (*b)++;
     (void)clusterNum;
 
-	print(NULL, WIN_IR, "block");
+	print(NULL, WIN_IR, "");
 
 	IR_dump_code_block(block, n, b);
 
@@ -170,9 +167,9 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, &stmt->value.as_var, n, b);
+	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		return IR_dump_token	    (n, stmt->value.as_token);
+	case STMT_TOKEN:		return IR_dump_token	    (n, *stmt->value.as_token);
 	case STMT_FUNCALL:		return IR__STMT_FUNCALL	    (myId, n, b, stmt->value.as_funcall);
 	case STMT_BLOCK_START: 	return IR__STMT_BLOCK		(myId, n, b, stmt->value.as_block);
 	default: 				return IR__STMT_UNKNOWN	    (myId);
