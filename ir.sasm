@@ -4,11 +4,9 @@
     E_2:            ; var: x
         PUSH    "hello,world!"
     ; Line end reached
-    PUSH    E_3
-    SETR    E_4      [L0]
-    SETR    len(E_5) [QT]
+    SETR    E_3      [L0]
+    SETR    len(E_3) [QT]
     INVOK   7
-    PUSH    E_3
     ; Line end reached
 %end
 ; Line end reached
