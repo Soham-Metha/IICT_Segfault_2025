@@ -7,9 +7,12 @@
 #include <inttypes.h>
 #include <assert.h>
 
-static int IR_dump_token(int *n, const Token tok);
-static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
-static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
+
+static void IR_dump_token(Block_Context_IR* ctx);
+
+static void IR_dump_statement(Block_Context_IR *ctx);
+
+static void IR_dump_code_block(Block_Context_IR *ctx);
 
 // // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
