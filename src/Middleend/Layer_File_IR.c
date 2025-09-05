@@ -1,6 +1,7 @@
 #include <Frontend/Layer_File.h>
 #include <Frontend/Layer_Line.h>
 #include <Frontend/Layer_Statement.h>
+#include <Middleend/Layer_Statement.h>
 #include <Wrapper/IO.h>
 #include <stdlib.h>
 #include <inttypes.h>
@@ -12,7 +13,7 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
 static int __TOKEN_TYPE_STR(int id, String str)
 {
-	print(NULL, WIN_IR, "\n%%bind E_%d \"%.*s\"", id, Str_Fmt(str));
+	print(NULL, WIN_IR, "\nE_%d:\nPUSH \"%.*s\"", id, Str_Fmt(str));
 	return id;
 }
 
@@ -70,25 +71,25 @@ static int __TOKEN_TYPE_STATEMENT_END(int id)
 
 int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 {
-    (void)n;
-    (void)b;
-    print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
-
+	(void)n;
+	(void)b;
 	switch (v->mode) {
 	case VAR_ACCS:
-		// print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v->name));
+		print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v->name));
 		break;
 
 	case VAR_DECL:
-		// print(NULL, WIN_IR, "%%bind    %s",v->name);
+		print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
+		print(NULL, WIN_IR, "\nres(8)");
 		break;
 
 	case VAR_DEFN:
 	case VAR_BOTH:
-    int child = IR_dump_statement(v->defn_val, n, b);
+    	print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
 		if (!compare_str(v->type, STR("func"))) {
-			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!", Str_Fmt(v->name), child);
+			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!");
 		}
+		push_var_def(v->name,id);
 		break;
 	default:
 		break;

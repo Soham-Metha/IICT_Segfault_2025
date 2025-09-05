@@ -17,9 +17,9 @@ int __STMT_VARIABLE(int id,  const Var *v)
 	if (v->mode & VAR_DECL){
 	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+1, Str_Fmt(v->type));
 	}
-	if (v->mode & VAR_DEFN) {
-	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->value.as_token->text));
-	}
+	// if (v->mode & VAR_DEFN) {
+	// print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->value.as_token->text));
+	// }
 	return id;
 }
 

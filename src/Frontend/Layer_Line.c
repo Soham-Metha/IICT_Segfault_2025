@@ -57,6 +57,7 @@ void line_get_preprocessed_line(Line_Context *ctx)
 
 }
 
+int var_decl_level = 0;
 bool line_parse_next(CodeBlock *blk, File_Context* context)
 {
 	Line_Context* ctx = file_fetch_curr_line(context);
@@ -68,29 +69,42 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 	// the 1st dimension is the global scope, each layer of nesting adds another dimension.
 	while (ctx->line.len > 0) {
 		Stmt statement		= stmt_fetch_next(ctx);
-		if (statement.type == STMT_VAR && (statement.value.as_var->mode & VAR_DEFN)) {
-			log_to_ctx(ctx, LOG_FORMAT "Defined value: {", LOG_CTX("[DEFINITION START]","[STMT]"));
-			update_indent(1);
-			Stmt next = stmt_fetch_next(ctx);
-			statement.value.as_var->defn_val = &next;
 
-			if (next.type==STMT_BLOCK_START) {
-				next.value.as_block = codeblock_generate(context).begin;
+		switch (statement.type)
+		{
+		case STMT_VAR:
+			if (statement.value.as_var->mode & VAR_DEFN) {
+				var_decl_level+=1;
+				log_to_ctx(ctx, LOG_FORMAT "Defined value: {", LOG_CTX("[DEFINITION START]","[STMT]"));
+				update_indent(1);
 			}
-
-			update_indent(-1);
-			log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[DEFINITION  END]","[STMT]"));
-
-		} else if (statement.type == STMT_BLOCK_END) {
-			return true;
-		} else if (statement.type == STMT_BLOCK_START) {
+			break;
+		case STMT_BLOCK_START:
 			statement.value.as_block = codeblock_generate(context).begin;
+			break;
+		case STMT_BLOCK_END:
+			if (var_decl_level>0) {
+				var_decl_level-=1;
+				update_indent(-1);
+				log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[DEFINITION  END]","[STMT]"));
+			}
+			return true;
+		case STMT_FUNCALL:
+		case STMT_TOKEN:
+		default:	
+			if (var_decl_level>0) {
+				var_decl_level-=1;
+				update_indent(-1);
+				log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[DEFINITION  END]","[STMT]"));
+			}
+			break;
 		}
 
 		// TODO 1: MEM ALLOC error handling
 		(void)codeblock_append_stmt(blk, statement);
 		ctx = file_fetch_curr_line(context);
 		line_get_preprocessed_line(ctx);
+
 	}
 
 	return false;

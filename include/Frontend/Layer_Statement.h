@@ -34,7 +34,6 @@ struct Var {
 	varMode mode;
 
 	String type;
-	Stmt  *defn_val;
 	FuncallArg *arglist;
 };
 
@@ -66,11 +65,5 @@ struct StmtNode {
 };
 
 Stmt stmt_fetch_next(Line_Context *ctx);
-
-//-------------------------------- MIDDLE END --------------------------------
-typedef struct Var_IR {
-	String name;
-	unsigned int mem_addr;
-} Var_IR;
 
 #endif

@@ -90,7 +90,6 @@ Var *parse_var(Line_Context* ctx)
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
 		discard_cached_token(ctx);
-		res->defn_val = NULL;
 		res->mode 	|= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 
