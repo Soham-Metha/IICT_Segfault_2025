@@ -1,7 +1,7 @@
 
-%entry   E_0:
+%entry   E_0: ; main
 %scope
-    E_2:
+    E_2: ; var: x
     E_4:
         PUSH    "hello,world!"
     ; Line end reached
