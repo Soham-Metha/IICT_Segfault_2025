@@ -100,10 +100,12 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 		}
 	} break;
 	case VAR_BOTH:
-    	print(NULL, WIN_IR, "\nE_%d:", id);
-		// if (!compare_str(v->type, STR("func"))) {
-		// 	print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!");
-		// }
+		if (compare_str(v->name, STR("main"))) {
+			print(NULL, WIN_IR, "\n%entry E_%d:");
+		} else {
+			print(NULL, WIN_IR, "\nE_%d:", id);
+		}
+
 		push_var_def(v->name, v->type, id);
 		break;
 	default:
@@ -221,8 +223,6 @@ Error IR_generate(const CodeBlock *blk)
 {
 	int node_counter  = 0;
 	int block_counter = 0;
-
-	print(NULL, WIN_IR, "%%entry main");
 
 	IR_dump_code_block(blk->begin, &node_counter, &block_counter);
 	print(NULL, WIN_IR, "\nSHUTS");
