@@ -40,7 +40,7 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 	print(NULL, WIN_AST, AST("hexagon", "lightpink", "%.*s"), id, Str_Fmt(funcall->name));
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
-		int childId = AST_dump_statement(&arg->value, n, b);
+		int childId = AST_dump_statement(&arg->statement, n, b);
 
 		if (childId >= 0) print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", id, childId);
 	}
