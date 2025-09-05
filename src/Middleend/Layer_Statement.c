@@ -82,7 +82,7 @@ int get_size_of_type(int type) {
 }
 
 int get_size_from_id(int id) {
-    switch(get_type_from_name(var_defs[id].name))
+    switch(get_type_from_name(var_defs[id].type))
     {
         case VAR_TYPE_I64:
             return 8;
