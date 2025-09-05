@@ -104,7 +104,7 @@ static void IR__STMT_BLOCK(Block_Context_IR* ctx)
 	Block_Context_IR blk_ctx = {0};
 	blk_ctx.n = ctx->n;
 	blk_ctx.b = ctx->b;
-	blk_ctx.next = ctx->next;
+	blk_ctx.next = ctx->next->next;
 	blk_ctx.prev = ctx;
 	blk_ctx.var_def_cnt=0;
 
