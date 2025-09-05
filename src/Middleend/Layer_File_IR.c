@@ -25,7 +25,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 	switch (v->mode) {
 	case VAR_ACCS: {
 		int id = get_var_id(v->name);
-		print(NULL, WIN_IR, IR_FORMAT "PUSH   E_%d", IR_CTX(), id);
+		print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(), id);
 	} break;
 
 	case VAR_DECL: {
@@ -40,7 +40,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		int id = get_var_id(v->name);
 		int size = check_var_mutability(id);
 		if (size) {
-			print(NULL, WIN_IR, IR_FORMAT "PUSH   E_%d", IR_CTX(), ctx->n++);
+			print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(), ctx->n++);
 			// get net line's output!
 			print(NULL, WIN_IR, IR_FORMAT "WRITE%d", IR_CTX(), size);
 		} else {
@@ -84,9 +84,9 @@ void IR__STMT_FUNCALL(Block_Context_IR* ctx)
 
     if (compare_str(funcall->name,STR("write"))) {
         IR_dump_statement(&funcall_ctx);
-        print(NULL,WIN_IR,IR_FORMAT "SETR E_%d [L0]", IR_CTX(), funcall_ctx.n++);
-        print(NULL,WIN_IR,IR_FORMAT "SETR len(E_%d) [QT]", IR_CTX(), funcall_ctx.n++);
-        print(NULL,WIN_IR,IR_FORMAT "INVOK 7", IR_CTX());
+        print(NULL,WIN_IR,IR_FORMAT "SETR    E_%d      [L0]", IR_CTX(), funcall_ctx.n++);
+        print(NULL,WIN_IR,IR_FORMAT "SETR    len(E_%d) [QT]", IR_CTX(), funcall_ctx.n++);
+        print(NULL,WIN_IR,IR_FORMAT "INVOK   7", IR_CTX());
     }
 
 	for (; funcall_ctx.next != NULL; funcall_ctx.next = funcall_ctx.next->next) {
@@ -128,7 +128,7 @@ static void IR_dump_token(Block_Context_IR* ctx)
 	if (tok.type != TOKEN_TYPE_STATEMENT_END ) {
 	print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), ctx->n++);
 	update_indent(1);
-	print(NULL, WIN_IR, IR_FORMAT "PUSH \"%.*s\"", IR_CTX(), Str_Fmt(tok.text));
+	print(NULL, WIN_IR, IR_FORMAT "PUSH    \"%.*s\"", IR_CTX(), Str_Fmt(tok.text));
 	update_indent(-1);
 	} else {
 	update_indent(1);
