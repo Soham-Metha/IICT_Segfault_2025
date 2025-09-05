@@ -21,6 +21,16 @@ int get_var_id(String name) {
     assert(0 && "VAR NOT IN SCOPE");
 }
 
+bool check_var_type(int id, String type) {
+    for (int i = var_def_cnt-1; i >= 0; i--)
+    {
+        if (id==var_defs[i].mem_addr){
+            return compare_str(type,var_defs[i].type);
+        }
+    }
+    assert(0 && "VAR NOT IN SCOPE");
+}
+
 void clear_var_defs() {
     var_def_cnt = 0;
 }
