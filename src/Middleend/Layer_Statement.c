@@ -50,6 +50,7 @@ varType get_type_from_name(String name)
     } else if (compare_str(name,STR("str"))){
         return VAR_TYPE_STR;
     }
+    assert(0 && "INVALID TYPE!");
 }
 
 int get_size_of_type(String name) {
@@ -68,4 +69,8 @@ int get_size_of_type(String name) {
         default:
             return 0;
     }
+}
+
+int check_var_mutability(int id) {
+    return get_size_of_type(var_defs[id].type);
 }
