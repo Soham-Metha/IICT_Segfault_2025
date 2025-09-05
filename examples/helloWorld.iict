@@ -1,4 +1,4 @@
-match x:i64 = {
+x:i64 = {
    true   = {
     x = 1;
    };
