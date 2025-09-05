@@ -148,6 +148,17 @@ static void IR_dump_token(Block_Context_IR *ctx)
 		print(NULL, WIN_IR, "%.*s Line end reached", IR_CTX(),
 		      Str_Fmt(tok.text));
 		break;
+	
+	case TOKEN_TYPE_NUMBER:
+	case TOKEN_TYPE_NAME:
+	case TOKEN_TYPE_OPEN_CURLY:
+	case TOKEN_TYPE_CLOSING_CURLY:
+	case TOKEN_TYPE_COMMA:
+	case TOKEN_TYPE_COLON:
+	case TOKEN_TYPE_EQUAL:
+	case TOKEN_TYPE_OPEN_PAREN:
+	case TOKEN_TYPE_CLOSING_PAREN:
+	case TOKEN_TYPE_EOL:
 	default:
 		break;
 	}
