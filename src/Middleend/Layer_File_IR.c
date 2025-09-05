@@ -139,7 +139,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 	case STMT_TOKEN:		IR_dump_token	    (ctx);break;
 	case STMT_FUNCALL:		IR__STMT_FUNCALL	    (ctx);break;
 	case STMT_BLOCK_START: 	IR__STMT_BLOCK		(ctx);break;
-	default: 				IR__STMT_UNKNOWN	    (ctx);break;
+	default: 				break;
 	}
 }
 
