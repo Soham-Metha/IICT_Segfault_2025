@@ -30,9 +30,10 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 	case VAR_DECL: {
 		int s = get_size_of_type(v->type);
 		if (s) {
-		print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), ctx->n++);
-		print(NULL, WIN_IR, IR_FORMAT "res(8)", IR_CTX());
-		push_var_def(v->name,v->type, ctx->n-1);
+		int id = ctx->n++;
+		print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), id);
+		print(NULL, WIN_IR, IR_FORMAT "res(%d)", IR_CTX(),s);
+		push_var_def(v->name,v->type, id);
 		}
 	} break;
 	case VAR_DEFN: {
