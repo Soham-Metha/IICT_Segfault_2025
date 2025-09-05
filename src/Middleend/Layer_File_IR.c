@@ -49,7 +49,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 	} break;
 	case VAR_BOTH:
 		if (compare_str(v->name, STR("main"))) {
-			print(NULL, WIN_IR, IR_FORMAT "%%entry E_%d:", IR_CTX());
+			print(NULL, WIN_IR, IR_FORMAT "%%entry E_%d:", IR_CTX(), ctx->n++);
 		} else {
 			print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), ctx->n++);
 		}
