@@ -99,28 +99,33 @@ Var *parse_var(Line_Context *ctx)
 
 // ------------------------------ INDIVIDUAL TOKEN HANDLERS ------------------------------
 
-static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
+StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 {
 	(void)tok;
-	Stmt res = { 0 };
-	res.type = STMT_CONDITIONAL;
-	token_consume(ctx);
-	Token cond = token_expect_next(
-		ctx,
-		TOKEN_TYPE_NAME); // currently bin ops not implemented, so must be a name
+	StmtConditional res = { 0 };
+
+	token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
+	res.cond = stmt_fetch_next(ctx);
 	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
+
 	Token next = token_peek_next(ctx);
+
 	if (next.type == TOKEN_TYPE_THEN) {
-		res.value.as_conditional->repeat = false;
+		res.repeat = false;
 	} else if (next.type == TOKEN_TYPE_REPEAT) {
-		res.value.as_conditional->repeat = true;
+		res.repeat = true;
 	} else {
 		assert(0 && "EXPECTED THEN OR REPEAT");
 	}
-	res.value.as_conditional->cond = region_allocate(sizeof(Stmt));
-	*res.value.as_conditional->cond->value.as_token = cond;
-	res.value.as_conditional->body = region_allocate(sizeof(Stmt));
-	*res.value.as_conditional->body = stmt_fetch_next(ctx);
+
+	res.body = stmt_fetch_next(ctx);
+}
+
+static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
+{
+	Stmt res = { 0 };
+	
+	*res.value.as_conditional = get_stmt_conditional(tok,ctx);
 
 	return res;
 }
