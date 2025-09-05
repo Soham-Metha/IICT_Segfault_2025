@@ -1,3 +1,4 @@
-
-x:str = "hello,world!";
-write(x);
+main:func() = {
+    x:str = "hello,world!";
+    write(x);
+};
