@@ -17,4 +17,6 @@ void clear_var_defs();
 
 int get_size_of_type(String name);
 
+int check_var_mutability(int id);
+
 #endif
