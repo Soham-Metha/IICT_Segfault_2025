@@ -25,7 +25,7 @@ typedef enum StmtType StmtType;
 typedef enum varMode varMode;
 typedef union StmtValue StmtValue;
 typedef struct Funcall Funcall;
-typedef struct FuncallArg FuncallArg;
+typedef struct StmtNode FuncallArg;
 typedef struct StmtNode StmtNode;
 typedef struct Line_Context Line_Context;
 
