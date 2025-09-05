@@ -45,7 +45,7 @@ typedef enum {
     VAR_TYPE_COUNT,
 } varType;
 
-varType get_type_from_name(String name)
+int get_type_from_name(String name)
 {
     if (compare_str(name,STR("func"))){
         return VAR_TYPE_FUNC;
@@ -63,8 +63,8 @@ varType get_type_from_name(String name)
     assert(0 && "INVALID TYPE!");
 }
 
-int get_size_of_type(String name) {
-    switch(get_type_from_name(name))
+int get_size_of_type(int type) {
+    switch(type)
     {
         case VAR_TYPE_I64:
             return 8;
@@ -82,5 +82,5 @@ int get_size_of_type(String name) {
 }
 
 int check_var_mutability(int id) {
-    return get_size_of_type(var_defs[id].type);
+    return get_size_of_type(id);
 }
