@@ -54,6 +54,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 			print(NULL, WIN_IR, "\nE_%d:", ctx->n++);
 		}
 		push_var_def(v->name, v->type, ctx->n++);
+		ctx->next = ctx->next->next;
 		IR_dump_statement(ctx);
 		break;
 	default:
