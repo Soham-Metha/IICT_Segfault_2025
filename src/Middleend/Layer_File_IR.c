@@ -84,7 +84,7 @@ int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 
 	case VAR_DEFN:
 	case VAR_BOTH:
-    print(NULL,WIN_IR, "DUMPING");
+    print(NULL,WIN_IR, "DUMPING %d", v.defn_val->type);
         IR_dump_statement(v.defn_val, n, b);
         print(NULL,WIN_IR, "Done");
 		if (!compare_str(v.type, STR("func"))) {
