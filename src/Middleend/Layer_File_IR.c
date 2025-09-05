@@ -16,7 +16,7 @@ static void IR_dump_code_block(Block_Context_IR *ctx);
 
 // // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-int IR__STMT_VARIABLE(Block_Context_IR *ctx)
+void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type==STMT_VAR);
