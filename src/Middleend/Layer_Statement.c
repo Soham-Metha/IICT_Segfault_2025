@@ -1,5 +1,6 @@
 #include <Middleend/Layer_Statement.h>
 #include <assert.h>
+#include <Utils/strings.h>
 
 Var_IR var_defs[128];
 int var_def_cnt = 0;
@@ -22,4 +23,49 @@ int get_var_id(String name) {
 
 void clear_var_defs() {
     var_def_cnt = 0;
+}
+
+typedef enum {
+    VAR_TYPE_STR,
+    VAR_TYPE_I64,
+    VAR_TYPE_F64,
+    VAR_TYPE_CHAR,
+    VAR_TYPE_FUNC,
+    VAR_TYPE_STRUCT,
+    VAR_TYPE_COUNT,
+} varType;
+
+varType get_type_from_name(String name)
+{
+    if (compare_str(name,STR("func"))){
+        return VAR_TYPE_FUNC;
+    } else if (compare_str(name,STR("struct"))){
+        return VAR_TYPE_STRUCT;
+    } else if (compare_str(name,STR("char"))){
+        return VAR_TYPE_CHAR;
+    } else if (compare_str(name,STR("i64"))){
+        return VAR_TYPE_I64;
+    } else if (compare_str(name,STR("f64"))){
+        return VAR_TYPE_F64;
+    } else if (compare_str(name,STR("str"))){
+        return VAR_TYPE_STR;
+    }
+}
+
+int get_size_of_type(String name) {
+    switch(get_type_from_name(name))
+    {
+        case VAR_TYPE_I64:
+            return 8;
+        case VAR_TYPE_F64:
+            return 8;
+        case VAR_TYPE_CHAR:
+            return 1;
+        case VAR_TYPE_STR:
+        case VAR_TYPE_FUNC:
+        case VAR_TYPE_STRUCT:
+        case VAR_TYPE_COUNT:
+        default:
+            return 0;
+    }
 }
