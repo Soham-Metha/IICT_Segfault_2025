@@ -4,7 +4,7 @@
     E_1:
     res(1)
     ; Line end reached
-    PUSH    E_2
+    PUSH    E_1
     PUSH    "a"
     WRITE1
     ; Line end reached
@@ -12,11 +12,11 @@
     SETR    len(E_1) [QT]
     INVOK   7
     ; Line end reached
-    E_3:            ; var: x
+    E_2:            ; var: x
     PUSH    "hello,world!"
     ; Line end reached
-    SETR    E_3      [L0]
-    SETR    len(E_3) [QT]
+    SETR    E_2      [L0]
+    SETR    len(E_2) [QT]
     INVOK   7
     ; Line end reached
 %end
