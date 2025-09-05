@@ -31,8 +31,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		int s = get_size_of_type(v->type);
 		if (s) {
 		int id = ctx->n++;
-		print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), id);
-		print(NULL, WIN_IR, IR_FORMAT "res(%d)", IR_CTX(),s);
+		print(NULL, WIN_IR, IR_FORMAT "%%bind    E_%d    res(%d)", IR_CTX(), id, s);
 		push_var_def(v->name,v->type, id);
 		}
 	} break;
