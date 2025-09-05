@@ -67,7 +67,7 @@ int get_size_of_type(int type) {
     switch(type)
     {
         case VAR_TYPE_I64:
-            return 8;
+            return 1;
         case VAR_TYPE_F64:
             return 1;
         case VAR_TYPE_CHAR:
