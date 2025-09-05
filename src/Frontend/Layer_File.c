@@ -76,7 +76,7 @@ Error file_read(const char *file_path, File_Context *file)
 	file->line_num 		= 0;
 
 	CodeBlock global 	= codeblock_generate(file);
-
+	(void)global;
 	// IR_generate(&global);
 	// AST_generate(&global, true);
 
