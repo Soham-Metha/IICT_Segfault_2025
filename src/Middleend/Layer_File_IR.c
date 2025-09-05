@@ -7,7 +7,6 @@
 #include <inttypes.h>
 #include <assert.h>
 
-
 static void IR_dump_token(Block_Context_IR* ctx);
 
 static void IR_dump_statement(Block_Context_IR *ctx);
