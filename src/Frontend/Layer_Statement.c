@@ -101,6 +101,7 @@ Var *parse_var(Line_Context *ctx)
 
 static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
 {
+	(void)tok;
 	Stmt res = { 0 };
 	res.type = STMT_CONDITIONAL;
 	token_consume(ctx);
