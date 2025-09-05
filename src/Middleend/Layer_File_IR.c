@@ -74,14 +74,15 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 	(void)n;
 	(void)b;
 	switch (v->mode) {
-	case VAR_ACCS:
-		print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v->name));
-		break;
+	case VAR_ACCS: {
+		int id = get_var_id(v->name);
+		print(NULL, WIN_IR, "\nPUSH   E_%d", id);
+	} break;
 
-	case VAR_DECL:{
+	case VAR_DECL: {
 		int s = get_size_of_type(v->type);
 		if (s) {
-		print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
+		print(NULL, WIN_IR, "\nE_%d:", id);
 		print(NULL, WIN_IR, "\nres(8)");
 		push_var_def(v->name,v->type, id);
 		}
@@ -99,9 +100,9 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 	} break;
 	case VAR_BOTH:
     	print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
-		if (!compare_str(v->type, STR("func"))) {
-			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!");
-		}
+		// if (!compare_str(v->type, STR("func"))) {
+		// 	print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!");
+		// }
 		push_var_def(v->name, v->type, id);
 		break;
 	default:
