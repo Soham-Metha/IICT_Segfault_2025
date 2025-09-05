@@ -102,13 +102,13 @@ static void IR__STMT_BLOCK(Block_Context_IR* ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type==STMT_BLOCK_START);
-
+	StmtNode* nxt = ctx->next->statement.value.as_block;
     print(NULL, WIN_IR, "\n%%scope");
 
 	Block_Context_IR blk_ctx = {0};
 	blk_ctx.n = ctx->n;
 	blk_ctx.b = ctx->b;
-	blk_ctx.next = ctx->next;
+	blk_ctx.next = nxt;
 	blk_ctx.prev = ctx;
 	blk_ctx.var_def_cnt=0;
 
