@@ -46,7 +46,7 @@ static int __TOKEN_TYPE_STR(int id, String str)
 // }
 static int __TOKEN_TYPE_STATEMENT_END(int id)
 {
-    print(NULL,WIN_IR, ";;;;");
+    print(NULL,WIN_IR, "; End of stmt");
     return id;
 }
 // static int __TOKEN_TYPE_COMMA(int id)
