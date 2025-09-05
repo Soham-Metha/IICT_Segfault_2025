@@ -91,7 +91,7 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 		int id = get_var_id(v->name);
 		int size = check_var_mutability(id);
 		if (size) {
-			print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v->name));
+			print(NULL, WIN_IR, "\nPUSH   E_%d", id);
 			// get net line's output!
 			print(NULL, WIN_IR, "\nWRITE%d", size);
 		} else {
@@ -99,7 +99,7 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 		}
 	} break;
 	case VAR_BOTH:
-    	print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
+    	print(NULL, WIN_IR, "\nE_%d:", id);
 		// if (!compare_str(v->type, STR("func"))) {
 		// 	print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!");
 		// }
