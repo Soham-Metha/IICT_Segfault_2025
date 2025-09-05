@@ -13,15 +13,13 @@ void print(Line_Context *ctx, int id, const char *str, ...)
 	va_start(args, str);
 
 	if (id == WIN_AST) {
-		if (!ast) {
-			ast = fopen("ast.dot", "w");
-		}
+		ast = fopen("ast.dot", "a");
 		vfprintf(ast, str, args);
+		fclose(ast);
 	} else if (id == WIN_IR) {
-		if (!myIR) {
-			myIR = fopen("ir.sasm", "w");
-		}
+		myIR = fopen("ir.sasm", "a");
 		vfprintf(myIR, str, args);
+		fclose(myIR);
 	}else {
 		assert(id == WIN_STDERR);
 		printf("\n\n%s:%d:%ld: ",ctx->file_name, ctx->line_no, (ctx->line.data-ctx->line_start));
