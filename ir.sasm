@@ -1,4 +1,5 @@
-
+%entry main
 %scope
-%bind    main    _1
+main:
+VAR DEFN UNIMPLEMENTED!!
 %end
