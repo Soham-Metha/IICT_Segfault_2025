@@ -40,7 +40,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		int size = check_var_mutability(id);
 		if (size) {
 			print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(), ctx->n++);
-			// get net line's output!
+			IR_dump_statement(ctx);
 			print(NULL, WIN_IR, IR_FORMAT "WRITE%d", IR_CTX(), size);
 		} else {
 			assert(0 && "VARIABLE IS OF IMMUTABLE TYPE!!");
