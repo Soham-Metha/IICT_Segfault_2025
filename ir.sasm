@@ -1,7 +1,7 @@
 %entry main
-main:
+E_0:
 %scope
-x:
+E_3:
 E_5:
 PUSH "hello,world!"; End of stmt
 PUSH   E_3
