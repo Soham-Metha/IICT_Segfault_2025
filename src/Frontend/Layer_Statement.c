@@ -157,7 +157,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 		result.value.as_var->name      = tok.text;
 
 	}
-	// (void)token_expect_next(line,TOKEN_TYPE_STATEMENT_END);
+	(void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
 }
 
