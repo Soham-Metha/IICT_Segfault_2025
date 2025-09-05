@@ -80,3 +80,21 @@ int get_size_of_type(int type) {
             return 0;
     }
 }
+
+int get_size_from_id(int id) {
+    switch(get_type_from_name(var_defs[id].name))
+    {
+        case VAR_TYPE_I64:
+            return 8;
+        case VAR_TYPE_F64:
+            return 8;
+        case VAR_TYPE_CHAR:
+            return 1;
+        case VAR_TYPE_STR:
+        case VAR_TYPE_FUNC:
+        case VAR_TYPE_STRUCT:
+        case VAR_TYPE_COUNT:
+        default:
+            return 0;
+    }
+}
