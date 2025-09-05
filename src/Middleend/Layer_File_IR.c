@@ -141,7 +141,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 	case STMT_VAR: 			IR__STMT_VARIABLE	(ctx);break;
 	case STMT_BLOCK_END:
 	case STMT_TOKEN:		IR_dump_token	    (ctx);break;
-	case STMT_FUNCALL:		IR__STMT_FUNCALL	    (ctx);break;
+	case STMT_FUNCALL:		IR__STMT_FUNCALL	(ctx);break;
 	case STMT_BLOCK_START: 	IR__STMT_BLOCK		(ctx);break;
 	default: 				break;
 	}
@@ -150,9 +150,11 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 static void IR_dump_code_block(Block_Context_IR *ctx)
 {
 	assert(ctx);
+	update_indent(1);
 	for (; ctx->next != NULL; ctx->next = ctx->next->next) {
 		IR_dump_statement(ctx);
 	}
+	update_indent(-1);
 }
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
@@ -172,8 +174,3 @@ Error IR_generate(const CodeBlock *blk)
 
 	return ERR_OK;
 }
-
-// void IGNORE_ERRORS()
-// {
-// 	;
-// }
