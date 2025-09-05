@@ -110,5 +110,7 @@ Line_Context *file_fetch_next_line(File_Context *file)
 Line_Context* file_fetch_curr_line(File_Context* file)
 {
 	assert(file->line_num);
+	if (file->lines[file->line_num-1].line.len>0)
 	return &file->lines[file->line_num-1];
+	return &file->lines[file->line_num];
 }
