@@ -77,8 +77,8 @@ struct PatternMatch {
 
 struct StmtConditional {
 	bool repeat;
-	Stmt cond;
-	Stmt body;
+	Token cond;
+	CodeBlock body;
 };
 
 Stmt stmt_fetch_next(Line_Context *ctx);
