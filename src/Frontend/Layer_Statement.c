@@ -28,7 +28,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 
 	do {
 		FuncallArg *arg = region_allocate(sizeof(FuncallArg));
-		arg->value 		= stmt_fetch_next(ctx);
+		arg->statement	= stmt_fetch_next(ctx);
 		arg->next		= NULL;
 
 		if (first == NULL) {
