@@ -106,7 +106,7 @@ int IR__STMT_UNKNOWN(int id)
 int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
     print(NULL, WIN_IR, "");
-    if (compare_str(funcall->name,STR("write"))) {
+    if (compare_str(funcall->name,STR("print"))) {
         const FuncallArg *arg = funcall->args;
         int child1 = IR_dump_statement(&arg->value, n, b);
         (void)child1;
