@@ -1,16 +1,16 @@
 
-%entry E_15:
+%entry E_2147483647:
 %scope
 E_1:
 E_3:
-PUSH "hello,world!"; Line end reached
+PUSH "hello,world!"
+; Line end reached
 PUSH   E_2
 SETR E_4 [L0]
 SETR len(E_5) [QT]
 INVOK 7
 PUSH   E_2
-SETR E_6 [L0]
-SETR len(E_7) [QT]
-INVOK 7; Line end reached
-%end; Line end reached
+; Line end reached
+%end
+; Line end reached
 SHUTS
