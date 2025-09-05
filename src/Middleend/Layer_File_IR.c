@@ -77,6 +77,7 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 	case VAR_ACCS: {
 		int id = get_var_id(v->name);
 		print(NULL, WIN_IR, "\nPUSH   E_%d", id);
+		return id;
 	} break;
 
 	case VAR_DECL: {
