@@ -1,3 +1,6 @@
+(true)  -> {
+    write("Hello world");
+   };
 match x:i64 = {
    (true)  -> {
     x = 1;
