@@ -47,7 +47,7 @@ union StmtValue {
 	Funcall      	*as_funcall;
 	StmtNode  	 	*as_block;
 	PatternMatch 	*as_match;
-	StmtConditional as_conditional;
+	StmtConditional *as_conditional;
 };
 
 struct Stmt {
@@ -77,8 +77,8 @@ struct PatternMatch {
 
 struct StmtConditional {
 	bool repeat;
-	Stmt* cond;
-	Stmt* body;
+	Stmt cond;
+	Stmt body;
 };
 
 Stmt stmt_fetch_next(Line_Context *ctx);
