@@ -1,0 +1,23 @@
+
+%entry   E_0: ; main
+%scope
+    %bind    E_1    res(1)
+    ; Line end reached
+    PUSH    E_1
+    PUSH    "a"
+    WRITE8
+    ; Line end reached
+    SETR    E_1      [L0]
+    SETR    8        [QT]
+    INVOK   7
+    ; Line end reached
+    E_2:            ; var: x
+    PUSH    "hello,world!"
+    ; Line end reached
+    SETR    E_2      [L0]
+    SETR    len(E_2) [QT]
+    INVOK   7
+    ; Line end reached
+%end
+; Line end reached
+SHUTS
