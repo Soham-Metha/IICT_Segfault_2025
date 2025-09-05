@@ -84,4 +84,14 @@ digraph AST {
   Expr_31 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
   Expr_30 -> Expr_31;
   Expr_32 [shape=hexagon style=filled fillcolor=lightpink fontname="Courier" label="write"];
-  Expr_33 [shape=ellipse style=fill
+  Expr_33 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
+  Expr_32 -> Expr_33;
+  Expr_31 -> Expr_32;
+  Expr_34 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_32 -> Expr_34;
+  }
+  Expr_20 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 3"];
+  Expr_18 -> Expr_20;
+  Expr_35 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_20 -> Expr_35;
+}
