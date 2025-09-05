@@ -1,2 +1,0 @@
-ir.sasm:5: ERROR: unknown directive `bind	_5	"hi"`
-ir.sasm:5: ERROR: unknown directive `bind	E_5	"hi"`
