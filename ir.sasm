@@ -2,16 +2,16 @@
 ; var:    main 
 %entry    E_0: 
 %scope
-    %bind    E_1    res(1)     Line end reached
+    %bind    E_1    res(1); Line end reached
     PUSH    E_1'    '
-    WRITE1          Line end reached
+    WRITE1     ; Line end reached
     SETR    E_1      [L0]
     SETR    1        [QT]
-    INVOK   7     Line end reached
+    INVOK   7; Line end reached
     ; var:    x 
-    %bind    E_2    "    "     Line end reached
+    %bind    E_2    "    "; Line end reached
     SETR    E_2      [L0]
     SETR    len(E_2) [QT]
-    INVOK   7     Line end reached
-%end Line end reached
+    INVOK   7; Line end reached
+%end; Line end reached
 SHUTS
