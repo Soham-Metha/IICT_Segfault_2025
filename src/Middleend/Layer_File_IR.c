@@ -132,11 +132,11 @@ int IR__STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 	int clusterNum = (*b)++;
     (void)clusterNum;
 
-	print(NULL, WIN_IR, "");
+    print(NULL, WIN_IR, "\n%%scope");
 
 	IR_dump_code_block(block, n, b);
 
-	print(NULL, WIN_IR, "");
+    print(NULL, WIN_IR, "\n%%end");
 
 	return clusterId;
 }
@@ -190,7 +190,6 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 	int firstId = -1;
 	int prevId 	= -1;
 
-    print(NULL, WIN_IR, "\n%%scope");
 	for (const StmtNode *cur = stmtNode; cur != NULL; cur = cur->next) {
 		int id 	= IR_dump_statement(&cur->statement, n, b);
 
@@ -198,7 +197,6 @@ static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 
         (void)prevId;
 	}
-    print(NULL, WIN_IR, "\n%%end");
 
 	return firstId;
 }
