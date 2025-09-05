@@ -4,7 +4,7 @@
     %bind    E_1    res(1)
     ; Line end reached
     PUSH    E_1
-    PUSH    "a"
+    %bind   "a"
     WRITE1
     ; Line end reached
     SETR    E_1      [L0]
@@ -12,7 +12,7 @@
     INVOK   7
     ; Line end reached
     E_2:            ; var: x
-    PUSH    "hello,world!"
+    %bind   "hello,world!"
     ; Line end reached
     SETR    E_2      [L0]
     SETR    len(E_2) [QT]
