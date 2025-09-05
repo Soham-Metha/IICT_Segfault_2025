@@ -1,8 +1,0 @@
-
-|   |                                                                                                                              |
-| W | ERROR | 'res(1)' | Unknown instruction detected!                                                                           |
-|   |                                                                                                                              |
-
-|   |                                                                                                                              |
-| W | ERROR | 'res(1)' | Unknown instruction detected!                                                                           |
-|   |                                                                                                                              |
