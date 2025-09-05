@@ -29,6 +29,7 @@ typedef struct Funcall Funcall;
 typedef struct StmtNode FuncallArg;
 typedef struct StmtNode StmtNode;
 typedef struct Line_Context Line_Context;
+typedef struct PatternMatch PatternMatch;
 
 struct Var {
 	String  name;
@@ -39,10 +40,11 @@ struct Var {
 };
 
 union StmtValue {
-	Var       *as_var;
-	Token     *as_token;
-	Funcall  *as_funcall;
-	StmtNode *as_block;
+	Var          *as_var;
+	Token        *as_token;
+	Funcall      *as_funcall;
+	StmtNode  	 *as_block;
+	PatternMatch *as_match;
 };
 
 struct Stmt {
@@ -63,6 +65,11 @@ struct Funcall {
 struct StmtNode {
 	Stmt statement;
 	StmtNode *next;
+};
+
+struct PatternMatch {
+	Stmt *cond;
+	Stmt *body;
 };
 
 Stmt stmt_fetch_next(Line_Context *ctx);
