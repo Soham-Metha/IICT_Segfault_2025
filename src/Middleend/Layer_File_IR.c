@@ -130,7 +130,8 @@ static void IR_dump_token(Block_Context_IR* ctx)
 	print(NULL, WIN_IR, "\nE_%d:\nPUSH \"%.*s\"", 
 		ctx->n++, Str_Fmt(tok.text));
 	} else {
-		print(NULL, WIN_IR, "%.*s Line end reached");
+		print(NULL, WIN_IR, "%.*s Line end reached", 
+			Str_Fmt(tok.text));
 	}
 
 }
