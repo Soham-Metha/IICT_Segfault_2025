@@ -1,12 +1,9 @@
 %entry main
 E_0:
-%scope
-E_3:
-E_5:
+E_2:
 PUSH "hello,world!"; End of stmt
-PUSH   E_3
-SETR E_9 [L0]
-SETR len(E_9) [QT]
+PUSH   E_0
+SETR E_6 [L0]
+SETR len(E_6) [QT]
 INVOK 7; End of stmt
-%end; End of stmt
 SHUTS
