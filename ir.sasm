@@ -2,7 +2,7 @@
 ; var:    main 
 %entry    E_0: 
 %scope
-    %bind    E_1    res(1); Line end reached
+    %bind   E_1    res(1); Line end reached
     PUSH    E_1'    '
     WRITE1     ; Line end reached
     SETR    E_1      [L0]
