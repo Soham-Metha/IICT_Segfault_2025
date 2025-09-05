@@ -119,6 +119,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 	}
 
 	res.body = stmt_fetch_next(ctx);
+	return res;
 }
 
 static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
