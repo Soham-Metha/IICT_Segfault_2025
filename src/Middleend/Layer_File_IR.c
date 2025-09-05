@@ -71,9 +71,11 @@ static int __TOKEN_TYPE_STR(int id, String str)
 
 int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 {
+    print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v.name));
+
 	switch (v.mode) {
 	case VAR_ACCS:
-		print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v.name));
+		// print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v.name));
 		break;
 
 	case VAR_DECL:
@@ -83,12 +85,11 @@ int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 	case VAR_DEFN:
 	case VAR_BOTH:
 		if (compare_str(v.type, STR("func"))) {
-            print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v.name));
-            print(NULL, WIN_IR, "\n%%scope");
+
 		    IR_dump_statement(v.defn_val, n, b);
 		} else {
 	        int child = IR_dump_statement(v.defn_val, n, b);
-			print(NULL, WIN_IR, "\n%%bind    %.*s    _%d", Str_Fmt(v.name), child);
+			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!", Str_Fmt(v.name), child);
 		}
 		break;
 	default:
