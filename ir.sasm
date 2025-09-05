@@ -4,13 +4,13 @@
     E_2:
     E_4:
         PUSH    "hello,world!"
-        ; Line end reached
+    ; Line end reached
     PUSH    E_3
     SETR    E_5      [L0]
     SETR    len(E_6) [QT]
     INVOK   7
     PUSH    E_3
-        ; Line end reached
-%end
     ; Line end reached
+%end
+; Line end reached
 SHUTS
