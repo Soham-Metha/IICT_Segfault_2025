@@ -26,7 +26,6 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 	case VAR_ACCS: {
 		int id = get_var_id(v->name);
 		print(NULL, WIN_IR, "\nPUSH   E_%d", id);
-		return id;
 	} break;
 
 	case VAR_DECL: {
