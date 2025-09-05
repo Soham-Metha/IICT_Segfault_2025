@@ -1,5 +1,4 @@
 %entry main
 %scope
 main:
-VAR DEFN UNIMPLEMENTED!!
 %end
