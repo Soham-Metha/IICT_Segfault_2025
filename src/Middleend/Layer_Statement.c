@@ -88,4 +88,5 @@ int get_size_from_id(int id) {
             return get_size_of_type(var_defs[i].type);
         }
     }
+    assert(0 && "INVALID TYPE!");
 }
