@@ -84,10 +84,8 @@ int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
 
 	case VAR_DEFN:
 	case VAR_BOTH:
-		if (compare_str(v.type, STR("func"))) {
-
-		    IR_dump_statement(v.defn_val, n, b);
-		} else {
+        IR_dump_statement(v.defn_val, n, b);
+		if (!compare_str(v.type, STR("func"))) {
 	        int child = IR_dump_statement(v.defn_val, n, b);
 			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!", Str_Fmt(v.name), child);
 		}
