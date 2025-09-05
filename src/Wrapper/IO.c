@@ -21,6 +21,10 @@ void print(Line_Context *ctx, int id, const char *str, ...)
 		if (!myIR) {
 			myIR = fopen("ir.sasm", "w");
 		}
+
+	va_list args_copy;
+	va_copy(args_copy, args);
+	vfprintf(stdout, str, args_copy);
 		vfprintf(myIR, str, args);
 	}else {
 		assert(id == WIN_STDERR);
