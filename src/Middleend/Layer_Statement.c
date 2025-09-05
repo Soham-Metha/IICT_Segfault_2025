@@ -5,10 +5,10 @@
 Var_IR var_defs[128];
 int var_def_cnt = 0;
 
-void push_var_def(String name, int id)
+void push_var_def(String name,String type, int id)
 {
 	assert(var_def_cnt < 128);
-	var_defs[var_def_cnt++] = (Var_IR){ .name = name, .mem_addr = id };
+	var_defs[var_def_cnt++] = (Var_IR) { .name = name, .type = type, .mem_addr = id };
 }
 
 int get_var_id(String name) {
