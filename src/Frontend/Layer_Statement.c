@@ -71,33 +71,31 @@ void parse_var_decl(Line_Context *ctx, Var *out)
 	}
 }
 
-Var *parse_var(Line_Context *ctx)
+Var parse_var(Line_Context *ctx)
 {
-	Var *res = region_allocate(sizeof(Var));
-	res->mode = VAR_ACCS;
+	Var res = {0};
+	res.mode = VAR_ACCS;
 
 	Token next = token_peek_next(ctx);
 	if (next.type == TOKEN_TYPE_COLON) {
-		parse_var_decl(ctx, res);
-		res->mode |= VAR_DECL;
+		parse_var_decl(ctx, &res);
+		res.mode |= VAR_DECL;
 		next = token_peek_next(ctx);
 
 		update_indent(1);
 		log_to_ctx(ctx, LOG_FORMAT "- declared type: '%.*s'",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"), res->type.len,
-			   res->type.data);
+			   LOG_CTX("[IDENTIFICATION]", "[STMT]"), res.type.len,
+			   res.type.data);
 		update_indent(-1);
 	}
 	if (next.type == TOKEN_TYPE_EQUAL) {
 		token_consume(ctx);
-		res->mode |= VAR_DEFN;
+		res.mode |= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 	}
 
 	return res;
 }
-
-// ------------------------------ INDIVIDUAL TOKEN HANDLERS ------------------------------
 
 StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 {
@@ -121,6 +119,9 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 	res.body = stmt_fetch_next(ctx);
 	return res;
 }
+
+// ------------------------------ INDIVIDUAL TOKEN HANDLERS ------------------------------
+
 
 static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
 {
@@ -182,7 +183,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   Str_Fmt(tok.text));
 		result.type = STMT_VAR;
-		result.value.as_var = parse_var(ctx);
+		*result.value.as_var = parse_var(ctx);
 		result.value.as_var->name = tok.text;
 	}
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
