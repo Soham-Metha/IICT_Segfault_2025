@@ -89,7 +89,13 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 				log_to_ctx(ctx, LOG_FORMAT " } ", LOG_CTX("[DEFINITION  END]","[STMT]"));
 			}
 			return true;
-		case STMT_MATCH:
+		case STMT_MATCH: {
+			PatternMatch *match = malloc(sizeof(*match));
+			Stmt stmt = stmt_fetch_next(ctx);
+			*match->cond = stmt;
+			stmt = stmt_fetch_next(ctx);
+			*match->body = stmt;
+		}
 		case STMT_FUNCALL:
 		case STMT_TOKEN:
 		default:	
