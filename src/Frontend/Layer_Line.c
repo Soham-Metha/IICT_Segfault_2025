@@ -94,8 +94,10 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			match->cond = malloc(sizeof(*match->cond ));
 			match->body = malloc(sizeof(*match->body ));
 			Stmt stmt = stmt_fetch_next(ctx);
+			ctx = file_fetch_curr_line(context);
 			*match->cond = stmt;
 			stmt = stmt_fetch_next(ctx);
+			ctx = file_fetch_curr_line(context);
 			*match->body = stmt;
 			break;
 		}
