@@ -32,7 +32,7 @@ Expr_10 [shape=component style=filled fillcolor=palegreen fontname="Courier" lab
 Expr_11 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="\"a\""]
 Expr_10 -> Expr_11 [style=dotted]
 Expr_8 -> Expr_10;
-Expr_12 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="WRITE8"]
+Expr_12 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="WRITE1"]
 Expr_10 -> Expr_12;
 Expr_13 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SETR"]
 Expr_14 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_1"]
@@ -41,7 +41,7 @@ Expr_15 [shape=cylinder style=filled fillcolor=lightyellow fontname="Courier" la
 Expr_13 -> Expr_15 [style=dotted]
 Expr_12 -> Expr_13;
 Expr_16 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SETR"]
-Expr_17 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="8"]
+Expr_17 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"]
 Expr_16 -> Expr_17 [style=dotted]
 Expr_18 [shape=cylinder style=filled fillcolor=lightyellow fontname="Courier" label="QT"]
 Expr_16 -> Expr_18 [style=dotted]
