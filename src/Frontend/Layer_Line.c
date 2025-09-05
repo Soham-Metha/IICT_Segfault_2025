@@ -108,7 +108,9 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			*match->body = stmt;
 			break;
 		}
-		case STMT_CONDITIONAL:
+		case STMT_CONDITIONAL: {
+			statement.value.as_conditional.body = codeblock_generate(context);
+		} break;
 		case STMT_FUNCALL:
 		case STMT_TOKEN:
 		default:	
