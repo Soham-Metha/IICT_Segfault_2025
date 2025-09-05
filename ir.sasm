@@ -3,7 +3,7 @@ E_0:
 E_2:
 PUSH "hello,world!"; End of stmt
 PUSH   E_0
-SETR E_6 [L0]
-SETR len(E_6) [QT]
+SETR E_0 [L0]
+SETR len(E_0) [QT]
 INVOK 7; End of stmt
 SHUTS
