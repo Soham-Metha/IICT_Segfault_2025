@@ -103,7 +103,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 	StmtConditional res = { 0 };
 
 	token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
-	res.cond = stmt_fetch_next(ctx);
+	res.cond = token_peek_next(ctx);
 	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
 
 	Token next = token_peek_next(ctx);
@@ -116,7 +116,6 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 		assert(0 && "EXPECTED THEN OR REPEAT");
 	}
 
-	res.body = stmt_fetch_next(ctx);
 	return res;
 }
 
@@ -127,7 +126,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
 {
 	Stmt res = { 0 };
 	
-	*res.value.as_conditional = get_stmt_conditional(tok,ctx);
+	res.value.as_conditional = get_stmt_conditional(tok,ctx);
 
 	return res;
 }
