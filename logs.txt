@@ -14,3 +14,4 @@ Usage : sasm -i <input file> -o <output file> [-a | -d]
 	Disassembly Sample Command : ./sasm -i ./test.sm -o ./test.sasm -d
 
 ir.sasm:5: ERROR: unknown directive `bind	E5	"hi"`
+ir.sasm:5: ERROR: unknown directive `bind	E	"hi"`
