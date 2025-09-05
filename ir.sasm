@@ -1,5 +1,4 @@
-
-%scope
+%entry main
 main:
 %scope
 %bind E_5 "hi"
@@ -7,5 +6,4 @@ SETR E_5 [L0]
 SETR len(E_5) [QT]
 INVOK 7; End of stmt
 %end; End of stmt
-%end
-SHUTS%entry main
+SHUTS
