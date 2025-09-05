@@ -1,0 +1,9 @@
+%entry main
+main:
+%scope
+%bind E_5 "hello,world!"
+SETR E_5 [L0]
+SETR len(E_5) [QT]
+INVOK 7; End of stmt
+%end; End of stmt
+SHUTS
