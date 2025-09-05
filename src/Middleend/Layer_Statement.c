@@ -80,7 +80,3 @@ int get_size_of_type(int type) {
             return 0;
     }
 }
-
-int check_var_mutability(int id) {
-    return get_size_of_type(id);
-}
