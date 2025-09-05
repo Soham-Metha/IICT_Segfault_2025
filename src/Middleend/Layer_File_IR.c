@@ -131,10 +131,8 @@ static void IR_dump_token(Block_Context_IR* ctx)
 	print(NULL, WIN_IR, IR_FORMAT "PUSH    \"%.*s\"", IR_CTX(), Str_Fmt(tok.text));
 	update_indent(-1);
 	} else {
-	update_indent(1);
 		print(NULL, WIN_IR, IR_FORMAT "%.*s Line end reached", IR_CTX(), 
 			Str_Fmt(tok.text));
-	update_indent(-1);
 	}
 }
 
