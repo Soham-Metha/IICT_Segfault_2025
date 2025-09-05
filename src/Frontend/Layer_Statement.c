@@ -14,7 +14,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 			  LOG_FORMAT "- Arguments:",LOG_CTX("[IDENTIFICATION]","[STMT]"));
 
 	update_indent(1);
-	token = token_fetch_next(ctx);
+	token = token_peek_next(ctx);
 	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
 		discard_cached_token(ctx);
 		log_to_ctx(ctx,
@@ -39,7 +39,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 			last 		= arg;
 		}
 
-		token = token_fetch_next(ctx);
+		token = token_peek_next(ctx);
 		if (!discard_cached_token(ctx)) {
 			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
 				  token_get_name(TOKEN_TYPE_CLOSING_PAREN),
@@ -76,12 +76,12 @@ Var *parse_var(Line_Context* ctx)
 	Var *res 	= region_allocate(sizeof(Var));
 	res->mode 	= VAR_ACCS;
 
-	Token next 	= token_fetch_next(ctx);
+	Token next 	= token_peek_next(ctx);
 	if (next.type == TOKEN_TYPE_COLON) {
 
 		parse_var_decl(ctx, res);
 		res->mode 	|= VAR_DECL;
-		next 		 = token_fetch_next(ctx);
+		next 		 = token_peek_next(ctx);
 
 		update_indent(1);
 	log_to_ctx(ctx, LOG_FORMAT "- declared type: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"), res->type.len,
@@ -131,7 +131,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 {
 	Stmt result = { 0 };
 	discard_cached_token(ctx);
-	Token next = token_fetch_next(ctx);
+	Token next = token_peek_next(ctx);
 
 	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
 		log_to_ctx(ctx,
@@ -159,7 +159,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 
 Stmt stmt_fetch_next(Line_Context* ctx)
 {
-	Token tok = token_fetch_next(ctx);
+	Token tok = token_peek_next(ctx);
 	// log_to_ctx(ctx, LOG_FORMAT "Checking the first token of the statement to identify statement type, found:", LOG_CTX("[IDENTIFY]","[STMT]"));
 	switch (tok.type) {
 	

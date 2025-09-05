@@ -44,7 +44,7 @@ const char *token_get_name(TokenType type)
 Token token_expect_next(Line_Context* ctx, TokenType expected)
 {
 	update_indent(1);
-	Token token = token_fetch_next(ctx);
+	Token token = token_peek_next(ctx);
 	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",LOG_CTX("[TOKEN CHECK]","[EXPR]"),
 	token_get_name(expected), token_get_name(token.type));
 
@@ -65,7 +65,7 @@ Token token_expect_next(Line_Context* ctx, TokenType expected)
 	return token;
 }
 
-Token token_fetch_next(Line_Context* ctx)
+Token token_peek_next(Line_Context* ctx)
 {
 	String *line = &ctx->line;
 	if (cachedToken) return cache;
