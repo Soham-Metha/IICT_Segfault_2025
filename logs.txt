@@ -1,0 +1,1 @@
+ir.sasm:5: ERROR: unknown directive `bind	_5	"hi"`
