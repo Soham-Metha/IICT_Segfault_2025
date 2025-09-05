@@ -101,6 +101,7 @@ static void IR__STMT_BLOCK(Block_Context_IR* ctx)
 	assert(ctx->next->statement.type==STMT_BLOCK_START);
 	StmtNode* nxt = ctx->next->statement.value.as_block;
     print(NULL, WIN_IR, IR_FORMAT "%%scope", IR_CTX());
+	update_indent(1);
 
 	Block_Context_IR blk_ctx = {0};
 	blk_ctx.n = ctx->n;
@@ -113,6 +114,7 @@ static void IR__STMT_BLOCK(Block_Context_IR* ctx)
 
 	ctx->n = blk_ctx.n;
 
+	update_indent(-1);
     print(NULL, WIN_IR, IR_FORMAT "%%end", IR_CTX());
 
 }
@@ -150,11 +152,9 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 static void IR_dump_code_block(Block_Context_IR *ctx)
 {
 	assert(ctx);
-	update_indent(1);
 	for (; ctx->next != NULL; ctx->next = ctx->next->next) {
 		IR_dump_statement(ctx);
 	}
-	update_indent(-1);
 }
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
