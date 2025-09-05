@@ -1,8 +1,8 @@
 match x:i64 = {
-   true   = {
+   (true)  -> {
     x = 1;
    };
-   false = {
+   (false) <-> {
     y = 1;
    };
 };
