@@ -95,6 +95,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			*match->cond = stmt;
 			stmt = stmt_fetch_next(ctx);
 			*match->body = stmt;
+			break;
 		}
 		case STMT_FUNCALL:
 		case STMT_TOKEN:
