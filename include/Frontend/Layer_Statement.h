@@ -41,6 +41,13 @@ struct Var {
 	FuncallArg *arglist;
 };
 
+
+struct StmtConditional {
+	bool repeat;
+	Token cond;
+	CodeBlock body;
+};
+
 union StmtValue {
 	Var          	as_var;
 	Token        	*as_token;
@@ -73,12 +80,6 @@ struct StmtNode {
 struct PatternMatch {
 	Stmt *cond;
 	Stmt *body;
-};
-
-struct StmtConditional {
-	bool repeat;
-	Token cond;
-	CodeBlock body;
 };
 
 Stmt stmt_fetch_next(Line_Context *ctx);
