@@ -2,7 +2,7 @@
 %entry   E_0: ; main
 %scope
     E_2:            ; var: x
-        PUSH    "hello,world!"
+    PUSH    "hello,world!"
     ; Line end reached
     PUSH    E_3
     SETR    E_4      [L0]
