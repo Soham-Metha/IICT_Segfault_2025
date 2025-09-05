@@ -78,18 +78,31 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 		print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v->name));
 		break;
 
-	case VAR_DECL:
+	case VAR_DECL:{
+		int s = get_size_of_type(v->type);
+		if (s) {
 		print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
 		print(NULL, WIN_IR, "\nres(8)");
-		break;
-
-	case VAR_DEFN:
+		push_var_def(v->name,v->type, id);
+		}
+	} break;	
+	case VAR_DEFN: {
+		int id = get_var_id(v->name);
+		int size = check_var_mutability(id);
+		if (size) {
+			print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v->name));
+			// get net line's output!
+			print(NULL, WIN_IR, "\nWRITE%d", size);
+		} else {
+			assert(0 && "VARIABLE IS OF IMMUTABLE TYPE!!");
+		}
+	} break;
 	case VAR_BOTH:
     	print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
 		if (!compare_str(v->type, STR("func"))) {
 			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!");
 		}
-		push_var_def(v->name,id);
+		push_var_def(v->name, v->type, id);
 		break;
 	default:
 		break;
