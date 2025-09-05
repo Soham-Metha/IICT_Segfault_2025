@@ -5,6 +5,7 @@
 
 typedef struct Var_IR {
 	String name;
+	String type;
 	unsigned int mem_addr;
 } Var_IR;
 
