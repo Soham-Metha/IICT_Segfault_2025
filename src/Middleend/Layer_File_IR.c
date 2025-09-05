@@ -101,7 +101,7 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 	} break;
 	case VAR_BOTH:
 		if (compare_str(v->name, STR("main"))) {
-			print(NULL, WIN_IR, "\n%entry E_%d:");
+			print(NULL, WIN_IR, "\n%%entry E_%d:");
 		} else {
 			print(NULL, WIN_IR, "\nE_%d:", id);
 		}
