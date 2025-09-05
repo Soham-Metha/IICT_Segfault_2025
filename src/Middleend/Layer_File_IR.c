@@ -28,7 +28,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 	} break;
 
 	case VAR_DECL: {
-		int s = get_size_of_type(v->type);
+		int s = get_size_of_type(get_type_from_name(v->type));
 		if (s) {
 		int id = ctx->n++;
 		print(NULL, WIN_IR, IR_FORMAT "%%bind    E_%d    res(%d)", IR_CTX(), id, s);
@@ -80,7 +80,11 @@ void IR__STMT_FUNCALL(Block_Context_IR* ctx)
     if (compare_str(funcall->name,STR("write"))) {
         IR_dump_statement(&funcall_ctx);
         print(NULL,WIN_IR,IR_FORMAT "SETR    E_%d      [L0]", IR_CTX(), funcall_ctx.b);
-        print(NULL,WIN_IR,IR_FORMAT "SETR    len(E_%d) [QT]", IR_CTX(), funcall_ctx.b);
+		if (check_var_type(funcall_ctx.b,STR("str"))) {
+        	print(NULL,WIN_IR,IR_FORMAT "SETR    len(E_%d) [QT]", IR_CTX(), funcall_ctx.b);
+		} else {
+        	print(NULL,WIN_IR,IR_FORMAT "SETR    %d        [QT]", IR_CTX(), get_size_of_type(funcall_ctx.b));
+		}
         print(NULL,WIN_IR,IR_FORMAT "INVOK   7", IR_CTX());
     }
 
