@@ -1,0 +1,7 @@
+%entry main
+%scope
+main:
+%scope
+%bind	_5	"hi";;;;
+%end;;;;
+%endHALT
