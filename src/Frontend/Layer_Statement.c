@@ -65,7 +65,7 @@ void parse_var_decl(Line_Context* ctx, Var* out)
 	Token type 	= token_expect_next(ctx, TOKEN_TYPE_NAME); // datatype
 
 	out->type = type.text;
-	if (compare_str(type.text, STR("proc")) || compare_str(type.text, STR("struct")) ) {
+	if (compare_str(type.text, STR("func")) || compare_str(type.text, STR("struct")) ) {
 		out->arglist = functions_parse_arglist(ctx);
 	}
 
