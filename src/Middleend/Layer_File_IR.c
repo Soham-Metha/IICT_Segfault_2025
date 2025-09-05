@@ -43,6 +43,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		if (size) {
 			print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(),
 			      id);
+			print(NULL, WIN_IR, IR_FORMAT "PUSH    ", IR_CTX());
 			ctx->next = ctx->next->next;
 			IR_dump_statement(ctx);
 			print(NULL, WIN_IR, IR_FORMAT "WRITE%d     ", IR_CTX(),
