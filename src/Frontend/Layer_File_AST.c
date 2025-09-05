@@ -84,6 +84,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	case STMT_TOKEN:		return __STMT_TOKEN		(myId, stmt->value.as_token->text);
 	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
 	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->value.as_block);
+	case STMT_MATCH:
 	default: 				return __STMT_UNKNOWN	(myId);
 	}
 }
