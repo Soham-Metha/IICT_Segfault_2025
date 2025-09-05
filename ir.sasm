@@ -5,10 +5,10 @@
     ; Line end reached
     PUSH    E_1
     PUSH    "a"
-    WRITE8
+    WRITE1
     ; Line end reached
     SETR    E_1      [L0]
-    SETR    8        [QT]
+    SETR    1        [QT]
     INVOK   7
     ; Line end reached
     E_2:            ; var: x
