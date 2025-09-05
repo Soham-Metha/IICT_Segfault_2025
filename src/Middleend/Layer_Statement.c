@@ -12,7 +12,7 @@ void push_var_def(String name, String type, int id)
 }
 
 int get_var_id(String name) {
-    for (int i = 0; i < var_def_cnt; i++)
+    for (int i = var_def_cnt-1; i >= 0; i--)
     {
         if (compare_str(name,var_defs[i].name)){
             return var_defs[i].mem_addr;
