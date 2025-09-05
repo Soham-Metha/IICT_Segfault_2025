@@ -108,7 +108,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
 	Token cond = token_expect_next(
 		ctx,
 		TOKEN_TYPE_NAME); // currently bin ops not implemented, so must be a name
-	token_expect_next(ctx, TOKEN_TYPE_CLOSING_CURLY);
+	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
 	Token next = token_peek_next(ctx);
 	if (next.type == TOKEN_TYPE_THEN) {
 		res.value.as_conditional->repeat = false;
