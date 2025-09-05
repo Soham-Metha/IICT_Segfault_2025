@@ -3,95 +3,41 @@ digraph AST {
   nodesep=0.8;
   ranksep=0.5;
   node [fontname="Courier"];
-  Expr_0 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
-  Expr_1 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="i64"];
-  subgraph cluster_2 {
+  Expr_0 [label="Stmt_unknown"];
+  Expr_1 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="true"];
+  Expr_0 -> Expr_1;
+  subgraph cluster_3 {
     label="Code Block 0";
     style=filled;
     color=gray;
     fillcolor=whitesmoke;
     fontname="Courier";
-  Expr_3 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="true"];
-  subgraph cluster_5 {
+  Expr_4 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
+  Expr_5 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"];
+  Expr_4 -> Expr_5;
+  Expr_6 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_5 -> Expr_6;
+  }
+  Expr_3 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 0"];
+  Expr_1 -> Expr_3;
+  Expr_7 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_3 -> Expr_7;
+  Expr_8 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="false"];
+  Expr_7 -> Expr_8;
+  subgraph cluster_10 {
     label="Code Block 1";
     style=filled;
     color=gray;
     fillcolor=whitesmoke;
     fontname="Courier";
-  Expr_6 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
-  Expr_7 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"];
-  Expr_6 -> Expr_7;
-  Expr_8 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_7 -> Expr_8;
+  Expr_11 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="y"];
+  Expr_12 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"];
+  Expr_11 -> Expr_12;
+  Expr_13 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_12 -> Expr_13;
   }
-  Expr_5 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 1"];
-  Expr_3 -> Expr_5;
-  Expr_9 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_5 -> Expr_9;
-  Expr_10 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="false"];
-  Expr_9 -> Expr_10;
-  subgraph cluster_12 {
-    label="Code Block 2";
-    style=filled;
-    color=gray;
-    fillcolor=whitesmoke;
-    fontname="Courier";
-  Expr_13 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="y"];
-  Expr_14 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"];
-  Expr_13 -> Expr_14;
-  Expr_15 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_14 -> Expr_15;
-  }
-  Expr_12 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 2"];
-  Expr_10 -> Expr_12;
-  Expr_16 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_12 -> Expr_16;
-  }
-  Expr_2 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 0"];
-  Expr_0 -> Expr_2;
-  Expr_17 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_2 -> Expr_17;
-  Expr_18 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="main"];
-  Expr_19 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="func"];
-  Expr_17 -> Expr_18;
-  subgraph cluster_20 {
-    label="Code Block 3";
-    style=filled;
-    color=gray;
-    fillcolor=whitesmoke;
-    fontname="Courier";
-  Expr_21 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
-  Expr_22 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="char"];
-  Expr_22 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_21 -> Expr_22;
-  Expr_23 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
-  Expr_22 -> Expr_23;
-  Expr_24 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="a"];
-  Expr_23 -> Expr_24;
-  Expr_25 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_24 -> Expr_25;
-  Expr_26 [shape=hexagon style=filled fillcolor=lightpink fontname="Courier" label="write"];
-  Expr_27 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
-  Expr_26 -> Expr_27;
-  Expr_25 -> Expr_26;
-  Expr_28 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_26 -> Expr_28;
-  Expr_29 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
-  Expr_30 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="str"];
-  Expr_28 -> Expr_29;
-  Expr_30 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="hello,world!"];
-  Expr_29 -> Expr_30;
-  Expr_31 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_30 -> Expr_31;
-  Expr_32 [shape=hexagon style=filled fillcolor=lightpink fontname="Courier" label="write"];
-  Expr_33 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="x"];
-  Expr_32 -> Expr_33;
-  Expr_31 -> Expr_32;
-  Expr_34 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_32 -> Expr_34;
-  }
-  Expr_20 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 3"];
-  Expr_18 -> Expr_20;
-  Expr_35 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
-  Expr_20 -> Expr_35;
+  Expr_10 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 1"];
+  Expr_8 -> Expr_10;
+  Expr_14 [shape=note style=filled fillcolor=lightblue fontname="Courier" label=";"];
+  Expr_10 -> Expr_14;
 }
