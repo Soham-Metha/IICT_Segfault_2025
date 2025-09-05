@@ -1,3 +1,4 @@
 main:func() = {
-    write("hello,world!");
+    x:str = "hello,world!";
+    write(x);
 };
