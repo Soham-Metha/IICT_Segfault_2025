@@ -85,6 +85,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
 	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->value.as_block);
 	case STMT_MATCH:
+	case STMT_CONDITIONAL:
 	default: 				return __STMT_UNKNOWN	(myId);
 	}
 }
