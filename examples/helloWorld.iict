@@ -1,5 +1,7 @@
-
 main:func() = {
+    x:char;
+    x = 'a';
+    write(x);
     x:str = "hello,world!";
     write(x);
 };
