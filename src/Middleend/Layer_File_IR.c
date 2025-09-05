@@ -145,8 +145,7 @@ static void IR_dump_token(Block_Context_IR *ctx)
 		print(NULL, WIN_IR, "\"%.*s\"", IR_CTX(), Str_Fmt(tok.text));
 		break;
 	case TOKEN_TYPE_STATEMENT_END:
-		print(NULL, WIN_IR, "%.*s Line end reached", IR_CTX(),
-		      Str_Fmt(tok.text));
+		print(NULL, WIN_IR, "; Line end reached", IR_CTX());
 		break;
 	
 	case TOKEN_TYPE_NUMBER:
