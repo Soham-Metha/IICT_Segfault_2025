@@ -9,9 +9,9 @@ color=gray;
 fillcolor=whitesmoke;
 fontname="Courier";
 Expr_1 [shape=pentagon style=filled fillcolor=plum1 fontname="Courier" label="ENTRY"]
-Expr_2 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="main"]
+Expr_2 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_15"]
 Expr_1 -> Expr_2 [style=dotted]
-Expr_3 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_0"]
+Expr_3 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_15"]
 Expr_1 -> Expr_3;
 subgraph cluster_4 {
 label="Code Block 1 ";
