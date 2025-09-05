@@ -103,7 +103,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 	StmtConditional res = { 0 };
 
 	token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
-	res.cond = token_peek_next(ctx);
+	res.cond = token_expect_next(ctx, TOKEN_TYPE_NAME);
 	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
 
 	Token next = token_peek_next(ctx);
