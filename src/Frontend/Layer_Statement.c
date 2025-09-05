@@ -133,10 +133,16 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 	token_consume(ctx);
 	Token next = token_peek_next(ctx);
 
-	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+	if (compare_str(tok.text,STR("match"))) {
+		log_to_ctx(ctx,
+			LOG_FORMAT "pattern match: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"),
+			Str_Fmt(tok.text));
+		result.type = STMT_MATCH;
+		
+	} else if (next.type == TOKEN_TYPE_OPEN_PAREN) {
 		log_to_ctx(ctx,
 			  LOG_FORMAT "function call: '%.*s'", LOG_CTX("[IDENTIFICATION]","[STMT]"),
-			  tok.text.len, tok.text.data, token_get_name(tok.type));
+			  Str_Fmt(tok.text));
 		result.type 				  = STMT_FUNCALL;
 		result.value.as_funcall 	  = region_allocate(sizeof(Funcall));
 		result.value.as_funcall->name = tok.text;
@@ -145,7 +151,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context* ctx)
 	} else {
 		log_to_ctx(ctx, 
 			  LOG_FORMAT "variable: '%.*s'", LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			  tok.text.len, tok.text.data);
+			  Str_Fmt(tok.text));
 		result.type                   = STMT_VAR;
 		result.value.as_var           = parse_var(ctx);
 		result.value.as_var->name      = tok.text;
