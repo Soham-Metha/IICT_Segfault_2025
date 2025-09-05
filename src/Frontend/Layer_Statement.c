@@ -194,6 +194,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 
 Stmt stmt_fetch_next(Line_Context *ctx)
 {
+	assert(ctx);
 	Token tok = token_peek_next(ctx);
 	// log_to_ctx(ctx, LOG_FORMAT "Checking the first token of the statement to identify statement type, found:", LOG_CTX("[IDENTIFY]","[STMT]"));
 	switch (tok.type) {
