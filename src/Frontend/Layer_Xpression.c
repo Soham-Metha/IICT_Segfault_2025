@@ -48,7 +48,7 @@ Token token_expect_next(Line_Context* ctx, TokenType expected)
 	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",LOG_CTX("[TOKEN CHECK]","[EXPR]"),
 	token_get_name(expected), token_get_name(token.type));
 
-	if (!discard_cached_token(ctx)) {
+	if (!token_consume(ctx)) {
 		print(ctx, WIN_STDERR, 
 			": ERROR: expected token `%s`\n", token_get_name(expected));
 		exit(1);
@@ -166,7 +166,7 @@ Token token_peek_next(Line_Context* ctx)
 	return token;
 }
 
-bool discard_cached_token(Line_Context* ctx)
+bool token_consume(Line_Context* ctx)
 {
 	if (cachedToken) {
 		update_indent(1);
