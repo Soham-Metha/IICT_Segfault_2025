@@ -68,7 +68,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 // 	return id;
 // }
 
-int IR__STMT_FUNCALL(Block_Context_IR* ctx)
+void IR__STMT_FUNCALL(Block_Context_IR* ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type==STMT_FUNCALL);
