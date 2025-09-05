@@ -39,6 +39,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 			push_var_def(v->name, v->type, id);
 		}
 	} break;
+
 	case VAR_DEFN: {
 		int id = get_var_id(v->name);
 		int size = get_size_from_id(id);
@@ -54,6 +55,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 			assert(0 && "VARIABLE IS OF IMMUTABLE TYPE!!");
 		}
 	} break;
+
 	case VAR_BOTH:
 		int id = ctx->n++;
 		print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ", IR_CTX(),
