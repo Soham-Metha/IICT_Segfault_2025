@@ -11,6 +11,7 @@ enum StmtType {
 	STMT_BLOCK_END,
 	STMT_MATCH,
 	STMT_TOKEN,
+	STMT_CONDITIONAL,
 };
 
 enum varMode {
@@ -30,6 +31,7 @@ typedef struct StmtNode FuncallArg;
 typedef struct StmtNode StmtNode;
 typedef struct Line_Context Line_Context;
 typedef struct PatternMatch PatternMatch;
+typedef struct StmtConditional StmtConditional;
 
 struct Var {
 	String  name;
@@ -40,11 +42,12 @@ struct Var {
 };
 
 union StmtValue {
-	Var          *as_var;
-	Token        *as_token;
-	Funcall      *as_funcall;
-	StmtNode  	 *as_block;
-	PatternMatch *as_match;
+	Var          	*as_var;
+	Token        	*as_token;
+	Funcall      	*as_funcall;
+	StmtNode  	 	*as_block;
+	PatternMatch 	*as_match;
+	StmtConditional *as_conditional;
 };
 
 struct Stmt {
@@ -70,6 +73,12 @@ struct StmtNode {
 struct PatternMatch {
 	Stmt *cond;
 	Stmt *body;
+};
+
+struct StmtConditional {
+	bool repeat;
+	Stmt* cond;
+	Stmt* body;
 };
 
 Stmt stmt_fetch_next(Line_Context *ctx);
