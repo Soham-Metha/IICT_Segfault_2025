@@ -12,7 +12,7 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
 static int __TOKEN_TYPE_STR(int id, String str)
 {
-	print(NULL, WIN_IR, "\n%%bind\t_%d\t\"%.*s\"", id, Str_Fmt(str));
+	print(NULL, WIN_IR, "\n%%bind\tE_%d\t\"%.*s\"", id, Str_Fmt(str));
 	return id;
 }
 
@@ -111,8 +111,8 @@ int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
         const FuncallArg *arg = funcall->args;
         int child1 = IR_dump_statement(&arg->value, n, b);
         (void)child1;
-        print(NULL,WIN_IR,"\nSETR _%d [L0]", child1);
-        print(NULL,WIN_IR,"\nSETR len(_%d) [QT]", child1);
+        print(NULL,WIN_IR,"\nSETR E_%d [L0]", child1);
+        print(NULL,WIN_IR,"\nSETR len(E_%d) [QT]", child1);
         print(NULL,WIN_IR,"\nINVOK 7");
         return id;
     }
@@ -120,7 +120,7 @@ int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
 		int childId = IR_dump_statement(&arg->value, n, b);
         (void)childId;
-		// if (childId >= 0) print(NULL, WIN_IR, "  Expr_%d -> Expr_%d;\n", id, childId);
+		// if (childId >= 0) print(NULL, WIN_IR, "  ExprE_%d -> ExprE_%d;\n", id, childId);
 	}
 	return id;
 }
