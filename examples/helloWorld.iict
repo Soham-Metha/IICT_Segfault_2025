@@ -2,3 +2,23 @@ main:func() = {
     x:str = "hello,world!";
     write(x);
 };
+
+% Language name: undecided
+% Created as a part of the 
+% IICT SEGFAULT 2025 hackathon
+% by Team Kernull
+
+% Grammar:
+% CodeBlock // Can be called program modules
+%  |-> StmtNode* begin
+%  |-> StmtNode* end
+%
+% StmtNode:
+%  |-> Stmt
+%  |-> StmtNode* next
+
+% Currently supported statements:
+% Variable declaration:
+% <var> : <type>;
+% Variable definition:
+% <var> : <type> = Stmt;
