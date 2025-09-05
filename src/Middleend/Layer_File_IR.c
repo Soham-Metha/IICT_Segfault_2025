@@ -13,8 +13,6 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 static int __TOKEN_TYPE_STR(int id, String str)
 {
 	print(NULL, WIN_IR, "\n%%bind\t_%d\t\"%.*s\"", id, Str_Fmt(str));
-	print(NULL, WIN_IR, "\nPUSH\t_%d", id);
-	print(NULL, WIN_IR, "\nPUSH\tlen(_%d)", id);
 	return id;
 }
 
