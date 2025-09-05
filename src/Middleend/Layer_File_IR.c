@@ -83,7 +83,6 @@ int IR__STMT_FUNCALL(Block_Context_IR* ctx)
 	funcall_ctx.var_def_cnt=0;
 
     if (compare_str(funcall->name,STR("write"))) {
-        const FuncallArg *arg = funcall->args;
         IR_dump_statement(&funcall_ctx);
         print(NULL,WIN_IR,"\nSETR E_%d [L0]", funcall_ctx.n++);
         print(NULL,WIN_IR,"\nSETR len(E_%d) [QT]", funcall_ctx.n++);
