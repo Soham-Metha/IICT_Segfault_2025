@@ -1,9 +1,0 @@
-
-%entry E_15:
-%scope
-E_1:
-PUSH ";"
-%end
-E_2:
-PUSH ";"
-SHUTS
