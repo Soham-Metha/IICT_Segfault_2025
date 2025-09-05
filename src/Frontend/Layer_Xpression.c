@@ -186,6 +186,7 @@ Token token_peek_next(Line_Context *ctx)
 
 bool token_consume(Line_Context *ctx)
 {
+	(void)ctx;
 	if (cachedToken) {
 		update_indent(1);
 		// log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[EXPR]"),
