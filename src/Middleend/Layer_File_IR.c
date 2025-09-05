@@ -210,11 +210,10 @@ Error IR_generate(const CodeBlock *blk)
 	int node_counter  = 0;
 	int block_counter = 0;
 
+	print(NULL, WIN_IR, "%%entry main");
 
 	IR_dump_code_block(blk->begin, &node_counter, &block_counter);
 	print(NULL, WIN_IR, "\nSHUTS");
-
-	print(NULL, WIN_IR, "%%entry main");
 
 	return ERR_OK;
 }
