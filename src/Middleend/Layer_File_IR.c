@@ -83,7 +83,7 @@ void IR__STMT_FUNCALL(Block_Context_IR* ctx)
 		if (check_var_type(funcall_ctx.b,STR("str"))) {
         	print(NULL,WIN_IR,IR_FORMAT "SETR    len(E_%d) [QT]", IR_CTX(), funcall_ctx.b);
 		} else {
-        	print(NULL,WIN_IR,IR_FORMAT "SETR    %d        [QT]", IR_CTX(), get_size_of_type(funcall_ctx.b));
+        	print(NULL,WIN_IR,IR_FORMAT "SETR    %d        [QT]", IR_CTX(), get_size_from_id(funcall_ctx.b));
 		}
         print(NULL,WIN_IR,IR_FORMAT "INVOK   7", IR_CTX());
     }
