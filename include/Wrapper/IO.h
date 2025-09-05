@@ -7,6 +7,10 @@
 
 #define LOG_FORMAT "\n %6s | %20s %.*s "
 
+#define IR_CTX() Str_Fmt(get_indent())
+
+#define IR_FORMAT "\n%.*s"
+
 enum WindowNames {
 	WIN_STDIN,
 	WIN_STDOUT,
@@ -15,6 +19,7 @@ enum WindowNames {
 	WIN_IR,
 	WIN_COUNT
 };
+
 // stdin will probably remain unused, and other windows may get added as
 // we improve the UI
 
