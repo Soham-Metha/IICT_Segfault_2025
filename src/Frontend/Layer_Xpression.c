@@ -32,6 +32,8 @@ const char *token_get_name(TokenType type)
 	case TOKEN_TYPE_COLON:			return "Colon";
 	case TOKEN_TYPE_EQUAL:			return "Assignment operator";
 	case TOKEN_TYPE_EOL:			return "End of line reached!";
+	case TOKEN_TYPE_THEN:			return "Conditional pattern match";
+	case TOKEN_TYPE_REPEAT:			return "Conditional retetition";
 	// case TOKEN_TYPE_FUNC: 			return "func";
 	case TOKEN_TYPE_STATEMENT_END: 	return "Statement ended with";
 	default: {
