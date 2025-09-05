@@ -6,3 +6,10 @@ Usage : sasm -i <input file> -o <output file> [-a | -d]
  	Assembly Sample Command    : ./sasm -i ./test.sasm -o ./test.sm 
 	Disassembly Sample Command : ./sasm -i ./test.sm -o ./test.sasm -d
 
+ERROR : Missing Files
+Usage : sasm -i <input file> -o <output file> [-a | -d]
+ 	 default : Assemble mode
+ 	 -d : Disassemble mode
+ 	Assembly Sample Command    : ./sasm -i ./test.sasm -o ./test.sm 
+	Disassembly Sample Command : ./sasm -i ./test.sm -o ./test.sasm -d
+
