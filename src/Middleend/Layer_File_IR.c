@@ -111,9 +111,9 @@ int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
         const FuncallArg *arg = funcall->args;
         int child1 = IR_dump_statement(&arg->value, n, b);
         (void)child1;
-        print(NULL,WIN_IR,"\nSETR _%d [L0]", child1);
-        print(NULL,WIN_IR,"\nSETR len(_%d) [QT]", child1);
-        print(NULL,WIN_IR,"\nINVOK 7");
+        // print(NULL,WIN_IR,"\nSETR _%d [L0]", child1);
+        // print(NULL,WIN_IR,"\nSETR len(_%d) [QT]", child1);
+        // print(NULL,WIN_IR,"\nINVOK 7");
         return id;
     }
 
