@@ -74,7 +74,7 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 		switch (statement.type)
 		{
 		case STMT_VAR:
-			if (statement.value.as_var->mode & VAR_DEFN) {
+			if (statement.value.as_var.mode & VAR_DEFN) {
 				var_decl_level+=1;
 				log_to_ctx(ctx, LOG_FORMAT "Defined value: {", LOG_CTX("[DEFINITION START]","[STMT]"));
 				update_indent(1);
@@ -96,8 +96,8 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			match->body = malloc(sizeof(*match->body ));
 			Stmt stmt = stmt_fetch_next(ctx);
 			ctx = file_fetch_curr_line(context);
-			if (stmt.type == STMT_VAR && stmt.value.as_var->mode & VAR_DEFN){
-				stmt.value.as_var->mode &= VAR_DECL; 
+			if (stmt.type == STMT_VAR && stmt.value.as_var.mode & VAR_DEFN){
+				stmt.value.as_var.mode &= VAR_DECL; 
 				// the variable in question is not being defined,
 				// even though it's followed by an assignment operator
 				// that assignment operator is syntax sugar for the match statement.

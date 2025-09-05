@@ -19,7 +19,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_VAR);
-	Var *v = ctx->next->statement.value.as_var;
+	Var *v = &ctx->next->statement.value.as_var;
 
 	switch (v->mode) {
 	case VAR_ACCS: {

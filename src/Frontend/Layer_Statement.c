@@ -183,8 +183,8 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   Str_Fmt(tok.text));
 		result.type = STMT_VAR;
-		*result.value.as_var = parse_var(ctx);
-		result.value.as_var->name = tok.text;
+		result.value.as_var = parse_var(ctx);
+		result.value.as_var.name = tok.text;
 	}
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
