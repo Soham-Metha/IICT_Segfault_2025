@@ -126,7 +126,6 @@ static void IR_dump_token(Block_Context_IR* ctx)
 	assert(ctx->next->statement.type==STMT_TOKEN);
 	const Token tok = *ctx->next->statement.value.as_token;
 	if (tok.type != TOKEN_TYPE_STATEMENT_END ) {
-	print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), ctx->n++);
 	update_indent(1);
 	print(NULL, WIN_IR, IR_FORMAT "PUSH    \"%.*s\"", IR_CTX(), Str_Fmt(tok.text));
 	update_indent(-1);
