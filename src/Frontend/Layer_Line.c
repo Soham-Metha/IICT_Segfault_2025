@@ -91,6 +91,8 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			return true;
 		case STMT_MATCH: {
 			PatternMatch *match = malloc(sizeof(*match));
+			match->cond = malloc(sizeof(*match->cond ));
+			match->body = malloc(sizeof(*match->body ));
 			Stmt stmt = stmt_fetch_next(ctx);
 			*match->cond = stmt;
 			stmt = stmt_fetch_next(ctx);
