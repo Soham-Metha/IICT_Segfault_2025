@@ -16,3 +16,4 @@ Usage : sasm -i <input file> -o <output file> [-a | -d]
 ir.sasm:5: ERROR: unknown directive `bind	E5	"hi"`
 ir.sasm:5: ERROR: unknown directive `bind	E	"hi"`
 ir.sasm:5: ERROR: unknown directive `bind	E	"hi"`
+ir.sasm:5: ERROR: unknown directive `bind	E5	"hi"`
