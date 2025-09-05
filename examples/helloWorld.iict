@@ -1,6 +1,10 @@
 match x:i64 = {
-   true   -> {;};
-   false <-> {;};
+   true   -> {
+    x = 1;
+   };
+   false <-> {
+    y = 1;
+   };
 };
 
 main:func() = {
