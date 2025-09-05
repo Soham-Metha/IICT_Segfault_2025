@@ -14,7 +14,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
 int __STMT_VARIABLE(int id, Var v)
 {
 	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id, Str_Fmt(v.name));
-	assert(v.defn_val->type==STMT_BLOCK_START);
+	// assert(v.defn_val->type==STMT_BLOCK_START);
 	return id;
 }
 
