@@ -1,19 +1,23 @@
 
+; var:    x 
+%bind    E_0    
+%scope
+%end; Line end reached
 ; var:    main 
-%entry    E_0: 
+%entry    E_1: 
 %scope
     ; var:    x 
-    %bind   E_1    res(1) ; Line end reached
-    PUSH    E_1
+    %bind   E_2    res(1) ; Line end reached
+    PUSH    E_2
     PUSH    'a'
     WRITE1     ; Line end reached
-    SETR    E_1      [L0]
+    SETR    E_2      [L0]
     SETR    1        [QT]
     INVOK   7; Line end reached
     ; var:    x 
-    %bind    E_2    "hello,world!"; Line end reached
-    SETR    E_2      [L0]
-    SETR    len(E_2) [QT]
+    %bind    E_3    "hello,world!"; Line end reached
+    SETR    E_3      [L0]
+    SETR    len(E_3) [QT]
     INVOK   7; Line end reached
 %end; Line end reached
 SHUTS
