@@ -1,3 +1,0 @@
-ir.sasm:1: ERROR: unknown binding `main`
-ir.sasm:1: ERROR: unknown binding `main`
-ir.sasm:1: ERROR: unknown binding `main`
