@@ -42,7 +42,7 @@ struct Var {
 };
 
 union StmtValue {
-	Var          	*as_var;
+	Var          	as_var;
 	Token        	*as_token;
 	Funcall      	*as_funcall;
 	StmtNode  	 	*as_block;
