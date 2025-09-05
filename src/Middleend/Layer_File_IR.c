@@ -13,7 +13,7 @@ static void IR_dump_statement(Block_Context_IR *ctx);
 
 static void IR_dump_code_block(Block_Context_IR *ctx);
 
-// // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
+// ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
 void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 {
