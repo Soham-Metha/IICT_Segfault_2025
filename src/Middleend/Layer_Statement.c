@@ -8,7 +8,7 @@ int var_def_cnt = 0;
 void push_var_def(String name, String type, int id)
 {
 	assert(var_def_cnt < 128);
-	var_defs[var_def_cnt++] = (Var_IR) { .name = name, .type = type, .mem_addr = id };
+	var_defs[var_def_cnt++] = (Var_IR) { .name = name, .type = get_type_from_name(type), .mem_addr = id };
 }
 
 int get_var_id(String name) {
@@ -25,7 +25,7 @@ bool check_var_type(int id, String type) {
     for (int i = var_def_cnt-1; i >= 0; i--)
     {
         if (id==var_defs[i].mem_addr){
-            return compare_str(type,var_defs[i].type);
+            return get_type_from_name(type)==var_defs[i].type;
         }
     }
     assert(0 && "VAR NOT IN SCOPE");
@@ -82,7 +82,7 @@ int get_size_of_type(int type) {
 }
 
 int get_size_from_id(int id) {
-    switch(get_type_from_name(var_defs[id].type))
+    switch(var_defs[id].type)
     {
         case VAR_TYPE_CHAR:
             return 1;
