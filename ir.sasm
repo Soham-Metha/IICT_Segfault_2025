@@ -1,9 +1,0 @@
-%entry main
-%scope
-main:DUMPING 2
-%scope
-%bind	_5	"hi"
-PUSH	_5
-PUSH	len(_5)
-%endDone
-%end
