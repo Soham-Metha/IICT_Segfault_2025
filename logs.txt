@@ -1,2 +1,0 @@
-ir.sasm:18: ERROR: Could not compute the length of string at address 6
-ir.sasm:18: ERROR: Could not compute the length of string at address 6
