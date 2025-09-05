@@ -41,23 +41,24 @@ const char *token_get_name(TokenType type)
 	}
 }
 
-Token token_expect_next(Line_Context* ctx, TokenType expected)
+Token token_expect_next(Line_Context *ctx, TokenType expected)
 {
 	update_indent(1);
 	Token token = token_peek_next(ctx);
-	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",LOG_CTX("[TOKEN CHECK]","[EXPR]"),
-	token_get_name(expected), token_get_name(token.type));
+	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",
+		   LOG_CTX("[TOKEN CHECK]", "[EXPR]"), token_get_name(expected),
+		   token_get_name(token.type));
 
 	if (!token_consume(ctx)) {
-		print(ctx, WIN_STDERR, 
-			": ERROR: expected token `%s`\n", token_get_name(expected));
+		print(ctx, WIN_STDERR, ": ERROR: expected token `%s`\n",
+		      token_get_name(expected));
 		exit(1);
 	}
 
 	if (token.type != expected) {
 		print(ctx, WIN_STDERR,
-			  ": ERROR: expected token `%s`, but got `%s`\n",
-			  token_get_name(expected), token_get_name(token.type));
+		      ": ERROR: expected token `%s`, but got `%s`\n",
+		      token_get_name(expected), token_get_name(token.type));
 		exit(1);
 	}
 	update_indent(-1);
@@ -65,12 +66,13 @@ Token token_expect_next(Line_Context* ctx, TokenType expected)
 	return token;
 }
 
-Token token_peek_next(Line_Context* ctx)
+Token token_peek_next(Line_Context *ctx)
 {
 	String *line = &ctx->line;
-	if (cachedToken) return cache;
+	if (cachedToken)
+		return cache;
 	Token token = { 0 };
-	(*line) 	= trim(*line);
+	(*line) = trim(*line);
 
 	if (line->len == 0) {
 		token.type = TOKEN_TYPE_EOL;
@@ -124,7 +126,8 @@ Token token_peek_next(Line_Context* ctx)
 		token.type = TOKEN_TYPE_STR;
 		size_t index = 0;
 		if (!get_index_of(*line, '"', &index)) {
-			print(ctx, WIN_STDERR, "ERROR: Could not find closing \"\n");
+			print(ctx, WIN_STDERR,
+			      "ERROR: Could not find closing \"\n");
 			exit(1);
 		}
 		token.text = split_str_by_len(line, index);
@@ -138,7 +141,8 @@ Token token_peek_next(Line_Context* ctx)
 		token.type = TOKEN_TYPE_CHAR;
 		size_t index = 0;
 		if (!get_index_of(*line, '\'', &index)) {
-			print(ctx, WIN_STDERR, "ERROR: Could not find closing \'\n");
+			print(ctx, WIN_STDERR,
+			      "ERROR: Could not find closing \'\n");
 			exit(1);
 		}
 		token.text = split_str_by_len(line, index);
@@ -147,7 +151,19 @@ Token token_peek_next(Line_Context* ctx)
 	} break;
 
 	default: {
-		if (isalpha(line->data[0])) {
+		if (starts_with(*line, STR("->"))) {
+			token.type = TOKEN_TYPE_THEN;
+			token.text = split_str_by_len(line, 2);
+		} else if (starts_with(*line, STR("then"))) {
+			token.type = TOKEN_TYPE_THEN;
+			token.text = split_str_by_len(line, 4);
+		} else if (starts_with(*line, STR("<->"))) {
+			token.type = TOKEN_TYPE_REPEAT;
+			token.text = split_str_by_len(line, 3);
+		} else if (starts_with(*line, STR("repeat"))) {
+			token.type = TOKEN_TYPE_REPEAT;
+			token.text = split_str_by_len(line, 6);
+		} else if (isalpha(line->data[0])) {
 			token.type = TOKEN_TYPE_NAME;
 			token.text = split_str_by_condition(line, isName);
 		} else if (isdigit(line->data[0]) || line->data[0] == '-') {
@@ -155,8 +171,8 @@ Token token_peek_next(Line_Context* ctx)
 			token.text = split_str_by_condition(line, isNumber);
 		} else {
 			print(ctx, WIN_STDERR,
-				  "Unknown token starting with '%c'\n",
-				  line->data[0]);
+			      "Unknown token starting with '%c'\n",
+			      line->data[0]);
 			exit(1);
 		}
 	}
@@ -166,12 +182,13 @@ Token token_peek_next(Line_Context* ctx)
 	return token;
 }
 
-bool token_consume(Line_Context* ctx)
+bool token_consume(Line_Context *ctx)
 {
 	if (cachedToken) {
 		update_indent(1);
-		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>",LOG_CTX("","[EXPR]"),token_get_name(cache.type),
-			  cache.text.len, cache.text.data);
+		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[EXPR]"),
+			   token_get_name(cache.type), cache.text.len,
+			   cache.text.data);
 		update_indent(-1);
 		cachedToken = false;
 		return true;
