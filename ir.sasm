@@ -1,14 +1,9 @@
 
-E_0:
-E_2:
-PUSH "hello,world!"
-E_3:
-PUSH ";"
 %entry E_15:
 %scope
-E_5:
+E_1:
 PUSH ";"
 %end
-E_6:
+E_2:
 PUSH ";"
 SHUTS
