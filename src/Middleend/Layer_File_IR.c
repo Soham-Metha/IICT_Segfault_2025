@@ -74,7 +74,6 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
     (void)b;
     print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
 
-
 	switch (v->mode) {
 	case VAR_ACCS:
 		// print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v->name));
