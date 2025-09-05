@@ -213,7 +213,7 @@ Error IR_generate(const CodeBlock *blk)
 	print(NULL, WIN_IR, "%%entry main");
 
 	IR_dump_code_block(blk->begin, &node_counter, &block_counter);
-	print(NULL, WIN_IR, "\nHALT");
+	print(NULL, WIN_IR, "\nSHUTS");
 
 	return ERR_OK;
 }
