@@ -96,12 +96,19 @@ bool line_parse_next(CodeBlock *blk, File_Context* context)
 			match->body = malloc(sizeof(*match->body ));
 			Stmt stmt = stmt_fetch_next(ctx);
 			ctx = file_fetch_curr_line(context);
+			if (stmt.type == STMT_VAR && stmt.value.as_var->mode & VAR_DEFN){
+				stmt.value.as_var->mode &= VAR_DECL; 
+				// the variable in question is not being defined,
+				// even though it's followed by an assignment operator
+				// that assignment operator is syntax sugar for the match statement.
+			}
 			*match->cond = stmt;
 			stmt = stmt_fetch_next(ctx);
 			ctx = file_fetch_curr_line(context);
 			*match->body = stmt;
 			break;
 		}
+		case STMT_CONDITIONAL:
 		case STMT_FUNCALL:
 		case STMT_TOKEN:
 		default:	
