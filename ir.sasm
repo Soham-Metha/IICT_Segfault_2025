@@ -5,7 +5,7 @@
     ; Line end reached
     PUSH    E_1
     PUSH    "a"
-    WRITE8
+    WRITE1
     ; Line end reached
     SETR    E_1      [L0]
     SETR    8        [QT]
