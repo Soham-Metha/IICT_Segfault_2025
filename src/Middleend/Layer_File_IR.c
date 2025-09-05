@@ -124,7 +124,6 @@ int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
     if (compare_str(funcall->name,STR("write"))) {
         const FuncallArg *arg = funcall->args;
         int child1 = IR_dump_statement(&arg->value, n, b);
-        (void)child1;
         print(NULL,WIN_IR,"\nSETR E_%d [L0]", child1);
         print(NULL,WIN_IR,"\nSETR len(E_%d) [QT]", child1);
         print(NULL,WIN_IR,"\nINVOK 7");
