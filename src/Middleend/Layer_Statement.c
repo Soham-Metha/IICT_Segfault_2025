@@ -82,19 +82,10 @@ int get_size_of_type(int type) {
 }
 
 int get_size_from_id(int id) {
-    switch(var_defs[id].type)
+    for (int i = var_def_cnt-1; i >= 0; i--)
     {
-        case VAR_TYPE_CHAR:
-            return 1;
-        case VAR_TYPE_I64:
-            return 8;
-        case VAR_TYPE_F64:
-            return 8;
-        case VAR_TYPE_STR:
-        case VAR_TYPE_FUNC:
-        case VAR_TYPE_STRUCT:
-        case VAR_TYPE_COUNT:
-        default:
-            return 0;
+        if (id==var_defs[i].mem_addr){
+            return get_size_of_type(var_defs[i].type);
+        }
     }
 }
