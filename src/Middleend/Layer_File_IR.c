@@ -69,28 +69,30 @@ static int __TOKEN_TYPE_STR(int id, String str)
 
 // // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-int IR__STMT_VARIABLE(int id, Var v, int *n, int *b)
+int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 {
-    print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v.name));
+    (void)n;
+    (void)b;
+    print(NULL, WIN_IR, "\n%.*s:", Str_Fmt(v->name));
 
-	switch (v.mode) {
+
+	switch (v->mode) {
 	case VAR_ACCS:
-		// print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v.name));
+		// print(NULL, WIN_IR, "\nPUSH   %.*s", Str_Fmt(v->name));
 		break;
 
 	case VAR_DECL:
-		// print(NULL, WIN_IR, "%%bind    %s",v.name);
+		// print(NULL, WIN_IR, "%%bind    %s",v->name);
 		break;
 
 	case VAR_DEFN:
 	case VAR_BOTH:
-    assert(v.defn_val->type==STMT_BLOCK_START);
-    print(NULL,WIN_IR, "DUMPING %d", v.defn_val->type);
-        IR_dump_statement(v.defn_val, n, b);
+    print(NULL,WIN_IR, "DUMPING %d", v->defn_val->type);
+        IR_dump_statement(v->defn_val, n, b);
         print(NULL,WIN_IR, "Done");
-		if (!compare_str(v.type, STR("func"))) {
-	        int child = IR_dump_statement(v.defn_val, n, b);
-			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!", Str_Fmt(v.name), child);
+		if (!compare_str(v->type, STR("func"))) {
+	        int child = IR_dump_statement(v->defn_val, n, b);
+			print(NULL, WIN_IR, "\nVAR DEFN UNIMPLEMENTED!!", Str_Fmt(v->name), child);
 		}
 		break;
 	default:
@@ -168,7 +170,7 @@ static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
+	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, &stmt->value.as_var, n, b);
 	case STMT_BLOCK_END:
 	case STMT_TOKEN:		return IR_dump_token	    (n, stmt->value.as_token);
 	case STMT_FUNCALL:		return IR__STMT_FUNCALL	    (myId, n, b, stmt->value.as_funcall);
