@@ -33,7 +33,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		if (s) {
 		print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), ctx->n++);
 		print(NULL, WIN_IR, IR_FORMAT "res(8)", IR_CTX());
-		push_var_def(v->name,v->type, ctx->n++);
+		push_var_def(v->name,v->type, ctx->n-1);
 		}
 	} break;	
 	case VAR_DEFN: {
