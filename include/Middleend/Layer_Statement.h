@@ -6,7 +6,7 @@
 typedef struct Var_IR {
 	String name;
 	String type;
-	unsigned int mem_addr;
+	int mem_addr;
 } Var_IR;
 
 void push_var_def(String name, String type, int id);
