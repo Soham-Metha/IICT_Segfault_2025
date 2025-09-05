@@ -14,4 +14,6 @@ int get_var_id(String name);
 
 void clear_var_defs();
 
+int get_size_of_type(String name);
+
 #endif
