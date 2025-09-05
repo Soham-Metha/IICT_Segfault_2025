@@ -1,7 +1,7 @@
 #include <Frontend/Layer_File.h>
 #include <Frontend/Layer_Line.h>
 #include <Frontend/Layer_Statement.h>
-#include <Middleend/Layer_Statement.h>
+#include <Middleend/Layer_Line.h>
 #include <Wrapper/IO.h>
 #include <stdlib.h>
 #include <inttypes.h>
@@ -11,68 +11,14 @@ static int IR_dump_token(int *n, const Token tok);
 static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
 static int IR_dump_statement(const Stmt *stmt, int *n, int *b);
 
-static int __TOKEN_TYPE_STR(int id, String str)
-{
-	print(NULL, WIN_IR, "\nE_%d:\nPUSH \"%.*s\"", id, Str_Fmt(str));
-	return id;
-}
-
-// static int __TOKEN_TYPE_CHAR(int id, char c)
-// {
-
-// }
-// static int __TOKEN_TYPE_NUMBER(int id)
-// {
-
-// }
-// static int __TOKEN_TYPE_NAME(int id)
-// {
-
-// }
-// static int __TOKEN_TYPE_OPEN_PAREN(int id)
-// {
-
-// }
-// static int __TOKEN_TYPE_CLOSING_PAREN(int id)
-// {
-
-// }
-// static int __TOKEN_TYPE_OPEN_CURLY(int id)
-// {
-
-// }
-// static int __TOKEN_TYPE_CLOSING_CURLY(int id)
-// {
-
-// }
-static int __TOKEN_TYPE_STATEMENT_END(int id)
-{
-    print(NULL,WIN_IR, "; End of stmt");
-    return id;
-}
-// static int __TOKEN_TYPE_COMMA(int id)
-// {
-
-// }
-// static int __TOKEN_TYPE_COLON(int id)
-// {
-
-// }
-// static int __TOKEN_TYPE_EQUAL(int id)
-// {
-
-// }
-// static int __TOKEN_TYPE_EOL(int id)
-// {
-
-// }
-
 // // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
+int IR__STMT_VARIABLE(Block_Context_IR *ctx)
 {
-	(void)n;
-	(void)b;
+	assert(ctx);
+	assert(ctx->next->statement.type==STMT_VAR);
+	Var *v = ctx->next->statement.value.as_var;
+
 	switch (v->mode) {
 	case VAR_ACCS: {
 		int id = get_var_id(v->name);
@@ -83,16 +29,16 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 	case VAR_DECL: {
 		int s = get_size_of_type(v->type);
 		if (s) {
-		print(NULL, WIN_IR, "\nE_%d:", id);
+		print(NULL, WIN_IR, "\nE_%d:", ctx->n++);
 		print(NULL, WIN_IR, "\nres(8)");
-		push_var_def(v->name,v->type, id);
+		push_var_def(v->name,v->type, ctx->n++);
 		}
 	} break;	
 	case VAR_DEFN: {
 		int id = get_var_id(v->name);
 		int size = check_var_mutability(id);
 		if (size) {
-			print(NULL, WIN_IR, "\nPUSH   E_%d", id);
+			print(NULL, WIN_IR, "\nPUSH   E_%d", ctx->n++);
 			// get net line's output!
 			print(NULL, WIN_IR, "\nWRITE%d", size);
 		} else {
@@ -103,128 +49,119 @@ int IR__STMT_VARIABLE(int id, const Var* v, int *n, int *b)
 		if (compare_str(v->name, STR("main"))) {
 			print(NULL, WIN_IR, "\n%%entry E_%d:");
 		} else {
-			print(NULL, WIN_IR, "\nE_%d:", id);
+			print(NULL, WIN_IR, "\nE_%d:", ctx->n++);
 		}
 
-		push_var_def(v->name, v->type, id);
+		push_var_def(v->name, v->type, ctx->n++);
 		break;
 	default:
 		break;
 	}
 
-	return id;
 }
 
-int IR__STMT_UNKNOWN(int id)
-{
-    print(NULL, WIN_IR, "");
-	return id;
-}
+// int IR__STMT_UNKNOWN(int id)
+// {
+//     print(NULL, WIN_IR, "");
+// 	return id;
+// }
 
-int IR__STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
+int IR__STMT_FUNCALL(Block_Context_IR* ctx)
 {
-    print(NULL, WIN_IR, "");
+	assert(ctx);
+	assert(ctx->next->statement.type==STMT_FUNCALL);
+
+	const Funcall *funcall = ctx->next->statement.value.as_funcall;
+	Block_Context_IR funcall_ctx = {0};
+	funcall_ctx.n = ctx->n;
+	funcall_ctx.b = ctx->b;
+	funcall_ctx.next = funcall->args;
+	funcall_ctx.prev = ctx;
+	funcall_ctx.var_def_cnt=0;
+
     if (compare_str(funcall->name,STR("write"))) {
         const FuncallArg *arg = funcall->args;
-        int child1 = IR_dump_statement(&arg->value, n, b);
-        print(NULL,WIN_IR,"\nSETR E_%d [L0]", child1);
-        print(NULL,WIN_IR,"\nSETR len(E_%d) [QT]", child1);
+        IR_dump_statement(&funcall_ctx);
+        print(NULL,WIN_IR,"\nSETR E_%d [L0]", funcall_ctx.n++);
+        print(NULL,WIN_IR,"\nSETR len(E_%d) [QT]", funcall_ctx.n++);
         print(NULL,WIN_IR,"\nINVOK 7");
-        return id;
     }
 
-	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
-		int childId = IR_dump_statement(&arg->value, n, b);
-        (void)childId;
-		// if (childId >= 0) print(NULL, WIN_IR, "  ExprE_%d -> ExprE_%d;\n", id, childId);
+	for (; funcall_ctx.next != NULL; funcall_ctx.next = funcall_ctx.next->next) {
+		IR_dump_statement(&funcall_ctx);
 	}
-	return id;
+	ctx->n = funcall_ctx.n;
 }
 
-int IR__STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
+static void IR__STMT_BLOCK(Block_Context_IR* ctx)
 {
-	(void)id;
-	int clusterId  = (*n)++;
-	int clusterNum = (*b)++;
-    (void)clusterNum;
+	assert(ctx);
+	assert(ctx->next->statement.type==STMT_BLOCK_START);
 
     print(NULL, WIN_IR, "\n%%scope");
 
-	IR_dump_code_block(block, n, b);
+	Block_Context_IR blk_ctx = {0};
+	blk_ctx.n = ctx->n;
+	blk_ctx.b = ctx->b;
+	blk_ctx.next = ctx->next;
+	blk_ctx.prev = ctx;
+	blk_ctx.var_def_cnt=0;
+
+	IR_dump_code_block(&blk_ctx);
+
+	ctx->n = blk_ctx.n;
 
     print(NULL, WIN_IR, "\n%%end");
 
-	return clusterId;
 }
 
 // // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-static int IR_dump_token(int *n, const Token tok)
+static void IR_dump_token(Block_Context_IR* ctx)
 {
-	int myId = (*n)++;
+	assert(ctx->next->statement.type==STMT_TOKEN);
+	const Token tok = *ctx->next->statement.value.as_token;
 
-    switch (tok.type)
-    {
-    case TOKEN_TYPE_STR: return __TOKEN_TYPE_STR(myId, tok.text);
-    case TOKEN_TYPE_CHAR: return myId;
-    case TOKEN_TYPE_NUMBER: return myId;
-    case TOKEN_TYPE_NAME: return myId;
-    case TOKEN_TYPE_OPEN_PAREN: return myId;
-    case TOKEN_TYPE_CLOSING_PAREN: return myId;
-    case TOKEN_TYPE_OPEN_CURLY: return myId;
-    case TOKEN_TYPE_CLOSING_CURLY: return myId;
-    case TOKEN_TYPE_STATEMENT_END: return __TOKEN_TYPE_STATEMENT_END(myId);
-    case TOKEN_TYPE_COMMA: return myId;
-    case TOKEN_TYPE_COLON: return myId;
-    case TOKEN_TYPE_EQUAL: return myId;
-    case TOKEN_TYPE_EOL: return myId;
+	print(NULL, WIN_IR, "\nE_%d:\nPUSH \"%.*s\"", 
+		ctx->n++, Str_Fmt(tok.text));
 
-    default:
-        break;
-    }
-    return myId;
 }
 
-static int IR_dump_statement(const Stmt *stmt, int *n, int *b)
+static void IR_dump_statement(Block_Context_IR *ctx)
 {
-	assert(stmt != NULL);
-	int myId = (*n)++;
+	assert(ctx->next != NULL);
 
-	switch (stmt->type) {
-	case STMT_VAR: 			return IR__STMT_VARIABLE	(myId, stmt->value.as_var, n, b);
+	switch (ctx->next->statement.type) {
+	case STMT_VAR: 			return IR__STMT_VARIABLE	(ctx);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		return IR_dump_token	    (n, *stmt->value.as_token);
-	case STMT_FUNCALL:		return IR__STMT_FUNCALL	    (myId, n, b, stmt->value.as_funcall);
-	case STMT_BLOCK_START: 	return IR__STMT_BLOCK		(myId, n, b, stmt->value.as_block);
-	default: 				return IR__STMT_UNKNOWN	    (myId);
+	case STMT_TOKEN:		return IR_dump_token	    (ctx);
+	case STMT_FUNCALL:		return IR__STMT_FUNCALL	    (ctx);
+	case STMT_BLOCK_START: 	return IR__STMT_BLOCK		(ctx);
+	default: 				return IR__STMT_UNKNOWN	    (ctx);
 	}
-    return myId;
 }
 
-static int IR_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
+static void IR_dump_code_block(Block_Context_IR *ctx)
 {
-	int firstId = -1;
-	int prevId 	= -1;
-
-	for (const StmtNode *cur = stmtNode; cur != NULL; cur = cur->next) {
-		int id 	= IR_dump_statement(&cur->statement, n, b);
-
-		if (firstId < 0) firstId = id;
-
-        (void)prevId;
+	assert(ctx);
+	for (; ctx->next != NULL; ctx->next = ctx->next->next) {
+		IR_dump_statement(ctx);
 	}
-
-	return firstId;
 }
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
 
 Error IR_generate(const CodeBlock *blk)
 {
-	int node_counter  = 0;
-	int block_counter = 0;
+	assert(blk);
+	Block_Context_IR ctx = {0};
+	ctx.b=0;
+	ctx.n=0;
+	ctx.prev = NULL;
+	ctx.next = blk->begin;
+	ctx.var_def_cnt=0;
 
-	IR_dump_code_block(blk->begin, &node_counter, &block_counter);
+	IR_dump_code_block(&ctx);
 	print(NULL, WIN_IR, "\nSHUTS");
 
 	return ERR_OK;
