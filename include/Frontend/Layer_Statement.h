@@ -41,7 +41,6 @@ struct Var {
 	FuncallArg *arglist;
 };
 
-
 struct StmtConditional {
 	bool repeat;
 	Token cond;
