@@ -34,7 +34,7 @@ struct Var {
 	varMode mode;
 
 	String type;
-	Stmt  defn_val;
+	Stmt  *defn_val;
 	FuncallArg *arglist;
 };
 
