@@ -35,7 +35,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 		print(NULL, WIN_IR, IR_FORMAT "res(8)", IR_CTX());
 		push_var_def(v->name,v->type, ctx->n-1);
 		}
-	} break;	
+	} break;
 	case VAR_DEFN: {
 		int id = get_var_id(v->name);
 		int size = check_var_mutability(id);
