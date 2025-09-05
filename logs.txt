@@ -1,1 +1,8 @@
 ir.sasm:5: ERROR: unknown directive `bind	E5	"hi"`
+ERROR : Missing Files
+Usage : sasm -i <input file> -o <output file> [-a | -d]
+ 	 default : Assemble mode
+ 	 -d : Disassemble mode
+ 	Assembly Sample Command    : ./sasm -i ./test.sasm -o ./test.sm 
+	Disassembly Sample Command : ./sasm -i ./test.sm -o ./test.sasm -d
+
