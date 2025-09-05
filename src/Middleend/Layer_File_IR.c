@@ -90,6 +90,9 @@ void IR__STMT_FUNCALL(Block_Context_IR* ctx)
 
 	for (; funcall_ctx.next != NULL; funcall_ctx.next = funcall_ctx.next->next) {
 		IR_dump_statement(&funcall_ctx);
+        print(NULL,WIN_IR,"\nSETR E_%d [L0]", funcall_ctx.n++);
+        print(NULL,WIN_IR,"\nSETR len(E_%d) [QT]", funcall_ctx.n++);
+        print(NULL,WIN_IR,"\nINVOK 7");
 	}
 	ctx->n = funcall_ctx.n;
 }
