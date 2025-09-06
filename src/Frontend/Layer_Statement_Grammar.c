@@ -15,8 +15,10 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 	Token next = token_peek_next(ctx);
 
 	if (next.type == TOKEN_TYPE_THEN) {
+        token_consume(ctx);
 		res.repeat = false;
 	} else if (next.type == TOKEN_TYPE_REPEAT) {
+        token_consume(ctx);
 		res.repeat = true;
 	} else {
 		assert(0 && "EXPECTED THEN OR REPEAT");
