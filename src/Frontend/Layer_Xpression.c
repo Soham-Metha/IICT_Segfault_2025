@@ -11,6 +11,8 @@ bool cachedExpr = false;
 const char *expr_get_name(ExprType type)
 {
 	switch (type) {
+	case EXPR_TYPE_FUNCALL:
+		return "Function call";
 	case EXPR_TYPE_STR:
 		return "String literal";
 	case EXPR_TYPE_CHAR:
