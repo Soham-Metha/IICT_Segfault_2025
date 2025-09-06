@@ -19,6 +19,7 @@ enum ExprType {
 	EXPR_TYPE_COLON,
 	EXPR_TYPE_EQUAL,
 	EXPR_TYPE_EOL,
+	EXPR_TYPE_TOKEN,
 };
 
 typedef struct Expr Expr;
