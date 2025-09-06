@@ -1,6 +1,6 @@
 % match x:i64 = {
-    true:i64 = 1;
-    false:i64 = 0;
+    true:i64;
+    false:i64;
    (true)  -> {
         write("Hi");
    };
