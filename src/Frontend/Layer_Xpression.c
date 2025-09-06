@@ -35,7 +35,7 @@ const char *token_get_name(ExprType type)
 	case TOKEN_TYPE_THEN:			return "Conditional pattern match";
 	case TOKEN_TYPE_REPEAT:			return "Conditional retetition";
 	// case TOKEN_TYPE_FUNC: 			return "func";
-	case TOKEN_TYPE_STATEMENT_END: 	return "Statement ended with";
+	case EXPR_TYPE_STATEMENT_END: 	return "Statement ended with";
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
@@ -88,7 +88,7 @@ Token token_peek_next(Line_Context *ctx)
 	} break;
 
 	case ';': {
-		token.type = TOKEN_TYPE_STATEMENT_END;
+		token.type = EXPR_TYPE_STATEMENT_END;
 		token.text = split_str_by_len(line, 1);
 	} break;
 

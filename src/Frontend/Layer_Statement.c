@@ -211,7 +211,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_STR:
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
-	case TOKEN_TYPE_STATEMENT_END: {
+	case EXPR_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
 		result.as.token = tok;
@@ -229,5 +229,5 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		exit(1);
 	}
 
-	token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
+	token_expect_next(ctx, EXPR_TYPE_STATEMENT_END);
 }
