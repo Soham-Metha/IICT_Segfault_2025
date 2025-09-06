@@ -60,11 +60,11 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	return first;
 }
 
-static inline Expr __TOKEN_TYPE_NAME(Expr expr, Line_Context *ctx)
+static inline Expr __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 {
 	Expr result = { 0 };
-	expr_consume(ctx);
-	Expr next = expr_peek_next(ctx);
+	token_consume(ctx);
+	Token next = token_peek_next(ctx);
 
 	// if (compare_str(tok.text, STR("match"))) {
 	// 	log_to_ctx(ctx, LOG_FORMAT "pattern match: '%.*s'",
@@ -75,10 +75,10 @@ static inline Expr __TOKEN_TYPE_NAME(Expr expr, Line_Context *ctx)
 	if (next.type == EXPR_TYPE_OPEN_PAREN) {
 		log_to_ctx(ctx, LOG_FORMAT "function call: '%.*s'",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			   Str_Fmt(expr.as.token.text));
+			   Str_Fmt(tok.text));
 		result.type = EXPR_TYPE_FUNCALL;
 		result.as.funcall = region_allocate(sizeof(Funcall));
-		result.as.funcall->name = expr.as.token.text;
+		result.as.funcall->name = tok.text;
 		result.as.funcall->args = functions_parse_arglist(ctx);
 
 	} else {
@@ -170,10 +170,12 @@ Expr expr_peek_next(Line_Context *ctx)
 	token_consume(ctx);
 	Token token = token_peek_next(ctx);
 	switch (token.type) {
+	case TOKEN_TYPE_NAME: {
+		__TOKEN_TYPE_NAME(token, ctx);
+	} break;
 	case TOKEN_TYPE_STR:
 	case TOKEN_TYPE_CHAR:
 	case TOKEN_TYPE_NUMBER:
-	case TOKEN_TYPE_NAME:
 	case TOKEN_TYPE_OPEN_PAREN:
 	case TOKEN_TYPE_CLOSING_PAREN:
 	case TOKEN_TYPE_OPEN_CURLY:
