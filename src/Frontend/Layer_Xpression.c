@@ -123,8 +123,6 @@ const char *expr_get_name(ExprType type)
 		return "Colon";
 	case EXPR_TYPE_EQUAL:
 		return "Assignment operator";
-	case EXPR_TYPE_EOL:
-		return "End of line reached!";
 	case EXPR_TYPE_THEN:
 		return "Conditional pattern match";
 	case EXPR_TYPE_REPEAT:
