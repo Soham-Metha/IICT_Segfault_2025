@@ -141,7 +141,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_CONDITIONAL);
 	const StmtConditional *cond =
-		&ctx->next->statement.as.as_conditional;
+		&ctx->next->statement.as.cond;
 	int cond_id, body_id, body_end_id;
 	cond_id = ctx->n++;
 	body_id = ctx->n++;

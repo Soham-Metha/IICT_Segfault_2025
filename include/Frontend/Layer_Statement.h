@@ -52,8 +52,8 @@ union StmtValue {
 	Token        	*token;
 	Funcall      	*funcall;
 	StmtNode  	 	*block;
-	PatternMatch 	*as_match;
-	StmtConditional as_conditional;
+	PatternMatch 	*match;
+	StmtConditional cond;
 };
 
 struct Stmt {

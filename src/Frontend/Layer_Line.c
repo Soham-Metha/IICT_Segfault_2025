@@ -118,7 +118,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			log_to_ctx(ctx, LOG_FORMAT " ------------------------------------------------------------------- ",
 				LOG_CTX("[DEFINITION  END]",
 					"[STMT]"));
-			statement.as.as_conditional.body =
+			statement.as.cond.body =
 				codeblock_generate(context);
 
 			(void)codeblock_append_stmt(blk, statement);

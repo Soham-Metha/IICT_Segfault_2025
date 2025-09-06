@@ -126,7 +126,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
 	Stmt res = { 0 };
 	res.type = STMT_CONDITIONAL;
 
-	res.as.as_conditional = get_stmt_conditional(tok, ctx);
+	res.as.cond = get_stmt_conditional(tok, ctx);
 
 	return res;
 }
