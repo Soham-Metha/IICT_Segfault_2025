@@ -39,6 +39,7 @@ int __STMT_UNKNOWN(int id)
 
 int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
+	(void)b;
 	print(NULL, WIN_AST, AST("hexagon", "lightpink", "%.*s"), id,
 	      Str_Fmt(funcall->name));
 
