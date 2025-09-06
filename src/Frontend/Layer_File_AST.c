@@ -45,7 +45,7 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL;
 	     arg = arg->next) {
-		int childId = __STMT_TOKEN((*n)++, arg->expr.text);
+		int childId = __STMT_TOKEN((*n)++, arg->expr.as.token.text);
 
 		if (childId >= 0)
 			print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", id,
@@ -90,7 +90,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 		return __STMT_VARIABLE(myId, &stmt->as.var);
 	case STMT_BLOCK_END:
 	case STMT_TOKEN:
-		return __STMT_TOKEN(myId, stmt->as.token.text);
+		return __STMT_TOKEN(myId, stmt->as.token.as.token.text);
 	// case STMT_FUNCALL:
 	// 	return __STMT_FUNCALL(myId, n, b, stmt->as.funcall);
 	case STMT_BLOCK_START:
