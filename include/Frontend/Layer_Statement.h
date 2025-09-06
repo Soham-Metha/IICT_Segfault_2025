@@ -49,11 +49,11 @@ struct StmtConditional {
 
 union StmtValue {
 	Var          	var;
+	StmtConditional cond;
 	Token        	*token;
 	Funcall      	*funcall;
 	StmtNode  	 	*block;
 	PatternMatch 	*match;
-	StmtConditional cond;
 };
 
 struct Stmt {
