@@ -6,6 +6,60 @@
 #include <assert.h>
 #include <stdlib.h>
 
+FuncallArg *functions_parse_arglist(Line_Context *ctx)
+{
+	// split arguments from single comma seperated string to linked list of strings.
+	Expr token = expr_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
+	update_indent(1);
+	log_to_ctx(ctx, LOG_FORMAT "- Arguments:",
+		   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
+
+	update_indent(1);
+	token = expr_peek_next(ctx);
+	if (token.type == EXPR_TYPE_CLOSING_PAREN) {
+		expr_consume(ctx);
+		log_to_ctx(ctx, LOG_FORMAT " NO ARGS !",
+			   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
+		update_indent(-2);
+		return NULL;
+	}
+
+	FuncallArg *first = NULL;
+	FuncallArg *last = NULL;
+
+	do {
+		FuncallArg *arg = region_allocate(sizeof(FuncallArg));
+		arg->expr = expr_peek_next(ctx);
+		arg->next = NULL;
+
+		if (first == NULL) {
+			first = arg;
+			last = arg;
+		} else {
+			last->next = arg;
+			last = arg;
+		}
+
+		token = expr_peek_next(ctx);
+		if (!expr_consume(ctx)) {
+			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
+			      expr_get_name(EXPR_TYPE_CLOSING_PAREN),
+			      expr_get_name(EXPR_TYPE_COMMA));
+			exit(1);
+		}
+
+	} while (token.type == EXPR_TYPE_COMMA);
+
+	if (token.type != EXPR_TYPE_CLOSING_PAREN) {
+		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
+		      expr_get_name(EXPR_TYPE_CLOSING_PAREN));
+		exit(1);
+	}
+	update_indent(-2);
+
+	return first;
+}
+
 static inline Expr __TOKEN_TYPE_NAME(Expr tok, Line_Context *ctx)
 {
 	Expr result = { 0 };
