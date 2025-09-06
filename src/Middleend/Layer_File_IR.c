@@ -7,7 +7,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
-static void IR_dump_token(Block_Context_IR *ctx);
+static void IR_dump_expr(Expr tok);
 
 static void IR_dump_statement(Block_Context_IR *ctx);
 
@@ -183,10 +183,8 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 }
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-static void IR_dump_token(Block_Context_IR *ctx)
+static void IR_dump_expr(Expr tok)
 {
-	assert(ctx->next->statement.type == STMT_TOKEN);
-	const Expr tok = ctx->next->statement.as.token;
 	switch (tok.type) {
 	case EXPR_TYPE_CHAR:
 		print(NULL, WIN_IR, "'%.*s'", Str_Fmt(tok.text));
@@ -225,7 +223,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		break;
 	case STMT_BLOCK_END:
 	case STMT_TOKEN:
-		IR_dump_token(ctx);
+		IR_dump_expr(ctx->next->statement.as.token);
 		break;
 	case STMT_FUNCALL:
 		IR__STMT_FUNCALL(ctx);
