@@ -173,9 +173,9 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   Str_Fmt(tok.text));
 		result.type = STMT_FUNCALL;
-		result.as.as_funcall = region_allocate(sizeof(Funcall));
-		result.as.as_funcall->name = tok.text;
-		result.as.as_funcall->args = functions_parse_arglist(ctx);
+		result.as.funcall = region_allocate(sizeof(Funcall));
+		result.as.funcall->name = tok.text;
+		result.as.funcall->args = functions_parse_arglist(ctx);
 
 	} else {
 		log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",

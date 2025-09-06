@@ -84,7 +84,7 @@ void IR__STMT_FUNCALL(Block_Context_IR *ctx)
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_FUNCALL);
 
-	const Funcall *funcall = ctx->next->statement.as.as_funcall;
+	const Funcall *funcall = ctx->next->statement.as.funcall;
 	Block_Context_IR funcall_ctx = { 0 };
 	funcall_ctx.n = ctx->n;
 	funcall_ctx.b = ctx->b;
