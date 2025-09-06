@@ -187,7 +187,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 static void IR_dump_token(Block_Context_IR *ctx)
 {
 	assert(ctx->next->statement.type == STMT_TOKEN);
-	const Token tok = *ctx->next->statement.as.as_token;
+	const Token tok = *ctx->next->statement.as.token;
 	switch (tok.type) {
 	case TOKEN_TYPE_CHAR:
 		print(NULL, WIN_IR, "'%.*s'", Str_Fmt(tok.text));

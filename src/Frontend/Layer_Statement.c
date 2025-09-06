@@ -148,7 +148,7 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context *ctx)
 	(void)tok;
 	Stmt result = { 0 };
 	result.type = STMT_BLOCK_END;
-	// result.as.as_token= tok;
+	// result.as.token= tok;
 
 	log_to_ctx(ctx, LOG_FORMAT, LOG_CTX("[BLOCK END]", "[STMT]"));
 
@@ -214,8 +214,8 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
-		result.as.as_token = region_allocate(sizeof(Token));
-		*result.as.as_token =
+		result.as.token = region_allocate(sizeof(Token));
+		*result.as.token =
 			(Token){ .type = tok.type, .text = tok.text };
 		token_consume(ctx);
 		return result;
