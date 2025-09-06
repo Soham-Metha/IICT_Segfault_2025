@@ -7,6 +7,7 @@ enum ExprType {
 	EXPR_TYPE_STR,
 	EXPR_TYPE_CHAR,
 	EXPR_TYPE_NUMBER,
+	EXPR_TYPE_FUNCALL,
 	EXPR_TYPE_NAME,
 	EXPR_TYPE_OPEN_PAREN,
 	EXPR_TYPE_CLOSING_PAREN,
@@ -40,8 +41,8 @@ struct FuncallArg {
 };
 
 union ExprValue {
-	Token           token;
-	Funcall         *funcall;
+	Token token;
+	Funcall *funcall;
 };
 
 struct Expr {
