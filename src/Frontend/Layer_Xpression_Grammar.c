@@ -3,9 +3,11 @@
 
 Funcall parse_expr_funcall(Line_Context *ctx)
 {
-    Funcall res = {0};
+	Funcall res = { 0 };
+	Token nm = token_expect_next(ctx, TOKEN_TYPE_NAME);
+    res.name = nm.text;
 
-    return res;
+	return res;
 }
 
 Expr expr_parse(Line_Context *ctx)
