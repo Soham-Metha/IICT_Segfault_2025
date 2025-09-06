@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-Expr cache;
+Expr expr_cache;
 bool cachedExpr = false;
 
 const char *expr_get_name(ExprType type)
@@ -77,7 +77,7 @@ Expr expr_expect_next(Line_Context *ctx, ExprType expected)
 Expr expr_peek_next(Line_Context *ctx)
 {
 	if (cachedExpr)
-		return cache;
+		return expr_cache;
 	Expr expr = { 0 };
 
 	Token token = token_peek_next(ctx);
@@ -106,7 +106,7 @@ Expr expr_peek_next(Line_Context *ctx)
 		exit(1);
 	}
 	}
-	cache = expr;
+	expr_cache = expr;
 	cachedExpr = true;
 	return expr;
 }
@@ -117,8 +117,8 @@ bool expr_consume(Line_Context *ctx)
 	if (cachedExpr) {
 		update_indent(1);
 		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[EXPR]"),
-			   expr_get_name(cache.type), cache.text.len,
-			   cache.text.data);
+			   expr_get_name(expr_cache.type), expr_cache.text.len,
+			   expr_cache.text.data);
 		update_indent(-1);
 		cachedExpr = false;
 		return true;
