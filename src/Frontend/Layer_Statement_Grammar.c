@@ -12,11 +12,11 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
 	       res.cond.type == EXPR_TYPE_BOOL);
 
-	Expr next = expr_peek_next(ctx);
+	Token next = token_peek_next(ctx);
 
-	if (next.type == EXPR_TYPE_THEN) {
+	if (next.type == TOKEN_TYPE_THEN) {
 		res.repeat = false;
-	} else if (next.type == EXPR_TYPE_REPEAT) {
+	} else if (next.type == TOKEN_TYPE_REPEAT) {
 		res.repeat = true;
 	} else {
 		assert(0 && "EXPECTED THEN OR REPEAT");
