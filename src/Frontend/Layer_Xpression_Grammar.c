@@ -34,12 +34,16 @@ Expr expr_peek_next(Line_Context *ctx)
 				expr.type = EXPR_TYPE_FUNCALL;
 				expr.as.funcall = parse_expr_funcall(ctx);
 			} else {
-                expr.type = EXPR_TYPE_VAR;
-                expr.as.var_nm = parse_expr_var(ctx);
-            }
+				expr.type = EXPR_TYPE_VAR;
+				expr.as.var_nm = token.text;
+			}
 		}
 	} break;
-	case TOKEN_TYPE_STR:
+	case TOKEN_TYPE_STR: {
+		token_consume(ctx);
+		expr.type = EXPR_TYPE_STR;
+		expr.as.str = token.text;
+	}
 	case TOKEN_TYPE_CHAR:
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_OPEN_PAREN:
