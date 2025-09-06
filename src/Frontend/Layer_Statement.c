@@ -43,11 +43,11 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		if (!token_consume(ctx)) {
 			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
 			      token_get_name(EXPR_TYPE_CLOSING_PAREN),
-			      token_get_name(TOKEN_TYPE_COMMA));
+			      token_get_name(EXPR_TYPE_COMMA));
 			exit(1);
 		}
 
-	} while (token.type == TOKEN_TYPE_COMMA);
+	} while (token.type == EXPR_TYPE_COMMA);
 
 	if (token.type != EXPR_TYPE_CLOSING_PAREN) {
 		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
@@ -219,7 +219,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		return result;
 	}
 	case EXPR_TYPE_CLOSING_PAREN:
-	case TOKEN_TYPE_COMMA:
+	case EXPR_TYPE_COMMA:
 	case TOKEN_TYPE_COLON:
 	case TOKEN_TYPE_EQUAL:
 	case TOKEN_TYPE_EOL:
