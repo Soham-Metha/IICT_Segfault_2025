@@ -11,10 +11,11 @@ VarDecl stmt_parse_var_decl(Line_Context *ctx)
 	(void)token_expect_next(ctx, TOKEN_TYPE_COLON);
 	res.type = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
 	if (compare_str(res.name, STR("func"))) {
-        res.args = parse_funcall_arglist(ctx);
+		res.args = parse_funcall_arglist(ctx);
 	}
 	Token nxt = token_peek_next(ctx);
 	if (nxt.type == TOKEN_TYPE_EQUAL) {
+		token_consume(ctx);
 		res.has_init = true;
 		res.init = region_allocate(sizeof(Stmt));
 		*res.init = stmt_fetch_next(ctx);
