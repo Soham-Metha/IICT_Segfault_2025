@@ -5,11 +5,11 @@ main:func() = {
 
     (true) repeat {
           x:str = "hello,world!\n";
-     };
+     }
      (false) repeat {
           x:str = "bye,world!\n";
           write(x);
-     };
+     }
 
     x:str = "hello,world!";
     write(x);
