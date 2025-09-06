@@ -48,7 +48,7 @@ struct StmtConditional {
 };
 
 union StmtValue {
-	Var          	as_var;
+	Var          	var;
 	Token        	*as_token;
 	Funcall      	*as_funcall;
 	StmtNode  	 	*as_block;
