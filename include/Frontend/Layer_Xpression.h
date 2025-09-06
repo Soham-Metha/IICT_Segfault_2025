@@ -63,7 +63,7 @@ struct BinOpr {
 union ExprValue {
 	String str;
 	int64_t num;
-	Funcall *funcall;
+	Funcall funcall;
 	String var_nm;
 	bool boolean;
 	BinOpr bin_opr;

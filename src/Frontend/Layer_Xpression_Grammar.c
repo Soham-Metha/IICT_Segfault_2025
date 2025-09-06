@@ -1,6 +1,10 @@
 #include <Frontend/Layer_Xpression.h>
 #include <assert.h>
 
+Funcall parse_expr_funcall(Line_Context *ctx)
+{
+}
+
 Expr expr_parse(Line_Context *ctx)
 {
 	return expr_parse_with_precedence(ctx, 0);
@@ -9,11 +13,11 @@ Expr expr_parse(Line_Context *ctx)
 Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 {
 	// if (p > COUNT_BIN_OPR_PRECEDENCE) {
-    //     return expr_peek_next(ctx);
+	//     return expr_peek_next(ctx);
 	// }
-    // // traverse left side of expr tree
-    // Expr lhs = expr_parse_with_precedence(ctx, p + 1);
-    assert(0 && "TODO");
+	// // traverse left side of expr tree
+	// Expr lhs = expr_parse_with_precedence(ctx, p + 1);
+	assert(0 && "TODO");
 }
 
 Expr expr_peek_next(Line_Context *ctx)
