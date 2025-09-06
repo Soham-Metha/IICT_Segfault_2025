@@ -35,11 +35,6 @@ struct Funcall {
 	FuncallArg *args;
 };
 
-struct FuncallArg {
-	Expr expr;
-	FuncallArg *next;
-};
-
 union ExprValue {
 	Token token;
 	Funcall *funcall;
@@ -49,6 +44,11 @@ struct Expr {
 	ExprType type;
 	ExprValue as;
 	String text;
+};
+
+struct FuncallArg {
+	Expr expr;
+	FuncallArg *next;
 };
 
 Expr expr_peek_next(Line_Context *ctx);
