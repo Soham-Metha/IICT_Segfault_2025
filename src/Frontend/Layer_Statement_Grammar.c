@@ -93,6 +93,10 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_EOL:
 	default:
 		token_consume(ctx);
+
+		log_to_ctx(ctx, LOG_FORMAT "%s %.*s",
+            LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+            token_get_name(tok.type), Str_Fmt(tok.text));
 		print(ctx, WIN_STDERR, "Unexpected token found!");
 		exit(1);
 	}
