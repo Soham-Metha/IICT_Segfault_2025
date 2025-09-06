@@ -3,15 +3,15 @@
 %bind   E_0    res(8) ; Line end reached
 ; var:    false 
 %bind   E_1    res(8) ; Line end reached
-%scope"Hi"
+%scope
     SETR    E_0      [L0]
     SETR    8        [QT]
-    INVOK   7"Hi"; Line end reached
+    INVOK   7; Line end reached
 %end; Line end reached
-%scope"Bye"
+%scope
     SETR    E_0      [L0]
     SETR    8        [QT]
-    INVOK   7"Bye"; Line end reached
+    INVOK   7; Line end reached
 %end; Line end reached
 ; var:    main 
 %entry    E_2: 
