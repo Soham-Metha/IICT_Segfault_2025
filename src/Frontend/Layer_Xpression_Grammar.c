@@ -44,7 +44,11 @@ Expr expr_peek_next(Line_Context *ctx)
 		expr.type = EXPR_TYPE_STR;
 		expr.as.str = token.text;
 	}
-	case TOKEN_TYPE_CHAR:
+	case TOKEN_TYPE_CHAR: {
+		token_consume(ctx);
+		expr.type = EXPR_TYPE_STR;
+		expr.as.str = token.text;
+	}
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_OPEN_PAREN:
 	case TOKEN_TYPE_CLOSING_PAREN:
