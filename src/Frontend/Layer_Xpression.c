@@ -191,7 +191,7 @@ Expr expr_peek_next(Line_Context *ctx)
 		log_to_ctx(ctx, LOG_FORMAT "got %s %.*s",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   token_get_name(token.type), Str_Fmt(token.text));
-		assert(0 && "expr peek: unreachable");
+		// assert(0 && "expr peek: unreachable");
 		exit(1);
 	}
 	}
