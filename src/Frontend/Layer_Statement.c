@@ -15,7 +15,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 
 	update_indent(1);
 	token = token_peek_next(ctx);
-	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
+	if (token.type == EXPR_TYPE_CLOSING_PAREN) {
 		token_consume(ctx);
 		log_to_ctx(ctx, LOG_FORMAT " NO ARGS !",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
@@ -42,16 +42,16 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		token = token_peek_next(ctx);
 		if (!token_consume(ctx)) {
 			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
-			      token_get_name(TOKEN_TYPE_CLOSING_PAREN),
+			      token_get_name(EXPR_TYPE_CLOSING_PAREN),
 			      token_get_name(TOKEN_TYPE_COMMA));
 			exit(1);
 		}
 
 	} while (token.type == TOKEN_TYPE_COMMA);
 
-	if (token.type != TOKEN_TYPE_CLOSING_PAREN) {
+	if (token.type != EXPR_TYPE_CLOSING_PAREN) {
 		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
-		      token_get_name(TOKEN_TYPE_CLOSING_PAREN));
+		      token_get_name(EXPR_TYPE_CLOSING_PAREN));
 		exit(1);
 	}
 	update_indent(-2);
@@ -104,7 +104,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 
 	token_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
 	res.cond = token_expect_next(ctx, EXPR_TYPE_NAME);
-	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
+	token_expect_next(ctx, EXPR_TYPE_CLOSING_PAREN);
 
 	Token next = token_peek_next(ctx);
 
@@ -218,7 +218,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		token_consume(ctx);
 		return result;
 	}
-	case TOKEN_TYPE_CLOSING_PAREN:
+	case EXPR_TYPE_CLOSING_PAREN:
 	case TOKEN_TYPE_COMMA:
 	case TOKEN_TYPE_COLON:
 	case TOKEN_TYPE_EQUAL:
