@@ -30,8 +30,6 @@ const char *expr_get_name(ExprType type)
 		return "Conditional pattern match";
 	case EXPR_TYPE_REPEAT:
 		return "Conditional retetition";
-	case EXPR_TYPE_TOKEN:
-		return "token";
 	case EXPR_TYPE_BIN_OPR:
 		return "BINARY OPERATION";
 	case EXPR_TYPE_BOOL:
@@ -187,12 +185,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_EOL:
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
-	case TOKEN_TYPE_STATEMENT_END: {
-		assert(0 && "INVALID TOKEN TYPE ...for now");
-		expr.type = EXPR_TYPE_TOKEN;
-		expr.as.token.text = token.text;
-		break;
-	}
+	case TOKEN_TYPE_STATEMENT_END:
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
