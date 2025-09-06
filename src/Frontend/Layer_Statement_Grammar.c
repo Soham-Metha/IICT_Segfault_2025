@@ -12,7 +12,7 @@ StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
 	res.cond = expr_parse(ctx);
 	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
 	       res.cond.type == EXPR_TYPE_BOOL);
-    
+
 	Expr next = expr_peek_next(ctx);
 
 	if (next.type == EXPR_TYPE_THEN) {
@@ -22,6 +22,8 @@ StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
 	} else {
 		assert(0 && "EXPECTED THEN OR REPEAT");
 	}
+	res.body = region_allocate(sizeof(Stmt));
+	*res.body = stmt_fetch_next(ctx);
 
 	return res;
 }
