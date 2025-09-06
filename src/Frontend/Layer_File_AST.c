@@ -91,8 +91,8 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	case STMT_BLOCK_END:
 	case STMT_TOKEN:
 		return __STMT_TOKEN(myId, stmt->as.token.text);
-	case STMT_FUNCALL:
-		return __STMT_FUNCALL(myId, n, b, stmt->as.funcall);
+	// case STMT_FUNCALL:
+	// 	return __STMT_FUNCALL(myId, n, b, stmt->as.funcall);
 	case STMT_BLOCK_START:
 		return __STMT_BLOCK(myId, n, b, stmt->as.block);
 	case STMT_MATCH:
