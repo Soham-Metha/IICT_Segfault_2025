@@ -145,7 +145,7 @@ Expr expr_expect_next(Line_Context *ctx, ExprType expected)
 	update_indent(1);
 	Expr token = expr_peek_next(ctx);
 	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",
-		   LOG_CTX("[TOKEN CHECK]", "[EXPR]"), expr_get_name(expected),
+		   LOG_CTX("[EXPR CHECK]", "[EXPR]"), expr_get_name(expected),
 		   expr_get_name(token.type));
 
 	if (!expr_consume(ctx)) {
