@@ -20,7 +20,6 @@ typedef enum {
 	EXPR_TYPE_REPEAT,
 	EXPR_TYPE_COLON,
 	EXPR_TYPE_EQUAL,
-	EXPR_TYPE_TOKEN,
 } ExprType;
 
 typedef enum {
