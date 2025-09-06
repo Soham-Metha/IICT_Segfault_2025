@@ -28,8 +28,14 @@ Expr expr_peek_next(Line_Context *ctx)
 			expr.type = EXPR_TYPE_BOOL;
 			expr.as.boolean = false;
 		} else {
+			token_consume(ctx);
+			Token next = token_peek_next(ctx);
+			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+				expr.type = EXPR_TYPE_FUNCALL;
+				expr.as.funcall = parse_funcall(ctx);
+			}
 		}
-	} break;
+		break;
 	case TOKEN_TYPE_STR:
 	case TOKEN_TYPE_CHAR:
 	case TOKEN_TYPE_NUMBER:
@@ -53,5 +59,5 @@ Expr expr_peek_next(Line_Context *ctx)
 		exit(1);
 	}
 	}
-	return expr;
-}
+		return expr;
+	}
