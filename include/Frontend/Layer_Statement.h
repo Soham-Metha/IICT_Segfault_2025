@@ -50,7 +50,7 @@ struct StmtConditional {
 union StmtValue {
 	Var             var;
 	StmtConditional cond;
-	Token           *token;
+	Token           token;
 	Funcall         *funcall;
 	StmtNode        *block;
 	PatternMatch    *match;

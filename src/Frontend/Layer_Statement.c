@@ -214,9 +214,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
-		result.as.token = region_allocate(sizeof(Token));
-		*result.as.token =
-			(Token){ .type = tok.type, .text = tok.text };
+		result.as.token = tok;
 		token_consume(ctx);
 		return result;
 	}
