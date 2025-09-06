@@ -73,7 +73,7 @@ void parse_var_decl(Line_Context *ctx, Var *out)
 
 Var parse_var(Line_Context *ctx)
 {
-	Var res = {0};
+	Var res = { 0 };
 	res.mode = VAR_ACCS;
 
 	Token next = token_peek_next(ctx);
@@ -121,12 +121,12 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 
 // ------------------------------ INDIVIDUAL TOKEN HANDLERS ------------------------------
 
-
 static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
 {
 	Stmt res = { 0 };
-	
-	res.value.as_conditional = get_stmt_conditional(tok,ctx);
+	res.type = STMT_CONDITIONAL;
+
+	res.value.as_conditional = get_stmt_conditional(tok, ctx);
 
 	return res;
 }
