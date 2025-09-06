@@ -68,7 +68,7 @@ struct Funcall {
 
 struct FuncallArg {
 	Expr expr;
-	StmtNode *next;
+	FuncallArg *next;
 };
 
 struct StmtNode {
