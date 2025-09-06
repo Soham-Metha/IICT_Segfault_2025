@@ -5,64 +5,10 @@
 #include <assert.h>
 #include <stdlib.h>
 
-FuncallArg *functions_parse_arglist(Line_Context *ctx)
-{
-	// split arguments from single comma seperated string to linked list of strings.
-	Expr token = expr_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
-	update_indent(1);
-	log_to_ctx(ctx, LOG_FORMAT "- Arguments:",
-		   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
-
-	update_indent(1);
-	token = expr_peek_next(ctx);
-	if (token.type == EXPR_TYPE_CLOSING_PAREN) {
-		expr_consume(ctx);
-		log_to_ctx(ctx, LOG_FORMAT " NO ARGS !",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
-		update_indent(-2);
-		return NULL;
-	}
-
-	FuncallArg *first = NULL;
-	FuncallArg *last = NULL;
-
-	do {
-		FuncallArg *arg = region_allocate(sizeof(FuncallArg));
-		arg->expr = expr_peek_next(ctx);
-		arg->next = NULL;
-
-		if (first == NULL) {
-			first = arg;
-			last = arg;
-		} else {
-			last->next = arg;
-			last = arg;
-		}
-
-		token = expr_peek_next(ctx);
-		if (!expr_consume(ctx)) {
-			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
-			      expr_get_name(EXPR_TYPE_CLOSING_PAREN),
-			      expr_get_name(EXPR_TYPE_COMMA));
-			exit(1);
-		}
-
-	} while (token.type == EXPR_TYPE_COMMA);
-
-	if (token.type != EXPR_TYPE_CLOSING_PAREN) {
-		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
-		      expr_get_name(EXPR_TYPE_CLOSING_PAREN));
-		exit(1);
-	}
-	update_indent(-2);
-
-	return first;
-}
-
 void parse_var_decl(Line_Context *ctx, Var *out)
 {
 	(void)expr_expect_next(ctx, EXPR_TYPE_COLON); // colon
-	Expr type = expr_expect_next(ctx, EXPR_TYPE_NAME); // datatype
+	Expr type = expr_expect_next(ctx, EXPR_TYPE_VAR); // datatype
 
 	out->type = type.text;
 	if (compare_str(type.text, STR("func")) ||
@@ -103,7 +49,7 @@ StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
 	StmtConditional res = { 0 };
 
 	expr_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
-	res.cond = expr_expect_next(ctx, EXPR_TYPE_NAME);
+	res.cond = expr_expect_next(ctx, EXPR_TYPE_VAR);
 	expr_expect_next(ctx, EXPR_TYPE_CLOSING_PAREN);
 
 	Expr next = expr_peek_next(ctx);
@@ -155,40 +101,20 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Expr tok, Line_Context *ctx)
 	expr_consume(ctx);
 	return result;
 }
-
-static inline Stmt __TOKEN_TYPE_NAME(Expr tok, Line_Context *ctx)
+static inline Stmt __EXPR_VAR(Expr tok, Line_Context *ctx)
 {
 	Stmt result = { 0 };
 	expr_consume(ctx);
-	Expr next = expr_peek_next(ctx);
 
-	if (compare_str(tok.text, STR("match"))) {
-		log_to_ctx(ctx, LOG_FORMAT "pattern match: '%.*s'",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			   Str_Fmt(tok.text));
-		result.type = STMT_MATCH;
+	log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
+		   LOG_CTX("[IDENTIFICATION]", "[STMT]"), Str_Fmt(tok.text));
+	result.type = STMT_VAR;
+	result.as.var = parse_var(ctx);
+	result.as.var.name = tok.text;
 
-	} else if (next.type == EXPR_TYPE_OPEN_PAREN) {
-		log_to_ctx(ctx, LOG_FORMAT "function call: '%.*s'",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			   Str_Fmt(tok.text));
-		result.type = STMT_FUNCALL;
-		result.as.funcall = region_allocate(sizeof(Funcall));
-		result.as.funcall->name = tok.text;
-		result.as.funcall->args = functions_parse_arglist(ctx);
-
-	} else {
-		log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			   Str_Fmt(tok.text));
-		result.type = STMT_VAR;
-		result.as.var = parse_var(ctx);
-		result.as.var.name = tok.text;
-	}
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
 }
-
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
 
 Stmt stmt_fetch_next(Line_Context *ctx)
@@ -197,8 +123,8 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	Expr tok = expr_peek_next(ctx);
 	// log_to_ctx(ctx, LOG_FORMAT "Checking the first token of the statement to identify statement type, found:", LOG_CTX("[IDENTIFY]","[STMT]"));
 	switch (tok.type) {
-	case EXPR_TYPE_NAME:
-		return __TOKEN_TYPE_NAME(tok, ctx);
+	case EXPR_TYPE_VAR:
+		return __EXPR_VAR(tok, ctx);
 	case EXPR_TYPE_OPEN_CURLY:
 		return __TOKEN_TYPE_OPEN_CURLY(tok, ctx);
 	case EXPR_TYPE_CLOSING_CURLY:

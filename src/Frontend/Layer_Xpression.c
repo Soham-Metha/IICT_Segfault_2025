@@ -107,8 +107,8 @@ const char *expr_get_name(ExprType type)
 		return "Character literal";
 	case EXPR_TYPE_NUMBER:
 		return "Numeric value";
-	case EXPR_TYPE_NAME:
-		return "Name value";
+	case EXPR_TYPE_VAR:
+		return "Variable Name";
 	case EXPR_TYPE_OPEN_PAREN:
 		return "Open parenthesis";
 	case EXPR_TYPE_CLOSING_PAREN:

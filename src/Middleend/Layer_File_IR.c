@@ -183,7 +183,7 @@ static void IR_dump_expr(Expr tok)
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
 	case EXPR_TYPE_NUMBER:
-	case EXPR_TYPE_NAME:
+	case EXPR_TYPE_VAR:
 	case EXPR_TYPE_OPEN_CURLY:
 	case EXPR_TYPE_CLOSING_CURLY:
 	case EXPR_TYPE_COMMA:
