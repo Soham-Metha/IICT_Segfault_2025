@@ -1,6 +1,7 @@
 #include <Frontend/Layer_Xpression.h>
 #include <Frontend/Layer_Tokens.h>
 #include <Wrapper/IO.h>
+#include <Utils/mem_manager.h>
 #include <ctype.h>
 #include <assert.h>
 #include <stdlib.h>
