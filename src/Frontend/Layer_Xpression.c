@@ -9,15 +9,15 @@
 FuncallArg *functions_parse_arglist(Line_Context *ctx)
 {
 	// split arguments from single comma seperated string to linked list of strings.
-	Expr token = expr_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
+	Token token = token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
 	update_indent(1);
 	log_to_ctx(ctx, LOG_FORMAT "- Arguments:",
 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
 
 	update_indent(1);
-	token = expr_peek_next(ctx);
-	if (token.type == EXPR_TYPE_CLOSING_PAREN) {
-		expr_consume(ctx);
+	token = token_peek_next(ctx);
+	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
+		token_consume(ctx);
 		log_to_ctx(ctx, LOG_FORMAT " NO ARGS !",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
 		update_indent(-2);
@@ -40,19 +40,19 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 			last = arg;
 		}
 
-		token = expr_peek_next(ctx);
-		if (!expr_consume(ctx)) {
+		token = token_peek_next(ctx);
+		if (!token_consume(ctx)) {
 			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
-			      expr_get_name(EXPR_TYPE_CLOSING_PAREN),
-			      expr_get_name(EXPR_TYPE_COMMA));
+			      token_get_name(TOKEN_TYPE_CLOSING_PAREN),
+			      token_get_name(TOKEN_TYPE_COMMA));
 			exit(1);
 		}
 
-	} while (token.type == EXPR_TYPE_COMMA);
+	} while (token.type == TOKEN_TYPE_COMMA);
 
-	if (token.type != EXPR_TYPE_CLOSING_PAREN) {
+	if (token.type != TOKEN_TYPE_CLOSING_PAREN) {
 		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
-		      expr_get_name(EXPR_TYPE_CLOSING_PAREN));
+		      token_get_name(TOKEN_TYPE_CLOSING_PAREN));
 		exit(1);
 	}
 	update_indent(-2);
