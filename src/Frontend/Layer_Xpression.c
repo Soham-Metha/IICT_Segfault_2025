@@ -117,8 +117,6 @@ const char *expr_get_name(ExprType type)
 		return "Open curly brace";
 	case EXPR_TYPE_CLOSING_CURLY:
 		return "Closing curly brace";
-	case EXPR_TYPE_COMMA:
-		return "Comma";
 	case EXPR_TYPE_COLON:
 		return "Colon";
 	case EXPR_TYPE_EQUAL:
