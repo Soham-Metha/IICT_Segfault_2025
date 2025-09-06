@@ -1,0 +1,16 @@
+		 0
+; var:    true 
+%bind   E_0    res(8) 		 5; Line end reached		 0
+; var:    false 
+%bind   E_1    res(8) 		 5; Line end reached		 0		 5		 2
+%scope		 1		 0
+    SETR    E_0      [L0]
+    SETR    8        [QT]
+    INVOK   7		 0		 5; Line end reached
+%end		 5; Line end reached		 0		 5		 2
+%scope		 1		 0
+    SETR    E_0      [L0]
+    SETR    8        [QT]
+    INVOK   7		 0		 5; Line end reached
+%end		 5; Line end reached
+SHUTS
