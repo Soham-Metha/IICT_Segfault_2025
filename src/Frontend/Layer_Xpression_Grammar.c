@@ -8,23 +8,27 @@ Expr expr_parse(Line_Context *ctx)
 
 Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 {
-}
-
-Expr expr_peek_next(Line_Context *ctx)
-{
-	Token tok = token_peek_next(ctx);
-	assert(tok.type != TOKEN_TYPE_EOL);
+	assert(0);
 }
 
 Expr expr_peek_next(Line_Context *ctx)
 {
 	Expr expr = { 0 };
 
-	token_consume(ctx);
 	Token token = token_peek_next(ctx);
+
 	switch (token.type) {
 	case TOKEN_TYPE_NAME: {
-		__TOKEN_TYPE_NAME(token, ctx);
+		if (compare_str(token.text, STR("true"))) {
+			token_consume(ctx);
+			expr.type = EXPR_TYPE_BOOL;
+			expr.as.boolean = true;
+		} else if (compare_str(token.text, STR("false"))) {
+			token_consume(ctx);
+			expr.type = EXPR_TYPE_BOOL;
+			expr.as.boolean = false;
+		} else {
+		}
 	} break;
 	case TOKEN_TYPE_STR:
 	case TOKEN_TYPE_CHAR:
