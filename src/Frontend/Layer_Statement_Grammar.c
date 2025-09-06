@@ -76,10 +76,12 @@ Stmt stmt_fetch_next(Line_Context *ctx)
         token_consume(ctx);
         result.type = STMT_BLOCK_START;
         result.as.block = NULL;
+        return result;
     } break;
 	case TOKEN_TYPE_CLOSING_CURLY: {
         token_consume(ctx);
         result.type = STMT_BLOCK_END;
+        return result;
     } break;
 	case TOKEN_TYPE_OPEN_PAREN:
 	case TOKEN_TYPE_NUMBER:
