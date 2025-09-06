@@ -114,6 +114,10 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			break;
 		}
 		case STMT_CONDITIONAL: {
+
+			log_to_ctx(ctx, LOG_FORMAT " ------------------------------------------------------------------- ",
+				LOG_CTX("[DEFINITION  END]",
+					"[STMT]"));
 			statement.value.as_conditional.body =
 				codeblock_generate(context);
 
