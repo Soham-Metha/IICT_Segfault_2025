@@ -21,7 +21,7 @@ const char *token_get_name(ExprType type)
 {
 	switch (type) {
 	case EXPR_TYPE_STR: 			return "String literal";
-	case TOKEN_TYPE_CHAR: 			return "Character literal";
+	case EXPR_TYPE_CHAR: 			return "Character literal";
 	case TOKEN_TYPE_NUMBER: 		return "Numeric value";
 	case TOKEN_TYPE_NAME: 			return "Name value";
 	case TOKEN_TYPE_OPEN_PAREN: 	return "Open parenthesis";
@@ -140,7 +140,7 @@ Token token_peek_next(Line_Context *ctx)
 	case '\'': {
 		split_str_by_len(line, 1); // discard opening '
 
-		token.type = TOKEN_TYPE_CHAR;
+		token.type = EXPR_TYPE_CHAR;
 		size_t index = 0;
 		if (!get_index_of(*line, '\'', &index)) {
 			print(ctx, WIN_STDERR,

@@ -207,7 +207,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		return __TOKEN_TYPE_OPEN_PAREN(tok, ctx);
 
 	case TOKEN_TYPE_NUMBER:
-	case TOKEN_TYPE_CHAR:
+	case EXPR_TYPE_CHAR:
 	case EXPR_TYPE_STR:
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
