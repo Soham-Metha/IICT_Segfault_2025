@@ -205,7 +205,7 @@ static void IR_dump_token(Block_Context_IR *ctx)
 	case EXPR_TYPE_OPEN_CURLY:
 	case EXPR_TYPE_CLOSING_CURLY:
 	case EXPR_TYPE_COMMA:
-	case TOKEN_TYPE_COLON:
+	case EXPR_TYPE_COLON:
 	case TOKEN_TYPE_EQUAL:
 	case EXPR_TYPE_OPEN_PAREN:
 	case EXPR_TYPE_CLOSING_PAREN:

@@ -61,7 +61,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 
 void parse_var_decl(Line_Context *ctx, Var *out)
 {
-	(void)token_expect_next(ctx, TOKEN_TYPE_COLON); // colon
+	(void)token_expect_next(ctx, EXPR_TYPE_COLON); // colon
 	Token type = token_expect_next(ctx, EXPR_TYPE_NAME); // datatype
 
 	out->type = type.text;
@@ -77,7 +77,7 @@ Var parse_var(Line_Context *ctx)
 	res.mode = VAR_ACCS;
 
 	Token next = token_peek_next(ctx);
-	if (next.type == TOKEN_TYPE_COLON) {
+	if (next.type == EXPR_TYPE_COLON) {
 		parse_var_decl(ctx, &res);
 		res.mode |= VAR_DECL;
 		next = token_peek_next(ctx);
@@ -220,7 +220,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	}
 	case EXPR_TYPE_CLOSING_PAREN:
 	case EXPR_TYPE_COMMA:
-	case TOKEN_TYPE_COLON:
+	case EXPR_TYPE_COLON:
 	case TOKEN_TYPE_EQUAL:
 	case TOKEN_TYPE_EOL:
 	default:
