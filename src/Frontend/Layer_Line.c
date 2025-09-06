@@ -120,8 +120,6 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		}
 		case STMT_CONDITIONAL: {
 			statement.as.cond.body = codeblock_generate(context);
-
-			(void)codeblock_append_stmt(blk, statement);
 		} break;
 		case STMT_EXPR:
 		default:
