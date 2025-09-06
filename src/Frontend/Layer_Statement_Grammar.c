@@ -10,8 +10,9 @@ StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
 	StmtConditional res = { 0 };
 
 	res.cond = expr_parse(ctx);
-	assert(res.cond.type == EXPR_TYPE_BIN_OPR);
-
+	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
+	       res.cond.type == EXPR_TYPE_BOOL);
+    
 	Expr next = expr_peek_next(ctx);
 
 	if (next.type == EXPR_TYPE_THEN) {
