@@ -5,8 +5,6 @@
 #include <Utils/strings.h>
 #include <Frontend/Layer_Line.h>
 
-//-------------------------------- FRONT END --------------------------------
-
 typedef struct Line_Context Line_Context;
 
 typedef struct File_Context {
