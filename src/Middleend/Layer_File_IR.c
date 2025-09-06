@@ -192,6 +192,7 @@ static void IR_dump_expr(Expr tok)
 	case EXPR_TYPE_OPEN_PAREN:
 	case EXPR_TYPE_CLOSING_PAREN:
 	case EXPR_TYPE_EOL:
+	case EXPR_TYPE_TOKEN:
 	default:
 		break;
 	}
