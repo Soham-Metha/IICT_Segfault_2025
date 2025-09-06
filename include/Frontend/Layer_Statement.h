@@ -28,7 +28,7 @@ struct VarDecl {
 	String name;
 	String type;
 
-	Expr init;
+	Stmt init;
 	bool has_init;
 };
 
