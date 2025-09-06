@@ -167,11 +167,12 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 		print(NULL, WIN_IR, IR_FORMAT "JMPU    E_%d", IR_CTX(),
 		      cond_id);
 	}
+
+	update_indent(-1);
 	print(NULL, WIN_IR, IR_FORMAT "E_%d:         ; end of cond", IR_CTX(),
 	      body_end_id);
 
 	ctx->n = blk_ctx.n;
-	update_indent(-1);
 }
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
