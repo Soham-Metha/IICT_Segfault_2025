@@ -1,7 +1,7 @@
 x:str = "Hello,World!";
 write(x);
 
-main:func() = %{
+main:func() = {
 
     (true) repeat {
           x:str = "hello,world!\n";
