@@ -5,6 +5,39 @@
 #include <assert.h>
 #include <stdlib.h>
 
+static inline Expr __TOKEN_TYPE_NAME(Expr tok, Line_Context *ctx)
+{
+	Expr result = { 0 };
+	expr_consume(ctx);
+	Expr next = expr_peek_next(ctx);
+
+	// if (compare_str(tok.text, STR("match"))) {
+	// 	log_to_ctx(ctx, LOG_FORMAT "pattern match: '%.*s'",
+	// 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+	// 		   Str_Fmt(tok.text));
+	// 	result.type = STMT_MATCH;
+
+	if (next.type == EXPR_TYPE_OPEN_PAREN) {
+		log_to_ctx(ctx, LOG_FORMAT "function call: '%.*s'",
+			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+			   Str_Fmt(tok.text));
+		result.type = EXPR_TYPE_FUNCALL;
+		result.as.funcall = region_allocate(sizeof(Funcall));
+		result.as.funcall->name = tok.text;
+		result.as.funcall->args = functions_parse_arglist(ctx);
+
+	} else {
+		// log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
+		// 	   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+		// 	   Str_Fmt(tok.text));
+		// result.type = STMT_VAR;
+		// result.as.var = parse_var(ctx);
+		// result.as.var.name = tok.text;
+	}
+	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
+	return result;
+}
+
 Expr expr_cache;
 bool cachedExpr = false;
 
