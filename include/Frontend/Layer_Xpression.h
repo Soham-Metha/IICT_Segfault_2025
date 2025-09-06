@@ -3,6 +3,7 @@
 #include <Utils/strings.h>
 #include <Frontend/Layer_Line.h>
 #include <Frontend/Layer_Tokens.h>
+#include <stdint.h>
 
 enum ExprType {
 	EXPR_TYPE_STR,
@@ -36,8 +37,12 @@ struct Funcall {
 };
 
 union ExprValue {
-	Token token;
+	String str;
+	int64_t num;
 	Funcall *funcall;
+	bool boolean;
+	String var_nm;
+	Token token;
 };
 
 struct Expr {
