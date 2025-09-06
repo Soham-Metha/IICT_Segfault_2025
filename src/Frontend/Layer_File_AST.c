@@ -44,7 +44,7 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL;
 	     arg = arg->next) {
-		int childId = AST_dump_statement(&arg->statement, n, b);
+		int childId = __STMT_TOKEN((*n)++, arg->expr.text);
 
 		if (childId >= 0)
 			print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", id,
