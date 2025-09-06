@@ -86,17 +86,18 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	// case STMT_VAR:
 	// 	return __STMT_VARIABLE(myId, &stmt->as.var);
-	case STMT_BLOCK_END:
-	case STMT_EXPR:
-		return __STMT_TOKEN(myId, stmt->as.token.as.token.text);
+		// return __STMT_TOKEN(myId, stmt->as.token.as.token.text);
 	// case STMT_FUNCALL:
 	// 	return __STMT_FUNCALL(myId, n, b, stmt->as.funcall);
 	case STMT_BLOCK_START:
 		return __STMT_BLOCK(myId, n, b, stmt->as.block);
 	case STMT_MATCH:
+	case STMT_VAR_DECL:
+	case STMT_VAR_DEFN:
 	case STMT_CONDITIONAL:
+	case STMT_BLOCK_END:
+	case STMT_EXPR:
 	default:
 		return __STMT_UNKNOWN(myId);
 	}
