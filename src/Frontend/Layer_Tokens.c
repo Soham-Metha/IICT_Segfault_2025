@@ -63,7 +63,7 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 	update_indent(1);
 	Token token = token_peek_next(ctx);
 	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",
-		   LOG_CTX("[TOKEN CHECK]", "[EXPR]"), token_get_name(expected),
+		   LOG_CTX("[TOKEN CHECK]", "[TOKN}"), token_get_name(expected),
 		   token_get_name(token.type));
 
 	if (!token_consume(ctx)) {
@@ -204,7 +204,7 @@ bool token_consume(Line_Context *ctx)
 	(void)ctx;
 	if (cachedToken) {
 		update_indent(1);
-		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[EXPR]"),
+		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[TOKN}"),
 			   token_get_name(tok_cache.type),
 			   Str_Fmt(tok_cache.text));
 		update_indent(-1);
