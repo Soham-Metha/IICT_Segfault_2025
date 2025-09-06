@@ -28,13 +28,13 @@ struct VarDecl {
 	String name;
 	String type;
 
-	Stmt init;
+	Stmt *init;
 	bool has_init;
 };
 
 struct VarDefn {
 	String name;
-	Expr val;
+	Stmt *val;
 };
 
 struct StmtConditional {
