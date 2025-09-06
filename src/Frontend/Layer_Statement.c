@@ -148,7 +148,6 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		return result;
 	}
 	case EXPR_TYPE_TOKEN:
-	case EXPR_TYPE_COMMA:
 	case EXPR_TYPE_COLON:
 	case EXPR_TYPE_EQUAL:
 	default:
