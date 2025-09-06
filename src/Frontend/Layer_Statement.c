@@ -151,7 +151,6 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_COMMA:
 	case EXPR_TYPE_COLON:
 	case EXPR_TYPE_EQUAL:
-	case EXPR_TYPE_EOL:
 	default:
 		expr_consume(ctx);
 		print(ctx, WIN_STDERR, "Unexpected expr found!");
