@@ -21,22 +21,37 @@ static bool isNumber(char x)
 const char *expr_get_name(ExprType type)
 {
 	switch (type) {
-	case EXPR_TYPE_STR: 			return "String literal";
-	case EXPR_TYPE_CHAR: 			return "Character literal";
-	case EXPR_TYPE_NUMBER: 		    return "Numeric value";
-	case EXPR_TYPE_NAME: 			return "Name value";
-	case EXPR_TYPE_OPEN_PAREN: 	    return "Open parenthesis";
-	case EXPR_TYPE_CLOSING_PAREN: 	return "Closing parenthesis";
-	case EXPR_TYPE_OPEN_CURLY: 	    return "Open curly brace";
-	case EXPR_TYPE_CLOSING_CURLY: 	return "Closing curly brace";
-	case EXPR_TYPE_COMMA: 			return "Comma";
-	case EXPR_TYPE_COLON:			return "Colon";
-	case EXPR_TYPE_EQUAL:			return "Assignment operator";
-	case EXPR_TYPE_EOL:			    return "End of line reached!";
-	case EXPR_TYPE_THEN:			return "Conditional pattern match";
-	case EXPR_TYPE_REPEAT:			return "Conditional retetition";
+	case EXPR_TYPE_STR:
+		return "String literal";
+	case EXPR_TYPE_CHAR:
+		return "Character literal";
+	case EXPR_TYPE_NUMBER:
+		return "Numeric value";
+	case EXPR_TYPE_NAME:
+		return "Name value";
+	case EXPR_TYPE_OPEN_PAREN:
+		return "Open parenthesis";
+	case EXPR_TYPE_CLOSING_PAREN:
+		return "Closing parenthesis";
+	case EXPR_TYPE_OPEN_CURLY:
+		return "Open curly brace";
+	case EXPR_TYPE_CLOSING_CURLY:
+		return "Closing curly brace";
+	case EXPR_TYPE_COMMA:
+		return "Comma";
+	case EXPR_TYPE_COLON:
+		return "Colon";
+	case EXPR_TYPE_EQUAL:
+		return "Assignment operator";
+	case EXPR_TYPE_EOL:
+		return "End of line reached!";
+	case EXPR_TYPE_THEN:
+		return "Conditional pattern match";
+	case EXPR_TYPE_REPEAT:
+		return "Conditional retetition";
 	// case TOKEN_TYPE_FUNC: 			return "func";
-	case EXPR_TYPE_STATEMENT_END: 	return "Statement ended with";
+	case EXPR_TYPE_STATEMENT_END:
+		return "Statement ended with";
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
@@ -72,12 +87,34 @@ Expr expr_expect_next(Line_Context *ctx, ExprType expected)
 Expr expr_peek_next(Line_Context *ctx)
 {
 	if (cachedExpr)
-	return cache;
-	Expr expr = {0};
+		return cache;
+	Expr expr = { 0 };
 
 	Token token = token_peek_next(ctx);
 	switch (token.type) {
-
+	case TOKEN_TYPE_STR:
+	case TOKEN_TYPE_CHAR:
+	case TOKEN_TYPE_NUMBER:
+	case TOKEN_TYPE_NAME:
+	case TOKEN_TYPE_OPEN_PAREN:
+	case TOKEN_TYPE_CLOSING_PAREN:
+	case TOKEN_TYPE_OPEN_CURLY:
+	case TOKEN_TYPE_CLOSING_CURLY:
+	case TOKEN_TYPE_COMMA:
+	case TOKEN_TYPE_COLON:
+	case TOKEN_TYPE_EQUAL:
+	case TOKEN_TYPE_EOL:
+	case TOKEN_TYPE_THEN:
+	case TOKEN_TYPE_REPEAT:
+	case TOKEN_TYPE_STATEMENT_END: {
+		expr.type = token.type;
+		expr.text = token.text;
+		break;
+	}
+	default: {
+		assert(0 && "token_get_name: unreachable");
+		exit(1);
+	}
 	}
 	cache = expr;
 	cachedExpr = true;
