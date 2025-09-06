@@ -81,6 +81,11 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 		result.type = STMT_VAR_DEFN;
 		result.as.var_defn = stmt_parse_var_defn(ctx);
 		result.as.var_defn.name = tok.text;
+	} else {
+		result.type = STMT_EXPR;
+		result.as.expr = expr_parse(ctx);
+		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
+		return result;
 	}
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
