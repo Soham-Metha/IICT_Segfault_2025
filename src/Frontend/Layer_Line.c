@@ -110,7 +110,6 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		// TODO 1: MEM ALLOC error handling
 		(void)codeblock_append_stmt(blk, statement);
 		ctx = file_fetch_curr_line(context);
-		token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	}
 
 	return false;
