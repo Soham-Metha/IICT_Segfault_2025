@@ -1,18 +1,18 @@
 
-main:func() = {
+%main:func() = {
 
     %(true) repeat {
-          x:str = "hello,world!\n";
+          %x:str = "hello,world!\n";
           write(x);
      %};
      %(false) repeat {
-          x:str = "bye,world!\n";
+          %x:str = "bye,world!\n";
           write(x);
     % };
 
     x:str = "hello,world!";
     write(x);
-};
+%};
 
 % Language name: undecided
 % Created as a part of the 
