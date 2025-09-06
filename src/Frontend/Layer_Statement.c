@@ -130,7 +130,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_CLOSING_CURLY:
 		return __TOKEN_TYPE_CLOSING_CURLY(tok, ctx);
 	case EXPR_TYPE_OPEN_PAREN:
-		// return __TOKEN_TYPE_OPEN_PAREN(tok, ctx);
+		return __TOKEN_TYPE_OPEN_PAREN(tok, ctx);
 
 	case EXPR_TYPE_FUNCALL:
 	case EXPR_TYPE_NUMBER:
