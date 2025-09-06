@@ -39,7 +39,8 @@ const char *expr_get_name(ExprType type)
 		return "Conditional pattern match";
 	case EXPR_TYPE_REPEAT:
 		return "Conditional retetition";
-	// case TOKEN_TYPE_FUNC: 			return "func";
+	case EXPR_TYPE_TOKEN:
+		return "token";
 	case EXPR_TYPE_STATEMENT_END:
 		return "Statement ended with";
 	default: {
