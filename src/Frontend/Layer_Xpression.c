@@ -81,6 +81,7 @@ Expr expr_peek_next(Line_Context *ctx)
 		return expr_cache;
 	Expr expr = { 0 };
 
+	token_consume(ctx);
 	Token token = token_peek_next(ctx);
 	switch (token.type) {
 	case TOKEN_TYPE_STR:
@@ -100,7 +101,6 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_STATEMENT_END: {
 		expr.type = (int)token.type;
 		expr.text = token.text;
-		token_consume(ctx);
 		break;
 	}
 	default: {
