@@ -140,6 +140,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
 	case EXPR_TYPE_CLOSING_PAREN:
+	case EXPR_TYPE_TOKEN:
 	case EXPR_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
@@ -147,7 +148,6 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		expr_consume(ctx);
 		return result;
 	}
-	case EXPR_TYPE_TOKEN:
 	case EXPR_TYPE_COLON:
 	case EXPR_TYPE_EQUAL:
 	default:
