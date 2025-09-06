@@ -139,11 +139,20 @@ static void IR__STMT_BLOCK(Block_Context_IR *ctx)
 static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 {
 	assert(ctx);
-	assert(ctx->next->statement.type==STMT_CONDITIONAL);
-	const StmtConditional *cond = &ctx->next->statement.value.as_conditional;
-	print(NULL, WIN_IR,IR_FORMAT "E_%d:         ; start of cond", IR_CTX(), ctx->n++);
+	assert(ctx->next->statement.type == STMT_CONDITIONAL);
+	const StmtConditional *cond =
+		&ctx->next->statement.value.as_conditional;
+	int cond_id, body_id, body_end_id;
+	cond_id = ctx->n++;
+	body_id = ctx->n++;
+	body_end_id = ctx->n++;
+	print(NULL, WIN_IR, IR_FORMAT "E_%d:         ; start of cond", IR_CTX(),
+	      cond_id);
 	// dump cond
-	print(NULL, WIN_IR,IR_FORMAT "E_%d:         ; before body", IR_CTX(), ctx->n++);
+	print(NULL, WIN_IR, IR_FORMAT "NOTB", IR_CTX());
+	print(NULL, WIN_IR, IR_FORMAT "JMPC    E_%d", IR_CTX(), body_end_id);
+	print(NULL, WIN_IR, IR_FORMAT "E_%d:         ; before body", IR_CTX(),
+	      body_id);
 	update_indent(1);
 	Block_Context_IR blk_ctx = { 0 };
 	blk_ctx.n = ctx->n;
@@ -153,6 +162,8 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	blk_ctx.var_def_cnt = 0;
 
 	IR_dump_code_block(&blk_ctx);
+	print(NULL, WIN_IR, IR_FORMAT "E_%d:         ; end of cond", IR_CTX(),
+	      body_end_id);
 
 	ctx->n = blk_ctx.n;
 	update_indent(-1);
