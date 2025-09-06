@@ -8,16 +8,6 @@
 Expr cache;
 bool cachedExpr = false;
 
-static bool isName(char x)
-{
-	return isalnum(x) || x == '_';
-}
-
-static bool isNumber(char x)
-{
-	return isalnum(x) || x == '.' || x == '-';
-}
-
 const char *expr_get_name(ExprType type)
 {
 	switch (type) {
