@@ -1,0 +1,12 @@
+
+E_0:
+; start of cond
+PUSH    0
+EQI
+JMPC    E_2
+E_1:
+; before body
+    JMPU    E_0
+E_2:
+; end of cond
+SHUTS
