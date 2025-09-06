@@ -18,7 +18,7 @@ int __STMT_VARIABLE(int id,  const Var *v)
 	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+1, Str_Fmt(v->type));
 	}
 	// if (v->mode & VAR_DEFN) {
-	// print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->value.as_token->text));
+	// print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->as.as_token->text));
 	// }
 	return id;
 }
@@ -79,11 +79,11 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	case STMT_VAR: 			return __STMT_VARIABLE	(myId, &stmt->value.as_var);
+	case STMT_VAR: 			return __STMT_VARIABLE	(myId, &stmt->as.as_var);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		return __STMT_TOKEN		(myId, stmt->value.as_token->text);
-	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->value.as_funcall);
-	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->value.as_block);
+	case STMT_TOKEN:		return __STMT_TOKEN		(myId, stmt->as.as_token->text);
+	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->as.as_funcall);
+	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->as.as_block);
 	case STMT_MATCH:
 	case STMT_CONDITIONAL:
 	default: 				return __STMT_UNKNOWN	(myId);

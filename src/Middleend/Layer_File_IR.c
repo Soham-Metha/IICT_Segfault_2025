@@ -19,7 +19,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_VAR);
-	Var *v = &ctx->next->statement.value.as_var;
+	Var *v = &ctx->next->statement.as.as_var;
 
 	switch (v->mode) {
 	case VAR_ACCS: {
@@ -84,7 +84,7 @@ void IR__STMT_FUNCALL(Block_Context_IR *ctx)
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_FUNCALL);
 
-	const Funcall *funcall = ctx->next->statement.value.as_funcall;
+	const Funcall *funcall = ctx->next->statement.as.as_funcall;
 	Block_Context_IR funcall_ctx = { 0 };
 	funcall_ctx.n = ctx->n;
 	funcall_ctx.b = ctx->b;
@@ -117,7 +117,7 @@ static void IR__STMT_BLOCK(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_BLOCK_START);
-	StmtNode *nxt = ctx->next->statement.value.as_block;
+	StmtNode *nxt = ctx->next->statement.as.as_block;
 	print(NULL, WIN_IR, IR_FORMAT "%%scope", IR_CTX());
 	update_indent(1);
 
@@ -141,7 +141,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_CONDITIONAL);
 	const StmtConditional *cond =
-		&ctx->next->statement.value.as_conditional;
+		&ctx->next->statement.as.as_conditional;
 	int cond_id, body_id, body_end_id;
 	cond_id = ctx->n++;
 	body_id = ctx->n++;
@@ -187,7 +187,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 static void IR_dump_token(Block_Context_IR *ctx)
 {
 	assert(ctx->next->statement.type == STMT_TOKEN);
-	const Token tok = *ctx->next->statement.value.as_token;
+	const Token tok = *ctx->next->statement.as.as_token;
 	switch (tok.type) {
 	case TOKEN_TYPE_CHAR:
 		print(NULL, WIN_IR, "'%.*s'", Str_Fmt(tok.text));

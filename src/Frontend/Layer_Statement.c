@@ -126,7 +126,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
 	Stmt res = { 0 };
 	res.type = STMT_CONDITIONAL;
 
-	res.value.as_conditional = get_stmt_conditional(tok, ctx);
+	res.as.as_conditional = get_stmt_conditional(tok, ctx);
 
 	return res;
 }
@@ -148,7 +148,7 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context *ctx)
 	(void)tok;
 	Stmt result = { 0 };
 	result.type = STMT_BLOCK_END;
-	// result.value.as_token= tok;
+	// result.as.as_token= tok;
 
 	log_to_ctx(ctx, LOG_FORMAT, LOG_CTX("[BLOCK END]", "[STMT]"));
 
@@ -173,17 +173,17 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   Str_Fmt(tok.text));
 		result.type = STMT_FUNCALL;
-		result.value.as_funcall = region_allocate(sizeof(Funcall));
-		result.value.as_funcall->name = tok.text;
-		result.value.as_funcall->args = functions_parse_arglist(ctx);
+		result.as.as_funcall = region_allocate(sizeof(Funcall));
+		result.as.as_funcall->name = tok.text;
+		result.as.as_funcall->args = functions_parse_arglist(ctx);
 
 	} else {
 		log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   Str_Fmt(tok.text));
 		result.type = STMT_VAR;
-		result.value.as_var = parse_var(ctx);
-		result.value.as_var.name = tok.text;
+		result.as.as_var = parse_var(ctx);
+		result.as.as_var.name = tok.text;
 	}
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
@@ -214,8 +214,8 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
-		result.value.as_token = region_allocate(sizeof(Token));
-		*result.value.as_token =
+		result.as.as_token = region_allocate(sizeof(Token));
+		*result.as.as_token =
 			(Token){ .type = tok.type, .text = tok.text };
 		token_consume(ctx);
 		return result;

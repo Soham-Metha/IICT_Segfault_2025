@@ -58,7 +58,7 @@ union StmtValue {
 
 struct Stmt {
 	StmtType  type;
-	StmtValue value;
+	StmtValue as;
 };
 
 struct FuncallArg {

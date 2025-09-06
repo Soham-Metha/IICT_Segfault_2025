@@ -73,7 +73,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 
 		switch (statement.type) {
 		case STMT_VAR:
-			if (statement.value.as_var.mode & VAR_DEFN) {
+			if (statement.as.as_var.mode & VAR_DEFN) {
 				var_decl_level += 1;
 				log_to_ctx(ctx, LOG_FORMAT "Defined value: {",
 					   LOG_CTX("[DEFINITION START]",
@@ -82,7 +82,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			}
 			break;
 		case STMT_BLOCK_START:
-			statement.value.as_block =
+			statement.as.as_block =
 				codeblock_generate(context).begin;
 			break;
 		case STMT_BLOCK_END:
@@ -101,8 +101,8 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			Stmt stmt = stmt_fetch_next(ctx);
 			ctx = file_fetch_curr_line(context);
 			if (stmt.type == STMT_VAR &&
-			    stmt.value.as_var.mode & VAR_DEFN) {
-				stmt.value.as_var.mode &= VAR_DECL;
+			    stmt.as.as_var.mode & VAR_DEFN) {
+				stmt.as.as_var.mode &= VAR_DECL;
 				// the variable in question is not being defined,
 				// even though it's followed by an assignment operator
 				// that assignment operator is syntax sugar for the match statement.
@@ -118,7 +118,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			log_to_ctx(ctx, LOG_FORMAT " ------------------------------------------------------------------- ",
 				LOG_CTX("[DEFINITION  END]",
 					"[STMT]"));
-			statement.value.as_conditional.body =
+			statement.as.as_conditional.body =
 				codeblock_generate(context);
 
 			(void)codeblock_append_stmt(blk, statement);
