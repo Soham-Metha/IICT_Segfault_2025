@@ -60,7 +60,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	return first;
 }
 
-static inline Expr __TOKEN_TYPE_NAME(Expr tok, Line_Context *ctx)
+static inline Expr __TOKEN_TYPE_NAME(Expr expr, Line_Context *ctx)
 {
 	Expr result = { 0 };
 	expr_consume(ctx);
@@ -75,10 +75,10 @@ static inline Expr __TOKEN_TYPE_NAME(Expr tok, Line_Context *ctx)
 	if (next.type == EXPR_TYPE_OPEN_PAREN) {
 		log_to_ctx(ctx, LOG_FORMAT "function call: '%.*s'",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			   Str_Fmt(tok.text));
+			   Str_Fmt(expr.as.token.text));
 		result.type = EXPR_TYPE_FUNCALL;
 		result.as.funcall = region_allocate(sizeof(Funcall));
-		result.as.funcall->name = tok.text;
+		result.as.funcall->name = expr.as.token.text;
 		result.as.funcall->args = functions_parse_arglist(ctx);
 
 	} else {
@@ -190,7 +190,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END: {
 		expr.type = (int)token.type;
-		expr.text = token.text;
+		expr.as.token.text = token.text;
 		break;
 	}
 	default: {
@@ -209,8 +209,8 @@ bool expr_consume(Line_Context *ctx)
 	if (cachedExpr) {
 		update_indent(1);
 		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[EXPR]"),
-			   expr_get_name(expr_cache.type), expr_cache.text.len,
-			   expr_cache.text.data);
+			   expr_get_name(expr_cache.type),
+			   Str_Fmt(expr_cache.as.token.text));
 		update_indent(-1);
 		cachedExpr = false;
 		return true;
