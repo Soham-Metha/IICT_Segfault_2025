@@ -43,14 +43,27 @@ Expr expr_peek_next(Line_Context *ctx)
 		token_consume(ctx);
 		expr.type = EXPR_TYPE_STR;
 		expr.as.str = token.text;
-	}
+	} break;
 	case TOKEN_TYPE_CHAR: {
 		token_consume(ctx);
 		expr.type = EXPR_TYPE_STR;
 		expr.as.str = token.text;
-	}
-	case TOKEN_TYPE_NUMBER:
-	case TOKEN_TYPE_OPEN_PAREN:
+	} break;
+	case TOKEN_TYPE_NUMBER: {
+		token_consume(ctx);
+		int64_t res = 0;
+		for (size_t i = 0; i < token.text.len; i++) {
+			assert(isdigit(token.text.data[i]));
+			res = res * 10 + (token.text.data[i] - '0');
+		}
+		expr.type = EXPR_TYPE_NUMBER;
+		expr.as.num = res;
+	} break;
+	case TOKEN_TYPE_OPEN_PAREN: {
+		token_consume(ctx);
+		expr = expr_parse(ctx);
+		token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
+	} break;
 	case TOKEN_TYPE_CLOSING_PAREN:
 	case TOKEN_TYPE_OPEN_CURLY:
 	case TOKEN_TYPE_CLOSING_CURLY:
