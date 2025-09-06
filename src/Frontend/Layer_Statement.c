@@ -225,7 +225,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_EOL:
 	default:
 		expr_consume(ctx);
-		print(ctx, WIN_STDERR, "Unexpected token found!");
+		print(ctx, WIN_STDERR, "Unexpected expr found!");
 		exit(1);
 	}
 
