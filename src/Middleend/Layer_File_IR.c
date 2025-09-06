@@ -15,69 +15,69 @@ static void IR_dump_code_block(Block_Context_IR *ctx);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-void IR__STMT_VARIABLE(Block_Context_IR *ctx)
-{
-	assert(ctx);
-	assert(ctx->next->statement.type == STMT_VAR);
-	Var *v = &ctx->next->statement.as.var;
+// void IR__STMT_VARIABLE(Block_Context_IR *ctx)
+// {
+// 	assert(ctx);
+// 	assert(ctx->next->statement.type == STMT_VAR);
+// 	Var *v = &ctx->next->statement.as.var;
 
-	switch (v->mode) {
-	case VAR_ACCS: {
-		int id = get_var_id(v->name);
-		ctx->b = id;
-	} break;
+// 	switch (v->mode) {
+// 	case VAR_ACCS: {
+// 		int id = get_var_id(v->name);
+// 		ctx->b = id;
+// 	} break;
 
-	case VAR_DECL: {
-		int s = get_size_of_type(get_type_from_name(v->type));
-		if (s) {
-			int id = ctx->n++;
-			print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ",
-			      IR_CTX(), Str_Fmt(v->name));
-			print(NULL, WIN_IR,
-			      IR_FORMAT "%%bind   E_%d    res(%d) ", IR_CTX(),
-			      id, s);
-			push_var_def(v->name, v->type, id);
-		}
-	} break;
+// 	case VAR_DECL: {
+// 		int s = get_size_of_type(get_type_from_name(v->type));
+// 		if (s) {
+// 			int id = ctx->n++;
+// 			print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ",
+// 			      IR_CTX(), Str_Fmt(v->name));
+// 			print(NULL, WIN_IR,
+// 			      IR_FORMAT "%%bind   E_%d    res(%d) ", IR_CTX(),
+// 			      id, s);
+// 			push_var_def(v->name, v->type, id);
+// 		}
+// 	} break;
 
-	case VAR_DEFN: {
-		int id = get_var_id(v->name);
-		int size = get_size_from_id(id);
-		if (size) {
-			print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(),
-			      id);
-			print(NULL, WIN_IR, IR_FORMAT "PUSH    ", IR_CTX());
-			ctx->next = ctx->next->next;
-			IR_dump_statement(ctx);
-			print(NULL, WIN_IR, IR_FORMAT "WRITE%d     ", IR_CTX(),
-			      size);
-		} else {
-			assert(0 && "VARIABLE IS OF IMMUTABLE TYPE!!");
-		}
-	} break;
+// 	case VAR_DEFN: {
+// 		int id = get_var_id(v->name);
+// 		int size = get_size_from_id(id);
+// 		if (size) {
+// 			print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(),
+// 			      id);
+// 			print(NULL, WIN_IR, IR_FORMAT "PUSH    ", IR_CTX());
+// 			ctx->next = ctx->next->next;
+// 			IR_dump_statement(ctx);
+// 			print(NULL, WIN_IR, IR_FORMAT "WRITE%d     ", IR_CTX(),
+// 			      size);
+// 		} else {
+// 			assert(0 && "VARIABLE IS OF IMMUTABLE TYPE!!");
+// 		}
+// 	} break;
 
-	case VAR_BOTH:
-		int id = ctx->n++;
-		print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ", IR_CTX(),
-		      Str_Fmt(v->name));
-		if (compare_str(v->type, STR("func"))) {
-			print(NULL, WIN_IR, IR_FORMAT, IR_CTX());
-			if (compare_str(v->name, STR("main"))) {
-				print(NULL, WIN_IR, "%%entry    ");
-			}
-			print(NULL, WIN_IR, "E_%d: ", id);
-		} else {
-			print(NULL, WIN_IR, IR_FORMAT "%%bind    E_%d    ",
-			      IR_CTX(), id);
-		}
-		push_var_def(v->name, v->type, id);
-		ctx->next = ctx->next->next;
-		IR_dump_statement(ctx);
-		break;
-	default:
-		break;
-	}
-}
+// 	case VAR_BOTH:
+// 		int id = ctx->n++;
+// 		print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ", IR_CTX(),
+// 		      Str_Fmt(v->name));
+// 		if (compare_str(v->type, STR("func"))) {
+// 			print(NULL, WIN_IR, IR_FORMAT, IR_CTX());
+// 			if (compare_str(v->name, STR("main"))) {
+// 				print(NULL, WIN_IR, "%%entry    ");
+// 			}
+// 			print(NULL, WIN_IR, "E_%d: ", id);
+// 		} else {
+// 			print(NULL, WIN_IR, IR_FORMAT "%%bind    E_%d    ",
+// 			      IR_CTX(), id);
+// 		}
+// 		push_var_def(v->name, v->type, id);
+// 		ctx->next = ctx->next->next;
+// 		IR_dump_statement(ctx);
+// 		break;
+// 	default:
+// 		break;
+// 	}
+// }
 
 void IR__STMT_FUNCALL(Block_Context_IR *ctx)
 {
@@ -185,7 +185,6 @@ static void IR_dump_expr(Expr expr)
 	case EXPR_TYPE_CLOSING_CURLY:
 	case EXPR_TYPE_COLON:
 	case EXPR_TYPE_EQUAL:
-	case EXPR_TYPE_TOKEN:
 	case EXPR_TYPE_FUNCALL:
 	case EXPR_TYPE_BOOL:
 	case EXPR_TYPE_BIN_OPR:
@@ -199,13 +198,13 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 	assert(ctx->next != NULL);
 
 	switch (ctx->next->statement.type) {
-	case STMT_VAR:
-		IR__STMT_VARIABLE(ctx);
-		break;
-	case STMT_BLOCK_END:
-	case STMT_TOKEN:
-		IR_dump_expr(ctx->next->statement.as.token);
-		break;
+	// case STMT_VAR:
+	// 	IR__STMT_VARIABLE(ctx);
+	// 	break;
+	// case STMT_BLOCK_END:
+	// case STMT_TOKEN:
+	// 	IR_dump_expr(ctx->next->statement.as.token);
+	// 	break;
 	// case STMT_FUNCALL:
 	// 	IR__STMT_FUNCALL(ctx);
 	// 	break;
