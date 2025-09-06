@@ -7,13 +7,13 @@
 typedef struct Block_Context_IR Block_Context_IR;
 
 struct Block_Context_IR {
-    int b;
-    int n;
-    Var_IR var_defs[128];
-    int var_def_cnt;
+	int b;
+	int n;
+	Var_IR var_defs[128];
+	int var_def_cnt;
 
-    StmtNode *next;
-    Block_Context_IR *prev;
+	StmtNode *next;
+	Block_Context_IR *prev;
 };
 
 #endif
