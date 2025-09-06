@@ -11,11 +11,13 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-int __STMT_VARIABLE(int id,  const Var *v)
+int __STMT_VARIABLE(int id, const Var *v)
 {
-	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id, Str_Fmt(v->name));
-	if (v->mode & VAR_DECL){
-	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+1, Str_Fmt(v->type));
+	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id,
+	      Str_Fmt(v->name));
+	if (v->mode & VAR_DECL) {
+		print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"),
+		      id + 1, Str_Fmt(v->type));
 	}
 	// if (v->mode & VAR_DEFN) {
 	// print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->as.token->text));
@@ -37,12 +39,16 @@ int __STMT_UNKNOWN(int id)
 
 int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
-	print(NULL, WIN_AST, AST("hexagon", "lightpink", "%.*s"), id, Str_Fmt(funcall->name));
+	print(NULL, WIN_AST, AST("hexagon", "lightpink", "%.*s"), id,
+	      Str_Fmt(funcall->name));
 
-	for (const FuncallArg *arg = funcall->args; arg != NULL; arg = arg->next) {
+	for (const FuncallArg *arg = funcall->args; arg != NULL;
+	     arg = arg->next) {
 		int childId = AST_dump_statement(&arg->statement, n, b);
 
-		if (childId >= 0) print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", id, childId);
+		if (childId >= 0)
+			print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", id,
+			      childId);
 	}
 	return id;
 }
@@ -50,23 +56,23 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 {
 	(void)id;
-	int clusterId  = (*n)++;
+	int clusterId = (*n)++;
 	int clusterNum = (*b)++;
 
 	print(NULL, WIN_AST,
-		  "  subgraph cluster_%d {\n"
-		  "    label=\"Code Block %d\";\n"
-		  "    style=filled;\n"
-		  "    color=gray;\n"
-		  "    fillcolor=whitesmoke;\n"
-		  "    fontname=\"Courier\";\n",
-		  clusterId, clusterNum);
+	      "  subgraph cluster_%d {\n"
+	      "    label=\"Code Block %d\";\n"
+	      "    style=filled;\n"
+	      "    color=gray;\n"
+	      "    fillcolor=whitesmoke;\n"
+	      "    fontname=\"Courier\";\n",
+	      clusterId, clusterNum);
 
 	AST_dump_code_block(block, n, b);
 
-	print(NULL, WIN_AST, 
-		"  }\n" AST("box3d", "aquamarine", "Code Block %d"),
-		  clusterId, clusterNum);
+	print(NULL, WIN_AST,
+	      "  }\n" AST("box3d", "aquamarine", "Code Block %d"), clusterId,
+	      clusterNum);
 
 	return clusterId;
 }
@@ -79,29 +85,37 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	case STMT_VAR: 			return __STMT_VARIABLE	(myId, &stmt->as.var);
+	case STMT_VAR:
+		return __STMT_VARIABLE(myId, &stmt->as.var);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:		return __STMT_TOKEN		(myId, stmt->as.token->text);
-	case STMT_FUNCALL:		return __STMT_FUNCALL	(myId, n, b, stmt->as.funcall);
-	case STMT_BLOCK_START: 	return __STMT_BLOCK		(myId, n, b, stmt->as.block);
+	case STMT_TOKEN:
+		return __STMT_TOKEN(myId, stmt->as.token->text);
+	case STMT_FUNCALL:
+		return __STMT_FUNCALL(myId, n, b, stmt->as.funcall);
+	case STMT_BLOCK_START:
+		return __STMT_BLOCK(myId, n, b, stmt->as.block);
 	case STMT_MATCH:
 	case STMT_CONDITIONAL:
-	default: 				return __STMT_UNKNOWN	(myId);
+	default:
+		return __STMT_UNKNOWN(myId);
 	}
 }
 
 static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 {
 	int firstId = -1;
-	int prevId 	= -1;
+	int prevId = -1;
 
 	for (const StmtNode *cur = stmtNode; cur != NULL; cur = cur->next) {
-		int id 	= AST_dump_statement(&cur->statement, n, b);
+		int id = AST_dump_statement(&cur->statement, n, b);
 
-		if (firstId < 0) firstId = id;
-		if (prevId >= 0) print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", prevId, id);
+		if (firstId < 0)
+			firstId = id;
+		if (prevId >= 0)
+			print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", prevId,
+			      id);
 
-		prevId 	= id;
+		prevId = id;
 	}
 
 	return firstId;
@@ -111,15 +125,15 @@ static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 
 Error AST_generate(const CodeBlock *blk, bool renderPng)
 {
-	int node_counter  = 0;
+	int node_counter = 0;
 	int block_counter = 0;
 
-	print(NULL, WIN_AST, 
-		"digraph AST {\n"
-		"  splines=ortho;\n"
-		"  nodesep=0.8;\n"
-		"  ranksep=0.5;\n"
-		"  node [fontname=\"Courier\"];\n");
+	print(NULL, WIN_AST,
+	      "digraph AST {\n"
+	      "  splines=ortho;\n"
+	      "  nodesep=0.8;\n"
+	      "  ranksep=0.5;\n"
+	      "  node [fontname=\"Courier\"];\n");
 
 	AST_dump_code_block(blk->begin, &node_counter, &block_counter);
 	print(NULL, WIN_AST, "}\n");
