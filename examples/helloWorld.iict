@@ -1,9 +1,10 @@
 x:str = "Hello,World!";
+write(x);
+
 main:func() = %{
 
     (true) repeat {
           x:str = "hello,world!\n";
-          write(x);
      };
      (false) repeat {
           x:str = "bye,world!\n";
