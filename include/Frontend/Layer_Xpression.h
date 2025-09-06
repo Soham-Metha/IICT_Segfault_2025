@@ -22,12 +22,30 @@ enum ExprType {
 	EXPR_TYPE_TOKEN,
 };
 
+typedef struct Funcall Funcall;
+typedef struct FuncallArg FuncallArg;
 typedef struct Expr Expr;
 typedef enum ExprType ExprType;
+typedef union ExprValue ExprValue;
 typedef struct Line_Context Line_Context;
+
+struct Funcall {
+	String name;
+	FuncallArg *args;
+};
+
+struct FuncallArg {
+	Expr expr;
+	FuncallArg *next;
+};
+
+union ExprValue {
+	Token token;
+	Funcall *funcall;
+};
 struct Expr {
 	ExprType type;
-	String text;
+	ExprValue as;
 };
 
 Expr expr_peek_next(Line_Context *ctx);
