@@ -72,8 +72,15 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	switch (tok.type) {
 	case TOKEN_TYPE_NAME:
 		return __TOKEN_TYPE_NAME(tok, ctx);
-	case TOKEN_TYPE_OPEN_CURLY:
-	case TOKEN_TYPE_CLOSING_CURLY:
+	case TOKEN_TYPE_OPEN_CURLY: {
+        token_consume(ctx);
+        result.type = STMT_BLOCK_START;
+        result.as.block = NULL;
+    }
+	case TOKEN_TYPE_CLOSING_CURLY: {
+        token_consume(ctx);
+        result.type = STMT_BLOCK_END;
+    }
 	case TOKEN_TYPE_OPEN_PAREN:
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_CHAR:
