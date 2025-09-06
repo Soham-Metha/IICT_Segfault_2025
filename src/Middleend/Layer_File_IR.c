@@ -186,7 +186,6 @@ static void IR_dump_expr(Expr expr)
 	case EXPR_TYPE_VAR:
 	case EXPR_TYPE_OPEN_CURLY:
 	case EXPR_TYPE_CLOSING_CURLY:
-	case EXPR_TYPE_COMMA:
 	case EXPR_TYPE_COLON:
 	case EXPR_TYPE_EQUAL:
 	case EXPR_TYPE_OPEN_PAREN:
