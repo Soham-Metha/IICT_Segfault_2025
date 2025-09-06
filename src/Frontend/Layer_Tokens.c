@@ -20,37 +20,22 @@ static bool isNumber(char x)
 const char *token_get_name(TokenType type)
 {
 	switch (type) {
-	case TOKEN_TYPE_STR:
-		return "String literal";
-	case TOKEN_TYPE_CHAR:
-		return "Character literal";
-	case TOKEN_TYPE_NUMBER:
-		return "Numeric value";
-	case TOKEN_TYPE_NAME:
-		return "Name value";
-	case TOKEN_TYPE_OPEN_PAREN:
-		return "Open parenthesis";
-	case TOKEN_TYPE_CLOSING_PAREN:
-		return "Closing parenthesis";
-	case TOKEN_TYPE_OPEN_CURLY:
-		return "Open curly brace";
-	case TOKEN_TYPE_CLOSING_CURLY:
-		return "Closing curly brace";
-	case TOKEN_TYPE_COMMA:
-		return "Comma";
-	case TOKEN_TYPE_COLON:
-		return "Colon";
-	case TOKEN_TYPE_EQUAL:
-		return "Assignment operator";
-	case TOKEN_TYPE_EOL:
-		return "End of line reached!";
-	case TOKEN_TYPE_THEN:
-		return "Conditional pattern match";
-	case TOKEN_TYPE_REPEAT:
-		return "Conditional retetition";
+	case TOKEN_TYPE_STR: 			return "String literal";
+	case TOKEN_TYPE_CHAR: 			return "Character literal";
+	case TOKEN_TYPE_NUMBER: 		return "Numeric value";
+	case TOKEN_TYPE_NAME: 			return "Name value";
+	case TOKEN_TYPE_OPEN_PAREN: 	return "Open parenthesis";
+	case TOKEN_TYPE_CLOSING_PAREN: 	return "Closing parenthesis";
+	case TOKEN_TYPE_OPEN_CURLY: 	return "Open curly brace";
+	case TOKEN_TYPE_CLOSING_CURLY: 	return "Closing curly brace";
+	case TOKEN_TYPE_COMMA: 			return "Comma";
+	case TOKEN_TYPE_COLON:			return "Colon";
+	case TOKEN_TYPE_EQUAL:			return "Assignment operator";
+	case TOKEN_TYPE_EOL:			return "End of line reached!";
+	case TOKEN_TYPE_THEN:			return "Conditional pattern match";
+	case TOKEN_TYPE_REPEAT:			return "Conditional retetition";
 	// case TOKEN_TYPE_FUNC: 			return "func";
-	case TOKEN_TYPE_STATEMENT_END:
-		return "Statement ended with";
+	case TOKEN_TYPE_STATEMENT_END: 	return "Statement ended with";
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
