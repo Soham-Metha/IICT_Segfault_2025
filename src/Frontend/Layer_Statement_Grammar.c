@@ -4,9 +4,8 @@
 #include <Utils/mem_manager.h>
 #include <assert.h>
 
-StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
+StmtConditional get_stmt_conditional(Line_Context *ctx)
 {
-	(void)tok;
 	StmtConditional res = { 0 };
 
 	res.cond = expr_parse(ctx);
@@ -107,7 +106,11 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		result.type = STMT_BLOCK_END;
 		return result;
 	} break;
-	case TOKEN_TYPE_OPEN_PAREN:
+	case TOKEN_TYPE_OPEN_PAREN: {
+		result.type = STMT_CONDITIONAL;
+		result.as.cond = get_stmt_conditional(ctx);
+	}
+
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_CHAR:
 	case TOKEN_TYPE_STR:
