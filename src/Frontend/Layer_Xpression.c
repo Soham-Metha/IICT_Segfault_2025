@@ -168,7 +168,6 @@ Expr expr_peek_next(Line_Context *ctx)
 	Expr expr = { 0 };
 
 	token_consume(ctx);
-	trim(ctx->line);
 	Token token = token_peek_next(ctx);
 	switch (token.type) {
 	case TOKEN_TYPE_NAME: {
