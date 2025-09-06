@@ -146,20 +146,27 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	cond_id = ctx->n++;
 	body_id = ctx->n++;
 	body_end_id = ctx->n++;
+
+	Block_Context_IR blk_ctx = { 0 };
+	blk_ctx.n = ctx->n;
+	blk_ctx.b = ctx->b;
+	blk_ctx.prev = ctx;
+	blk_ctx.var_def_cnt = 0;
+	blk_ctx.next = cond->body.begin;
+
 	print(NULL, WIN_IR, IR_FORMAT "E_%d:\n; start of cond", IR_CTX(),
 	      cond_id);
-	// dump cond
-	print(NULL, WIN_IR, IR_FORMAT "NOTB", IR_CTX());
+	if (compare_str(cond->cond.text, STR("true"))) {
+		print(NULL, WIN_IR, IR_FORMAT "PUSH    1", IR_CTX());
+	} else if (compare_str(cond->cond.text, STR("false"))) {
+		print(NULL, WIN_IR, IR_FORMAT "PUSH    0", IR_CTX());
+	}
+	print(NULL, WIN_IR, IR_FORMAT "PUSH    0", IR_CTX());
+	print(NULL, WIN_IR, IR_FORMAT "EQI", IR_CTX());
 	print(NULL, WIN_IR, IR_FORMAT "JMPC    E_%d", IR_CTX(), body_end_id);
 	print(NULL, WIN_IR, IR_FORMAT "E_%d:\n; before body", IR_CTX(),
 	      body_id);
 	update_indent(1);
-	Block_Context_IR blk_ctx = { 0 };
-	blk_ctx.n = ctx->n;
-	blk_ctx.b = ctx->b;
-	blk_ctx.next = cond->body.begin;
-	blk_ctx.prev = ctx;
-	blk_ctx.var_def_cnt = 0;
 
 	IR_dump_code_block(&blk_ctx);
 
@@ -173,6 +180,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	      body_end_id);
 
 	ctx->n = blk_ctx.n;
+	ctx->next = ctx->next->next;
 }
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 

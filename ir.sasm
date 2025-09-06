@@ -1,52 +1,43 @@
 
-; var:    true 
-%bind   E_0    res(8) ; Line end reached
-; var:    false 
-%bind   E_1    res(8) ; Line end reached
-E_2:
+; var:    main 
+%entry    E_0: 
+%scope
+    E_1:
 ; start of cond
-NOTB
-JMPC    E_4
-E_3:
+    PUSH    1
+    PUSH    0
+    EQI
+    JMPC    E_3
+    E_2:
 ; before body
-    SETR    E_0      [L0]
-    SETR    8        [QT]
-    INVOK   7; Line end reached
-E_4:
-; end of cond
-E_5:
-; start of cond
-NOTB
-JMPC    E_7
-E_6:
-; before body
-    SETR    E_0      [L0]
-    SETR    8        [QT]
-    INVOK   7; Line end reached
-E_7:
+        ; var:    x 
+        %bind    E_4    "hello,world!\n"; Line end reached
+        SETR    E_4      [L0]
+        SETR    len(E_4) [QT]
+        INVOK   7; Line end reached
+        JMPU    E_1
+    E_3:
 ; end of cond; Line end reached
-E_8:
+    E_5:
 ; start of cond
-NOTB
-JMPC    E_10
-E_9:
+    PUSH    0
+    PUSH    0
+    EQI
+    JMPC    E_7
+    E_6:
 ; before body
-    SETR    E_0      [L0]
-    SETR    8        [QT]
-    INVOK   7; Line end reached
-    JMPU    E_8
-E_10:
-; end of cond
-E_11:
-; start of cond
-NOTB
-JMPC    E_13
-E_12:
-; before body
-    SETR    E_0      [L0]
-    SETR    8        [QT]
-    INVOK   7; Line end reached
-    JMPU    E_11
-E_13:
+        ; var:    x 
+        %bind    E_8    "bye,world!\n"; Line end reached
+        SETR    E_8      [L0]
+        SETR    len(E_8) [QT]
+        INVOK   7; Line end reached
+        JMPU    E_5
+    E_7:
 ; end of cond; Line end reached
+    ; var:    x 
+    %bind    E_9    "hello,world!"; Line end reached
+    SETR    E_9      [L0]
+    SETR    len(E_9) [QT]
+    INVOK   7; Line end reached
+%end; Line end reached
 SHUTS
