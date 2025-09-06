@@ -3,7 +3,7 @@
 #include <Utils/strings.h>
 #include <Frontend/Layer_Line.h>
 
-enum TokenType {
+enum ExprType {
 	TOKEN_TYPE_STR,
 	TOKEN_TYPE_CHAR,
 	TOKEN_TYPE_NUMBER,
@@ -22,16 +22,16 @@ enum TokenType {
 };
 
 typedef struct Token Token;
-typedef enum TokenType TokenType;
+typedef enum ExprType ExprType;
 typedef struct Line_Context Line_Context;
 struct Token {
-	TokenType type;
+	ExprType type;
 	String text;
 };
 
 Token token_peek_next(Line_Context *ctx);
-const char *token_get_name(TokenType type);
-Token token_expect_next(Line_Context *ctx, TokenType expected);
+const char *token_get_name(ExprType type);
+Token token_expect_next(Line_Context *ctx, ExprType expected);
 bool token_consume(Line_Context *ctx);
 
 #endif

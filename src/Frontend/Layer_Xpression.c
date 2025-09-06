@@ -17,7 +17,7 @@ static bool isNumber(char x)
 	return isalnum(x) || x == '.' || x == '-';
 }
 
-const char *token_get_name(TokenType type)
+const char *token_get_name(ExprType type)
 {
 	switch (type) {
 	case TOKEN_TYPE_STR: 			return "String literal";
@@ -43,7 +43,7 @@ const char *token_get_name(TokenType type)
 	}
 }
 
-Token token_expect_next(Line_Context *ctx, TokenType expected)
+Token token_expect_next(Line_Context *ctx, ExprType expected)
 {
 	update_indent(1);
 	Token token = token_peek_next(ctx);
