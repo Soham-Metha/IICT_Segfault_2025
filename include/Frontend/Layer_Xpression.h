@@ -44,7 +44,6 @@ union ExprValue {
 struct Expr {
 	ExprType type;
 	ExprValue as;
-	String text;
 };
 
 struct FuncallArg {
