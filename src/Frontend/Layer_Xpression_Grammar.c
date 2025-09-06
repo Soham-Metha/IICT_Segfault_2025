@@ -3,7 +3,7 @@
 
 Expr expr_parse(Line_Context *ctx)
 {
-	assert(0);
+	return expr_parse_with_precedence(ctx, 0);
 }
 
 Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
