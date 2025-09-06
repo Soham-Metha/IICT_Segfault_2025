@@ -108,11 +108,6 @@ Funcall parse_expr_funcall(Line_Context *ctx)
 	return res;
 }
 
-Expr expr_parse(Line_Context *ctx)
-{
-	return expr_parse_with_precedence(ctx, 0);
-}
-
 Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 {
 	// if (p > COUNT_BIN_OPR_PRECEDENCE) {
@@ -121,6 +116,11 @@ Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 	// // traverse left side of expr tree
 	// Expr lhs = expr_parse_with_precedence(ctx, p + 1);
 	assert(0 && "TODO");
+}
+
+Expr expr_parse(Line_Context *ctx)
+{
+	return expr_parse_with_precedence(ctx, 0);
 }
 
 Expr expr_peek_next(Line_Context *ctx)
