@@ -110,6 +110,8 @@ Funcall parse_expr_funcall(Line_Context *ctx)
 
 Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 {
+	(void)ctx;
+	(void)p;
 	// if (p > COUNT_BIN_OPR_PRECEDENCE) {
 	//     return expr_peek_next(ctx);
 	// }
