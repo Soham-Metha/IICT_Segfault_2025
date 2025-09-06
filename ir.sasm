@@ -1,0 +1,33 @@
+
+; var:    true 
+%bind    E_0    ; Line end reached
+; var:    false 
+%bind    E_1    ; Line end reached
+%scope"Hi"
+    SETR    E_0      [L0]
+    SETR    8        [QT]
+    INVOK   7"Hi"; Line end reached
+%end; Line end reached
+%scope"Bye"
+    SETR    E_0      [L0]
+    SETR    8        [QT]
+    INVOK   7"Bye"; Line end reached
+%end; Line end reached
+; var:    main 
+%entry    E_2: 
+%scope
+    ; var:    x 
+    %bind   E_3    res(1) ; Line end reached
+    PUSH    E_3
+    PUSH    'a'
+    WRITE1     ; Line end reached
+    SETR    E_3      [L0]
+    SETR    1        [QT]
+    INVOK   7; Line end reached
+    ; var:    x 
+    %bind    E_4    "hello,world!"; Line end reached
+    SETR    E_4      [L0]
+    SETR    len(E_4) [QT]
+    INVOK   7; Line end reached
+%end; Line end reached
+SHUTS
