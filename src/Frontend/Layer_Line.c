@@ -57,7 +57,6 @@ void line_get_preprocessed_line(Line_Context *ctx)
 	}
 }
 
-int var_decl_level = 0;
 bool line_parse_next(CodeBlock *blk, File_Context *context)
 {
 	Line_Context *ctx = file_fetch_curr_line(context);
@@ -73,31 +72,13 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 
 		switch (statement.type) {
 		case STMT_VAR_DECL:
-			if (statement.as.var_decl.has_init) {
-				var_decl_level += 1;
-				log_to_ctx(ctx, LOG_FORMAT "Defined value: {",
-					   LOG_CTX("[DEFINITION START]",
-						   "[STMT]"));
-				update_indent(1);
-			}
 			break;
 		case STMT_VAR_DEFN:
-			var_decl_level += 1;
-			log_to_ctx(ctx, LOG_FORMAT "Defined value: {",
-				   LOG_CTX("[DEFINITION START]", "[STMT]"));
-			update_indent(1);
 			break;
 		case STMT_BLOCK_START:
 			statement.as.block = codeblock_generate(context).begin;
 			break;
 		case STMT_BLOCK_END:
-			if (var_decl_level > 0) {
-				var_decl_level -= 1;
-				update_indent(-1);
-				log_to_ctx(ctx, LOG_FORMAT " } ",
-					   LOG_CTX("[DEFINITION  END]",
-						   "[STMT]"));
-			}
 			return true;
 		case STMT_MATCH: {
 			// PatternMatch *match = region_allocate(sizeof(*match));
@@ -123,13 +104,6 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		} break;
 		case STMT_EXPR:
 		default:
-			if (var_decl_level > 0) {
-				var_decl_level -= 1;
-				update_indent(-1);
-				log_to_ctx(ctx, LOG_FORMAT " } ",
-					   LOG_CTX("[DEFINITION  END]",
-						   "[STMT]"));
-			}
 			break;
 		}
 
