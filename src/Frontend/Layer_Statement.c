@@ -13,7 +13,7 @@ void parse_var_decl(Line_Context *ctx, Var *out)
 	out->type = type.as.token.text;
 	if (compare_str(type.as.token.text, STR("func")) ||
 	    compare_str(type.as.token.text, STR("struct"))) {
-		out->arglist = functions_parse_arglist(ctx);
+		out->arglist = parse_funcall_arglist(ctx);
 	}
 }
 
