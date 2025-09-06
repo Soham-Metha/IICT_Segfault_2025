@@ -198,6 +198,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 	assert(ctx->next != NULL);
 
 	switch (ctx->next->statement.type) {
+		case STMT_EXPR:
 	// case STMT_VAR:
 	// 	IR__STMT_VARIABLE(ctx);
 	// 	break;
