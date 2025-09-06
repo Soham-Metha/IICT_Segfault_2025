@@ -11,19 +11,19 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-int __STMT_VARIABLE(int id, const Var *v)
-{
-	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id,
-	      Str_Fmt(v->name));
-	if (v->mode & VAR_DECL) {
-		print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"),
-		      id + 1, Str_Fmt(v->type));
-	}
-	// if (v->mode & VAR_DEFN) {
-	// print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->as.token->text));
-	// }
-	return id;
-}
+// int __STMT_VARIABLE(int id, const Var *v)
+// {
+// 	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id,
+// 	      Str_Fmt(v->name));
+// 	if (v->mode & VAR_DECL) {
+// 		print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"),
+// 		      id + 1, Str_Fmt(v->type));
+// 	}
+// 	// if (v->mode & VAR_DEFN) {
+// 	// print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->as.token->text));
+// 	// }
+// 	return id;
+// }
 
 int __STMT_TOKEN(int id, String value)
 {
@@ -86,10 +86,10 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	case STMT_VAR:
-		return __STMT_VARIABLE(myId, &stmt->as.var);
+	// case STMT_VAR:
+	// 	return __STMT_VARIABLE(myId, &stmt->as.var);
 	case STMT_BLOCK_END:
-	case STMT_TOKEN:
+	case STMT_EXPR:
 		return __STMT_TOKEN(myId, stmt->as.token.as.token.text);
 	// case STMT_FUNCALL:
 	// 	return __STMT_FUNCALL(myId, n, b, stmt->as.funcall);

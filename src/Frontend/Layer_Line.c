@@ -72,14 +72,20 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		Stmt statement = stmt_fetch_next(ctx);
 
 		switch (statement.type) {
-		case STMT_VAR:
-			if (statement.as.var.mode & VAR_DEFN) {
+		case STMT_VAR_DECL:
+			if (statement.as.var_decl.has_init) {
 				var_decl_level += 1;
 				log_to_ctx(ctx, LOG_FORMAT "Defined value: {",
 					   LOG_CTX("[DEFINITION START]",
 						   "[STMT]"));
 				update_indent(1);
 			}
+			break;
+		case STMT_VAR_DEFN:
+			var_decl_level += 1;
+			log_to_ctx(ctx, LOG_FORMAT "Defined value: {",
+				   LOG_CTX("[DEFINITION START]", "[STMT]"));
+			update_indent(1);
 			break;
 		case STMT_BLOCK_START:
 			statement.as.block = codeblock_generate(context).begin;
@@ -94,22 +100,22 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			}
 			return true;
 		case STMT_MATCH: {
-			PatternMatch *match = region_allocate(sizeof(*match));
-			match->cond = region_allocate(sizeof(*match->cond));
-			match->body = region_allocate(sizeof(*match->body));
-			Stmt stmt = stmt_fetch_next(ctx);
-			ctx = file_fetch_curr_line(context);
-			if (stmt.type == STMT_VAR &&
-			    stmt.as.var.mode & VAR_DEFN) {
-				stmt.as.var.mode &= VAR_DECL;
-				// the variable in question is not being defined,
-				// even though it's followed by an assignment operator
-				// that assignment operator is syntax sugar for the match statement.
-			}
-			*match->cond = stmt;
-			stmt = stmt_fetch_next(ctx);
-			ctx = file_fetch_curr_line(context);
-			*match->body = stmt;
+			// PatternMatch *match = region_allocate(sizeof(*match));
+			// match->cond = region_allocate(sizeof(*match->cond));
+			// match->body = region_allocate(sizeof(*match->body));
+			// Stmt stmt = stmt_fetch_next(ctx);
+			// ctx = file_fetch_curr_line(context);
+			// if (stmt.type == STMT_VAR &&
+			//     stmt.as.var.mode & VAR_DEFN) {
+			// 	stmt.as.var.mode &= VAR_DECL;
+			// 	// the variable in question is not being defined,
+			// 	// even though it's followed by an assignment operator
+			// 	// that assignment operator is syntax sugar for the match statement.
+			// }
+			// *match->cond = stmt;
+			// stmt = stmt_fetch_next(ctx);
+			// ctx = file_fetch_curr_line(context);
+			// *match->body = stmt;
 			break;
 		}
 		case STMT_CONDITIONAL: {
@@ -117,7 +123,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 
 			(void)codeblock_append_stmt(blk, statement);
 		} break;
-		case STMT_TOKEN:
+		case STMT_EXPR:
 		default:
 			if (var_decl_level > 0) {
 				var_decl_level -= 1;
