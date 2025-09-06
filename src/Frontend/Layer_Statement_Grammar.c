@@ -109,8 +109,8 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_OPEN_PAREN: {
 		result.type = STMT_CONDITIONAL;
 		result.as.cond = get_stmt_conditional(ctx);
+		return result;
 	}
-
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_CHAR:
 	case TOKEN_TYPE_STR:
