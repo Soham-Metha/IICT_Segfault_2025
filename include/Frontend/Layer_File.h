@@ -16,9 +16,9 @@ typedef struct File_Context {
 	unsigned int line_num;
 } File_Context;
 
-Error file_read(const char *filePath, File_Context* context);
-Line_Context *file_fetch_next_line(File_Context* context);
-Line_Context *file_fetch_curr_line(File_Context* context);
+Error file_read(const char *filePath, File_Context *context);
+Line_Context *file_fetch_next_line(File_Context *context);
+Line_Context *file_fetch_curr_line(File_Context *context);
 Error AST_generate(const CodeBlock *blk, bool renderPng);
 
 #endif
