@@ -30,7 +30,7 @@ const char *token_get_name(ExprType type)
 	case EXPR_TYPE_CLOSING_CURLY: 	return "Closing curly brace";
 	case EXPR_TYPE_COMMA: 			return "Comma";
 	case EXPR_TYPE_COLON:			return "Colon";
-	case TOKEN_TYPE_EQUAL:			return "Assignment operator";
+	case EXPR_TYPE_EQUAL:			return "Assignment operator";
 	case TOKEN_TYPE_EOL:			return "End of line reached!";
 	case EXPR_TYPE_THEN:			return "Conditional pattern match";
 	case EXPR_TYPE_REPEAT:			return "Conditional retetition";
@@ -118,7 +118,7 @@ Token token_peek_next(Line_Context *ctx)
 	} break;
 
 	case '=': {
-		token.type = TOKEN_TYPE_EQUAL;
+		token.type = EXPR_TYPE_EQUAL;
 		token.text = split_str_by_len(line, 1);
 	} break;
 

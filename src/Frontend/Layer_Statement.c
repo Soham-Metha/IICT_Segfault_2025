@@ -88,7 +88,7 @@ Var parse_var(Line_Context *ctx)
 			   res.type.data);
 		update_indent(-1);
 	}
-	if (next.type == TOKEN_TYPE_EQUAL) {
+	if (next.type == EXPR_TYPE_EQUAL) {
 		token_consume(ctx);
 		res.mode |= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
@@ -221,7 +221,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_CLOSING_PAREN:
 	case EXPR_TYPE_COMMA:
 	case EXPR_TYPE_COLON:
-	case TOKEN_TYPE_EQUAL:
+	case EXPR_TYPE_EQUAL:
 	case TOKEN_TYPE_EOL:
 	default:
 		token_consume(ctx);
