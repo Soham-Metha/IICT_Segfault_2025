@@ -2,6 +2,7 @@
 #define EXPR_LAYER_FRONTEND
 #include <Utils/strings.h>
 #include <Frontend/Layer_Line.h>
+#include <Frontend/Layer_Tokens.h>
 
 enum ExprType {
 	EXPR_TYPE_STR,
