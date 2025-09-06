@@ -6,7 +6,6 @@
 
 enum StmtType {
 	STMT_VAR,
-	STMT_FUNCALL,
 	STMT_BLOCK_START,
 	STMT_BLOCK_END,
 	STMT_MATCH,
@@ -26,8 +25,6 @@ typedef struct Stmt Stmt;
 typedef enum StmtType StmtType;
 typedef enum varMode varMode;
 typedef union StmtValue StmtValue;
-typedef struct Funcall Funcall;
-typedef struct FuncallArg FuncallArg;
 typedef struct StmtNode StmtNode;
 typedef struct Line_Context Line_Context;
 typedef struct PatternMatch PatternMatch;
@@ -59,16 +56,6 @@ union StmtValue {
 struct Stmt {
 	StmtType  type;
 	StmtValue as;
-};
-
-struct Funcall {
-	String name;
-	FuncallArg *args;
-};
-
-struct FuncallArg {
-	Expr expr;
-	FuncallArg *next;
 };
 
 struct StmtNode {
