@@ -40,8 +40,8 @@ struct FuncallArg {
 };
 
 union ExprValue {
-	Token token;
-	Funcall *funcall;
+	Token           token;
+	Funcall         *funcall;
 };
 struct Expr {
 	ExprType type;
