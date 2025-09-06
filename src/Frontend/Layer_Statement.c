@@ -110,7 +110,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 
 	if (next.type == EXPR_TYPE_THEN) {
 		res.repeat = false;
-	} else if (next.type == TOKEN_TYPE_REPEAT) {
+	} else if (next.type == EXPR_TYPE_REPEAT) {
 		res.repeat = true;
 	} else {
 		assert(0 && "EXPECTED THEN OR REPEAT");
@@ -210,7 +210,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_CHAR:
 	case EXPR_TYPE_STR:
 	case EXPR_TYPE_THEN:
-	case TOKEN_TYPE_REPEAT:
+	case EXPR_TYPE_REPEAT:
 	case EXPR_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;

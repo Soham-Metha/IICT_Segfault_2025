@@ -33,7 +33,7 @@ const char *token_get_name(ExprType type)
 	case TOKEN_TYPE_EQUAL:			return "Assignment operator";
 	case TOKEN_TYPE_EOL:			return "End of line reached!";
 	case EXPR_TYPE_THEN:			return "Conditional pattern match";
-	case TOKEN_TYPE_REPEAT:			return "Conditional retetition";
+	case EXPR_TYPE_REPEAT:			return "Conditional retetition";
 	// case TOKEN_TYPE_FUNC: 			return "func";
 	case EXPR_TYPE_STATEMENT_END: 	return "Statement ended with";
 	default: {
@@ -160,10 +160,10 @@ Token token_peek_next(Line_Context *ctx)
 			token.type = EXPR_TYPE_THEN;
 			token.text = split_str_by_len(line, 4);
 		} else if (starts_with(*line, STR("<->"))) {
-			token.type = TOKEN_TYPE_REPEAT;
+			token.type = EXPR_TYPE_REPEAT;
 			token.text = split_str_by_len(line, 3);
 		} else if (starts_with(*line, STR("repeat"))) {
-			token.type = TOKEN_TYPE_REPEAT;
+			token.type = EXPR_TYPE_REPEAT;
 			token.text = split_str_by_len(line, 6);
 		} else if (isalpha(line->data[0])) {
 			token.type = EXPR_TYPE_NAME;
