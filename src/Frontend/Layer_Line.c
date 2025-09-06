@@ -117,7 +117,6 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 
 			(void)codeblock_append_stmt(blk, statement);
 		} break;
-		case STMT_FUNCALL:
 		case STMT_TOKEN:
 		default:
 			if (var_decl_level > 0) {
