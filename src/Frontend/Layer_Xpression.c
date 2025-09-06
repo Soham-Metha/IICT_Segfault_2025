@@ -6,9 +6,46 @@
 #include <assert.h>
 #include <stdlib.h>
 
-// -----------------------------------------------------------------------
+const char *expr_get_name(ExprType type)
+{
+	switch (type) {
+	case EXPR_TYPE_FUNCALL:
+		return "Function call";
+	case EXPR_TYPE_STR:
+		return "String literal";
+	case EXPR_TYPE_NUMBER:
+		return "Numeric value";
+	case EXPR_TYPE_VAR:
+		return "Variable Name";
+		return "Closing parenthesis";
+	case EXPR_TYPE_OPEN_CURLY:
+		return "Open curly brace";
+	case EXPR_TYPE_CLOSING_CURLY:
+		return "Closing curly brace";
+	case EXPR_TYPE_COLON:
+		return "Colon";
+	case EXPR_TYPE_EQUAL:
+		return "Assignment operator";
+	case EXPR_TYPE_THEN:
+		return "Conditional pattern match";
+	case EXPR_TYPE_REPEAT:
+		return "Conditional retetition";
+	case EXPR_TYPE_TOKEN:
+		return "token";
+	case EXPR_TYPE_BIN_OPR:
+		return "BINARY OPERATION";
+	case EXPR_TYPE_BOOL:
+		return "BOOLEAN";
+	case EXPR_TYPE_STATEMENT_END:
+		return "Statement ended with";
+	default: {
+		assert(0 && "token_get_name: unreachable");
+		exit(1);
+	}
+	}
+}
 
-FuncallArg *functions_parse_arglist(Line_Context *ctx)
+FuncallArg *parse_funcall_arglist(Line_Context *ctx)
 {
 	// split arguments from single comma seperated string to linked list of strings.
 	Token token = token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
@@ -62,122 +99,83 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	return first;
 }
 
-static inline Expr __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
+Funcall parse_expr_funcall(Line_Context *ctx)
 {
-	Expr result = { 0 };
-	token_consume(ctx);
-	Token next = token_peek_next(ctx);
-
-	// if (compare_str(tok.text, STR("match"))) {
-	// 	log_to_ctx(ctx, LOG_FORMAT "pattern match: '%.*s'",
-	// 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-	// 		   Str_Fmt(tok.text));
-	// 	result.type = STMT_MATCH;
-
-	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
-		log_to_ctx(ctx, LOG_FORMAT "function call: '%.*s'",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			   Str_Fmt(tok.text));
-		result.type = EXPR_TYPE_FUNCALL;
-		result.as.funcall = region_allocate(sizeof(Funcall));
-		result.as.funcall->name = tok.text;
-		result.as.funcall->args = functions_parse_arglist(ctx);
-
-	} else {
-		// log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
-		// 	   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-		// 	   Str_Fmt(tok.text));
-		// result.type = STMT_VAR;
-		// result.as.var = parse_var(ctx);
-		// result.as.var.name = tok.text;
-	}
-	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
-	return result;
+	Funcall res = { 0 };
+	Token nm = token_expect_next(ctx, TOKEN_TYPE_NAME);
+	res.name = nm.text;
+	res.args = parse_funcall_arglist(ctx);
+	return res;
 }
 
-Expr expr_cache;
-bool cachedExpr = false;
-
-const char *expr_get_name(ExprType type)
+Expr expr_parse(Line_Context *ctx)
 {
-	switch (type) {
-	case EXPR_TYPE_FUNCALL:
-		return "Function call";
-	case EXPR_TYPE_STR:
-		return "String literal";
-	case EXPR_TYPE_NUMBER:
-		return "Numeric value";
-	case EXPR_TYPE_VAR:
-		return "Variable Name";
-		return "Closing parenthesis";
-	case EXPR_TYPE_OPEN_CURLY:
-		return "Open curly brace";
-	case EXPR_TYPE_CLOSING_CURLY:
-		return "Closing curly brace";
-	case EXPR_TYPE_COLON:
-		return "Colon";
-	case EXPR_TYPE_EQUAL:
-		return "Assignment operator";
-	case EXPR_TYPE_THEN:
-		return "Conditional pattern match";
-	case EXPR_TYPE_REPEAT:
-		return "Conditional retetition";
-	case EXPR_TYPE_TOKEN:
-		return "token";
-	case EXPR_TYPE_BIN_OPR:
-		return "BINARY OPERATION";
-	case EXPR_TYPE_BOOL:
-		return "BOOLEAN";
-	case EXPR_TYPE_STATEMENT_END:
-		return "Statement ended with";
-	default: {
-		assert(0 && "token_get_name: unreachable");
-		exit(1);
-	}
-	}
+	return expr_parse_with_precedence(ctx, 0);
 }
 
-Expr expr_expect_next(Line_Context *ctx, ExprType expected)
+Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 {
-	update_indent(1);
-	Expr token = expr_peek_next(ctx);
-	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",
-		   LOG_CTX("[EXPR CHECK]", "[EXPR]"), expr_get_name(expected),
-		   expr_get_name(token.type));
-
-	if (!expr_consume(ctx)) {
-		print(ctx, WIN_STDERR, ": ERROR: expected token `%s`\n",
-		      expr_get_name(expected));
-		exit(1);
-	}
-
-	if (token.type != expected) {
-		print(ctx, WIN_STDERR,
-		      ": ERROR: expected token `%s`, but got `%s`\n",
-		      expr_get_name(expected), expr_get_name(token.type));
-		exit(1);
-	}
-	update_indent(-1);
-
-	return token;
+	// if (p > COUNT_BIN_OPR_PRECEDENCE) {
+	//     return expr_peek_next(ctx);
+	// }
+	// // traverse left side of expr tree
+	// Expr lhs = expr_parse_with_precedence(ctx, p + 1);
+	assert(0 && "TODO");
 }
 
 Expr expr_peek_next(Line_Context *ctx)
 {
-	if (cachedExpr)
-		return expr_cache;
 	Expr expr = { 0 };
 
-	token_consume(ctx);
 	Token token = token_peek_next(ctx);
+
 	switch (token.type) {
 	case TOKEN_TYPE_NAME: {
-		__TOKEN_TYPE_NAME(token, ctx);
+		if (compare_str(token.text, STR("true"))) {
+			token_consume(ctx);
+			expr.type = EXPR_TYPE_BOOL;
+			expr.as.boolean = true;
+		} else if (compare_str(token.text, STR("false"))) {
+			token_consume(ctx);
+			expr.type = EXPR_TYPE_BOOL;
+			expr.as.boolean = false;
+		} else {
+			token_consume(ctx);
+			Token next = token_peek_next(ctx);
+			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+				expr.type = EXPR_TYPE_FUNCALL;
+				expr.as.funcall = parse_expr_funcall(ctx);
+			} else {
+				expr.type = EXPR_TYPE_VAR;
+				expr.as.var_nm = token.text;
+			}
+		}
 	} break;
-	case TOKEN_TYPE_STR:
-	case TOKEN_TYPE_CHAR:
-	case TOKEN_TYPE_NUMBER:
-	case TOKEN_TYPE_OPEN_PAREN:
+	case TOKEN_TYPE_STR: {
+		token_consume(ctx);
+		expr.type = EXPR_TYPE_STR;
+		expr.as.str = token.text;
+	} break;
+	case TOKEN_TYPE_CHAR: {
+		token_consume(ctx);
+		expr.type = EXPR_TYPE_STR;
+		expr.as.str = token.text;
+	} break;
+	case TOKEN_TYPE_NUMBER: {
+		token_consume(ctx);
+		int64_t res = 0;
+		for (size_t i = 0; i < token.text.len; i++) {
+			assert(isdigit(token.text.data[i]));
+			res = res * 10 + (token.text.data[i] - '0');
+		}
+		expr.type = EXPR_TYPE_NUMBER;
+		expr.as.num = res;
+	} break;
+	case TOKEN_TYPE_OPEN_PAREN: {
+		token_consume(ctx);
+		expr = expr_parse(ctx);
+		token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
+	} break;
 	case TOKEN_TYPE_CLOSING_PAREN:
 	case TOKEN_TYPE_OPEN_CURLY:
 	case TOKEN_TYPE_CLOSING_CURLY:
@@ -188,6 +186,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END: {
+		assert(0 && "INVALID TOKEN TYPE ...for now");
 		expr.type = EXPR_TYPE_TOKEN;
 		expr.as.token.text = token.text;
 		break;
@@ -197,22 +196,5 @@ Expr expr_peek_next(Line_Context *ctx)
 		exit(1);
 	}
 	}
-	expr_cache = expr;
-	cachedExpr = true;
 	return expr;
-}
-
-bool expr_consume(Line_Context *ctx)
-{
-	(void)ctx;
-	if (cachedExpr) {
-		update_indent(1);
-		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[EXPR]"),
-			   expr_get_name(expr_cache.type),
-			   Str_Fmt(expr_cache.as.token.text));
-		update_indent(-1);
-		cachedExpr = false;
-		return true;
-	}
-	return false;
 }
