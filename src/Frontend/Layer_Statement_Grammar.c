@@ -79,9 +79,11 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 	if (next.type == TOKEN_TYPE_COLON) {
 		result.type = STMT_VAR_DECL;
 		result.as.var_decl = stmt_parse_var_decl(ctx);
+        result.as.var_decl.name = tok.text;
 	} else if (next.type == TOKEN_TYPE_EQUAL) {
 		result.type = STMT_VAR_DEFN;
 		result.as.var_defn = stmt_parse_var_defn(ctx);
+        result.as.var_defn.name = tok.text;
 	}
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
