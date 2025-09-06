@@ -62,7 +62,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 void parse_var_decl(Line_Context *ctx, Var *out)
 {
 	(void)token_expect_next(ctx, TOKEN_TYPE_COLON); // colon
-	Token type = token_expect_next(ctx, TOKEN_TYPE_NAME); // datatype
+	Token type = token_expect_next(ctx, EXPR_TYPE_NAME); // datatype
 
 	out->type = type.text;
 	if (compare_str(type.text, STR("func")) ||
@@ -103,7 +103,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 	StmtConditional res = { 0 };
 
 	token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
-	res.cond = token_expect_next(ctx, TOKEN_TYPE_NAME);
+	res.cond = token_expect_next(ctx, EXPR_TYPE_NAME);
 	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
 
 	Token next = token_peek_next(ctx);
@@ -197,7 +197,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	Token tok = token_peek_next(ctx);
 	// log_to_ctx(ctx, LOG_FORMAT "Checking the first token of the statement to identify statement type, found:", LOG_CTX("[IDENTIFY]","[STMT]"));
 	switch (tok.type) {
-	case TOKEN_TYPE_NAME:
+	case EXPR_TYPE_NAME:
 		return __TOKEN_TYPE_NAME(tok, ctx);
 	case TOKEN_TYPE_OPEN_CURLY:
 		return __TOKEN_TYPE_OPEN_CURLY(tok, ctx);

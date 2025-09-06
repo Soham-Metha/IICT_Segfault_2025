@@ -23,7 +23,7 @@ const char *token_get_name(ExprType type)
 	case EXPR_TYPE_STR: 			return "String literal";
 	case EXPR_TYPE_CHAR: 			return "Character literal";
 	case EXPR_TYPE_NUMBER: 		return "Numeric value";
-	case TOKEN_TYPE_NAME: 			return "Name value";
+	case EXPR_TYPE_NAME: 			return "Name value";
 	case TOKEN_TYPE_OPEN_PAREN: 	return "Open parenthesis";
 	case TOKEN_TYPE_CLOSING_PAREN: 	return "Closing parenthesis";
 	case TOKEN_TYPE_OPEN_CURLY: 	return "Open curly brace";
@@ -166,7 +166,7 @@ Token token_peek_next(Line_Context *ctx)
 			token.type = TOKEN_TYPE_REPEAT;
 			token.text = split_str_by_len(line, 6);
 		} else if (isalpha(line->data[0])) {
-			token.type = TOKEN_TYPE_NAME;
+			token.type = EXPR_TYPE_NAME;
 			token.text = split_str_by_condition(line, isName);
 		} else if (isdigit(line->data[0]) || line->data[0] == '-') {
 			token.type = EXPR_TYPE_NUMBER;
