@@ -16,7 +16,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 	update_indent(1);
 	token = expr_peek_next(ctx);
 	if (token.type == EXPR_TYPE_CLOSING_PAREN) {
-		token_consume(ctx);
+		rxpr_consume(ctx);
 		log_to_ctx(ctx, LOG_FORMAT " NO ARGS !",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
 		update_indent(-2);
@@ -40,7 +40,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		}
 
 		token = expr_peek_next(ctx);
-		if (!token_consume(ctx)) {
+		if (!rxpr_consume(ctx)) {
 			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
 			      expr_get_name(EXPR_TYPE_CLOSING_PAREN),
 			      expr_get_name(EXPR_TYPE_COMMA));
@@ -89,7 +89,7 @@ Var parse_var(Line_Context *ctx)
 		update_indent(-1);
 	}
 	if (next.type == EXPR_TYPE_EQUAL) {
-		token_consume(ctx);
+		rxpr_consume(ctx);
 		res.mode |= VAR_DEFN;
 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
 	}
@@ -139,7 +139,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Expr tok, Line_Context *ctx)
 
 	log_to_ctx(ctx, LOG_FORMAT, LOG_CTX("[BLOCK START]", "[STMT]"));
 
-	token_consume(ctx);
+	rxpr_consume(ctx);
 	return result;
 }
 
@@ -152,14 +152,14 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Expr tok, Line_Context *ctx)
 
 	log_to_ctx(ctx, LOG_FORMAT, LOG_CTX("[BLOCK END]", "[STMT]"));
 
-	token_consume(ctx);
+	rxpr_consume(ctx);
 	return result;
 }
 
 static inline Stmt __TOKEN_TYPE_NAME(Expr tok, Line_Context *ctx)
 {
 	Stmt result = { 0 };
-	token_consume(ctx);
+	rxpr_consume(ctx);
 	Expr next = expr_peek_next(ctx);
 
 	if (compare_str(tok.text, STR("match"))) {
@@ -215,7 +215,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;
 		result.as.token = tok;
-		token_consume(ctx);
+		rxpr_consume(ctx);
 		return result;
 	}
 	case EXPR_TYPE_CLOSING_PAREN:
@@ -224,7 +224,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_EQUAL:
 	case EXPR_TYPE_EOL:
 	default:
-		token_consume(ctx);
+		rxpr_consume(ctx);
 		print(ctx, WIN_STDERR, "Unexpected token found!");
 		exit(1);
 	}
