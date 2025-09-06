@@ -8,5 +8,26 @@ style=filled;
 color=gray;
 fillcolor=whitesmoke;
 fontname="Courier";
+Expr_1 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_0"]
+Expr_2 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_3 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="0"]
+Expr_2 -> Expr_3 [style=dotted]
+Expr_1 -> Expr_2;
+Expr_4 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="EQI"]
+Expr_2 -> Expr_4;
+Expr_5 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPC"]
+Expr_6 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_2"]
+Expr_5 -> Expr_6 [style=dotted]
+Expr_4 -> Expr_5;
+Expr_7 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_1"]
+Expr_5 -> Expr_7;
+Expr_8 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPU"]
+Expr_9 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_0"]
+Expr_8 -> Expr_9 [style=dotted]
+Expr_7 -> Expr_8;
+Expr_10 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_2"]
+Expr_8 -> Expr_10;
+Expr_11 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SHUTS"]
+Expr_10 -> Expr_11;
 }
 }
