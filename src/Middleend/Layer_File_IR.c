@@ -191,7 +191,6 @@ static void IR_dump_expr(Expr expr)
 	case EXPR_TYPE_EQUAL:
 	case EXPR_TYPE_OPEN_PAREN:
 	case EXPR_TYPE_CLOSING_PAREN:
-	case EXPR_TYPE_EOL:
 	case EXPR_TYPE_TOKEN:
 	case EXPR_TYPE_FUNCALL:
 	default:
