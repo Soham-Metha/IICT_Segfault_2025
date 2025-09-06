@@ -48,18 +48,24 @@ typedef struct FuncallArg FuncallArg;
 typedef struct Expr Expr;
 typedef union ExprValue ExprValue;
 typedef struct Line_Context Line_Context;
+typedef struct BinOpr BinOpr;
 
 struct Funcall {
 	String name;
 	FuncallArg *args;
 };
 
+struct BinOpr {
+
+};
+
 union ExprValue {
 	String str;
 	int64_t num;
 	Funcall *funcall;
-	bool boolean;
 	String var_nm;
+	bool boolean;
+	BinOpr bin_opr;
 	Token token;
 };
 
