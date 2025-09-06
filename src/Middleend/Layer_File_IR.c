@@ -198,7 +198,7 @@ static void IR_dump_token(Block_Context_IR *ctx)
 		print(NULL, WIN_IR, "; Line end reached");
 		break;
 
-	case TOKEN_TYPE_THEN:
+	case EXPR_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
 	case EXPR_TYPE_NUMBER:
 	case EXPR_TYPE_NAME:
