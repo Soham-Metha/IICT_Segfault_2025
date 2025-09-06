@@ -2,14 +2,14 @@
     write("Hello world");
 };
 
-match x:i64 = {
+% match x:i64 = {
    (true)  -> {
     x = 1;
    };
    (false) <-> {
     y = 1;
    };
-};
+% };
 
 main:func() = {
     x:char;
