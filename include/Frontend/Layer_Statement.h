@@ -37,26 +37,25 @@ struct VarDecl {
 	Expr val;
 };
 
-
 struct StmtConditional {
-	bool  repeat;
-	Expr  cond;
+	bool repeat;
+	Expr cond;
 	CodeBlock body;
 };
 
 union StmtValue {
-	Expr			expr;
-	VarDecl         var_defn;
-	VarDefn         var_defn;
+	Expr expr;
+	VarDecl var_defn;
+	VarDefn var_defn;
 	StmtConditional cond;
-	Expr           token;
-	Funcall         *funcall;
-	StmtNode        *block;
+	Expr token;
+	Funcall *funcall;
+	StmtNode *block;
 	// PatternMatch    *match;
 };
 
 struct Stmt {
-	StmtType  type;
+	StmtType type;
 	StmtValue as;
 };
 
