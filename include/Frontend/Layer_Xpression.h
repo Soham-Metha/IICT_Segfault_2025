@@ -43,6 +43,7 @@ union ExprValue {
 	Token           token;
 	Funcall         *funcall;
 };
+
 struct Expr {
 	ExprType type;
 	ExprValue as;
