@@ -56,5 +56,6 @@ Expr expr_peek_next(Line_Context *ctx);
 const char *expr_get_name(ExprType type);
 Expr expr_expect_next(Line_Context *ctx, ExprType expected);
 bool expr_consume(Line_Context *ctx);
+FuncallArg *functions_parse_arglist(Line_Context *ctx);
 
 #endif
