@@ -5,11 +5,11 @@
 #include <stdint.h>
 
 enum StmtType {
+	STMT_EXPR,
 	STMT_VAR,
 	STMT_BLOCK_START,
 	STMT_BLOCK_END,
 	STMT_MATCH,
-	STMT_TOKEN,
 	STMT_CONDITIONAL,
 };
 
