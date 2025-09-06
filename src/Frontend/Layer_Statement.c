@@ -8,7 +8,7 @@
 FuncallArg *functions_parse_arglist(Line_Context *ctx)
 {
 	// split arguments from single comma seperated string to linked list of strings.
-	Token token = token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
+	Token token = token_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
 	update_indent(1);
 	log_to_ctx(ctx, LOG_FORMAT "- Arguments:",
 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
@@ -102,7 +102,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 	(void)tok;
 	StmtConditional res = { 0 };
 
-	token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
+	token_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
 	res.cond = token_expect_next(ctx, EXPR_TYPE_NAME);
 	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
 
@@ -168,7 +168,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 			   Str_Fmt(tok.text));
 		result.type = STMT_MATCH;
 
-	} else if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+	} else if (next.type == EXPR_TYPE_OPEN_PAREN) {
 		log_to_ctx(ctx, LOG_FORMAT "function call: '%.*s'",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   Str_Fmt(tok.text));
@@ -203,7 +203,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		return __TOKEN_TYPE_OPEN_CURLY(tok, ctx);
 	case TOKEN_TYPE_CLOSING_CURLY:
 		return __TOKEN_TYPE_CLOSING_CURLY(tok, ctx);
-	case TOKEN_TYPE_OPEN_PAREN:
+	case EXPR_TYPE_OPEN_PAREN:
 		return __TOKEN_TYPE_OPEN_PAREN(tok, ctx);
 
 	case EXPR_TYPE_NUMBER:

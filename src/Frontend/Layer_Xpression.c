@@ -24,7 +24,7 @@ const char *token_get_name(ExprType type)
 	case EXPR_TYPE_CHAR: 			return "Character literal";
 	case EXPR_TYPE_NUMBER: 		return "Numeric value";
 	case EXPR_TYPE_NAME: 			return "Name value";
-	case TOKEN_TYPE_OPEN_PAREN: 	return "Open parenthesis";
+	case EXPR_TYPE_OPEN_PAREN: 	return "Open parenthesis";
 	case TOKEN_TYPE_CLOSING_PAREN: 	return "Closing parenthesis";
 	case TOKEN_TYPE_OPEN_CURLY: 	return "Open curly brace";
 	case TOKEN_TYPE_CLOSING_CURLY: 	return "Closing curly brace";
@@ -83,7 +83,7 @@ Token token_peek_next(Line_Context *ctx)
 
 	switch (line->data[0]) {
 	case '(': {
-		token.type = TOKEN_TYPE_OPEN_PAREN;
+		token.type = EXPR_TYPE_OPEN_PAREN;
 		token.text = split_str_by_len(line, 1);
 	} break;
 

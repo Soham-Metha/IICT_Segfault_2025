@@ -207,7 +207,7 @@ static void IR_dump_token(Block_Context_IR *ctx)
 	case TOKEN_TYPE_COMMA:
 	case TOKEN_TYPE_COLON:
 	case TOKEN_TYPE_EQUAL:
-	case TOKEN_TYPE_OPEN_PAREN:
+	case EXPR_TYPE_OPEN_PAREN:
 	case TOKEN_TYPE_CLOSING_PAREN:
 	case TOKEN_TYPE_EOL:
 	default:
