@@ -8,7 +8,7 @@
 FuncallArg *functions_parse_arglist(Line_Context *ctx)
 {
 	// split arguments from single comma seperated string to linked list of strings.
-	Expr token = token_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
+	Expr token = expr_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
 	update_indent(1);
 	log_to_ctx(ctx, LOG_FORMAT "- Arguments:",
 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
@@ -61,8 +61,8 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 
 void parse_var_decl(Line_Context *ctx, Var *out)
 {
-	(void)token_expect_next(ctx, EXPR_TYPE_COLON); // colon
-	Expr type = token_expect_next(ctx, EXPR_TYPE_NAME); // datatype
+	(void)expr_expect_next(ctx, EXPR_TYPE_COLON); // colon
+	Expr type = expr_expect_next(ctx, EXPR_TYPE_NAME); // datatype
 
 	out->type = type.text;
 	if (compare_str(type.text, STR("func")) ||
@@ -102,9 +102,9 @@ StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
 	(void)tok;
 	StmtConditional res = { 0 };
 
-	token_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
-	res.cond = token_expect_next(ctx, EXPR_TYPE_NAME);
-	token_expect_next(ctx, EXPR_TYPE_CLOSING_PAREN);
+	expr_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
+	res.cond = expr_expect_next(ctx, EXPR_TYPE_NAME);
+	expr_expect_next(ctx, EXPR_TYPE_CLOSING_PAREN);
 
 	Expr next = expr_peek_next(ctx);
 
@@ -229,5 +229,5 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		exit(1);
 	}
 
-	token_expect_next(ctx, EXPR_TYPE_STATEMENT_END);
+	expr_expect_next(ctx, EXPR_TYPE_STATEMENT_END);
 }

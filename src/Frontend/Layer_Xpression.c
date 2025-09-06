@@ -43,7 +43,7 @@ const char *expr_get_name(ExprType type)
 	}
 }
 
-Expr token_expect_next(Line_Context *ctx, ExprType expected)
+Expr expr_expect_next(Line_Context *ctx, ExprType expected)
 {
 	update_indent(1);
 	Expr token = expr_peek_next(ctx);
