@@ -32,8 +32,11 @@ Expr expr_peek_next(Line_Context *ctx)
 			Token next = token_peek_next(ctx);
 			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
 				expr.type = EXPR_TYPE_FUNCALL;
-				expr.as.funcall = parse_funcall(ctx);
-			}
+				expr.as.funcall = parse_expr_funcall(ctx);
+			} else {
+                expr.type = EXPR_TYPE_VAR;
+                expr.as.var_nm = parse_expr_var(ctx);
+            }
 		}
 	} break;
 	case TOKEN_TYPE_STR:
