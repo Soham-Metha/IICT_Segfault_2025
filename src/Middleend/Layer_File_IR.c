@@ -139,9 +139,9 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 
 	print(NULL, WIN_IR, IR_FORMAT "E_%d:\n; start of cond", IR_CTX(),
 	      cond_id);
-	if (compare_str(cond->cond.text, STR("true"))) {
+	if (compare_str(cond->cond.as.token.text, STR("true"))) {
 		print(NULL, WIN_IR, IR_FORMAT "PUSH    1", IR_CTX());
-	} else if (compare_str(cond->cond.text, STR("false"))) {
+	} else if (compare_str(cond->cond.as.token.text, STR("false"))) {
 		print(NULL, WIN_IR, IR_FORMAT "PUSH    0", IR_CTX());
 	}
 	print(NULL, WIN_IR, IR_FORMAT "PUSH    0", IR_CTX());
@@ -167,14 +167,14 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 }
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-static void IR_dump_expr(Expr tok)
+static void IR_dump_expr(Expr expr)
 {
-	switch (tok.type) {
+	switch (expr.type) {
 	case EXPR_TYPE_CHAR:
-		print(NULL, WIN_IR, "'%.*s'", Str_Fmt(tok.text));
+		print(NULL, WIN_IR, "'%.*s'", Str_Fmt(expr.as.token.text));
 		break;
 	case EXPR_TYPE_STR:
-		print(NULL, WIN_IR, "\"%.*s\"", Str_Fmt(tok.text));
+		print(NULL, WIN_IR, "\"%.*s\"", Str_Fmt(expr.as.token.text));
 		break;
 	case EXPR_TYPE_STATEMENT_END:
 		print(NULL, WIN_IR, "; Line end reached");
