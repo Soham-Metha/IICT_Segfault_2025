@@ -1,0 +1,43 @@
+
+; var:    main 
+%entry    E_0: 
+%scope
+    E_1:
+; start of cond
+    PUSH    1
+    PUSH    0
+    EQI
+    JMPC    E_3
+    E_2:
+; before body
+        ; var:    x 
+        %bind    E_4    "hello,world!\n"; Line end reached
+        SETR    E_4      [L0]
+        SETR    len(E_4) [QT]
+        INVOK   7; Line end reached
+        JMPU    E_1
+    E_3:
+; end of cond; Line end reached
+    E_5:
+; start of cond
+    PUSH    0
+    PUSH    0
+    EQI
+    JMPC    E_7
+    E_6:
+; before body
+        ; var:    x 
+        %bind    E_8    "bye,world!\n"; Line end reached
+        SETR    E_8      [L0]
+        SETR    len(E_8) [QT]
+        INVOK   7; Line end reached
+        JMPU    E_5
+    E_7:
+; end of cond; Line end reached
+    ; var:    x 
+    %bind    E_9    "hello,world!"; Line end reached
+    SETR    E_9      [L0]
+    SETR    len(E_9) [QT]
+    INVOK   7; Line end reached
+%end; Line end reached
+SHUTS
