@@ -24,7 +24,7 @@ typedef struct Line_Context Line_Context;
 // typedef struct PatternMatch PatternMatch;
 typedef struct StmtConditional StmtConditional;
 
-struct VarDefn {
+struct VarDecl {
 	String name;
 	String type;
 
@@ -32,7 +32,7 @@ struct VarDefn {
 	bool has_init;
 };
 
-struct VarDecl {
+struct VarDefn {
 	String name;
 	Expr val;
 };
