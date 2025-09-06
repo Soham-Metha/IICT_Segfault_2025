@@ -35,25 +35,25 @@ typedef struct StmtConditional StmtConditional;
 
 struct Var {
 	String  name;
+	String  type;
 	varMode mode;
 
-	String type;
 	FuncallArg *arglist;
 };
 
 struct StmtConditional {
-	bool repeat;
+	bool  repeat;
 	Token cond;
 	CodeBlock body;
 };
 
 union StmtValue {
-	Var          	var;
+	Var             var;
 	StmtConditional cond;
-	Token        	*token;
-	Funcall      	*funcall;
-	StmtNode  	 	*block;
-	PatternMatch 	*match;
+	Token           *token;
+	Funcall         *funcall;
+	StmtNode        *block;
+	PatternMatch    *match;
 };
 
 struct Stmt {
@@ -61,13 +61,8 @@ struct Stmt {
 	StmtValue as;
 };
 
-struct FuncallArg {
-	FuncallArg *next;
-	Stmt        value;
-};
-
 struct Funcall {
-	String      name;
+	String name;
 	FuncallArg *args;
 };
 
