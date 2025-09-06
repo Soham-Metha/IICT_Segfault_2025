@@ -199,7 +199,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	switch (tok.type) {
 	case EXPR_TYPE_NAME:
 		return __TOKEN_TYPE_NAME(tok, ctx);
-	case TOKEN_TYPE_OPEN_CURLY:
+	case EXPR_TYPE_OPEN_CURLY:
 		return __TOKEN_TYPE_OPEN_CURLY(tok, ctx);
 	case TOKEN_TYPE_CLOSING_CURLY:
 		return __TOKEN_TYPE_CLOSING_CURLY(tok, ctx);
