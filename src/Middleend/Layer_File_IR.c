@@ -82,7 +82,7 @@ void IR__STMT_VARIABLE(Block_Context_IR *ctx)
 void IR__STMT_FUNCALL(Block_Context_IR *ctx)
 {
 	assert(ctx);
-	assert(ctx->next->statement.type == STMT_FUNCALL);
+	// assert(ctx->next->statement.type == STMT_FUNCALL);
 
 	const Funcall *funcall = ctx->next->statement.as.funcall;
 
@@ -193,6 +193,7 @@ static void IR_dump_expr(Expr tok)
 	case EXPR_TYPE_CLOSING_PAREN:
 	case EXPR_TYPE_EOL:
 	case EXPR_TYPE_TOKEN:
+	case EXPR_TYPE_FUNCALL:
 	default:
 		break;
 	}
@@ -210,9 +211,9 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 	case STMT_TOKEN:
 		IR_dump_expr(ctx->next->statement.as.token);
 		break;
-	case STMT_FUNCALL:
-		IR__STMT_FUNCALL(ctx);
-		break;
+	// case STMT_FUNCALL:
+	// 	IR__STMT_FUNCALL(ctx);
+	// 	break;
 	case STMT_BLOCK_START:
 		IR__STMT_BLOCK(ctx);
 		break;
