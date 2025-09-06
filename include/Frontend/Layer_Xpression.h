@@ -56,7 +56,8 @@ struct Funcall {
 };
 
 struct BinOpr {
-
+	BinOprType type;
+	BinOprPrec prec;
 };
 
 union ExprValue {
