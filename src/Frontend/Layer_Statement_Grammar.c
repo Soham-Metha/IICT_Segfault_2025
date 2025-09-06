@@ -4,6 +4,26 @@
 #include <Utils/mem_manager.h>
 #include <assert.h>
 
+StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
+{
+	(void)tok;
+	StmtConditional res = { 0 };
+
+	// res.cond = expr_expect_next(ctx, EXPR_TYPE_BIN_OPR);
+
+	Expr next = expr_peek_next(ctx);
+
+	if (next.type == EXPR_TYPE_THEN) {
+		res.repeat = false;
+	} else if (next.type == EXPR_TYPE_REPEAT) {
+		res.repeat = true;
+	} else {
+		assert(0 && "EXPECTED THEN OR REPEAT");
+	}
+
+	return res;
+}
+
 VarDecl stmt_parse_var_decl(Line_Context *ctx)
 {
 	VarDecl res = { 0 };
