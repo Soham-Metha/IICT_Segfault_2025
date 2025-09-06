@@ -226,6 +226,8 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_BLOCK(ctx);
 		break;
 	case STMT_CONDITIONAL:
+		IR__STMT_CONDITIONAL(ctx);
+		break;
 	case STMT_MATCH:
 	default:
 		break;
