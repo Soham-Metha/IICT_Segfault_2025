@@ -99,6 +99,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_STATEMENT_END: {
 		expr.type = (int)token.type;
 		expr.text = token.text;
+		token_consume(ctx);
 		break;
 	}
 	default: {
