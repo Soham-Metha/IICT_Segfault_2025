@@ -107,7 +107,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END: {
-		expr.type = token.type;
+		expr.type = (int)token.type;
 		expr.text = token.text;
 		break;
 	}
