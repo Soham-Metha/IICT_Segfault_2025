@@ -18,7 +18,7 @@ enum ExprType {
 	EXPR_TYPE_COMMA,
 	EXPR_TYPE_COLON,
 	EXPR_TYPE_EQUAL,
-	TOKEN_TYPE_EOL,
+	EXPR_TYPE_EOL,
 };
 
 typedef struct Token Token;

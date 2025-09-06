@@ -222,7 +222,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_COMMA:
 	case EXPR_TYPE_COLON:
 	case EXPR_TYPE_EQUAL:
-	case TOKEN_TYPE_EOL:
+	case EXPR_TYPE_EOL:
 	default:
 		token_consume(ctx);
 		print(ctx, WIN_STDERR, "Unexpected token found!");

@@ -31,7 +31,7 @@ const char *token_get_name(ExprType type)
 	case EXPR_TYPE_COMMA: 			return "Comma";
 	case EXPR_TYPE_COLON:			return "Colon";
 	case EXPR_TYPE_EQUAL:			return "Assignment operator";
-	case TOKEN_TYPE_EOL:			return "End of line reached!";
+	case EXPR_TYPE_EOL:			return "End of line reached!";
 	case EXPR_TYPE_THEN:			return "Conditional pattern match";
 	case EXPR_TYPE_REPEAT:			return "Conditional retetition";
 	// case TOKEN_TYPE_FUNC: 			return "func";
@@ -77,7 +77,7 @@ Token token_peek_next(Line_Context *ctx)
 	(*line) = trim(*line);
 
 	if (line->len == 0) {
-		token.type = TOKEN_TYPE_EOL;
+		token.type = EXPR_TYPE_EOL;
 		return token;
 	}
 
