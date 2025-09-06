@@ -21,33 +21,33 @@ const char *token_get_name(TokenType type)
 {
 	switch (type) {
 	case TOKEN_TYPE_STR:
-		return "String literal";
+		return "token String literal";
 	case TOKEN_TYPE_CHAR:
-		return "Character literal";
+		return "token Character literal";
 	case TOKEN_TYPE_NUMBER:
-		return "Numeric value";
+		return "token Numeric value";
 	case TOKEN_TYPE_NAME:
-		return "Name value";
+		return "token Name value";
 	case TOKEN_TYPE_OPEN_PAREN:
-		return "Open parenthesis";
+		return "token Open parenthesis";
 	case TOKEN_TYPE_CLOSING_PAREN:
-		return "Closing parenthesis";
+		return "token Closing parenthesis";
 	case TOKEN_TYPE_OPEN_CURLY:
-		return "Open curly brace";
+		return "token Open curly brace";
 	case TOKEN_TYPE_CLOSING_CURLY:
-		return "Closing curly brace";
+		return "token Closing curly brace";
 	case TOKEN_TYPE_COMMA:
-		return "Comma";
+		return "token Comma";
 	case TOKEN_TYPE_COLON:
-		return "Colon";
+		return "token Colon";
 	case TOKEN_TYPE_EQUAL:
-		return "Assignment operator";
+		return "token Assignment operator";
 	case TOKEN_TYPE_EOL:
-		return "End of line reached!";
+		return "token End of line reached!";
 	case TOKEN_TYPE_THEN:
-		return "Conditional pattern match";
+		return "token Conditional pattern match";
 	case TOKEN_TYPE_REPEAT:
-		return "Conditional retetition";
+		return "token Conditional retetition";
 	// case TOKEN_TYPE_FUNC: 			return "func";
 	case TOKEN_TYPE_STATEMENT_END:
 		return "Statement ended with";

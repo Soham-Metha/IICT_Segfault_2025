@@ -170,9 +170,6 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 static void IR_dump_expr(Expr expr)
 {
 	switch (expr.type) {
-	case EXPR_TYPE_CHAR:
-		print(NULL, WIN_IR, "'%.*s'", Str_Fmt(expr.as.token.text));
-		break;
 	case EXPR_TYPE_STR:
 		print(NULL, WIN_IR, "\"%.*s\"", Str_Fmt(expr.as.token.text));
 		break;
@@ -190,6 +187,8 @@ static void IR_dump_expr(Expr expr)
 	case EXPR_TYPE_EQUAL:
 	case EXPR_TYPE_TOKEN:
 	case EXPR_TYPE_FUNCALL:
+	case EXPR_TYPE_BOOL:
+	case EXPR_TYPE_BIN_OPR:
 	default:
 		break;
 	}

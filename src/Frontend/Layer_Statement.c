@@ -131,11 +131,12 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 
 	case EXPR_TYPE_FUNCALL:
 	case EXPR_TYPE_NUMBER:
-	case EXPR_TYPE_CHAR:
 	case EXPR_TYPE_STR:
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
 	case EXPR_TYPE_TOKEN:
+	case EXPR_TYPE_BOOL:
+	case EXPR_TYPE_BIN_OPR:
 	case EXPR_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
 		result.type = STMT_TOKEN;

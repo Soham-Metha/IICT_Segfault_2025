@@ -6,6 +6,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
+// -----------------------------------------------------------------------
+
 FuncallArg *functions_parse_arglist(Line_Context *ctx)
 {
 	// split arguments from single comma seperated string to linked list of strings.
@@ -103,8 +105,6 @@ const char *expr_get_name(ExprType type)
 		return "Function call";
 	case EXPR_TYPE_STR:
 		return "String literal";
-	case EXPR_TYPE_CHAR:
-		return "Character literal";
 	case EXPR_TYPE_NUMBER:
 		return "Numeric value";
 	case EXPR_TYPE_VAR:
@@ -124,6 +124,10 @@ const char *expr_get_name(ExprType type)
 		return "Conditional retetition";
 	case EXPR_TYPE_TOKEN:
 		return "token";
+	case EXPR_TYPE_BIN_OPR:
+		return "BINARY OPERATION";
+	case EXPR_TYPE_BOOL:
+		return "BOOLEAN";
 	case EXPR_TYPE_STATEMENT_END:
 		return "Statement ended with";
 	default: {
