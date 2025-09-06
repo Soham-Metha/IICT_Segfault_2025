@@ -35,7 +35,7 @@ Expr expr_peek_next(Line_Context *ctx)
 				expr.as.funcall = parse_funcall(ctx);
 			}
 		}
-		break;
+	} break;
 	case TOKEN_TYPE_STR:
 	case TOKEN_TYPE_CHAR:
 	case TOKEN_TYPE_NUMBER:
@@ -59,5 +59,5 @@ Expr expr_peek_next(Line_Context *ctx)
 		exit(1);
 	}
 	}
-		return expr;
-	}
+	return expr;
+}
