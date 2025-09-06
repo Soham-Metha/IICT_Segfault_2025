@@ -188,7 +188,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END:
 	default: {
-		assert(0 && "token_get_name: unreachable");
+		assert(0 && "expr peek: unreachable");
 		exit(1);
 	}
 	}
