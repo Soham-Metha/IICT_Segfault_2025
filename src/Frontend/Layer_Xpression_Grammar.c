@@ -3,6 +3,9 @@
 
 Funcall parse_expr_funcall(Line_Context *ctx)
 {
+    Funcall res = {0};
+
+    return res;
 }
 
 Expr expr_parse(Line_Context *ctx)
