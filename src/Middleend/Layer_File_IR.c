@@ -85,32 +85,16 @@ void IR__STMT_FUNCALL(Block_Context_IR *ctx)
 	assert(ctx->next->statement.type == STMT_FUNCALL);
 
 	const Funcall *funcall = ctx->next->statement.as.funcall;
-	Block_Context_IR funcall_ctx = { 0 };
-	funcall_ctx.n = ctx->n;
-	funcall_ctx.b = ctx->b;
-	funcall_ctx.next = funcall->args;
-	funcall_ctx.prev = ctx;
-	funcall_ctx.var_def_cnt = 0;
 
 	if (compare_str(funcall->name, STR("write"))) {
-		IR_dump_statement(&funcall_ctx);
-		print(NULL, WIN_IR, IR_FORMAT "SETR    E_%d      [L0]",
-		      IR_CTX(), funcall_ctx.b);
-		if (check_var_type(funcall_ctx.b, STR("str"))) {
-			print(NULL, WIN_IR, IR_FORMAT "SETR    len(E_%d) [QT]",
-			      IR_CTX(), funcall_ctx.b);
-		} else {
-			print(NULL, WIN_IR, IR_FORMAT "SETR    %d        [QT]",
-			      IR_CTX(), get_size_from_id(funcall_ctx.b));
-		}
+		IR_dump_expr(funcall->args->expr);
 		print(NULL, WIN_IR, IR_FORMAT "INVOK   7", IR_CTX());
 	}
 
-	for (; funcall_ctx.next != NULL;
-	     funcall_ctx.next = funcall_ctx.next->next) {
-		IR_dump_statement(&funcall_ctx);
+	for (const FuncallArg *arg = funcall->args; arg != NULL;
+	     arg = arg->next) {
+		IR_dump_expr(arg->expr);
 	}
-	ctx->n = funcall_ctx.n;
 }
 
 static void IR__STMT_BLOCK(Block_Context_IR *ctx)
