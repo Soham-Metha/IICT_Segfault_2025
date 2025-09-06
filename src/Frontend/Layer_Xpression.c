@@ -51,7 +51,7 @@ Expr expr_expect_next(Line_Context *ctx, ExprType expected)
 		   LOG_CTX("[TOKEN CHECK]", "[EXPR]"), expr_get_name(expected),
 		   expr_get_name(token.type));
 
-	if (!rxpr_consume(ctx)) {
+	if (!expr_consume(ctx)) {
 		print(ctx, WIN_STDERR, ": ERROR: expected token `%s`\n",
 		      expr_get_name(expected));
 		exit(1);
@@ -184,7 +184,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	return token;
 }
 
-bool rxpr_consume(Line_Context *ctx)
+bool expr_consume(Line_Context *ctx)
 {
 	(void)ctx;
 	if (cachedToken) {
