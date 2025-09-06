@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 Token cache;
-bool cachedToken = false;
+bool cachedExpr = false;
 
 static bool isName(char x)
 {
@@ -71,7 +71,7 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 Token token_peek_next(Line_Context *ctx)
 {
 	String *line = &ctx->line;
-	if (cachedToken)
+	if (cachedExpr)
 		return cache;
 	Token token = { 0 };
 	(*line) = trim(*line);
@@ -180,20 +180,20 @@ Token token_peek_next(Line_Context *ctx)
 	}
 	}
 	cache = token;
-	cachedToken = true;
+	cachedExpr = true;
 	return token;
 }
 
 bool token_consume(Line_Context *ctx)
 {
 	(void)ctx;
-	if (cachedToken) {
+	if (cachedExpr) {
 		update_indent(1);
 		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[EXPR]"),
 			   token_get_name(cache.type), cache.text.len,
 			   cache.text.data);
 		update_indent(-1);
-		cachedToken = false;
+		cachedExpr = false;
 		return true;
 	}
 	return false;
