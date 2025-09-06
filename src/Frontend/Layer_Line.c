@@ -82,7 +82,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			}
 			break;
 		case STMT_BLOCK_START:
-			statement.as.as_block =
+			statement.as.block =
 				codeblock_generate(context).begin;
 			break;
 		case STMT_BLOCK_END:

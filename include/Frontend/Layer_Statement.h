@@ -51,7 +51,7 @@ union StmtValue {
 	Var          	var;
 	Token        	*token;
 	Funcall      	*funcall;
-	StmtNode  	 	*as_block;
+	StmtNode  	 	*block;
 	PatternMatch 	*as_match;
 	StmtConditional as_conditional;
 };

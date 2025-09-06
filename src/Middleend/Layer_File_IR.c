@@ -117,7 +117,7 @@ static void IR__STMT_BLOCK(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_BLOCK_START);
-	StmtNode *nxt = ctx->next->statement.as.as_block;
+	StmtNode *nxt = ctx->next->statement.as.block;
 	print(NULL, WIN_IR, IR_FORMAT "%%scope", IR_CTX());
 	update_indent(1);
 
