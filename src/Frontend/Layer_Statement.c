@@ -218,6 +218,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		expr_consume(ctx);
 		return result;
 	}
+	case EXPR_TYPE_TOKEN:
 	case EXPR_TYPE_CLOSING_PAREN:
 	case EXPR_TYPE_COMMA:
 	case EXPR_TYPE_COLON:
