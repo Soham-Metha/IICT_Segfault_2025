@@ -7,7 +7,6 @@ enum ExprType {
 	EXPR_TYPE_STR,
 	EXPR_TYPE_CHAR,
 	EXPR_TYPE_NUMBER,
-	EXPR_TYPE_FUNCALL,
 	EXPR_TYPE_NAME,
 	EXPR_TYPE_OPEN_PAREN,
 	EXPR_TYPE_CLOSING_PAREN,
@@ -21,6 +20,7 @@ enum ExprType {
 	EXPR_TYPE_EQUAL,
 	EXPR_TYPE_EOL,
 	EXPR_TYPE_TOKEN,
+	EXPR_TYPE_FUNCALL,
 };
 
 typedef struct Funcall Funcall;
@@ -48,6 +48,7 @@ union ExprValue {
 struct Expr {
 	ExprType type;
 	ExprValue as;
+	String text;
 };
 
 Expr expr_peek_next(Line_Context *ctx);
