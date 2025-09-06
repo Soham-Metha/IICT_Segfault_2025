@@ -42,8 +42,8 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 		token = expr_peek_next(ctx);
 		if (!token_consume(ctx)) {
 			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
-			      token_get_name(EXPR_TYPE_CLOSING_PAREN),
-			      token_get_name(EXPR_TYPE_COMMA));
+			      expr_get_name(EXPR_TYPE_CLOSING_PAREN),
+			      expr_get_name(EXPR_TYPE_COMMA));
 			exit(1);
 		}
 
@@ -51,7 +51,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 
 	if (token.type != EXPR_TYPE_CLOSING_PAREN) {
 		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
-		      token_get_name(EXPR_TYPE_CLOSING_PAREN));
+		      expr_get_name(EXPR_TYPE_CLOSING_PAREN));
 		exit(1);
 	}
 	update_indent(-2);

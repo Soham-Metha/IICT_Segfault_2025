@@ -17,7 +17,7 @@ static bool isNumber(char x)
 	return isalnum(x) || x == '.' || x == '-';
 }
 
-const char *token_get_name(ExprType type)
+const char *expr_get_name(ExprType type)
 {
 	switch (type) {
 	case EXPR_TYPE_STR: 			return "String literal";
@@ -48,19 +48,19 @@ Expr token_expect_next(Line_Context *ctx, ExprType expected)
 	update_indent(1);
 	Expr token = expr_peek_next(ctx);
 	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",
-		   LOG_CTX("[TOKEN CHECK]", "[EXPR]"), token_get_name(expected),
-		   token_get_name(token.type));
+		   LOG_CTX("[TOKEN CHECK]", "[EXPR]"), expr_get_name(expected),
+		   expr_get_name(token.type));
 
 	if (!token_consume(ctx)) {
 		print(ctx, WIN_STDERR, ": ERROR: expected token `%s`\n",
-		      token_get_name(expected));
+		      expr_get_name(expected));
 		exit(1);
 	}
 
 	if (token.type != expected) {
 		print(ctx, WIN_STDERR,
 		      ": ERROR: expected token `%s`, but got `%s`\n",
-		      token_get_name(expected), token_get_name(token.type));
+		      expr_get_name(expected), expr_get_name(token.type));
 		exit(1);
 	}
 	update_indent(-1);
@@ -190,7 +190,7 @@ bool token_consume(Line_Context *ctx)
 	if (cachedToken) {
 		update_indent(1);
 		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[EXPR]"),
-			   token_get_name(cache.type), cache.text.len,
+			   expr_get_name(cache.type), cache.text.len,
 			   cache.text.data);
 		update_indent(-1);
 		cachedToken = false;

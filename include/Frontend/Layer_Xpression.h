@@ -30,7 +30,7 @@ struct Expr {
 };
 
 Expr expr_peek_next(Line_Context *ctx);
-const char *token_get_name(ExprType type);
+const char *expr_get_name(ExprType type);
 Expr token_expect_next(Line_Context *ctx, ExprType expected);
 bool token_consume(Line_Context *ctx);
 
