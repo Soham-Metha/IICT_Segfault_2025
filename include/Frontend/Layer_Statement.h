@@ -27,7 +27,7 @@ typedef struct StmtConditional StmtConditional;
 struct VarDecl {
 	String name;
 	String type;
-	FuncallArg* args;
+	FuncallArg *args;
 
 	Stmt *init;
 	bool has_init;
@@ -41,7 +41,7 @@ struct VarDefn {
 struct StmtConditional {
 	bool repeat;
 	Expr cond;
-	Stmt* body;
+	CodeBlock body;
 };
 
 union StmtValue {
