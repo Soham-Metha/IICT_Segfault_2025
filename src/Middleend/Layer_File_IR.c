@@ -200,7 +200,7 @@ static void IR_dump_token(Block_Context_IR *ctx)
 
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
-	case TOKEN_TYPE_NUMBER:
+	case EXPR_TYPE_NUMBER:
 	case TOKEN_TYPE_NAME:
 	case TOKEN_TYPE_OPEN_CURLY:
 	case TOKEN_TYPE_CLOSING_CURLY:

@@ -22,7 +22,7 @@ const char *token_get_name(ExprType type)
 	switch (type) {
 	case EXPR_TYPE_STR: 			return "String literal";
 	case EXPR_TYPE_CHAR: 			return "Character literal";
-	case TOKEN_TYPE_NUMBER: 		return "Numeric value";
+	case EXPR_TYPE_NUMBER: 		return "Numeric value";
 	case TOKEN_TYPE_NAME: 			return "Name value";
 	case TOKEN_TYPE_OPEN_PAREN: 	return "Open parenthesis";
 	case TOKEN_TYPE_CLOSING_PAREN: 	return "Closing parenthesis";
@@ -169,7 +169,7 @@ Token token_peek_next(Line_Context *ctx)
 			token.type = TOKEN_TYPE_NAME;
 			token.text = split_str_by_condition(line, isName);
 		} else if (isdigit(line->data[0]) || line->data[0] == '-') {
-			token.type = TOKEN_TYPE_NUMBER;
+			token.type = EXPR_TYPE_NUMBER;
 			token.text = split_str_by_condition(line, isNumber);
 		} else {
 			print(ctx, WIN_STDERR,
