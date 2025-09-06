@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-Token cache;
+Expr cache;
 bool cachedToken = false;
 
 static bool isName(char x)
@@ -43,10 +43,10 @@ const char *token_get_name(ExprType type)
 	}
 }
 
-Token token_expect_next(Line_Context *ctx, ExprType expected)
+Expr token_expect_next(Line_Context *ctx, ExprType expected)
 {
 	update_indent(1);
-	Token token = token_peek_next(ctx);
+	Expr token = token_peek_next(ctx);
 	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",
 		   LOG_CTX("[TOKEN CHECK]", "[EXPR]"), token_get_name(expected),
 		   token_get_name(token.type));
@@ -68,12 +68,12 @@ Token token_expect_next(Line_Context *ctx, ExprType expected)
 	return token;
 }
 
-Token token_peek_next(Line_Context *ctx)
+Expr token_peek_next(Line_Context *ctx)
 {
 	String *line = &ctx->line;
 	if (cachedToken)
 		return cache;
-	Token token = { 0 };
+	Expr token = { 0 };
 	(*line) = trim(*line);
 
 	if (line->len == 0) {

@@ -43,14 +43,14 @@ struct Var {
 
 struct StmtConditional {
 	bool  repeat;
-	Token cond;
+	Expr cond;
 	CodeBlock body;
 };
 
 union StmtValue {
 	Var             var;
 	StmtConditional cond;
-	Token           token;
+	Expr           token;
 	Funcall         *funcall;
 	StmtNode        *block;
 	PatternMatch    *match;

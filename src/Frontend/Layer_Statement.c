@@ -8,7 +8,7 @@
 FuncallArg *functions_parse_arglist(Line_Context *ctx)
 {
 	// split arguments from single comma seperated string to linked list of strings.
-	Token token = token_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
+	Expr token = token_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
 	update_indent(1);
 	log_to_ctx(ctx, LOG_FORMAT "- Arguments:",
 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
@@ -62,7 +62,7 @@ FuncallArg *functions_parse_arglist(Line_Context *ctx)
 void parse_var_decl(Line_Context *ctx, Var *out)
 {
 	(void)token_expect_next(ctx, EXPR_TYPE_COLON); // colon
-	Token type = token_expect_next(ctx, EXPR_TYPE_NAME); // datatype
+	Expr type = token_expect_next(ctx, EXPR_TYPE_NAME); // datatype
 
 	out->type = type.text;
 	if (compare_str(type.text, STR("func")) ||
@@ -76,7 +76,7 @@ Var parse_var(Line_Context *ctx)
 	Var res = { 0 };
 	res.mode = VAR_ACCS;
 
-	Token next = token_peek_next(ctx);
+	Expr next = token_peek_next(ctx);
 	if (next.type == EXPR_TYPE_COLON) {
 		parse_var_decl(ctx, &res);
 		res.mode |= VAR_DECL;
@@ -97,7 +97,7 @@ Var parse_var(Line_Context *ctx)
 	return res;
 }
 
-StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
+StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
 {
 	(void)tok;
 	StmtConditional res = { 0 };
@@ -106,7 +106,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 	res.cond = token_expect_next(ctx, EXPR_TYPE_NAME);
 	token_expect_next(ctx, EXPR_TYPE_CLOSING_PAREN);
 
-	Token next = token_peek_next(ctx);
+	Expr next = token_peek_next(ctx);
 
 	if (next.type == EXPR_TYPE_THEN) {
 		res.repeat = false;
@@ -121,7 +121,7 @@ StmtConditional get_stmt_conditional(Token tok, Line_Context *ctx)
 
 // ------------------------------ INDIVIDUAL TOKEN HANDLERS ------------------------------
 
-static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
+static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Expr tok, Line_Context *ctx)
 {
 	Stmt res = { 0 };
 	res.type = STMT_CONDITIONAL;
@@ -131,7 +131,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Token tok, Line_Context *ctx)
 	return res;
 }
 
-static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok, Line_Context *ctx)
+static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Expr tok, Line_Context *ctx)
 {
 	(void)tok;
 	Stmt result = { 0 };
@@ -143,7 +143,7 @@ static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Token tok, Line_Context *ctx)
 	return result;
 }
 
-static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context *ctx)
+static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Expr tok, Line_Context *ctx)
 {
 	(void)tok;
 	Stmt result = { 0 };
@@ -156,11 +156,11 @@ static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Token tok, Line_Context *ctx)
 	return result;
 }
 
-static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
+static inline Stmt __TOKEN_TYPE_NAME(Expr tok, Line_Context *ctx)
 {
 	Stmt result = { 0 };
 	token_consume(ctx);
-	Token next = token_peek_next(ctx);
+	Expr next = token_peek_next(ctx);
 
 	if (compare_str(tok.text, STR("match"))) {
 		log_to_ctx(ctx, LOG_FORMAT "pattern match: '%.*s'",
@@ -194,7 +194,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 Stmt stmt_fetch_next(Line_Context *ctx)
 {
 	assert(ctx);
-	Token tok = token_peek_next(ctx);
+	Expr tok = token_peek_next(ctx);
 	// log_to_ctx(ctx, LOG_FORMAT "Checking the first token of the statement to identify statement type, found:", LOG_CTX("[IDENTIFY]","[STMT]"));
 	switch (tok.type) {
 	case EXPR_TYPE_NAME:

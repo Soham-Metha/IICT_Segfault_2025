@@ -21,17 +21,17 @@ enum ExprType {
 	EXPR_TYPE_EOL,
 };
 
-typedef struct Token Token;
+typedef struct Expr Expr;
 typedef enum ExprType ExprType;
 typedef struct Line_Context Line_Context;
-struct Token {
+struct Expr {
 	ExprType type;
 	String text;
 };
 
-Token token_peek_next(Line_Context *ctx);
+Expr token_peek_next(Line_Context *ctx);
 const char *token_get_name(ExprType type);
-Token token_expect_next(Line_Context *ctx, ExprType expected);
+Expr token_expect_next(Line_Context *ctx, ExprType expected);
 bool token_consume(Line_Context *ctx);
 
 #endif
