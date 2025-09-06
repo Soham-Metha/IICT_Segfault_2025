@@ -1,8 +1,8 @@
 
 ; var:    true 
-%bind    E_0    ; Line end reached
+%bind   E_0    res(8) ; Line end reached
 ; var:    false 
-%bind    E_1    ; Line end reached
+%bind   E_1    res(8) ; Line end reached
 %scope"Hi"
     SETR    E_0      [L0]
     SETR    8        [QT]
