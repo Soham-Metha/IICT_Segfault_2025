@@ -48,9 +48,7 @@ StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
 	(void)tok;
 	StmtConditional res = { 0 };
 
-	expr_expect_next(ctx, EXPR_TYPE_OPEN_PAREN);
-	res.cond = expr_expect_next(ctx, EXPR_TYPE_VAR);
-	expr_expect_next(ctx, EXPR_TYPE_CLOSING_PAREN);
+	// res.cond = expr_expect_next(ctx, EXPR_TYPE_BIN_OPR);
 
 	Expr next = expr_peek_next(ctx);
 
@@ -130,8 +128,6 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		return __TOKEN_TYPE_OPEN_CURLY(tok, ctx);
 	case EXPR_TYPE_CLOSING_CURLY:
 		return __TOKEN_TYPE_CLOSING_CURLY(tok, ctx);
-	case EXPR_TYPE_OPEN_PAREN:
-		// return __TOKEN_TYPE_OPEN_PAREN(tok, ctx);
 
 	case EXPR_TYPE_FUNCALL:
 	case EXPR_TYPE_NUMBER:
@@ -139,7 +135,6 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case EXPR_TYPE_STR:
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
-	case EXPR_TYPE_CLOSING_PAREN:
 	case EXPR_TYPE_TOKEN:
 	case EXPR_TYPE_STATEMENT_END: {
 		Stmt result = { 0 };
