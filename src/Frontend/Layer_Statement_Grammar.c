@@ -2,7 +2,18 @@
 #include <Frontend/Layer_Xpression.h>
 #include <Wrapper/IO.h>
 
-VarDecl stmt_parse_var_decl(Line_Context* ctx);
+VarDecl stmt_parse_var_decl(Line_Context* ctx)
+{
+    VarDecl res  = {0};
+    // res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
+    (void)token_expect_next(ctx,TOKEN_TYPE_COLON);
+    res.type = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
+    Token nxt = token_peek_next(ctx);
+    if (nxt.type == TOKEN_TYPE_EQUAL) {
+        res.has_init = true;
+        // res.init = stmt_fetch_next
+    }
+}
 VarDefn stmt_parse_var_defn(Line_Context* ctx);
 
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
