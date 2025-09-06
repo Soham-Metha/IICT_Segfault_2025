@@ -74,7 +74,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END: {
-        assert(0 && "INVALID TOKEN TYPE ...for now");
+		assert(0 && "INVALID TOKEN TYPE ...for now");
 		expr.type = EXPR_TYPE_TOKEN;
 		expr.as.token.text = token.text;
 		break;
