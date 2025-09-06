@@ -45,7 +45,7 @@ struct StmtConditional {
 
 union StmtValue {
 	Expr expr;
-	VarDecl var_defn;
+	VarDecl var_decl;
 	VarDefn var_defn;
 	StmtConditional cond;
 	Expr token;
