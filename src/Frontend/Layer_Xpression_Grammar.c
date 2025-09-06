@@ -3,10 +3,13 @@
 
 Expr expr_parse(Line_Context *ctx)
 {
-    assert(0);
+	assert(0);
 }
 
-Expr expr_parse_with_precedence(Line_Context *ctx)
+Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 {
+}
 
+Expr expr_parse_without_precedence(Line_Context *ctx)
+{
 }
