@@ -154,3 +154,8 @@
 
 // 	expr_expect_next(ctx, EXPR_TYPE_STATEMENT_END);
 // }
+
+void ignore_errors () 
+{
+	;
+}
