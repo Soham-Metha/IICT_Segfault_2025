@@ -188,7 +188,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END:
 	default: {
-		log_to_ctx(ctx, LOG_FORMAT "%s %.*s",
+		log_to_ctx(ctx, LOG_FORMAT "got %s %.*s",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   token_get_name(token.type), Str_Fmt(token.text));
 		assert(0 && "expr peek: unreachable");
