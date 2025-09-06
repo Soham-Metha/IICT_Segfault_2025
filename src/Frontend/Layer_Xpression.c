@@ -72,7 +72,7 @@ static inline Expr __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 	// 		   Str_Fmt(tok.text));
 	// 	result.type = STMT_MATCH;
 
-	if (next.type == EXPR_TYPE_OPEN_PAREN) {
+	if (next.type == TOKEN_TYPE_OPEN_PAREN) {
 		log_to_ctx(ctx, LOG_FORMAT "function call: '%.*s'",
 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
 			   Str_Fmt(tok.text));
