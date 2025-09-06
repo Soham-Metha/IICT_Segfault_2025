@@ -10,9 +10,9 @@ void parse_var_decl(Line_Context *ctx, Var *out)
 	(void)expr_expect_next(ctx, EXPR_TYPE_COLON); // colon
 	Expr type = expr_expect_next(ctx, EXPR_TYPE_VAR); // datatype
 
-	out->type = type.text;
-	if (compare_str(type.text, STR("func")) ||
-	    compare_str(type.text, STR("struct"))) {
+	out->type = type.as.token.text;
+	if (compare_str(type.as.token.text, STR("func")) ||
+	    compare_str(type.as.token.text, STR("struct"))) {
 		out->arglist = functions_parse_arglist(ctx);
 	}
 }
@@ -107,10 +107,11 @@ static inline Stmt __EXPR_VAR(Expr tok, Line_Context *ctx)
 	expr_consume(ctx);
 
 	log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
-		   LOG_CTX("[IDENTIFICATION]", "[STMT]"), Str_Fmt(tok.text));
+		   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+		   Str_Fmt(tok.as.token.text));
 	result.type = STMT_VAR;
 	result.as.var = parse_var(ctx);
-	result.as.var.name = tok.text;
+	result.as.var.name = tok.as.token.text;
 
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
