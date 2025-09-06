@@ -2,10 +2,10 @@
     true:i64;
     false:i64;
    (true)  -> {
-        write("Hi");
+        write(true);
    };
    (false) <-> {
-        write("Bye");
+        write(true);
    };
 % };
 
