@@ -4,7 +4,7 @@
 #include <Frontend/Layer_Line.h>
 
 enum ExprType {
-	TOKEN_TYPE_STR,
+	EXPR_TYPE_STR,
 	TOKEN_TYPE_CHAR,
 	TOKEN_TYPE_NUMBER,
 	TOKEN_TYPE_NAME,

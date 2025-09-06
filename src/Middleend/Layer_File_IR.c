@@ -191,7 +191,7 @@ static void IR_dump_token(Block_Context_IR *ctx)
 	case TOKEN_TYPE_CHAR:
 		print(NULL, WIN_IR, "'%.*s'", Str_Fmt(tok.text));
 		break;
-	case TOKEN_TYPE_STR:
+	case EXPR_TYPE_STR:
 		print(NULL, WIN_IR, "\"%.*s\"", Str_Fmt(tok.text));
 		break;
 	case TOKEN_TYPE_STATEMENT_END:

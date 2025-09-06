@@ -208,7 +208,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_CHAR:
-	case TOKEN_TYPE_STR:
+	case EXPR_TYPE_STR:
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END: {
