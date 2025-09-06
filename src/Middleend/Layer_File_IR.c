@@ -210,7 +210,7 @@ static void IR_dump_token(Block_Context_IR *ctx)
 static void IR_dump_statement(Block_Context_IR *ctx)
 {
 	assert(ctx->next != NULL);
-
+	print(NULL,WIN_IR, "\t\t %d", ctx->next->statement.type);
 	switch (ctx->next->statement.type) {
 	case STMT_VAR:
 		IR__STMT_VARIABLE(ctx);
