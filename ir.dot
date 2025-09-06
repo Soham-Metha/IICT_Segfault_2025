@@ -8,6 +8,5 @@ style=filled;
 color=gray;
 fillcolor=whitesmoke;
 fontname="Courier";
-Expr_1 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SHUTS"]
 }
 }
