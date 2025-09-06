@@ -10,7 +10,7 @@ VarDecl stmt_parse_var_decl(Line_Context *ctx)
 	// res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
 	(void)token_expect_next(ctx, TOKEN_TYPE_COLON);
 	res.type = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
-	if (compare_str(res.name, STR("func"))) {
+	if (compare_str(res.type, STR("func"))) {
 		token_consume(ctx);
 		res.args = parse_funcall_arglist(ctx);
 	}
