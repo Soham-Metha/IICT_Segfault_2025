@@ -1,20 +1,31 @@
 #include <Frontend/Layer_Statement.h>
 #include <Frontend/Layer_Xpression.h>
 #include <Wrapper/IO.h>
+#include <Utils/mem_manager.h>
 
-VarDecl stmt_parse_var_decl(Line_Context* ctx)
+VarDecl stmt_parse_var_decl(Line_Context *ctx)
 {
-    VarDecl res  = {0};
-    // res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
-    (void)token_expect_next(ctx,TOKEN_TYPE_COLON);
-    res.type = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
-    Token nxt = token_peek_next(ctx);
-    if (nxt.type == TOKEN_TYPE_EQUAL) {
-        res.has_init = true;
-        // res.init = stmt_fetch_next
-    }
+	VarDecl res = { 0 };
+	// res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
+	(void)token_expect_next(ctx, TOKEN_TYPE_COLON);
+	res.type = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
+	Token nxt = token_peek_next(ctx);
+	if (nxt.type == TOKEN_TYPE_EQUAL) {
+		res.has_init = true;
+		res.init = region_allocate(sizeof(Stmt));
+		*res.init = stmt_fetch_next(ctx);
+	}
+	return res;
 }
-VarDefn stmt_parse_var_defn(Line_Context* ctx);
+VarDefn stmt_parse_var_defn(Line_Context *ctx)
+{
+	VarDefn res = { 0 };
+	(void)token_expect_next(ctx, TOKEN_TYPE_EQUAL);
+
+	res.val = region_allocate(sizeof(Stmt));
+	*res.val = stmt_fetch_next(ctx);
+	return res;
+}
 
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 {
@@ -35,13 +46,13 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 	log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"), Str_Fmt(tok.text));
 
-    if (next.type == TOKEN_TYPE_COLON) {
-        result.type = STMT_VAR_DECL;
-        result.as.var_decl = stmt_parse_var_decl(ctx);
-    } else if (next.type == TOKEN_TYPE_EQUAL) {
-        result.type = STMT_VAR_DEFN;
-        result.as.var_defn = stmt_parse_var_defn(ctx);
-    }
+	if (next.type == TOKEN_TYPE_COLON) {
+		result.type = STMT_VAR_DECL;
+		result.as.var_decl = stmt_parse_var_decl(ctx);
+	} else if (next.type == TOKEN_TYPE_EQUAL) {
+		result.type = STMT_VAR_DEFN;
+		result.as.var_defn = stmt_parse_var_defn(ctx);
+	}
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
 }
