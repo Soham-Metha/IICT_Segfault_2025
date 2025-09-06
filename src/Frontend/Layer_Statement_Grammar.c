@@ -2,6 +2,7 @@
 #include <Frontend/Layer_Xpression.h>
 #include <Wrapper/IO.h>
 #include <Utils/mem_manager.h>
+#include <assert.h>
 
 VarDecl stmt_parse_var_decl(Line_Context *ctx)
 {
