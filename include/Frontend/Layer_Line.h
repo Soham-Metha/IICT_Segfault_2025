@@ -3,8 +3,6 @@
 #define COMMENT_SYMBOL '%'
 #include <Utils/strings.h>
 
-//-------------------------------- FRONT END --------------------------------
-
 typedef struct StmtNode StmtNode;
 typedef struct File_Context File_Context;
 
