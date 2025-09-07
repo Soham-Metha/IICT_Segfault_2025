@@ -199,6 +199,9 @@ static void IR_dump_expr(Expr expr)
 		      expr.as.num);
 		break;
 	case EXPR_TYPE_VAR:
+		int id = get_var_id(expr.as.var_nm);
+		print(NULL, WIN_IR, IR_FORMAT "CALL    E_%d", IR_CTX(), id);
+		break;
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
 	case EXPR_TYPE_OPEN_CURLY:
