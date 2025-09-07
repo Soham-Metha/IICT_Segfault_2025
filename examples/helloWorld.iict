@@ -1,10 +1,10 @@
-x:str = "Hi";
+x:i64 = 1;
 
 main:func() = {
 
      write(x);
 
-    (true) repeat {
+    (1) <-> {
           write("hello,world!\n");
      }
      (false) repeat {
