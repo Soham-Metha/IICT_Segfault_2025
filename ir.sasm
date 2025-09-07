@@ -1,26 +1,16 @@
 
-;;        1
 ; var:    x 
 E_0: 
-    ;;        0
-    ;;;        0
     PUSH    "Hi"
     PUSH    2
-;;        1
 ; var:    main 
 %entry    E_1: 
-    ;;        3
     %scope
-        ;;        0
-        ;;;        2
-        ;;;        0
         PUSH    "hello,world!\n"
         PUSH    14
         CALL    write_str
-        ;;        6
         E_2:
 ; start of cond
-            ;;;        4
             PUSH    1
             PUSH    0
             EQI
@@ -28,9 +18,6 @@ E_0:
         E_3:
 ; before body
             %scope
-                ;;        0
-                ;;;        2
-                ;;;        0
                 PUSH    "hello,world!\n"
                 PUSH    14
                 CALL    write_str
@@ -38,10 +25,8 @@ E_0:
             JMPU    E_2
         E_4:
 ; end of cond
-        ;;        6
         E_5:
 ; start of cond
-            ;;;        4
             PUSH    0
             PUSH    0
             EQI
@@ -49,9 +34,6 @@ E_0:
         E_6:
 ; before body
             %scope
-                ;;        0
-                ;;;        2
-                ;;;        0
                 PUSH    "bye,world!\n"
                 PUSH    12
                 CALL    write_str
@@ -59,16 +41,10 @@ E_0:
             JMPU    E_5
         E_7:
 ; end of cond
-        ;;        1
         ; var:    x 
         E_8: 
-            ;;        0
-            ;;;        0
             PUSH    "hello,world!"
             PUSH    12
-        ;;        0
-        ;;;        2
-        ;;;        3
         CALL    write_str
     %end
 SHUTS
