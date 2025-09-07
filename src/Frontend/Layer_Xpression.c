@@ -154,6 +154,7 @@ Expr expr_peek_next(Line_Context *ctx)
 			} else {
 				expr.type = EXPR_TYPE_VAR;
 				expr.as.var_nm = token.text;
+				token_consume(ctx);
 			}
 		}
 	} break;
