@@ -244,11 +244,10 @@ Error IR_generate(const CodeBlock *blk)
 	ctx.next = blk->begin;
 	ctx.var_def_cnt = 0;
 
-	IR_dump_code_block(&ctx);
-	print(NULL, WIN_IR, IR_FORMAT "SHUTS", IR_CTX());
-
 	print(NULL, WIN_IR,
 	      "write_str:\nDUPS     1\nSPOPR    [QT]\nDUPS     2\nSPOPR    [L0]\nINVOK    7\nRET");
+	IR_dump_code_block(&ctx);
+	print(NULL, WIN_IR, IR_FORMAT "SHUTS", IR_CTX());
 
 	return ERR_OK;
 }
