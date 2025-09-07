@@ -76,7 +76,6 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			statement.as.block = codeblock_generate(context).begin;
 			break;
 		case STMT_BLOCK_END:
-			token_expect_next(ctx, TOKEN_TYPE_CLOSING_CURLY);
 			return true;
 		case STMT_MATCH: {
 			// PatternMatch *match = region_allocate(sizeof(*match));
@@ -98,6 +97,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			break;
 		}
 		case STMT_CONDITIONAL: {
+			token_expect_next(ctx, TOKEN_TYPE_OPEN_CURLY);
 			statement.as.cond.body = codeblock_generate(context);
 		} break;
 		case STMT_VAR_DECL:
