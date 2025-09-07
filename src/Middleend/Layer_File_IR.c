@@ -48,14 +48,18 @@ void IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 		update_indent(1);
 		IR_dump_statement(&blk_ctx);
 		update_indent(-1);
+		print(NULL, WIN_IR, IR_FORMAT "RET", IR_CTX());
 		ctx->n = blk_ctx.n;
 		ctx->b = blk_ctx.b;
 	} else if (s) {
 		int id = ctx->n++;
-		print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ", IR_CTX(),
-		      Str_Fmt(v->name));
-		print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), id, s);
+		// print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ", IR_CTX(),
+		//       Str_Fmt(v->name));
+		// print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), id);
 		push_var_def(v->name, v->type, id);
+	} else {
+		assert(0 &&
+		       "cant just declare an immutable type, needs a definition");
 	}
 }
 
@@ -67,9 +71,18 @@ void IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 	int id = get_var_id(v->name);
 	int size = get_size_from_id(id);
 	if (size) {
+		assert(0 && "not supported yet");
 		print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(), id);
 		IR_dump_statement(ctx);
 		print(NULL, WIN_IR, IR_FORMAT "WRITE%d     ", IR_CTX(), size);
+	} else if (id) {
+		print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ", IR_CTX(),
+		      Str_Fmt(v->name));
+		print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), id);
+		update_indent(1);
+		IR_dump_statement(ctx);
+		update_indent(-1);
+		print(NULL, WIN_IR, IR_FORMAT "RET", IR_CTX());
 	} else {
 		assert(0 && "VARIABLE IS OF IMMUTABLE TYPE!!");
 	}
