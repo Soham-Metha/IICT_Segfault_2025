@@ -180,10 +180,14 @@ static void IR_dump_expr(Expr expr)
 	case EXPR_TYPE_FUNCALL:
 		IR__STMT_FUNCALL(&expr.as.funcall);
 		break;
+
+	case EXPR_TYPE_NUMBER:
+		print(NULL, WIN_IR, IR_FORMAT "PUSH    %d", IR_CTX(),
+		      expr.as.num);
+		break;
+	case EXPR_TYPE_VAR:
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
-	case EXPR_TYPE_NUMBER:
-	case EXPR_TYPE_VAR:
 	case EXPR_TYPE_OPEN_CURLY:
 	case EXPR_TYPE_CLOSING_CURLY:
 	case EXPR_TYPE_COLON:
