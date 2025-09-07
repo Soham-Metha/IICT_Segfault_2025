@@ -1,0 +1,32 @@
+{
+  "name": "sasm",
+  "displayName": "highlight",
+  "description": "a simulated assembly language for virex",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "categories": [
+    "Programming Languages","Themes"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "sasm",
+      "aliases": ["Simulated Assembly Lang", "sasm"],
+      "extensions": [".sasm"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "sasm",
+      "scopeName": "source.sasm",
+      "path": "./syntaxes/sasm.tmLanguage.json"
+    }],
+    "themes": [
+      {
+        "label": "Palenight+sasm",
+        "uiTheme": "vs-dark",
+        "path": "./themes/SASM-color-theme.json"
+      }
+    ]
+  }
+}
