@@ -74,8 +74,8 @@ CALL    write_str
 SHUTS
 write_str:
 DUPS     2
-SPOPR    [QT]
-DUPS     1
 SPOPR    [L0]
+DUPS     3
+SPOPR    [QT]
 INVOK    7
 RET
