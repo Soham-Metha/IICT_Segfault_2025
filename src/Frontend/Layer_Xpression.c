@@ -100,6 +100,7 @@ FuncallArg *parse_funcall_arglist(Line_Context *ctx)
 Funcall parse_expr_funcall(Line_Context *ctx)
 {
 	Funcall res = { 0 };
+	res.name = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
 	res.args = parse_funcall_arglist(ctx);
 	return res;
 }
@@ -148,7 +149,6 @@ Expr expr_peek_next(Line_Context *ctx)
 					   Str_Fmt(token.text));
 				expr.type = EXPR_TYPE_FUNCALL;
 				expr.as.funcall = parse_expr_funcall(ctx);
-				expr.as.funcall.name = token.text;
 				return expr;
 			} else {
 				expr.type = EXPR_TYPE_VAR;
