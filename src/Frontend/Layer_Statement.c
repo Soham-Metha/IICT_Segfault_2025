@@ -10,15 +10,16 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 
 	res.cond = expr_parse(ctx);
 	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
-	       res.cond.type == EXPR_TYPE_BOOL);
+	       res.cond.type == EXPR_TYPE_BOOL ||
+	       res.cond.type == EXPR_TYPE_NUMBER);
 
 	Token next = token_peek_next(ctx);
 
 	if (next.type == TOKEN_TYPE_THEN) {
-        token_consume(ctx);
+		token_consume(ctx);
 		res.repeat = false;
 	} else if (next.type == TOKEN_TYPE_REPEAT) {
-        token_consume(ctx);
+		token_consume(ctx);
 		res.repeat = true;
 	} else {
 		assert(0 && "EXPECTED THEN OR REPEAT");
@@ -30,7 +31,7 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 VarDecl stmt_parse_var_decl(Line_Context *ctx)
 {
 	VarDecl res = { 0 };
-	res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
+	res.name = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
 	(void)token_expect_next(ctx, TOKEN_TYPE_COLON);
 	res.type = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
 	if (compare_str(res.type, STR("func"))) {
@@ -48,7 +49,7 @@ VarDecl stmt_parse_var_decl(Line_Context *ctx)
 VarDefn stmt_parse_var_defn(Line_Context *ctx)
 {
 	VarDefn res = { 0 };
-	res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
+	res.name = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
 	(void)token_expect_next(ctx, TOKEN_TYPE_EQUAL);
 
 	res.val = region_allocate(sizeof(Stmt));
