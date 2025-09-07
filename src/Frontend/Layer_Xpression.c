@@ -102,7 +102,6 @@ Funcall parse_expr_funcall(Line_Context *ctx)
 	Funcall res = { 0 };
 	res.name = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
 	res.args = parse_funcall_arglist(ctx);
-	token_consume(ctx);
 	return res;
 }
 
