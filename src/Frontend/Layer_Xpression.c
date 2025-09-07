@@ -140,8 +140,7 @@ Expr expr_peek_next(Line_Context *ctx)
 			expr.type = EXPR_TYPE_BOOL;
 			expr.as.boolean = false;
 		} else {
-			token_consume(ctx);
-			Token next = token_peek_next(ctx);
+			Token next = token_peek_next_next(ctx);
 			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
 				log_to_ctx(ctx, LOG_FORMAT "funcall: '%.*s'",
 					   LOG_CTX("[IDENTIFICATION]",
