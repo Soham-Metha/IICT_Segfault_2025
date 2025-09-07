@@ -9,8 +9,9 @@ RET
 %entry    E_0: 
 %scope
     ; var:    x 
-    %bind E_1    "Hi"
-    CALL    E_1
+    %bind    E_1    "Hi"
+    PUSH    E_1
+    PUSH    len(E_1)
     CALL    write_str
     E_2:
 ; start of cond
@@ -45,8 +46,9 @@ RET
     E_7:
 ; end of cond
     ; var:    x 
-    %bind E_8    "hello,world!"
-    CALL    E_8
+    %bind    E_8    "hello,world!"
+    PUSH    E_8
+    PUSH    len(E_8)
     CALL    write_str
 %end
                               SHUTS
