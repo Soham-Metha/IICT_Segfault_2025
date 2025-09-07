@@ -100,8 +100,6 @@ FuncallArg *parse_funcall_arglist(Line_Context *ctx)
 Funcall parse_expr_funcall(Line_Context *ctx)
 {
 	Funcall res = { 0 };
-	Token nm = token_expect_next(ctx, TOKEN_TYPE_NAME);
-	res.name = nm.text;
 	res.args = parse_funcall_arglist(ctx);
 	return res;
 }
@@ -144,8 +142,14 @@ Expr expr_peek_next(Line_Context *ctx)
 			token_consume(ctx);
 			Token next = token_peek_next(ctx);
 			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+				log_to_ctx(ctx, LOG_FORMAT "funcall: '%.*s'",
+					   LOG_CTX("[IDENTIFICATION]",
+						   "[EXPR]"),
+					   Str_Fmt(token.text));
 				expr.type = EXPR_TYPE_FUNCALL;
 				expr.as.funcall = parse_expr_funcall(ctx);
+				expr.as.funcall.name = token.text;
+				return expr;
 			} else {
 				expr.type = EXPR_TYPE_VAR;
 				expr.as.var_nm = token.text;

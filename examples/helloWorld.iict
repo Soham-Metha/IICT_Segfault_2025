@@ -1,19 +1,17 @@
-x:str = "Hello,World!";
-write(x);
+x:str = "Hi";
 
 main:func() = {
 
     (true) repeat {
-          x:str = "hello,world!\n";
+          write("hello,world!\n");
      }
      (false) repeat {
-          x:str = "bye,world!\n";
-          write(x);
+          write("bye,world!\n");
      }
 
     x:str = "hello,world!";
     write(x);
-%};
+};
 
 % Language name: undecided
 % Created as a part of the 

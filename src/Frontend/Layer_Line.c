@@ -71,9 +71,6 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		Stmt statement = stmt_fetch_next(ctx);
 
 		switch (statement.type) {
-		case STMT_VAR_DECL:
-			break;
-		case STMT_VAR_DEFN:
 			break;
 		case STMT_BLOCK_START:
 			statement.as.block = codeblock_generate(context).begin;
@@ -102,6 +99,8 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		case STMT_CONDITIONAL: {
 			statement.as.cond.body = codeblock_generate(context);
 		} break;
+		case STMT_VAR_DECL:
+		case STMT_VAR_DEFN:
 		case STMT_EXPR:
 		default:
 			break;

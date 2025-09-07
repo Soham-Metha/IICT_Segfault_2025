@@ -1,16 +1,3 @@
-
-|   |                                                                                                                              |
-| W | ERROR | '""""""""""' | Unknown instruction detected!                                                                       |
-|   |                                                                                                                              |
-
-|   |                                                                                                                              |
-| W | ERROR | '""""""""""' | Unknown instruction detected!                                                                       |
-|   |                                                                                                                              |
-
-|   |                                                                                                                              |
-| W | ERROR | '""""""""""' | Unknown instruction detected!                                                                       |
-|   |                                                                                                                              |
-
-|   |                                                                                                                              |
-| W | ERROR | '""""""""""' | Unknown instruction detected!                                                                       |
-|   |                                                                                                                              |
+ir.sasm:3: ERROR: Cannot parse empty expression
+ERROR : can't open file
+ ir.sasm : No such file or directory

@@ -1,161 +1,150 @@
-// #include <Frontend/Layer_Statement.h>
-// #include <Frontend/Layer_Xpression.h>
-// #include <Frontend/Layer_File.h>
-// #include <Wrapper/IO.h>
-// #include <assert.h>
-// #include <stdlib.h>
+#include <Frontend/Layer_Statement.h>
+#include <Frontend/Layer_Xpression.h>
+#include <Wrapper/IO.h>
+#include <Utils/mem_manager.h>
+#include <assert.h>
 
-// void parse_var_decl(Line_Context *ctx, Var *out)
-// {
-// 	(void)expr_expect_next(ctx, EXPR_TYPE_COLON); // colon
-// 	Expr type = expr_expect_next(ctx, EXPR_TYPE_VAR); // datatype
-
-// 	out->type = type.as.token.text;
-// 	if (compare_str(type.as.token.text, STR("func")) ||
-// 	    compare_str(type.as.token.text, STR("struct"))) {
-// 		out->arglist = parse_funcall_arglist(ctx);
-// 	}
-// }
-
-// Var parse_var(Line_Context *ctx)
-// {
-// 	Var res = { 0 };
-// 	res.mode = VAR_ACCS;
-
-// 	Expr next = expr_peek_next(ctx);
-// 	if (next.type == EXPR_TYPE_COLON) {
-// 		parse_var_decl(ctx, &res);
-// 		res.mode |= VAR_DECL;
-// 		next = expr_peek_next(ctx);
-
-// 		update_indent(1);
-// 		log_to_ctx(ctx, LOG_FORMAT "- declared type: '%.*s'",
-// 			   LOG_CTX("[IDENTIFICATION]", "[STMT]"), res.type.len,
-// 			   res.type.data);
-// 		update_indent(-1);
-// 	}
-// 	if (next.type == EXPR_TYPE_EQUAL) {
-// 		expr_consume(ctx);
-// 		res.mode |= VAR_DEFN;
-// 		// log_to_ctx(ctx, LOG_FORMAT "---------------DEFINITION START---------------", LOG_CTX("[IDENTIFICATION]","[STMT]"));
-// 	}
-
-// 	return res;
-// }
-
-// StmtConditional get_stmt_conditional(Expr tok, Line_Context *ctx)
-// {
-// 	(void)tok;
-// 	StmtConditional res = { 0 };
-
-// 	// res.cond = expr_expect_next(ctx, EXPR_TYPE_BIN_OPR);
-
-// 	Expr next = expr_peek_next(ctx);
-
-// 	if (next.type == EXPR_TYPE_THEN) {
-// 		res.repeat = false;
-// 	} else if (next.type == EXPR_TYPE_REPEAT) {
-// 		res.repeat = true;
-// 	} else {
-// 		assert(0 && "EXPECTED THEN OR REPEAT");
-// 	}
-
-// 	return res;
-// }
-
-// // ------------------------------ INDIVIDUAL TOKEN HANDLERS ------------------------------
-
-// static inline Stmt __TOKEN_TYPE_OPEN_PAREN(Expr tok, Line_Context *ctx)
-// {
-// 	Stmt res = { 0 };
-// 	res.type = STMT_CONDITIONAL;
-
-// 	res.as.cond = get_stmt_conditional(tok, ctx);
-
-// 	return res;
-// }
-
-// static inline Stmt __TOKEN_TYPE_OPEN_CURLY(Expr tok, Line_Context *ctx)
-// {
-// 	(void)tok;
-// 	Stmt result = { 0 };
-// 	result.type = STMT_BLOCK_START;
-
-// 	log_to_ctx(ctx, LOG_FORMAT, LOG_CTX("[BLOCK START]", "[STMT]"));
-
-// 	expr_consume(ctx);
-// 	return result;
-// }
-
-// static inline Stmt __TOKEN_TYPE_CLOSING_CURLY(Expr tok, Line_Context *ctx)
-// {
-// 	(void)tok;
-// 	Stmt result = { 0 };
-// 	result.type = STMT_BLOCK_END;
-// 	// result.as.token= tok;
-
-// 	log_to_ctx(ctx, LOG_FORMAT, LOG_CTX("[BLOCK END]", "[STMT]"));
-
-// 	expr_consume(ctx);
-// 	return result;
-// }
-// static inline Stmt __EXPR_VAR(Expr tok, Line_Context *ctx)
-// {
-// 	Stmt result = { 0 };
-// 	expr_consume(ctx);
-
-// 	log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
-// 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-// 		   Str_Fmt(tok.as.token.text));
-// 	result.type = STMT_VAR;
-// 	result.as.var = parse_var(ctx);
-// 	result.as.var.name = tok.as.token.text;
-
-// 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
-// 	return result;
-// }
-// // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
-
-// Stmt stmt_fetch_next(Line_Context *ctx)
-// {
-// 	assert(ctx);
-// 	Expr tok = expr_peek_next(ctx);
-// 	// log_to_ctx(ctx, LOG_FORMAT "Checking the first token of the statement to identify statement type, found:", LOG_CTX("[IDENTIFY]","[STMT]"));
-// 	switch (tok.type) {
-// 	case EXPR_TYPE_VAR:
-// 		return __EXPR_VAR(tok, ctx);
-// 	case EXPR_TYPE_OPEN_CURLY:
-// 		return __TOKEN_TYPE_OPEN_CURLY(tok, ctx);
-// 	case EXPR_TYPE_CLOSING_CURLY:
-// 		return __TOKEN_TYPE_CLOSING_CURLY(tok, ctx);
-
-// 	case EXPR_TYPE_FUNCALL:
-// 	case EXPR_TYPE_NUMBER:
-// 	case EXPR_TYPE_STR:
-// 	case EXPR_TYPE_THEN:
-// 	case EXPR_TYPE_REPEAT:
-// 	case EXPR_TYPE_TOKEN:
-// 	case EXPR_TYPE_BOOL:
-// 	case EXPR_TYPE_BIN_OPR:
-// 	case EXPR_TYPE_STATEMENT_END: {
-// 		Stmt result = { 0 };
-// 		result.type = STMT_TOKEN;
-// 		result.as.token = tok;
-// 		expr_consume(ctx);
-// 		return result;
-// 	}
-// 	case EXPR_TYPE_COLON:
-// 	case EXPR_TYPE_EQUAL:
-// 	default:
-// 		expr_consume(ctx);
-// 		print(ctx, WIN_STDERR, "Unexpected expr found!");
-// 		exit(1);
-// 	}
-
-// 	expr_expect_next(ctx, EXPR_TYPE_STATEMENT_END);
-// }
-
-void ignore_errors () 
+StmtConditional get_stmt_conditional(Line_Context *ctx)
 {
-	;
+	StmtConditional res = { 0 };
+
+	res.cond = expr_parse(ctx);
+	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
+	       res.cond.type == EXPR_TYPE_BOOL);
+
+	Token next = token_peek_next(ctx);
+
+	if (next.type == TOKEN_TYPE_THEN) {
+        token_consume(ctx);
+		res.repeat = false;
+	} else if (next.type == TOKEN_TYPE_REPEAT) {
+        token_consume(ctx);
+		res.repeat = true;
+	} else {
+		assert(0 && "EXPECTED THEN OR REPEAT");
+	}
+
+	return res;
+}
+
+VarDecl stmt_parse_var_decl(Line_Context *ctx)
+{
+	VarDecl res = { 0 };
+	// res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
+	(void)token_expect_next(ctx, TOKEN_TYPE_COLON);
+	res.type = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
+	if (compare_str(res.type, STR("func"))) {
+		token_consume(ctx);
+		res.args = parse_funcall_arglist(ctx);
+	}
+	Token nxt = token_peek_next(ctx);
+	if (nxt.type == TOKEN_TYPE_EQUAL) {
+		token_consume(ctx);
+		res.has_init = true;
+		res.init = region_allocate(sizeof(Stmt));
+		*res.init = stmt_fetch_next(ctx);
+	}
+	return res;
+}
+VarDefn stmt_parse_var_defn(Line_Context *ctx)
+{
+	VarDefn res = { 0 };
+	(void)token_expect_next(ctx, TOKEN_TYPE_EQUAL);
+
+	res.val = region_allocate(sizeof(Stmt));
+	*res.val = stmt_fetch_next(ctx);
+	return res;
+}
+
+static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
+{
+	Stmt result = { 0 };
+	token_consume(ctx);
+	Token next = token_peek_next(ctx);
+
+	// if (compare_str(tok.text, STR("match"))) {
+	// 	log_to_ctx(ctx, LOG_FORMAT "pattern match: '%.*s'",
+	// 		   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+	// 		   Str_Fmt(tok.text));
+	// 	result.type = STMT_MATCH;
+
+	// 	Stmt result = { 0 };
+	// 	expr_consume(ctx);
+	// }
+
+	log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
+		   LOG_CTX("[IDENTIFICATION]", "[STMT]"), Str_Fmt(tok.text));
+
+	if (next.type == TOKEN_TYPE_COLON) {
+		result.type = STMT_VAR_DECL;
+		result.as.var_decl = stmt_parse_var_decl(ctx);
+		result.as.var_decl.name = tok.text;
+		return result;
+	} else if (next.type == TOKEN_TYPE_EQUAL) {
+		result.type = STMT_VAR_DEFN;
+		result.as.var_defn = stmt_parse_var_defn(ctx);
+		result.as.var_defn.name = tok.text;
+		return result;
+	} else {
+		result.type = STMT_EXPR;
+		result.as.expr = expr_parse(ctx);
+		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
+		return result;
+	}
+	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
+	return result;
+}
+
+Stmt stmt_fetch_next(Line_Context *ctx)
+{
+	Stmt result = { 0 };
+	assert(ctx);
+	Token tok = token_peek_next(ctx);
+	// log_to_ctx(ctx, LOG_FORMAT "Checking the first token of the statement to identify statement type, found:", LOG_CTX("[IDENTIFY]","[STMT]"));
+	switch (tok.type) {
+	case TOKEN_TYPE_NAME:
+		return __TOKEN_TYPE_NAME(tok, ctx);
+	case TOKEN_TYPE_OPEN_CURLY: {
+		token_consume(ctx);
+		result.type = STMT_BLOCK_START;
+		result.as.block = NULL;
+		return result;
+	} break;
+	case TOKEN_TYPE_CLOSING_CURLY: {
+		token_consume(ctx);
+		result.type = STMT_BLOCK_END;
+		return result;
+	} break;
+	case TOKEN_TYPE_OPEN_PAREN: {
+		result.type = STMT_CONDITIONAL;
+		result.as.cond = get_stmt_conditional(ctx);
+		return result;
+	}
+	case TOKEN_TYPE_NUMBER:
+	case TOKEN_TYPE_CHAR:
+	case TOKEN_TYPE_STR:
+	case TOKEN_TYPE_THEN:
+	case TOKEN_TYPE_REPEAT:
+	case TOKEN_TYPE_STATEMENT_END: {
+		result.type = STMT_EXPR;
+		result.as.expr = expr_parse(ctx);
+		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
+		return result;
+	}
+	case TOKEN_TYPE_CLOSING_PAREN:
+	case TOKEN_TYPE_COMMA:
+	case TOKEN_TYPE_COLON:
+	case TOKEN_TYPE_EQUAL:
+	case TOKEN_TYPE_EOL:
+	default:
+		token_consume(ctx);
+
+		log_to_ctx(ctx, LOG_FORMAT "%s %.*s",
+			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
+			   token_get_name(tok.type), Str_Fmt(tok.text));
+		print(ctx, WIN_STDERR, "Unexpected token found!");
+		exit(1);
+	}
+
+	token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
 }
