@@ -101,7 +101,20 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			statement.as.cond.body = codeblock_generate(context);
 		} break;
 		case STMT_VAR_DECL:
+			if (statement.as.var_decl.has_init &&
+			    statement.as.var_decl.init->type ==
+				    STMT_BLOCK_START) {
+				statement.as.var_decl.init->as.block =
+					codeblock_generate(context).begin;
+				break;
+			}
 		case STMT_VAR_DEFN:
+			if (statement.as.var_defn.val->type ==
+			    STMT_BLOCK_START) {
+				statement.as.var_defn.val->as.block =
+					codeblock_generate(context).begin;
+				break;
+			}
 		case STMT_EXPR:
 		default:
 			break;
