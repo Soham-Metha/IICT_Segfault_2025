@@ -75,7 +75,7 @@ SHUTS
 write_str:
 DUPS     2
 SPOPR    [L0]
-DUPS     3
+DUPS     1
 SPOPR    [QT]
 INVOK    7
 RET
