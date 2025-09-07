@@ -7,11 +7,11 @@ main:func() = {
      ;}
      (false) repeat {
           write("bye,world!\n")
-     ;};
+     ;}
 
     x:str = "hello,world!";
     write(x);
-};
+;}
 
 % Language name: undecided
 % Created as a part of the 
