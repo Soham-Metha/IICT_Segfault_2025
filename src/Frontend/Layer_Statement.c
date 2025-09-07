@@ -86,7 +86,6 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 	} else {
 		result.type = STMT_EXPR;
 		result.as.expr = expr_parse(ctx);
-		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
 		return result;
 	}
 	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
