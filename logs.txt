@@ -3,3 +3,4 @@ ERROR : can't open file
  ir.sasm : No such file or directory
 ir.sasm:17: ERROR: couldnt find binding `write_str`.
 ir.sasm:11: ERROR: couldnt find binding `write_str`.
+ir.sasm:13: ERROR: Could not find closing "

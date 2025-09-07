@@ -5,12 +5,16 @@ DUPS     2
 SPOPR    [L0]
 INVOK    7
 RET
-; var:    x 
-E_0: 
-    PUSH    1
 ; var:    main 
-%entry    E_1: 
+%entry    E_0: 
 %scope
+    ; var:    x 
+    E_1: 
+        PUSH    "    Hi    "
+        PUSH    10
+    RET
+    CALL    E_1
+    CALL    write_str
     E_2:
 ; start of cond
         PUSH    1
@@ -47,6 +51,9 @@ E_0:
     E_8: 
         PUSH    "hello,world!"
         PUSH    12
+    RET
+    CALL    E_8
     CALL    write_str
 %end
+                              RET
                               SHUTS
