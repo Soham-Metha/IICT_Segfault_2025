@@ -3,7 +3,7 @@ x:str = "Hi";
 main:func() = {
 
     (true) repeat {
-          write("hello,world!\n");
+          write("hello,world!\n");;
      };
      (false) repeat {
           write("bye,world!\n");;
