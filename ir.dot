@@ -124,7 +124,7 @@ Expr_47 -> Expr_48 [style=dotted]
 Expr_45 -> Expr_47;
 Expr_49 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SHUTS"]
 Expr_47 -> Expr_49;
-Expr_50 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="write_string"]
+Expr_50 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="write_str"]
 Expr_49 -> Expr_50;
 Expr_51 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="DUPS"]
 Expr_52 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="3"]

@@ -62,7 +62,7 @@ E_8:
 ;;;        2
 CALL    write_str
 SHUTS
-write_string:
+write_str:
 DUPS     3
 SPOPR    [QT]
 DUPS     2
