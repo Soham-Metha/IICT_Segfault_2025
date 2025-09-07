@@ -1,3 +1,4 @@
 ir.sasm:3: ERROR: Cannot parse empty expression
 ERROR : can't open file
  ir.sasm : No such file or directory
+ir.sasm:17: ERROR: couldnt find binding `write_str`.
