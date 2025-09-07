@@ -1,5 +1,5 @@
 write_string:
-    DUPS     3
+    DUPS     1
     SPOPR    [QT]
     DUPS     2
     SPOPR    [L0]
