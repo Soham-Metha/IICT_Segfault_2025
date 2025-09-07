@@ -34,7 +34,7 @@ void IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 			}
 			print(NULL, WIN_IR, "E_%d: ", id);
 		} else {
-			print(NULL, WIN_IR, IR_FORMAT "%%bind E_%d    ", IR_CTX(), id);
+			print(NULL, WIN_IR, IR_FORMAT "%%bind    E_%d    ", IR_CTX(), id);
 		}
 		push_var_def(v->name, v->type, id);
 		StmtNode nxt =
@@ -202,7 +202,8 @@ static void IR_dump_expr(Expr expr, bool as_val)
 		break;
 	case EXPR_TYPE_VAR:
 		int id = get_var_id(expr.as.var_nm);
-		print(NULL, WIN_IR, IR_FORMAT "CALL    E_%d", IR_CTX(), id);
+		print(NULL, WIN_IR, IR_FORMAT "PUSH    E_%d", IR_CTX(), id);
+		print(NULL, WIN_IR, IR_FORMAT "PUSH    len(E_%d)", IR_CTX(), id);
 		break;
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
