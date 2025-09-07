@@ -4,10 +4,10 @@ main:func() = {
 
     (true) repeat {
           write("hello,world!\n");
-     }
+     };
      (false) repeat {
           write("bye,world!\n");
-     }
+     };
 
     x:str = "hello,world!";
     write(x);
