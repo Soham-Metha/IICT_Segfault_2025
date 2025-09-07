@@ -29,13 +29,9 @@ style=filled;
 color=gray;
 fillcolor=whitesmoke;
 fontname="Courier";
-}
-Expr_9 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label=" Code Block 1  "]
-Expr_8 -> Expr_9;
 Expr_10 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
 Expr_11 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="\"hello,world!\n\""]
 Expr_10 -> Expr_11 [style=dotted]
-Expr_9 -> Expr_10;
 Expr_12 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
 Expr_13 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="14"]
 Expr_12 -> Expr_13 [style=dotted]
@@ -146,8 +142,11 @@ Expr_59 [shape=component style=filled fillcolor=palegreen fontname="Courier" lab
 Expr_60 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
 Expr_59 -> Expr_60 [style=dotted]
 Expr_57 -> Expr_59;
+}
+Expr_9 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label=" Code Block 3  "]
+Expr_8 -> Expr_9;
 Expr_61 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SHUTS"]
-Expr_59 -> Expr_61;
+Expr_9 -> Expr_61;
 Expr_62 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="write_str"]
 Expr_61 -> Expr_62;
 Expr_63 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="DUPS"]
