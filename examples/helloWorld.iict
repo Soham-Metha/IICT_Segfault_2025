@@ -2,7 +2,7 @@ x:i64 = 1;
 
 main:func() = {
 
-     write(x);
+     % write(x);
 
     (1) <-> {
           write("hello,world!\n");
