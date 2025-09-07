@@ -10,8 +10,8 @@ main:func() = {
      }
 
     x:str = "hello,world!";
-    write(x);
-;}
+    ;write(x)
+}
 
 % Language name: undecided
 % Created as a part of the 
