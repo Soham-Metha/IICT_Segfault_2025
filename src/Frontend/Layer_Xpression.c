@@ -148,6 +148,8 @@ Expr expr_peek_next(Line_Context *ctx)
 					   Str_Fmt(token.text));
 				expr.type = EXPR_TYPE_FUNCALL;
 				expr.as.funcall = parse_expr_funcall(ctx);
+				token_expect_next(ctx,
+						  TOKEN_TYPE_STATEMENT_END);
 				return expr;
 			} else {
 				expr.type = EXPR_TYPE_VAR;
