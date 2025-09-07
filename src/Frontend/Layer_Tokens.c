@@ -221,6 +221,7 @@ bool token_consume(Line_Context *ctx)
 	}
 	return false;
 }
+
 Token token_peek_next_next(Line_Context *ctx)
 {
 	(void)token_peek_next(ctx);
