@@ -248,9 +248,7 @@ Error IR_generate(const CodeBlock *blk)
 	print(NULL, WIN_IR, IR_FORMAT "SHUTS", IR_CTX());
 
 	print(NULL, WIN_IR,
-	      IR_FORMAT
-	      "write_str:\nDUPS     1\nSPOPR    [QT]\nDUPS     2\nSPOPR    [L0]\nINVOK    7\nRET",
-	      IR_CTX());
+	      "write_str:\nDUPS     1\nSPOPR    [QT]\nDUPS     2\nSPOPR    [L0]\nINVOK    7\nRET");
 
 	return ERR_OK;
 }
