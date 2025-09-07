@@ -7,12 +7,10 @@ INVOK    7
 RET
 ; var:    x 
 E_0: 
-    PUSH    "Hi"
-    PUSH    2
+    PUSH    1
 ; var:    main 
 %entry    E_1: 
 %scope
-    CALL    write_str
     E_2:
 ; start of cond
         PUSH    1
