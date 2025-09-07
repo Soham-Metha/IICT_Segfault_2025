@@ -73,9 +73,9 @@ E_8:
 CALL    write_str
 SHUTS
 write_str:
-DUPS     2
-SPOPR    [L0]
 DUPS     1
 SPOPR    [QT]
+DUPS     2
+SPOPR    [L0]
 INVOK    7
 RET
