@@ -10,8 +10,8 @@ RET
 %scope
     ; var:    x 
     E_1: 
-        PUSH    "    Hi    "
-        PUSH    10
+        PUSH    "Hi"
+        PUSH    2
     RET
     CALL    E_1
     CALL    write_str
