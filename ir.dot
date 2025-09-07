@@ -32,121 +32,145 @@ fontname="Courier";
 }
 Expr_9 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label=" Code Block 1  "]
 Expr_8 -> Expr_9;
-Expr_10 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="CALL"]
-Expr_11 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
+Expr_10 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_11 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="\"hello,world!\n\""]
 Expr_10 -> Expr_11 [style=dotted]
 Expr_9 -> Expr_10;
-Expr_12 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_2"]
+Expr_12 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_13 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="14"]
+Expr_12 -> Expr_13 [style=dotted]
 Expr_10 -> Expr_12;
-Expr_13 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
-Expr_14 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"]
-Expr_13 -> Expr_14 [style=dotted]
-Expr_12 -> Expr_13;
-Expr_15 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
-Expr_16 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="0"]
-Expr_15 -> Expr_16 [style=dotted]
-Expr_13 -> Expr_15;
-Expr_17 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="EQI"]
-Expr_15 -> Expr_17;
-Expr_18 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPC"]
-Expr_19 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_4"]
-Expr_18 -> Expr_19 [style=dotted]
-Expr_17 -> Expr_18;
-Expr_20 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_3"]
-Expr_18 -> Expr_20;
-subgraph cluster_21 {
+Expr_14 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="CALL"]
+Expr_15 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
+Expr_14 -> Expr_15 [style=dotted]
+Expr_12 -> Expr_14;
+Expr_16 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_2"]
+Expr_14 -> Expr_16;
+Expr_17 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_18 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"]
+Expr_17 -> Expr_18 [style=dotted]
+Expr_16 -> Expr_17;
+Expr_19 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_20 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="0"]
+Expr_19 -> Expr_20 [style=dotted]
+Expr_17 -> Expr_19;
+Expr_21 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="EQI"]
+Expr_19 -> Expr_21;
+Expr_22 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPC"]
+Expr_23 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_4"]
+Expr_22 -> Expr_23 [style=dotted]
+Expr_21 -> Expr_22;
+Expr_24 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_3"]
+Expr_22 -> Expr_24;
+subgraph cluster_25 {
 label="Code Block 2 ";
 style=filled;
 color=gray;
 fillcolor=whitesmoke;
 fontname="Courier";
-Expr_22 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="CALL"]
-Expr_23 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
-Expr_22 -> Expr_23 [style=dotted]
-}
-Expr_21 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label=" Code Block 2  "]
-Expr_20 -> Expr_21;
-Expr_24 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPU"]
-Expr_25 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_2"]
-Expr_24 -> Expr_25 [style=dotted]
-Expr_21 -> Expr_24;
-Expr_26 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_4"]
-Expr_24 -> Expr_26;
-Expr_27 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_5"]
-Expr_26 -> Expr_27;
+Expr_26 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_27 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="\"hello,world!\n\""]
+Expr_26 -> Expr_27 [style=dotted]
 Expr_28 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
-Expr_29 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="0"]
+Expr_29 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="14"]
 Expr_28 -> Expr_29 [style=dotted]
-Expr_27 -> Expr_28;
-Expr_30 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
-Expr_31 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="0"]
+Expr_26 -> Expr_28;
+Expr_30 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="CALL"]
+Expr_31 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
 Expr_30 -> Expr_31 [style=dotted]
 Expr_28 -> Expr_30;
-Expr_32 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="EQI"]
-Expr_30 -> Expr_32;
-Expr_33 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPC"]
-Expr_34 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_7"]
-Expr_33 -> Expr_34 [style=dotted]
-Expr_32 -> Expr_33;
-Expr_35 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_6"]
-Expr_33 -> Expr_35;
-subgraph cluster_36 {
+}
+Expr_25 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label=" Code Block 2  "]
+Expr_24 -> Expr_25;
+Expr_32 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPU"]
+Expr_33 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_2"]
+Expr_32 -> Expr_33 [style=dotted]
+Expr_25 -> Expr_32;
+Expr_34 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_4"]
+Expr_32 -> Expr_34;
+Expr_35 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_5"]
+Expr_34 -> Expr_35;
+Expr_36 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_37 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="0"]
+Expr_36 -> Expr_37 [style=dotted]
+Expr_35 -> Expr_36;
+Expr_38 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_39 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="0"]
+Expr_38 -> Expr_39 [style=dotted]
+Expr_36 -> Expr_38;
+Expr_40 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="EQI"]
+Expr_38 -> Expr_40;
+Expr_41 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPC"]
+Expr_42 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_7"]
+Expr_41 -> Expr_42 [style=dotted]
+Expr_40 -> Expr_41;
+Expr_43 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_6"]
+Expr_41 -> Expr_43;
+subgraph cluster_44 {
 label="Code Block 3 ";
 style=filled;
 color=gray;
 fillcolor=whitesmoke;
 fontname="Courier";
-Expr_37 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="CALL"]
-Expr_38 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
-Expr_37 -> Expr_38 [style=dotted]
-}
-Expr_36 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label=" Code Block 3  "]
-Expr_35 -> Expr_36;
-Expr_39 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPU"]
-Expr_40 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_5"]
-Expr_39 -> Expr_40 [style=dotted]
-Expr_36 -> Expr_39;
-Expr_41 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_7"]
-Expr_39 -> Expr_41;
-Expr_42 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_8"]
-Expr_41 -> Expr_42;
-Expr_43 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
-Expr_44 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="\"hello,world!\""]
-Expr_43 -> Expr_44 [style=dotted]
-Expr_42 -> Expr_43;
 Expr_45 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
-Expr_46 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="12"]
+Expr_46 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="\"bye,world!\n\""]
 Expr_45 -> Expr_46 [style=dotted]
-Expr_43 -> Expr_45;
-Expr_47 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="CALL"]
-Expr_48 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
+Expr_47 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_48 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="12"]
 Expr_47 -> Expr_48 [style=dotted]
 Expr_45 -> Expr_47;
-Expr_49 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SHUTS"]
+Expr_49 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="CALL"]
+Expr_50 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
+Expr_49 -> Expr_50 [style=dotted]
 Expr_47 -> Expr_49;
-Expr_50 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="write_str"]
-Expr_49 -> Expr_50;
-Expr_51 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="DUPS"]
-Expr_52 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="3"]
+}
+Expr_44 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label=" Code Block 3  "]
+Expr_43 -> Expr_44;
+Expr_51 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="JMPU"]
+Expr_52 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="E_5"]
 Expr_51 -> Expr_52 [style=dotted]
-Expr_50 -> Expr_51;
-Expr_53 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SPOPR"]
-Expr_54 [shape=cylinder style=filled fillcolor=lightyellow fontname="Courier" label="QT"]
-Expr_53 -> Expr_54 [style=dotted]
+Expr_44 -> Expr_51;
+Expr_53 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_7"]
 Expr_51 -> Expr_53;
-Expr_55 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="DUPS"]
-Expr_56 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="2"]
+Expr_54 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="E_8"]
+Expr_53 -> Expr_54;
+Expr_55 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_56 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="\"hello,world!\""]
 Expr_55 -> Expr_56 [style=dotted]
-Expr_53 -> Expr_55;
-Expr_57 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SPOPR"]
-Expr_58 [shape=cylinder style=filled fillcolor=lightyellow fontname="Courier" label="L0"]
+Expr_54 -> Expr_55;
+Expr_57 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="PUSH"]
+Expr_58 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="12"]
 Expr_57 -> Expr_58 [style=dotted]
 Expr_55 -> Expr_57;
-Expr_59 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="INVOK"]
-Expr_60 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="7"]
+Expr_59 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="CALL"]
+Expr_60 [shape=ellipse style=filled fillcolor=lightgoldenrod1 fontname="Courier" label="write_str"]
 Expr_59 -> Expr_60 [style=dotted]
 Expr_57 -> Expr_59;
-Expr_61 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="RET"]
+Expr_61 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SHUTS"]
 Expr_59 -> Expr_61;
+Expr_62 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="write_str"]
+Expr_61 -> Expr_62;
+Expr_63 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="DUPS"]
+Expr_64 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="3"]
+Expr_63 -> Expr_64 [style=dotted]
+Expr_62 -> Expr_63;
+Expr_65 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SPOPR"]
+Expr_66 [shape=cylinder style=filled fillcolor=lightyellow fontname="Courier" label="QT"]
+Expr_65 -> Expr_66 [style=dotted]
+Expr_63 -> Expr_65;
+Expr_67 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="DUPS"]
+Expr_68 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="2"]
+Expr_67 -> Expr_68 [style=dotted]
+Expr_65 -> Expr_67;
+Expr_69 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SPOPR"]
+Expr_70 [shape=cylinder style=filled fillcolor=lightyellow fontname="Courier" label="L0"]
+Expr_69 -> Expr_70 [style=dotted]
+Expr_67 -> Expr_69;
+Expr_71 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="INVOK"]
+Expr_72 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="7"]
+Expr_71 -> Expr_72 [style=dotted]
+Expr_69 -> Expr_71;
+Expr_73 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="RET"]
+Expr_71 -> Expr_73;
 }
 }

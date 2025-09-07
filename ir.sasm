@@ -14,6 +14,9 @@ E_0:
     %end
 ;;        0
 ;;;        2
+;;;        0
+PUSH    "hello,world!\n"
+PUSH    14
 CALL    write_str
 ;;        6
 E_2:
@@ -28,6 +31,9 @@ E_3:
     %scope
         ;;        0
         ;;;        2
+        ;;;        0
+        PUSH    "hello,world!\n"
+        PUSH    14
         CALL    write_str
     %end
     JMPU    E_2
@@ -46,6 +52,9 @@ E_6:
     %scope
         ;;        0
         ;;;        2
+        ;;;        0
+        PUSH    "bye,world!\n"
+        PUSH    12
         CALL    write_str
     %end
     JMPU    E_5
@@ -60,6 +69,7 @@ E_8:
     PUSH    12
 ;;        0
 ;;;        2
+;;;        3
 CALL    write_str
 SHUTS
 write_str:
