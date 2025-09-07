@@ -6,7 +6,7 @@ main:func() = {
           write("hello,world!\n");
      };
      (false) repeat {
-          write("bye,world!\n");
+          write("bye,world!\n");;
      };
 
     x:str = "hello,world!";
