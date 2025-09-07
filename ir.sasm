@@ -1,0 +1,56 @@
+
+; var:    x 
+E_0: 
+    PUSH    "Hi"
+    PUSH    2
+; var:    main 
+%entry    E_1: 
+%scope
+    PUSH    "hello,world!\n"
+    PUSH    14
+    CALL    write_str
+    E_2:
+; start of cond
+        PUSH    1
+        PUSH    0
+        EQI
+    JMPC    E_4
+    E_3:
+; before body
+        %scope
+            PUSH    "hello,world!\n"
+            PUSH    14
+            CALL    write_str
+        %end
+        JMPU    E_2
+    E_4:
+; end of cond
+    E_5:
+; start of cond
+        PUSH    0
+        PUSH    0
+        EQI
+    JMPC    E_7
+    E_6:
+; before body
+        %scope
+            PUSH    "bye,world!\n"
+            PUSH    12
+            CALL    write_str
+        %end
+        JMPU    E_5
+    E_7:
+; end of cond
+    ; var:    x 
+    E_8: 
+        PUSH    "hello,world!"
+        PUSH    12
+    CALL    write_str
+%end
+                              SHUTSwrite_str:
+DUPS     1
+SPOPR    [QT]
+DUPS     2
+SPOPR    [L0]
+INVOK    7
+RET
