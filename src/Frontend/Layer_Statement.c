@@ -59,8 +59,8 @@ VarDefn stmt_parse_var_defn(Line_Context *ctx)
 static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 {
 	Stmt result = { 0 };
-	token_consume(ctx);
-	Token next = token_peek_next(ctx);
+
+	Token next = token_peek_next_next(ctx);
 
 	// if (compare_str(tok.text, STR("match"))) {
 	// 	log_to_ctx(ctx, LOG_FORMAT "pattern match: '%.*s'",
