@@ -1,6 +1,6 @@
 main:func() = {
 
-     x:str = "    Hi    ";
+     x:str = "Hi";
      write(x);
 
      (1) <-> {
