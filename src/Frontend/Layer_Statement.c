@@ -30,7 +30,7 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 VarDecl stmt_parse_var_decl(Line_Context *ctx)
 {
 	VarDecl res = { 0 };
-	// res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
+	res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
 	(void)token_expect_next(ctx, TOKEN_TYPE_COLON);
 	res.type = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
 	if (compare_str(res.type, STR("func"))) {
@@ -49,6 +49,7 @@ VarDecl stmt_parse_var_decl(Line_Context *ctx)
 VarDefn stmt_parse_var_defn(Line_Context *ctx)
 {
 	VarDefn res = { 0 };
+	res.name = token_expect_next(ctx,TOKEN_TYPE_NAME).text;
 	(void)token_expect_next(ctx, TOKEN_TYPE_EQUAL);
 
 	res.val = region_allocate(sizeof(Stmt));
@@ -78,12 +79,10 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 	if (next.type == TOKEN_TYPE_COLON) {
 		result.type = STMT_VAR_DECL;
 		result.as.var_decl = stmt_parse_var_decl(ctx);
-		result.as.var_decl.name = tok.text;
 		return result;
 	} else if (next.type == TOKEN_TYPE_EQUAL) {
 		result.type = STMT_VAR_DEFN;
 		result.as.var_defn = stmt_parse_var_defn(ctx);
-		result.as.var_defn.name = tok.text;
 		return result;
 	} else {
 		result.type = STMT_EXPR;
