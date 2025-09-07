@@ -30,6 +30,7 @@ void IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 			print(NULL, WIN_IR, IR_FORMAT, IR_CTX());
 			if (compare_str(v->name, STR("main"))) {
 				print(NULL, WIN_IR, "%%entry    ");
+				update_indent(-1);
 			}
 			print(NULL, WIN_IR, "E_%d: ", id);
 		} else {
