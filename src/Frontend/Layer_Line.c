@@ -106,15 +106,15 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 				    STMT_BLOCK_START) {
 				statement.as.var_decl.init->as.block =
 					codeblock_generate(context).begin;
-				break;
 			}
+			break;
 		case STMT_VAR_DEFN:
 			if (statement.as.var_defn.val->type ==
 			    STMT_BLOCK_START) {
 				statement.as.var_defn.val->as.block =
 					codeblock_generate(context).begin;
-				break;
 			}
+			break;
 		case STMT_EXPR:
 		default:
 			break;
