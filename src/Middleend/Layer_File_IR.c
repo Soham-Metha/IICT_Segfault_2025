@@ -77,7 +77,7 @@ void IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 void IR__STMT_FUNCALL(const Funcall *funcall)
 {
 	if (compare_str(funcall->name, STR("write"))) {
-		// IR_dump_expr(funcall->args->expr);
+		IR_dump_expr(funcall->args->expr);
 		print(NULL, WIN_IR, IR_FORMAT "CALL    write_str", IR_CTX());
 	}
 
