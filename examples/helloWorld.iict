@@ -3,15 +3,15 @@ x:str = "Hi";
 main:func() = {
 
     (true) repeat {
-          ;write("hello,world!\n")
-     }
+          write("hello,world!\n");
+     };
      (false) repeat {
-          ;write("bye,world!\n")
-     }
+          write("bye,world!\n");
+     };
 
     x:str = "hello,world!";
-    ;write(x)
-}
+    write(x);
+};
 
 % Language name: undecided
 % Created as a part of the 
