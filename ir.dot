@@ -151,7 +151,7 @@ Expr_59 -> Expr_61;
 Expr_62 [shape=tab style=filled fillcolor=lightpink fontname="Courier" label="write_str"]
 Expr_61 -> Expr_62;
 Expr_63 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="DUPS"]
-Expr_64 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="3"]
+Expr_64 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="2"]
 Expr_63 -> Expr_64 [style=dotted]
 Expr_62 -> Expr_63;
 Expr_65 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SPOPR"]
@@ -159,7 +159,7 @@ Expr_66 [shape=cylinder style=filled fillcolor=lightyellow fontname="Courier" la
 Expr_65 -> Expr_66 [style=dotted]
 Expr_63 -> Expr_65;
 Expr_67 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="DUPS"]
-Expr_68 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="2"]
+Expr_68 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"]
 Expr_67 -> Expr_68 [style=dotted]
 Expr_65 -> Expr_67;
 Expr_69 [shape=component style=filled fillcolor=palegreen fontname="Courier" label="SPOPR"]
