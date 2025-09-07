@@ -7,7 +7,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
-static void IR_dump_expr(Expr tok);
+static void IR_dump_expr(Expr tok, bool asVal);
 
 static void IR_dump_statement(Block_Context_IR *ctx);
 
@@ -34,23 +34,21 @@ void IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 			}
 			print(NULL, WIN_IR, "E_%d: ", id);
 		} else {
-			print(NULL, WIN_IR, IR_FORMAT "E_%d: ", IR_CTX(), id);
+			print(NULL, WIN_IR, IR_FORMAT "%%bind E_%d    ", IR_CTX(), id);
 		}
 		push_var_def(v->name, v->type, id);
 		StmtNode nxt =
 			(StmtNode){ .next = NULL, .statement = *v->init };
 		Block_Context_IR blk_ctx = { 0 };
 		blk_ctx.n = ctx->n;
-		blk_ctx.b = ctx->b;
+		blk_ctx.b = 999;
 		blk_ctx.next = &nxt;
 		blk_ctx.prev = ctx;
 		blk_ctx.var_def_cnt = 0;
 		update_indent(1);
 		IR_dump_statement(&blk_ctx);
 		update_indent(-1);
-		print(NULL, WIN_IR, IR_FORMAT "RET", IR_CTX());
 		ctx->n = blk_ctx.n;
-		ctx->b = blk_ctx.b;
 	} else if (s) {
 		int id = ctx->n++;
 		// print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ", IR_CTX(),
@@ -78,11 +76,11 @@ void IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 	} else if (id) {
 		print(NULL, WIN_IR, IR_FORMAT "; var:    %.*s ", IR_CTX(),
 		      Str_Fmt(v->name));
-		print(NULL, WIN_IR, IR_FORMAT "E_%d:", IR_CTX(), id);
-		update_indent(1);
+		print(NULL, WIN_IR, IR_FORMAT "%%bind    %d    ", IR_CTX(), id);
+		int tmp = ctx->b;
+		ctx->b = 999;
 		IR_dump_statement(ctx);
-		update_indent(-1);
-		print(NULL, WIN_IR, IR_FORMAT "RET", IR_CTX());
+		ctx->b = tmp;
 	} else {
 		assert(0 && "VARIABLE IS OF IMMUTABLE TYPE!!");
 	}
@@ -91,7 +89,7 @@ void IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 void IR__STMT_FUNCALL(const Funcall *funcall)
 {
 	if (compare_str(funcall->name, STR("write"))) {
-		IR_dump_expr(funcall->args->expr);
+		IR_dump_expr(funcall->args->expr, false);
 		print(NULL, WIN_IR, IR_FORMAT "CALL    write_str", IR_CTX());
 	}
 
@@ -143,7 +141,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	print(NULL, WIN_IR, IR_FORMAT "E_%d:\n; start of cond", IR_CTX(),
 	      cond_id);
 	update_indent(1);
-	IR_dump_expr(cond->cond);
+	IR_dump_expr(cond->cond, false);
 	print(NULL, WIN_IR, IR_FORMAT "PUSH    0", IR_CTX());
 	print(NULL, WIN_IR, IR_FORMAT "EQI", IR_CTX());
 	update_indent(-1);
@@ -171,12 +169,16 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 }
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-static void IR_dump_expr(Expr expr)
+static void IR_dump_expr(Expr expr, bool as_val)
 {
 	// print(NULL, WIN_IR, IR_FORMAT ";;;        %d", IR_CTX(),
 	//       expr.type);
 	switch (expr.type) {
 	case EXPR_TYPE_STR:
+		if (as_val) {
+			print(NULL, WIN_IR, "\"%.*s\"", Str_Fmt(expr.as.str));
+			break;
+		}
 		print(NULL, WIN_IR, IR_FORMAT "PUSH    \"%.*s\"", IR_CTX(),
 		      Str_Fmt(expr.as.str));
 		print(NULL, WIN_IR, IR_FORMAT "PUSH    %d", IR_CTX(),
@@ -228,7 +230,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_CONDITIONAL(ctx);
 		break;
 	case STMT_EXPR:
-		IR_dump_expr(stmt.as.expr);
+		IR_dump_expr(stmt.as.expr, ctx->b == 999);
 		break;
 	case STMT_VAR_DECL:
 		IR__STMT_VAR_DECL(ctx);
