@@ -159,8 +159,8 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 
 static void IR_dump_expr(Expr expr)
 {
-	print(NULL, WIN_IR, IR_FORMAT ";;;        %d", IR_CTX(),
-	      expr.type);
+	// print(NULL, WIN_IR, IR_FORMAT ";;;        %d", IR_CTX(),
+	//       expr.type);
 	switch (expr.type) {
 	case EXPR_TYPE_STR:
 		print(NULL, WIN_IR, IR_FORMAT "PUSH    \"%.*s\"", IR_CTX(),
@@ -197,8 +197,8 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 {
 	assert(ctx->next != NULL);
 	Stmt stmt = ctx->next->statement;
-	print(NULL, WIN_IR, IR_FORMAT ";;        %d", IR_CTX(),
-	      ctx->next->statement.type);
+	// print(NULL, WIN_IR, IR_FORMAT ";;        %d", IR_CTX(),
+	//       ctx->next->statement.type);
 	switch (stmt.type) {
 	case STMT_BLOCK_START:
 		IR__STMT_BLOCK(ctx);
