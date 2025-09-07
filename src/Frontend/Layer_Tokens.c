@@ -213,7 +213,7 @@ bool token_consume(Line_Context *ctx)
 			   token_get_name(tok_cache[0].type),
 			   Str_Fmt(tok_cache[0].text));
 		update_indent(-1);
-		for (size_t i = 0; i < cachedCnt; i++) {
+		for (int i = 0; i < cachedCnt; i++) {
 			tok_cache[i] = tok_cache[i + 1];
 		}
 		cachedCnt--;
