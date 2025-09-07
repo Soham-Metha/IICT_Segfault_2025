@@ -12,8 +12,6 @@ E_0:
 ; var:    main 
 %entry    E_1: 
 %scope
-    PUSH    "hello,world!\n"
-    PUSH    14
     CALL    write_str
     E_2:
 ; start of cond
