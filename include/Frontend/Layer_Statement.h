@@ -5,64 +5,70 @@
 #include <stdint.h>
 
 enum StmtType {
-	STMT_VAR,
-	STMT_FUNCALL,
+	STMT_EXPR,
+	STMT_VAR_DECL,
+	STMT_VAR_DEFN,
 	STMT_BLOCK_START,
 	STMT_BLOCK_END,
-	STMT_TOKEN,
+	STMT_MATCH,
+	STMT_CONDITIONAL,
 };
 
-enum varMode {
-	VAR_ACCS,
-	VAR_DECL,
-	VAR_DEFN,
-	VAR_BOTH,
-};
-
-typedef struct Var Var;
+typedef struct VarDecl VarDecl;
+typedef struct VarDefn VarDefn;
 typedef struct Stmt Stmt;
 typedef enum StmtType StmtType;
-typedef enum varMode varMode;
 typedef union StmtValue StmtValue;
-typedef struct Funcall Funcall;
-typedef struct FuncallArg FuncallArg;
 typedef struct StmtNode StmtNode;
 typedef struct Line_Context Line_Context;
+// typedef struct PatternMatch PatternMatch;
+typedef struct StmtConditional StmtConditional;
 
-struct Var {
-	String  name;
-	varMode mode;
-
+struct VarDecl {
+	String name;
 	String type;
-	Stmt  *defn_val;
+	FuncallArg *args;
+
+	Stmt *init;
+	bool has_init;
+};
+
+struct VarDefn {
+	String name;
+	Stmt *val;
+};
+
+struct StmtConditional {
+	bool repeat;
+	Expr cond;
+	CodeBlock body;
 };
 
 union StmtValue {
-	Var       as_var;
-	Token     as_token;
-	Funcall  *as_funcall;
-	StmtNode *as_block;
+	Expr expr;
+	VarDecl var_decl;
+	VarDefn var_defn;
+	StmtConditional cond;
+	Expr token;
+	Funcall *funcall;
+	StmtNode *block;
+	// PatternMatch    *match;
 };
 
 struct Stmt {
-	StmtType  type;
-	StmtValue value;
-};
-
-struct FuncallArg {
-	FuncallArg *next;
-	Stmt        value;
-};
-
-struct Funcall {
-	String      name;
-	FuncallArg *args;
+	StmtType type;
+	StmtValue as;
 };
 
 struct StmtNode {
 	Stmt statement;
 	StmtNode *next;
 };
+
+// struct PatternMatch {
+// 	Stmt *cond;
+// 	Stmt *body;
+// };
 
 Stmt stmt_fetch_next(Line_Context *ctx);
 

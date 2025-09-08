@@ -1,6 +1,5 @@
 #include <Wrapper/IO.h>
 #include <Frontend/Layer_File.h>
-// #include "UI/tui.h"
 #include <Wrapper/UI.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -12,7 +11,7 @@ int use_tui = 0;
 
 static void usage(const char *progName)
 {
-	print(WIN_STDOUT,
+	print(NULL, WIN_STDOUT,
 	      "Usage: %s [OPTIONS]                      \n"
 	      "Options:                                 \n"
 	      "    -i <input>        Provide input path \n"
@@ -79,6 +78,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	print(WIN_STDOUT, "\n\n");
+	print(NULL, WIN_STDOUT, "\n\n");
+	region_free();
 	return 0;
 }

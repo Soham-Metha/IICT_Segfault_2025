@@ -1,39 +1,41 @@
 #include <Frontend/Layer_Xpression.h>
+#include <Frontend/Layer_Tokens.h>
 #include <Wrapper/IO.h>
+#include <Utils/mem_manager.h>
 #include <ctype.h>
 #include <assert.h>
 #include <stdlib.h>
 
-Token cache;
-bool cachedToken = false;
-
-static bool isName(char x)
-{
-	return isalnum(x) || x == '_';
-}
-
-static bool isNumber(char x)
-{
-	return isalnum(x) || x == '.' || x == '-';
-}
-
-const char *token_get_name(TokenType type)
+const char *expr_get_name(ExprType type)
 {
 	switch (type) {
-	case TOKEN_TYPE_STR: 			return "string";
-	case TOKEN_TYPE_CHAR: 			return "character";
-	case TOKEN_TYPE_NUMBER: 		return "number";
-	case TOKEN_TYPE_NAME: 			return "name";
-	case TOKEN_TYPE_OPEN_PAREN: 	return "open paren";
-	case TOKEN_TYPE_CLOSING_PAREN: 	return "closing paren";
-	case TOKEN_TYPE_OPEN_CURLY: 	return "open curly";
-	case TOKEN_TYPE_CLOSING_CURLY: 	return "closing curly";
-	case TOKEN_TYPE_COMMA: 			return "comma";
-	case TOKEN_TYPE_COLON:			return "colon";
-	case TOKEN_TYPE_EQUAL:			return "equal";
-	case TOKEN_TYPE_EOL:			return "end of line";
-	// case TOKEN_TYPE_FUNC: 			return "func";
-	case TOKEN_TYPE_STATEMENT_END: 	return "statement end";
+	case EXPR_TYPE_FUNCALL:
+		return "Function call";
+	case EXPR_TYPE_STR:
+		return "String literal";
+	case EXPR_TYPE_NUMBER:
+		return "Numeric value";
+	case EXPR_TYPE_VAR:
+		return "Variable Name";
+		return "Closing parenthesis";
+	case EXPR_TYPE_OPEN_CURLY:
+		return "Open curly brace";
+	case EXPR_TYPE_CLOSING_CURLY:
+		return "Closing curly brace";
+	case EXPR_TYPE_COLON:
+		return "Colon";
+	case EXPR_TYPE_EQUAL:
+		return "Assignment operator";
+	case EXPR_TYPE_THEN:
+		return "Conditional pattern match";
+	case EXPR_TYPE_REPEAT:
+		return "Conditional retetition";
+	case EXPR_TYPE_BIN_OPR:
+		return "BINARY OPERATION";
+	case EXPR_TYPE_BOOL:
+		return "BOOLEAN";
+	case EXPR_TYPE_STATEMENT_END:
+		return "Statement ended with";
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
@@ -41,171 +43,165 @@ const char *token_get_name(TokenType type)
 	}
 }
 
-Token token_expect_next(Line_Context* ctx, TokenType expected)
+FuncallArg *parse_funcall_arglist(Line_Context *ctx)
 {
-	Token token = token_fetch_next(ctx);
+	// split arguments from single comma seperated string to linked list of strings.
+	Token token = token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
 	update_indent(1);
-	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",LOG_CTX("[TOKEN CHECK]","[EXPR]"),
-	token_get_name(expected), token_get_name(token.type));
-	update_indent(-1);
+	log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+				   "- Arguments:", "none"));
 
-	if (!discard_cached_token()) {
-		print(WIN_STDERR, 
-			": ERROR: expected token `%s`\n", token_get_name(expected));
+	update_indent(1);
+	token = token_peek_next(ctx);
+	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
+		token_consume(ctx);
+		log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+					   " NO ARGS !", "none"));
+		update_indent(-2);
+		return NULL;
+	}
+
+	FuncallArg *first = NULL;
+	FuncallArg *last = NULL;
+
+	do {
+		FuncallArg *arg = region_allocate(sizeof(FuncallArg));
+		arg->expr = expr_peek_next(ctx);
+		arg->next = NULL;
+
+		if (first == NULL) {
+			first = arg;
+			last = arg;
+		} else {
+			last->next = arg;
+			last = arg;
+		}
+
+		token = token_peek_next(ctx);
+		if (!token_consume(ctx)) {
+			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
+			      token_get_name(TOKEN_TYPE_CLOSING_PAREN),
+			      token_get_name(TOKEN_TYPE_COMMA));
+			exit(1);
+		}
+
+	} while (token.type == TOKEN_TYPE_COMMA);
+
+	if (token.type != TOKEN_TYPE_CLOSING_PAREN) {
+		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
+		      token_get_name(TOKEN_TYPE_CLOSING_PAREN));
 		exit(1);
 	}
+	update_indent(-2);
 
-	if (token.type != expected) {
-		print(WIN_STDERR,
-		      ": ERROR: expected token `%s`, but got `%s`\n",
-		      token_get_name(expected), token_get_name(token.type));
+	return first;
+}
+
+Funcall parse_expr_funcall(Line_Context *ctx)
+{
+	Funcall res = { 0 };
+	res.name = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
+	res.args = parse_funcall_arglist(ctx);
+	return res;
+}
+
+// Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
+// {
+// 	(void)ctx;
+// 	(void)p;
+// 	// if (p > COUNT_BIN_OPR_PRECEDENCE) {
+// 	//     return expr_peek_next(ctx);
+// 	// }
+// 	// // traverse left side of expr tree
+// 	// Expr lhs = expr_parse_with_precedence(ctx, p + 1);
+// 	assert(0 && "TODO");
+// }
+
+Expr expr_parse(Line_Context *ctx)
+{
+	// return expr_parse_with_precedence(ctx, 0);
+	return expr_peek_next(ctx);
+}
+
+Expr expr_peek_next(Line_Context *ctx)
+{
+	Expr expr = { 0 };
+
+	Token token = token_peek_next(ctx);
+
+	switch (token.type) {
+	case TOKEN_TYPE_NAME: {
+		if (compare_str(token.text, STR("true"))) {
+			token_consume(ctx);
+			expr.type = EXPR_TYPE_BOOL;
+			expr.as.boolean = true;
+		} else if (compare_str(token.text, STR("false"))) {
+			token_consume(ctx);
+			expr.type = EXPR_TYPE_BOOL;
+			expr.as.boolean = false;
+		} else {
+			Token next = token_peek_next_next(ctx);
+			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
+				log_to_ctx(ctx,
+					   LOG_FORMAT("[IDENTIFICATION]",
+						      "[EXPR]",
+						      "funcall: '%.*s'",
+						      Str_Fmt(token.text)));
+				expr.type = EXPR_TYPE_FUNCALL;
+				expr.as.funcall = parse_expr_funcall(ctx);
+				token_expect_next(ctx,
+						  TOKEN_TYPE_STATEMENT_END);
+				return expr;
+			} else {
+				expr.type = EXPR_TYPE_VAR;
+				expr.as.var_nm = token.text;
+				token_consume(ctx);
+			}
+		}
+	} break;
+	case TOKEN_TYPE_STR: {
+		token_consume(ctx);
+		expr.type = EXPR_TYPE_STR;
+		expr.as.str = token.text;
+	} break;
+	case TOKEN_TYPE_CHAR: {
+		token_consume(ctx);
+		expr.type = EXPR_TYPE_STR;
+		expr.as.str = token.text;
+	} break;
+	case TOKEN_TYPE_NUMBER: {
+		token_consume(ctx);
+		int64_t res = 0;
+		for (size_t i = 0; i < token.text.len; i++) {
+			assert(isdigit(token.text.data[i]));
+			res = res * 10 + (token.text.data[i] - '0');
+		}
+		expr.type = EXPR_TYPE_NUMBER;
+		expr.as.num = res;
+	} break;
+	case TOKEN_TYPE_OPEN_PAREN: {
+		token_consume(ctx);
+		expr = expr_parse(ctx);
+		token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
+	} break;
+	case TOKEN_TYPE_CLOSING_PAREN:
+	case TOKEN_TYPE_OPEN_CURLY:
+	case TOKEN_TYPE_CLOSING_CURLY:
+	case TOKEN_TYPE_COMMA:
+	case TOKEN_TYPE_COLON:
+	case TOKEN_TYPE_EQUAL:
+	case TOKEN_TYPE_EOL:
+	case TOKEN_TYPE_THEN:
+	case TOKEN_TYPE_REPEAT:
+	case TOKEN_TYPE_STATEMENT_END:
+	default: {
+		log_to_ctx(ctx,
+			   LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+				      "got %s %.*s", token_get_name(token.type),
+				      Str_Fmt(token.text)));
+		// assert(0 && "expr peek: unreachable");
 		exit(1);
 	}
-
-	return token;
-}
-
-
-Token token_fetch_next(Line_Context* ctx)
-{
-    String *line = &ctx->line;
-    if (cachedToken) return cache;
-    Token token = { 0 };
-    (*line) = trim(*line);
-
-    if (line->len == 0) {
-        token.type = TOKEN_TYPE_EOL;
-
-        log_to_ctx(ctx, LOG_FORMAT "End of line", LOG_CTX("","[EXPR]"));
-        return token;
-    }
-
-    switch (line->data[0]) {
-    case '(': {
-        token.type = TOKEN_TYPE_OPEN_PAREN;
-        token.text = split_str_by_len(line, 1);
-
-        log_to_ctx(ctx, LOG_FORMAT "Open parenthesis '('", LOG_CTX("","[EXPR]"));  
-    } break;
-
-    case ';': {
-        token.type = TOKEN_TYPE_STATEMENT_END;
-        token.text = split_str_by_len(line, 1);
-
-        log_to_ctx(ctx, LOG_FORMAT "Statement ended with ';'", LOG_CTX("","[EXPR]"));  
-    } break;
-
-    case ')': {
-        token.type = TOKEN_TYPE_CLOSING_PAREN;
-        token.text = split_str_by_len(line, 1);
-
-        log_to_ctx(ctx, LOG_FORMAT "Closing parenthesis ')'", LOG_CTX("","[EXPR]"));  
-    } break;
-
-    case '{': {
-        token.type = TOKEN_TYPE_OPEN_CURLY;
-        token.text = split_str_by_len(line, 1);
-
-        log_to_ctx(ctx, LOG_FORMAT "Open curly brace '{'", LOG_CTX("","[EXPR]"));  
-    } break;
-
-    case '}': {
-        token.type = TOKEN_TYPE_CLOSING_CURLY;
-        token.text = split_str_by_len(line, 1);
-
-        log_to_ctx(ctx, LOG_FORMAT "Closing curly brace '}'", LOG_CTX("","[EXPR]"));  
-    } break;
-
-    case ',': {
-        token.type = TOKEN_TYPE_COMMA;
-        token.text = split_str_by_len(line, 1);
-
-        log_to_ctx(ctx, LOG_FORMAT "Comma ','", LOG_CTX("","[EXPR]"));  
-    } break;
-
-    case ':': {
-        token.type = TOKEN_TYPE_COLON;
-        token.text = split_str_by_len(line, 1);
-
-        log_to_ctx(ctx, LOG_FORMAT "Colon ':'", LOG_CTX("","[EXPR]"));  
-    } break;
-
-    case '=': {
-        token.type = TOKEN_TYPE_EQUAL;
-        token.text = split_str_by_len(line, 1);
-
-        log_to_ctx(ctx, LOG_FORMAT "Assignment operator '='", LOG_CTX("","[EXPR]"));  
-    } break;
-
-    case '"': {
-        split_str_by_len(line, 1); // discard opening "
-
-        token.type = TOKEN_TYPE_STR;
-        size_t index = 0;
-        if (!get_index_of(*line, '"', &index)) {
-            print(WIN_STDERR, "ERROR: Could not find closing \"\n");
-            exit(1);
-        }
-        token.text = split_str_by_len(line, index);
-        split_str_by_len(line, 1); // discard closing "
-
-        log_to_ctx(ctx, LOG_FORMAT "String literal: \"%.*s\"",
-                   LOG_CTX("","[EXPR]"),
-                   token.text.len, token.text.data); // 
-    } break;
-
-    case '\'': {
-        split_str_by_len(line, 1); // discard opening '
-
-        token.type = TOKEN_TYPE_CHAR; 
-        size_t index = 0;
-        if (!get_index_of(*line, '\'', &index)) {
-            print(WIN_STDERR, "ERROR: Could not find closing '\n");
-            exit(1);
-        }
-        token.text = split_str_by_len(line, index);
-        split_str_by_len(line, 1); // discard closing '
-
-        log_to_ctx(ctx, LOG_FORMAT "Character literal: '%.*s'",
-                   LOG_CTX("","[EXPR]"),
-                   token.text.len, token.text.data); 
-    } break;
-
-    default: {
-        if (isalpha(line->data[0])) {
-            token.type = TOKEN_TYPE_NAME;
-            token.text = split_str_by_condition(line, isName);
-
-            log_to_ctx(ctx, LOG_FORMAT "Variable detected: %.*s",
-                       LOG_CTX("","[EXPR]"),
-                       token.text.len, token.text.data); 
-        } else if (isdigit(line->data[0]) || line->data[0] == '-') {
-            token.type = TOKEN_TYPE_NUMBER;
-            token.text = split_str_by_condition(line, isNumber);
-
-            log_to_ctx(ctx, LOG_FORMAT "Numeric constant: %.*s",
-                       LOG_CTX("","[EXPR]"),
-                       token.text.len, token.text.data); 
-        } else {
-            print(WIN_STDERR,
-                  "ERROR: Unknown token starts with '%c'\n",
-                  line->data[0]);
-            exit(1);
-        }
-    }
-    }
-
-    cache = token;
-    cachedToken = true;
-    return token;
-
-}
-
-bool discard_cached_token()
-{
-	if (cachedToken) {
-		cachedToken = false;
-		return true;
 	}
-	return false;
+	return expr;
 }

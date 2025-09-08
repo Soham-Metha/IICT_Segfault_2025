@@ -1,14 +1,35 @@
-x = 'a'; % comment 0
+main:func() = {
 
-hello:func = {
-    print("hi","hello");
+     x:str = "Hi";
+     write(x);
+
+     (1) <-> {
+          write("hello,world!\n");
+     }
+     (false) repeat {
+          write("bye,world!\n");
+     }
+
+    x:str = "hello,world!";
+    write(x);
 };
 
-x ='b';
+% Language name: undecided
+% Created as a part of the 
+% IICT SEGFAULT 2025 hackathon
+% by Team Kernull
 
-{
-    {
-y;
+% Grammar:
+% CodeBlock // Can be called program modules
+%  |-> StmtNode* begin
+%  |-> StmtNode* end
+%
+% StmtNode:
+%  |-> Stmt
+%  |-> StmtNode* next
 
-% comment 1
-% comment 2
+% Currently supported statements:
+% Variable declaration:
+% <var> : <type>;
+% Variable definition:
+% <var> : <type> = Stmt;

@@ -2,34 +2,86 @@
 #define EXPR_LAYER_FRONTEND
 #include <Utils/strings.h>
 #include <Frontend/Layer_Line.h>
+#include <Frontend/Layer_Tokens.h>
+#include <stdint.h>
 
-enum TokenType {
-	TOKEN_TYPE_STR,
-	TOKEN_TYPE_CHAR,
-	TOKEN_TYPE_NUMBER,
-	TOKEN_TYPE_NAME,
-	TOKEN_TYPE_OPEN_PAREN,
-	TOKEN_TYPE_CLOSING_PAREN,
-	TOKEN_TYPE_OPEN_CURLY,
-	TOKEN_TYPE_CLOSING_CURLY,
-	TOKEN_TYPE_STATEMENT_END,
-	TOKEN_TYPE_COMMA,
-	TOKEN_TYPE_COLON,
-	TOKEN_TYPE_EQUAL,
-	TOKEN_TYPE_EOL,
-};
+typedef enum {
+	EXPR_TYPE_STR,
+	EXPR_TYPE_NUMBER,
+	EXPR_TYPE_FUNCALL,
+	EXPR_TYPE_VAR,
+	EXPR_TYPE_BOOL,
+	EXPR_TYPE_BIN_OPR,
 
-typedef struct Token Token;
-typedef enum TokenType TokenType;
+	EXPR_TYPE_OPEN_CURLY,
+	EXPR_TYPE_CLOSING_CURLY,
+	EXPR_TYPE_STATEMENT_END,
+	EXPR_TYPE_THEN,
+	EXPR_TYPE_REPEAT,
+	EXPR_TYPE_COLON,
+	EXPR_TYPE_EQUAL,
+} ExprType;
+
+typedef enum {
+	BIN_OPR_PLUS = 0,
+	BIN_OPR_MINUS,
+	BIN_OPR_MULT,
+	BIN_OPR_LT,
+	BIN_OPR_GE,
+	BIN_OPR_NE,
+	BIN_OPR_AND,
+	BIN_OPR_OR,
+	BIN_OPR_EQ,
+} BinOprType;
+
+typedef enum {
+	BIN_OPR_P0 = 0,
+	BIN_OPR_P1 = 1,
+	BIN_OPR_P2 = 2,
+	BIN_OPR_P3 = 3,
+	COUNT_BIN_OPR_PRECEDENCE,
+} BinOprPrec;
+
+typedef struct Funcall Funcall;
+typedef struct FuncallArg FuncallArg;
+typedef struct Expr Expr;
+typedef union ExprValue ExprValue;
 typedef struct Line_Context Line_Context;
-struct Token {
-	TokenType type;
-	String text;
+typedef struct BinOpr BinOpr;
+
+struct Funcall {
+	String name;
+	FuncallArg *args;
 };
 
-Token token_fetch_next(Line_Context* ctx);
-const char *token_get_name(TokenType type);
-Token token_expect_next(Line_Context* ctx, TokenType expected);
-bool discard_cached_token();
+struct BinOpr {
+	BinOprType type;
+	BinOprPrec prec;
+};
+
+union ExprValue {
+	String str;
+	int64_t num;
+	Funcall funcall;
+	String var_nm;
+	bool boolean;
+	BinOpr bin_opr;
+	Token token;
+};
+
+struct Expr {
+	ExprType type;
+	ExprValue as;
+};
+
+struct FuncallArg {
+	Expr expr;
+	FuncallArg *next;
+};
+
+Expr expr_parse(Line_Context *ctx);
+Expr expr_peek_next(Line_Context *ctx);
+const char *expr_get_name(ExprType type);
+FuncallArg *parse_funcall_arglist(Line_Context *ctx);
 
 #endif
