@@ -7,7 +7,7 @@
 
 const char *inputFile = (void *)0;
 const char *outputFile = (void *)0;
-int use_tui = 0;
+bool use_tui = 0;
 
 static void usage(const char *progName)
 {
@@ -70,9 +70,6 @@ int main(int argc, char **argv)
 	file_read(inputFile, &ctx);
 
 	if (use_tui) {
-		// TUI *tui = init_ui(&ctx);
-		// run_ui(tui);
-		// destroy_ui(tui);
 		onStartup(&ctx);
 		onShutdown();
 		return 0;

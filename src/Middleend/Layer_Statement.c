@@ -4,8 +4,12 @@
 #include <Middleend/Layer_Line.h>
 
 static TypeDetailsLUT typeDetails[VAR_TYPE_COUNT] = {
-	[VAR_TYPE_STR] = { .type = VAR_TYPE_STR, .size = 0, .name = {.data="str", .len=3 } },
-	[VAR_TYPE_FUNC] = { .type = VAR_TYPE_FUNC, .size = 0, .name =  {.data="func", .len=4 } },
+	[VAR_TYPE_STR] = { .type = VAR_TYPE_STR,
+			   .size = 0,
+			   .name = { .data = "str", .len = 3 } },
+	[VAR_TYPE_FUNC] = { .type = VAR_TYPE_FUNC,
+			    .size = 0,
+			    .name = { .data = "func", .len = 4 } },
 };
 
 void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
@@ -17,10 +21,10 @@ void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
 			  .mem_addr = id };
 }
 
-Var_IR get_var_details(Block_Context_IR *ctx, String name)
+Var_IR get_var_details(const Block_Context_IR *ctx, String name)
 {
-	for (Block_Context_IR *curr = ctx; curr != NULL; curr = curr->prev)
-		for (int i = ctx->var_def_cnt - 1; i >= 0; i--) {
+	for (const Block_Context_IR *curr = ctx; curr != NULL; curr = curr->prev)
+		for (int i = curr->var_def_cnt - 1; i >= 0; i--) {
 			if (compare_str(name, curr->var_defs[i].name)) {
 				return curr->var_defs[i];
 			}
