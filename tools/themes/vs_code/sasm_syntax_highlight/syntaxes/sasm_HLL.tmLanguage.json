@@ -1,0 +1,36 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "HLL for Simulated Assembly Lang",
+    "patterns": [
+        {
+            "name": "comment.line.sasm_HLL",
+            "match": "%.*$"
+        },
+        {
+            "name": "string.double.sasm_HLL",
+            "match": "\\\".*\\\""
+        },
+        {
+            "name": "label.definition.sasm_HLL",
+            "match": "\\w+:"
+        },
+        {
+            "name": "support.function.sasm_HLL",
+            "match": "(then|repeat|->|<->)"
+        },
+        {
+            "name": "meta.brace.sasm_HLL",
+            "match": "(\\(|\\))"
+        },
+        {
+            "name": "variable.userdefined.sasm_HLL",
+            "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+        },
+        {
+            "name": "constant.number.integer.sasm_HLL",
+            "match": "[\\-0-9][\\.0-9]*"
+        }
+    ],
+    "repository": { },
+    "scopeName": "source.sasm_HLL"
+}
