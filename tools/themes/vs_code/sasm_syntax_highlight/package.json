@@ -33,7 +33,7 @@
     }],
     "themes": [
       {
-        "label": "Palenight+sasm",
+        "label": "sasm fork of palenight",
         "uiTheme": "vs-dark",
         "path": "./themes/SASM-color-theme.json"
       }
