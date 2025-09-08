@@ -26,6 +26,10 @@
       "language": "sasm",
       "scopeName": "source.sasm",
       "path": "./syntaxes/sasm.tmLanguage.json"
+    },{
+      "language": "sasm_HLL",
+      "scopeName": "source.sasm_HLL",
+      "path": "./syntaxes/sasm_HLL.tmLanguage.json"
     }],
     "themes": [
       {
