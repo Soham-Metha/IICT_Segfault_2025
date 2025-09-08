@@ -48,15 +48,15 @@ FuncallArg *parse_funcall_arglist(Line_Context *ctx)
 	// split arguments from single comma seperated string to linked list of strings.
 	Token token = token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
 	update_indent(1);
-	log_to_ctx(ctx, LOG_FORMAT "- Arguments:",
-		   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
+	log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+				   "- Arguments:", "none"));
 
 	update_indent(1);
 	token = token_peek_next(ctx);
 	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
 		token_consume(ctx);
-		log_to_ctx(ctx, LOG_FORMAT " NO ARGS !",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"));
+		log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+					   " NO ARGS !", "none"));
 		update_indent(-2);
 		return NULL;
 	}
@@ -142,10 +142,11 @@ Expr expr_peek_next(Line_Context *ctx)
 		} else {
 			Token next = token_peek_next_next(ctx);
 			if (next.type == TOKEN_TYPE_OPEN_PAREN) {
-				log_to_ctx(ctx, LOG_FORMAT "funcall: '%.*s'",
-					   LOG_CTX("[IDENTIFICATION]",
-						   "[EXPR]"),
-					   Str_Fmt(token.text));
+				log_to_ctx(ctx,
+					   LOG_FORMAT("[IDENTIFICATION]",
+						      "[EXPR]",
+						      "funcall: '%.*s'",
+						      Str_Fmt(token.text)));
 				expr.type = EXPR_TYPE_FUNCALL;
 				expr.as.funcall = parse_expr_funcall(ctx);
 				token_expect_next(ctx,
@@ -194,9 +195,10 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END:
 	default: {
-		log_to_ctx(ctx, LOG_FORMAT "got %s %.*s",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			   token_get_name(token.type), Str_Fmt(token.text));
+		log_to_ctx(ctx,
+			   LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+				      "got %s %.*s", token_get_name(token.type),
+				      Str_Fmt(token.text)));
 		// assert(0 && "expr peek: unreachable");
 		exit(1);
 	}
