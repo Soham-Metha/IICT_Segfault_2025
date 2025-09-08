@@ -73,8 +73,8 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 	// 	expr_consume(ctx);
 	// }
 
-	log_to_ctx(ctx, LOG_FORMAT "variable: '%.*s'",
-		   LOG_CTX("[IDENTIFICATION]", "[STMT]"), Str_Fmt(tok.text));
+	log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+				   "variable: '%.*s'", Str_Fmt(tok.text)));
 
 	if (next.type == TOKEN_TYPE_COLON) {
 		result.type = STMT_VAR_DECL;
@@ -137,9 +137,9 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	default:
 		token_consume(ctx);
 
-		log_to_ctx(ctx, LOG_FORMAT "%s %.*s",
-			   LOG_CTX("[IDENTIFICATION]", "[STMT]"),
-			   token_get_name(tok.type), Str_Fmt(tok.text));
+		log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+					   "%s %.*s", token_get_name(tok.type),
+					   Str_Fmt(tok.text)));
 		print(ctx, WIN_STDERR, "Unexpected token found!");
 		exit(1);
 	}
