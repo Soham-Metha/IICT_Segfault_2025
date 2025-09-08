@@ -7,9 +7,9 @@
 
 #define LOG_FORMAT "\n %6s | %20s %.*s "
 
-#define IR_CTX() Str_Fmt(get_indent())
-
-#define IR_FORMAT "\n%.*s"
+#define IR_FORMAT(str, ...) "\n%.*s" str, Str_Fmt(get_indent()), ##__VA_ARGS__
+#define print_IR(...) print(NULL, WIN_IR, __VA_ARGS__);
+#define print_AST(...) print(NULL, WIN_AST, __VA_ARGS__);
 
 enum WindowNames {
 	WIN_STDIN,

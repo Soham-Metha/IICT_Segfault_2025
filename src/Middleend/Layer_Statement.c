@@ -1,95 +1,44 @@
 #include <Middleend/Layer_Statement.h>
 #include <assert.h>
 #include <Utils/strings.h>
+#include <Middleend/Layer_Line.h>
 
-Var_IR var_defs[128];
-int var_def_cnt = 0;
+static TypeDetailsLUT typeDetails[VAR_TYPE_COUNT] = {
+	[VAR_TYPE_STR] = { .type = VAR_TYPE_STR, .size = 0, .name = {.data="str", .len=3 } },
+	[VAR_TYPE_FUNC] = { .type = VAR_TYPE_FUNC, .size = 0, .name =  {.data="func", .len=4 } },
+};
 
-void push_var_def(String name, String type, int id)
+void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
 {
-	assert(var_def_cnt < 128);
-	var_defs[var_def_cnt++] = (Var_IR){ .name = name,
-					    .type = get_type_from_name(type),
-					    .mem_addr = id };
+	assert(ctx->var_def_cnt < 128);
+	ctx->var_defs[ctx->var_def_cnt++] =
+		(Var_IR){ .name = name,
+			  .type = get_type_details_from_type_name(type).type,
+			  .mem_addr = id };
 }
 
-int get_var_id(String name)
+Var_IR get_var_details(Block_Context_IR *ctx, String name)
 {
-	for (int i = var_def_cnt - 1; i >= 0; i--) {
-		if (compare_str(name, var_defs[i].name)) {
-			return var_defs[i].mem_addr;
+	for (Block_Context_IR *curr = ctx; curr != NULL; curr = curr->prev)
+		for (int i = ctx->var_def_cnt - 1; i >= 0; i--) {
+			if (compare_str(name, curr->var_defs[i].name)) {
+				return curr->var_defs[i];
+			}
 		}
-	}
 	assert(0 && "VAR NOT IN SCOPE");
 }
 
-bool check_var_type(int id, String type)
+TypeDetailsLUT get_type_details_from_type_name(String name)
 {
-	for (int i = var_def_cnt - 1; i >= 0; i--) {
-		if (id == var_defs[i].mem_addr) {
-			return get_type_from_name(type) == var_defs[i].type;
+	for (int i = 0; i < VAR_TYPE_COUNT; i++) {
+		if (compare_str(name, typeDetails[i].name)) {
+			return typeDetails[i];
 		}
-	}
-	assert(0 && "VAR NOT IN SCOPE");
-}
-
-void clear_var_defs()
-{
-	var_def_cnt = 0;
-}
-
-typedef enum {
-	VAR_TYPE_STR,
-	// VAR_TYPE_I64,
-	// VAR_TYPE_F64,
-	// VAR_TYPE_CHAR,
-	VAR_TYPE_FUNC,
-	// VAR_TYPE_STRUCT,
-	VAR_TYPE_COUNT,
-} varType;
-
-int get_type_from_name(String name)
-{
-	if (compare_str(name, STR("func"))) {
-		return VAR_TYPE_FUNC;
-	// } else if (compare_str(name, STR("struct"))) {
-	// 	return VAR_TYPE_STRUCT;
-	// } else if (compare_str(name, STR("char"))) {
-	// 	return VAR_TYPE_CHAR;
-	// } else if (compare_str(name, STR("i64"))) {
-	// 	return VAR_TYPE_I64;
-	// } else if (compare_str(name, STR("f64"))) {
-	// 	return VAR_TYPE_F64;
-	} else if (compare_str(name, STR("str"))) {
-		return VAR_TYPE_STR;
 	}
 	assert(0 && "INVALID TYPE!");
 }
 
-int get_size_of_type(int type)
+TypeDetailsLUT get_type_details_from_type_id(varType id)
 {
-	switch (type) {
-	// case VAR_TYPE_I64:
-	// 	return 8;
-	// case VAR_TYPE_F64:
-	// 	return 8;
-	// case VAR_TYPE_CHAR:
-	// 	return 1;
-	case VAR_TYPE_STR:
-	case VAR_TYPE_FUNC:
-	// case VAR_TYPE_STRUCT:
-	case VAR_TYPE_COUNT:
-	default:
-		return 0;
-	}
-}
-
-int get_size_from_id(int id)
-{
-	for (int i = var_def_cnt - 1; i >= 0; i--) {
-		if (id == var_defs[i].mem_addr) {
-			return get_size_of_type(var_defs[i].type);
-		}
-	}
-	assert(0 && "INVALID TYPE!");
+	return typeDetails[id];
 }

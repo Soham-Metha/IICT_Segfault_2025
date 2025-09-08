@@ -6,6 +6,12 @@
 
 typedef struct Block_Context_IR Block_Context_IR;
 
+typedef struct Var_IR {
+	String name;
+	int type;
+	int mem_addr;
+} Var_IR;
+
 struct Block_Context_IR {
 	int b;
 	int n;
@@ -15,5 +21,11 @@ struct Block_Context_IR {
 	StmtNode *next;
 	Block_Context_IR *prev;
 };
+
+// void IR_dump_expr(Expr tok, bool asVal);
+
+// void IR_dump_statement(Block_Context_IR *ctx);
+
+// void IR_dump_code_block(Block_Context_IR *ctx);
 
 #endif

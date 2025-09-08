@@ -22,13 +22,14 @@ void print(Line_Context *ctx, int id, const char *str, ...)
 			myIR = fopen("ir.sasm", "w");
 		}
 
-	va_list args_copy;
-	va_copy(args_copy, args);
-	vfprintf(stdout, str, args_copy);
+		va_list args_copy;
+		va_copy(args_copy, args);
+		vfprintf(stdout, str, args_copy);
 		vfprintf(myIR, str, args);
-	}else {
+	} else {
 		assert(id == WIN_STDERR);
-		printf("\n\n%s:%d:%ld: ",ctx->file_name, ctx->line_no, (ctx->line.data-ctx->line_start));
+		printf("\n\n%s:%d:%ld: ", ctx->file_name, ctx->line_no,
+		       (ctx->line.data - ctx->line_start));
 		vprintf(str, args);
 		printf("\n");
 	}
@@ -50,16 +51,16 @@ void log_to_ctx(Line_Context *ctx, const char *str, ...)
 	vsnprintf(log, size + 1, str, args);
 
 	ctx->logs[ctx->log_cnt++] = (String){ .data = log, .len = size };
-	printf("%s",log);
+	printf("%s", log);
 
 	va_end(args);
 }
 
 int indent = 0;
-char *space = "                              ";
+char *space = "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
 String get_indent()
 {
-	return (String){ .data = space, .len = indent*4 };
+	return (String){ .data = space, .len = indent };
 }
 
 void update_indent(int change)

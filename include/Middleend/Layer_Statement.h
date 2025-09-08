@@ -2,25 +2,39 @@
 #define STMT_LAYER_MIDDLEEND
 
 #include <Utils/strings.h>
+#include <Middleend/Layer_Line.h>
 
-typedef struct Var_IR {
+// typedef struct Var_IR {
+// 	String name;
+// 	int type;
+// 	int mem_addr;
+// } Var_IR;
+
+typedef enum {
+	VAR_TYPE_STR,
+	// VAR_TYPE_I64,
+	// VAR_TYPE_F64,
+	// VAR_TYPE_CHAR,
+	VAR_TYPE_FUNC,
+	// VAR_TYPE_STRUCT,
+	VAR_TYPE_COUNT,
+} varType;
+
+typedef struct {
+	varType type;
 	String name;
-	int type;
-	int mem_addr;
-} Var_IR;
+	int size;
+} TypeDetailsLUT;
 
-void push_var_def(String name, String type, int id);
+typedef struct Var_IR Var_IR;
+typedef struct Block_Context_IR Block_Context_IR;
 
-int get_var_id(String name);
+void push_var_def(Block_Context_IR *ctx, String name, String type, int id);
 
-void clear_var_defs();
+Var_IR get_var_details(Block_Context_IR *ctx, String name);
 
-int get_type_from_name(String name);
+TypeDetailsLUT get_type_details_from_type_name(String name);
 
-int get_size_of_type(int type);
-
-int get_size_from_id(int id);
-
-bool check_var_type(int id, String type);
+TypeDetailsLUT get_type_details_from_type_id(varType id);
 
 #endif

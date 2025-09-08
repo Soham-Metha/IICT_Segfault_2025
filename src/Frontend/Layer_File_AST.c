@@ -13,43 +13,42 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
 
 // int __STMT_VARIABLE(int id, const Var *v)
 // {
-// 	print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id,
+// 	print_AST( AST("ellipse", "lightgoldenrod1", "%.*s"), id,
 // 	      Str_Fmt(v->name));
 // 	if (v->mode & VAR_DECL) {
-// 		print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"),
+// 		print_AST( AST("ellipse", "lightgoldenrod1", "%.*s"),
 // 		      id + 1, Str_Fmt(v->type));
 // 	}
 // 	// if (v->mode & VAR_DEFN) {
-// 	// print(NULL, WIN_AST, AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->as.token->text));
+// 	// print_AST( AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->as.token->text));
 // 	// }
 // 	return id;
 // }
 
 int __STMT_TOKEN(int id, String value)
 {
-	print(NULL, WIN_AST, AST("note", "lightblue", "%.*s"), id, value);
+	print_AST(AST("note", "lightblue", "%.*s"), id, value);
 	return id;
 }
 
 int __STMT_UNKNOWN(int id)
 {
-	print(NULL, WIN_AST, "  Expr_%d [label=\"Stmt_unknown\"];\n", id);
+	print_AST("  Expr_%d [label=\"Stmt_unknown\"];\n", id);
 	return id;
 }
 
 int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 {
 	(void)b;
-	print(NULL, WIN_AST, AST("hexagon", "lightpink", "%.*s"), id,
-	      Str_Fmt(funcall->name));
+	print_AST(AST("hexagon", "lightpink", "%.*s"), id,
+		  Str_Fmt(funcall->name));
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL;
 	     arg = arg->next) {
 		int childId = __STMT_TOKEN((*n)++, arg->expr.as.token.text);
 
 		if (childId >= 0)
-			print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", id,
-			      childId);
+			print_AST("  Expr_%d -> Expr_%d;\n", id, childId);
 	}
 	return id;
 }
@@ -60,20 +59,18 @@ int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 	int clusterId = (*n)++;
 	int clusterNum = (*b)++;
 
-	print(NULL, WIN_AST,
-	      "  subgraph cluster_%d {\n"
-	      "    label=\"Code Block %d\";\n"
-	      "    style=filled;\n"
-	      "    color=gray;\n"
-	      "    fillcolor=whitesmoke;\n"
-	      "    fontname=\"Courier\";\n",
-	      clusterId, clusterNum);
+	print_AST("  subgraph cluster_%d {\n"
+		  "    label=\"Code Block %d\";\n"
+		  "    style=filled;\n"
+		  "    color=gray;\n"
+		  "    fillcolor=whitesmoke;\n"
+		  "    fontname=\"Courier\";\n",
+		  clusterId, clusterNum);
 
 	AST_dump_code_block(block, n, b);
 
-	print(NULL, WIN_AST,
-	      "  }\n" AST("box3d", "aquamarine", "Code Block %d"), clusterId,
-	      clusterNum);
+	print_AST("  }\n" AST("box3d", "aquamarine", "Code Block %d"),
+		  clusterId, clusterNum);
 
 	return clusterId;
 }
@@ -86,7 +83,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-	// 	return __STMT_VARIABLE(myId, &stmt->as.var);
+		// 	return __STMT_VARIABLE(myId, &stmt->as.var);
 		// return __STMT_TOKEN(myId, stmt->as.token.as.token.text);
 	// case STMT_FUNCALL:
 	// 	return __STMT_FUNCALL(myId, n, b, stmt->as.funcall);
@@ -114,8 +111,7 @@ static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
 		if (firstId < 0)
 			firstId = id;
 		if (prevId >= 0)
-			print(NULL, WIN_AST, "  Expr_%d -> Expr_%d;\n", prevId,
-			      id);
+			print_AST("  Expr_%d -> Expr_%d;\n", prevId, id);
 
 		prevId = id;
 	}
@@ -130,15 +126,14 @@ Error AST_generate(const CodeBlock *blk, bool renderPng)
 	int node_counter = 0;
 	int block_counter = 0;
 
-	print(NULL, WIN_AST,
-	      "digraph AST {\n"
-	      "  splines=ortho;\n"
-	      "  nodesep=0.8;\n"
-	      "  ranksep=0.5;\n"
-	      "  node [fontname=\"Courier\"];\n");
+	print_AST("digraph AST {\n"
+		  "  splines=ortho;\n"
+		  "  nodesep=0.8;\n"
+		  "  ranksep=0.5;\n"
+		  "  node [fontname=\"Courier\"];\n");
 
 	AST_dump_code_block(blk->begin, &node_counter, &block_counter);
-	print(NULL, WIN_AST, "}\n");
+	print_AST("}\n");
 
 	if (renderPng) {
 		int r = system("dot -Tpng ast.dot -o ast.png ");
