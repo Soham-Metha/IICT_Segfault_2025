@@ -3,9 +3,7 @@
 #include <stdarg.h>
 #include <Frontend/Layer_Line.h>
 
-#define LOG_FORMAT(action, lvl, str, ...)                              \
-	"\n %6s | %20s %.*s " str, Str_Fmt(get_indent()), lvl, action, \
-		##__VA_ARGS__
+#define LOG_FORMAT(action, lvl, str, ...)  "\n %6s | %20s %.*s " str, lvl, action , Str_Fmt(get_indent()), ##__VA_ARGS__
 #define IR_FORMAT(str, ...) "\n%.*s" str, Str_Fmt(get_indent()), ##__VA_ARGS__
 #define print_IR(...) print(NULL, WIN_IR, __VA_ARGS__);
 #define print_AST(...) print(NULL, WIN_AST, __VA_ARGS__);
