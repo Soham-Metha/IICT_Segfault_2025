@@ -62,9 +62,9 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 {
 	update_indent(1);
 	Token token = token_peek_next(ctx);
-	log_to_ctx(ctx, LOG_FORMAT "Expected: '%s'",
-		   LOG_CTX("[TOKEN CHECK]", "[TOKN}"), token_get_name(expected),
-		   token_get_name(token.type));
+	log_to_ctx(ctx, LOG_FORMAT("[TOKEN CHECK]", "[TOKN]", "Expected: '%s'",
+				   token_get_name(expected),
+				   token_get_name(token.type)));
 
 	if (!token_consume(ctx)) {
 		print(ctx, WIN_STDERR, ": ERROR: expected token `%s`\n",
@@ -209,9 +209,9 @@ bool token_consume(Line_Context *ctx)
 	(void)ctx;
 	if (cachedCnt > 0) {
 		update_indent(1);
-		log_to_ctx(ctx, LOG_FORMAT "<%s '%.*s'>", LOG_CTX("", "[TOKN}"),
-			   token_get_name(tok_cache[0].type),
-			   Str_Fmt(tok_cache[0].text));
+		log_to_ctx(ctx, LOG_FORMAT("", "[TOKN]", "<%s '%.*s'>",
+					   token_get_name(tok_cache[0].type),
+					   Str_Fmt(tok_cache[0].text)));
 		update_indent(-1);
 		for (int i = 0; i < cachedCnt; i++) {
 			tok_cache[i] = tok_cache[i + 1];
