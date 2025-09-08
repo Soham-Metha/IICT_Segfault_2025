@@ -39,7 +39,7 @@ Error file_get_contents(FILE *f, size_t n, char **contents)
 {
 	// Try to allocate enough space
 	// Add 1 to size for null termination
-	char *buf = region_allocate(n+1);
+	char *buf = region_allocate(n + 1);
 	ERROR_THROW_IF(ERR_RAN_OUT_OF_MEM, (!buf))
 
 	// Now that we have space, try to read contents of the file
@@ -60,22 +60,23 @@ Error file_get_contents(FILE *f, size_t n, char **contents)
 Error file_read(const char *file_path, File_Context *file)
 {
 	char *file_contents = NULL;
-	FILE *file_ptr 		= NULL;
-	size_t size 		= 0;
-	Error out 			= ERR_OK;
+	FILE *file_ptr = NULL;
+	size_t size = 0;
+	Error out = ERR_OK;
 
 	// print(WIN_STDOUT, "\n[FILE] Reading File     : %s", file_path);
 
 	ERROR_CHECK(out, goto cleanup, file_open(file_path, "r", &file_ptr));
 	ERROR_CHECK(out, goto cleanup, file_get_size(file_ptr, &size));
-	ERROR_CHECK(out, goto cleanup, file_get_contents(file_ptr, size, &file_contents));
+	ERROR_CHECK(out, goto cleanup,
+		    file_get_contents(file_ptr, size, &file_contents));
 
-	file->contents.len 	= size;
+	file->contents.len = size;
 	file->contents.data = file_contents;
-	file->file_path 	= file_path;
-	file->line_num 		= 0;
+	file->file_path = file_path;
+	file->line_num = 0;
 
-	CodeBlock global 	= codeblock_generate(file);
+	CodeBlock global = codeblock_generate(file);
 	(void)global;
 	IR_generate(&global);
 	// AST_generate(&global, true);
@@ -90,26 +91,27 @@ cleanup:
 
 Line_Context *file_fetch_next_line(File_Context *file)
 {
-	Line_Context *curr 	 = &(file->lines[file->line_num]);
-	if (curr->line.len)  return file_fetch_curr_line(file);
+	Line_Context *curr = &(file->lines[file->line_num]);
+	if (curr->line.len)
+		return file_fetch_curr_line(file);
 
-	curr->file_name      = file->file_path;
-	curr->line 			 = split_str_by_delim(&file->contents, '\n');
+	curr->file_name = file->file_path;
+	curr->line = split_str_by_delim(&file->contents, '\n');
 	curr->line.data[curr->line.len] = '\0';
-	curr->line_start 	 = curr->line.data;
-	file->line_num 		+= 1;
-	curr->line_no		 = file->line_num;
-	curr->line			 = trim(curr->line);
+	curr->line_start = curr->line.data;
+	file->line_num += 1;
+	curr->line_no = file->line_num;
+	curr->line = trim(curr->line);
 
-	log_to_ctx(curr, LOG_FORMAT, LOG_CTX("","--xx--"));
-	log_to_ctx(curr, LOG_FORMAT "\"%.*s\"", LOG_CTX("[READING]", "[LINE]"),
-			Str_Fmt(curr->line));
+	log_to_ctx(curr, LOG_FORMAT("", "--xx--", "", "none"));
+	log_to_ctx(curr, LOG_FORMAT("[READING]", "[LINE]", "\"%.*s\"",
+				    Str_Fmt(curr->line)));
 
 	return curr;
 }
 
-Line_Context* file_fetch_curr_line(File_Context* file)
+Line_Context *file_fetch_curr_line(File_Context *file)
 {
 	assert(file->line_num);
-	return &file->lines[file->line_num-1];
+	return &file->lines[file->line_num - 1];
 }
