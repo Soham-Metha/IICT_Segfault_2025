@@ -80,7 +80,6 @@ Error file_read(const char *file_path, File_Context *file)
 	IR_generate(&global);
 	// AST_generate(&global, true);
 
-
 cleanup:
 	if (file_ptr) {
 		fclose(file_ptr);
@@ -92,6 +91,8 @@ cleanup:
 Line_Context *file_fetch_next_line(File_Context *file)
 {
 	Line_Context *curr 	 = &(file->lines[file->line_num]);
+	if (curr->line.len)  return file_fetch_curr_line(file);
+
 	curr->file_name      = file->file_path;
 	curr->line 			 = split_str_by_delim(&file->contents, '\n');
 	curr->line.data[curr->line.len] = '\0';
