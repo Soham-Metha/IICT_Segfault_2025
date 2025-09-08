@@ -14,10 +14,10 @@ Project for IICT Segfault Hackathon 2025.
 
 [ ] Compiler Name!!!
 
-[ ] Design AST visuals (Determining Colors, shapes, etc)
+[x] Design AST visuals (Determining Colors, shapes, etc)
 
-[ ] Design the UI wrapper functions (NCurses based)
+[x] Design the UI wrapper functions (NCurses based)
 
-[ ] i/o function wrappers
+[x] i/o function wrappers
 
 [ ] actual compiler
