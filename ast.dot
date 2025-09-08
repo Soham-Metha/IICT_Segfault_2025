@@ -3,5 +3,61 @@ digraph AST {
   nodesep=0.8;
   ranksep=0.5;
   node [fontname="Courier"];
-  Expr_0 [label="Stmt_unknown"];
+  Expr_0 [shape=folder style=filled fillcolor=gold fontname="Courier" label="Decl: main"];
+  subgraph cluster_2 {
+    label="Code Block 0";
+    style=filled;
+    color=gray;
+    fillcolor=whitesmoke;
+    fontname="Courier";
+  Expr_3 [shape=folder style=filled fillcolor=gold fontname="Courier" label="Decl: x"];
+  Expr_5 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="Hi"];
+  Expr_3 -> Expr_5;
+  Expr_7 [shape=hexagon style=filled fillcolor=lightpink fontname="Courier" label="write"];
+  Expr_8 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="x"];
+  Expr_7 -> Expr_8;
+  Expr_3 -> Expr_7;
+  Expr_9 [shape=septagon style=filled fillcolor=lightslategrey fontname="Courier" label="Cond: repeat=1"];
+  Expr_10 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="1"];
+  subgraph cluster_12 {
+    label="Code Block 1";
+    style=filled;
+    color=gray;
+    fillcolor=whitesmoke;
+    fontname="Courier";
+  Expr_14 [shape=hexagon style=filled fillcolor=lightpink fontname="Courier" label="write"];
+  Expr_15 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="hello,world!\n"];
+  Expr_14 -> Expr_15;
+  }
+  Expr_12 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 1"];
+  Expr_9 -> Expr_10;
+  Expr_9 -> Expr_12;
+  Expr_7 -> Expr_9;
+  Expr_16 [shape=septagon style=filled fillcolor=lightslategrey fontname="Courier" label="Cond: repeat=1"];
+  Expr_17 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="false"];
+  subgraph cluster_19 {
+    label="Code Block 2";
+    style=filled;
+    color=gray;
+    fillcolor=whitesmoke;
+    fontname="Courier";
+  Expr_21 [shape=hexagon style=filled fillcolor=lightpink fontname="Courier" label="write"];
+  Expr_22 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="bye,world!\n"];
+  Expr_21 -> Expr_22;
+  }
+  Expr_19 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 2"];
+  Expr_16 -> Expr_17;
+  Expr_16 -> Expr_19;
+  Expr_9 -> Expr_16;
+  Expr_23 [shape=folder style=filled fillcolor=gold fontname="Courier" label="Decl: x"];
+  Expr_25 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="hello,world!"];
+  Expr_23 -> Expr_25;
+  Expr_16 -> Expr_23;
+  Expr_27 [shape=hexagon style=filled fillcolor=lightpink fontname="Courier" label="write"];
+  Expr_28 [shape=note style=filled fillcolor=lightblue fontname="Courier" label="x"];
+  Expr_27 -> Expr_28;
+  Expr_23 -> Expr_27;
+  }
+  Expr_2 [shape=box3d style=filled fillcolor=aquamarine fontname="Courier" label="Code Block 0"];
+  Expr_0 -> Expr_2;
 }

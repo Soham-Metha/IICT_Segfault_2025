@@ -1,19 +1,20 @@
 #include <Frontend/Layer_File.h>
 #include <Frontend/Layer_Line.h>
 #include <Frontend/Layer_Statement.h>
+#include <Frontend/Layer_Xpression.h>
 #include <Wrapper/IO.h>
 #include <stdlib.h>
 #include <inttypes.h>
 #include <assert.h>
+#include <stdio.h>
 
 static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
 static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
-
-// ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
+static int AST_dump_expression(const Expr *expr, int *n, int *b);
 
 int __STMT_TOKEN(int id, String value)
 {
-	print_AST(AST("note", "lightblue", "%.*s"), id, value);
+	print_AST(AST("note", "lightblue", "%.*s"), id, Str_Fmt(value));
 	return id;
 }
 
@@ -31,8 +32,7 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 
 	for (const FuncallArg *arg = funcall->args; arg != NULL;
 	     arg = arg->next) {
-		int childId = __STMT_TOKEN((*n)++, arg->expr.as.token.text);
-
+		int childId = AST_dump_expression(&arg->expr, n, b);
 		if (childId >= 0)
 			print_AST("  Expr_%d -> Expr_%d;\n", id, childId);
 	}
@@ -63,6 +63,60 @@ int __STMT_BLOCK(int id, int *n, int *b, const StmtNode *block)
 
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
+static int AST_dump_expression(const Expr *expr, int *n, int *b)
+{
+	assert(expr != NULL);
+	int myId = (*n)++;
+
+	switch (expr->type) {
+	case EXPR_TYPE_FUNCALL:
+		return __STMT_FUNCALL(myId, n, b, &expr->as.funcall);
+	case EXPR_TYPE_STR:
+		return __STMT_TOKEN(myId, expr->as.str);
+	case EXPR_TYPE_NUMBER: {
+		char buf[32];
+		int len = snprintf(buf, sizeof(buf), "%" PRId64, expr->as.num);
+		String str_num = { (unsigned int)len, buf };
+		return __STMT_TOKEN(myId, str_num);
+	}
+	case EXPR_TYPE_VAR:
+		return __STMT_TOKEN(myId, expr->as.var_nm);
+	case EXPR_TYPE_BOOL: {
+		String boolStr = expr->as.boolean ? (String){ 4, "true" } :
+						    (String){ 5, "false" };
+		return __STMT_TOKEN(myId, boolStr);
+	}
+	case EXPR_TYPE_BIN_OPR: {
+		print_AST(AST("diamond", "lightgreen", "%d"), myId,
+			  expr->as.bin_opr.type);
+		return myId;
+	}
+	case EXPR_TYPE_OPEN_CURLY:
+		print_AST(AST("box", "lightgray", "{"), myId);
+		return myId;
+	case EXPR_TYPE_CLOSING_CURLY:
+		print_AST(AST("box", "lightgray", "}"), myId);
+		return myId;
+	case EXPR_TYPE_STATEMENT_END:
+		print_AST(AST("ellipse", "gray", "StmtEnd"), myId);
+		return myId;
+	case EXPR_TYPE_THEN:
+		print_AST(AST("ellipse", "lightyellow", "Then"), myId);
+		return myId;
+	case EXPR_TYPE_REPEAT:
+		print_AST(AST("ellipse", "lightcyan", "Repeat"), myId);
+		return myId;
+	case EXPR_TYPE_COLON:
+		print_AST(AST("box", "lightblue", ":"), myId);
+		return myId;
+	case EXPR_TYPE_EQUAL:
+		print_AST(AST("box", "lightpink", "="), myId);
+		return myId;
+	default:
+		return __STMT_UNKNOWN(myId);
+	}
+}
+
 static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 {
 	assert(stmt != NULL);
@@ -71,15 +125,50 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	switch (stmt->type) {
 	case STMT_BLOCK_START:
 		return __STMT_BLOCK(myId, n, b, stmt->as.block);
-	case STMT_MATCH:
-	case STMT_VAR_DECL:
-	case STMT_VAR_DEFN:
-	case STMT_CONDITIONAL:
-	case STMT_BLOCK_END:
 	case STMT_EXPR:
+		return AST_dump_expression(&stmt->as.expr, n, b);
+	case STMT_VAR_DECL: {
+		print_AST(AST("folder", "gold", "Decl: %.*s"), myId,
+			  Str_Fmt(stmt->as.var_decl.name));
+		if (stmt->as.var_decl.has_init &&
+		    stmt->as.var_decl.init != NULL) {
+			int childId = AST_dump_statement(stmt->as.var_decl.init,
+							 n, b);
+			print_AST("  Expr_%d -> Expr_%d;\n", myId, childId);
+		}
+		return myId;
+	}
+	case STMT_VAR_DEFN: {
+		print_AST(AST("tab", "palegoldenrod", "Defn: %.*s"), myId,
+			  Str_Fmt(stmt->as.var_defn.name));
+		if (stmt->as.var_defn.val != NULL) {
+			int childId =
+				AST_dump_statement(stmt->as.var_defn.val, n, b);
+			print_AST("  Expr_%d -> Expr_%d;\n", myId, childId);
+		}
+		return myId;
+	}
+	case STMT_CONDITIONAL: {
+		print_AST(AST("septagon", "lightslategrey", "Cond: repeat=%d"),
+			  myId, stmt->as.cond.repeat);
+		int condId = AST_dump_expression(&stmt->as.cond.cond, n, b);
+		int bodyId =
+			__STMT_BLOCK((*n)++, n, b, stmt->as.cond.body.begin);
+		print_AST("  Expr_%d -> Expr_%d;\n", myId, condId);
+		print_AST("  Expr_%d -> Expr_%d;\n", myId, bodyId);
+		return myId;
+	}
+	case STMT_BLOCK_END:
+		print_AST(AST("ellipse", "gray", "BlockEnd"), myId);
+		return myId;
+	case STMT_MATCH:
+		print_AST(AST("hexagon", "purple", "Match"), myId);
+		return myId;
 	default:
 		return __STMT_UNKNOWN(myId);
 	}
+
+	// TODO: update match block once implemented!
 }
 
 static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b)
