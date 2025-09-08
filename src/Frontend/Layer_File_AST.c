@@ -11,20 +11,6 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-// int __STMT_VARIABLE(int id, const Var *v)
-// {
-// 	print_AST( AST("ellipse", "lightgoldenrod1", "%.*s"), id,
-// 	      Str_Fmt(v->name));
-// 	if (v->mode & VAR_DECL) {
-// 		print_AST( AST("ellipse", "lightgoldenrod1", "%.*s"),
-// 		      id + 1, Str_Fmt(v->type));
-// 	}
-// 	// if (v->mode & VAR_DEFN) {
-// 	// print_AST( AST("ellipse", "lightgoldenrod1", "%.*s"), id+2, Str_Fmt(v->defn_val->as.token->text));
-// 	// }
-// 	return id;
-// }
-
 int __STMT_TOKEN(int id, String value)
 {
 	print_AST(AST("note", "lightblue", "%.*s"), id, value);
@@ -83,10 +69,6 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	int myId = (*n)++;
 
 	switch (stmt->type) {
-		// 	return __STMT_VARIABLE(myId, &stmt->as.var);
-		// return __STMT_TOKEN(myId, stmt->as.token.as.token.text);
-	// case STMT_FUNCALL:
-	// 	return __STMT_FUNCALL(myId, n, b, stmt->as.funcall);
 	case STMT_BLOCK_START:
 		return __STMT_BLOCK(myId, n, b, stmt->as.block);
 	case STMT_MATCH:
