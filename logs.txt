@@ -1,0 +1,24 @@
+ir.sasm:27: ERROR: couldnt find binding `E_1_len`.
+
+|   |                                                                                                                              |
+| W | ERROR | 'var' | Unknown instruction detected!                                                                              |
+|   |                                                                                                                              |
+
+|   |                                                                                                                              |
+| W | ERROR | 'var' | Unknown instruction detected!                                                                              |
+|   |                                                                                                                              |
+
+|   |                                                                                                                              |
+| W | ERROR | 'var' | Unknown instruction detected!                                                                              |
+|   |                                                                                                                              |
+ir.sasm:21: ERROR: expected `%end` directive at the end of the `%scope` block
+ir.sasm:12: NOTE: the %scope block starts here
+ir.sasm:28: ERROR: Could not compute the length of string at address 0
+ir.sasm:26: ERROR: Could not compute the length of string at address 0
+ir.sasm:27: ERROR: Could not compute the length of string at address 0
+ir.sasm:28: ERROR: Could not compute the length of string at address 0
+ir.sasm:29: ERROR: Could not compute the length of string at address 0
+ir.sasm:111177: ERROR: expected `%end` directive at the end of the `%scope` block
+ir.sasm:27: NOTE: the %scope block starts here
+ir.sasm:111177: ERROR: expected `%end` directive at the end of the `%scope` block
+ir.sasm:27: NOTE: the %scope block starts here

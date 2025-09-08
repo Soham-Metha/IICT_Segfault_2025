@@ -1,16 +1,19 @@
-main:func() = {
+x:str = "Hi";
 
-     x:str = "Hi";
+main:func() = {
+     x = "Hi";
+     % TODO: control directly jumps to main
+     % without defining the global variables
      write(x);
 
-     (1) <-> {
+     (1) -> {
           write("hello,world!\n");
      }
      (false) repeat {
           write("bye,world!\n");
      }
 
-    x:str = "hello,world!";
+    x = "hello,world!";
     write(x);
 };
 

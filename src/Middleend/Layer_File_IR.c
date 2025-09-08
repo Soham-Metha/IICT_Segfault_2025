@@ -7,7 +7,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
-static void IR_dump_expr(Block_Context_IR *ctx, Expr tok, bool asVal);
+static void IR_dump_expr(Block_Context_IR *ctx, Expr tok);
 
 static void IR_dump_statement(Block_Context_IR *ctx);
 
@@ -15,48 +15,96 @@ static void IR_dump_code_block(Block_Context_IR *ctx);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
+void dump_var_accs(const Block_Context_IR *ctx, String var_nm)
+{
+	int id = get_var_details(ctx, var_nm).mem_addr;
+	switch (get_var_details(ctx, var_nm).type) {
+	case VAR_TYPE_STR:
+		print_IR(IR_FORMAT("PUSH    E_%d    ", id));
+		print_IR(IR_FORMAT("READ8U          ", ""));
+		print_IR(IR_FORMAT("PUSH    E_%d_len", id));
+		print_IR(IR_FORMAT("READ8U          ", ""));
+		break;
+	case VAR_TYPE_FUNC:
+	case VAR_TYPE_COUNT:
+	default:
+		break;
+	}
+}
+
+void dump_var_decl(String var_nm, String type, int id)
+{
+	switch (get_type_details_from_type_name(type).type) {
+	case VAR_TYPE_FUNC:
+		break;
+	case VAR_TYPE_STR: {
+		print_IR(IR_FORMAT("; declaring var:   %.*s     ",
+				   Str_Fmt(var_nm)));
+		print_IR(IR_FORMAT("%%bind   E_%d        res(8)", id));
+		print_IR(IR_FORMAT("%%bind   E_%d_len    res(8)", id));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+	} break;
+	case VAR_TYPE_COUNT:
+	default:
+		break;
+	}
+}
+
+void dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, int id)
+{
+	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
+	switch (type) {
+	case VAR_TYPE_FUNC: {
+		if (compare_str(var_nm, STR("main"))) {
+			print_IR(IR_FORMAT("%%entry    E_%d: ", id));
+		} else {
+			print_IR(IR_FORMAT("E_%d: ", id));
+		}
+		IR_dump_statement(ctx);
+		print_IR(IR_FORMAT(";--------------------------", ""));
+	} break;
+	case VAR_TYPE_STR: {
+		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_STR);
+		int id = get_var_details(ctx, var_nm).mem_addr;
+		print_IR(IR_FORMAT("PUSH   E_%d", id));
+		print_IR(IR_FORMAT("PUSH   E_%d_len", id));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+		IR_dump_statement(ctx);
+		print_IR(IR_FORMAT(";--------------------------", ""));
+		print_IR(IR_FORMAT("SWAP   1", "none"));
+		print_IR(IR_FORMAT("SWAP   2", "none"));
+		print_IR(IR_FORMAT("SWAP   1", "none"));
+		print_IR(IR_FORMAT("WRITE8  ", "none"));
+		print_IR(IR_FORMAT("WRITE8  ", "none"));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+	} break;
+	case VAR_TYPE_COUNT:
+	default:
+		break;
+	}
+}
+
 void IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_VAR_DECL);
 	VarDecl *v = &ctx->next->statement.as.var_decl;
 
-	int s = get_type_details_from_type_name(v->type).size;
+	int id = ctx->n++;
+	push_var_def(ctx, v->name, v->type, id);
+	dump_var_decl(v->name, v->type, id);
 	if (v->has_init) {
-		int id = ctx->n++;
-		push_var_def(ctx, v->name, v->type, id);
 		StmtNode nxt =
 			(StmtNode){ .next = NULL, .statement = *v->init };
 		Block_Context_IR blk_ctx = { .n = ctx->n,
-					     .b = 999,
+					     .b = ctx->b,
 					     .next = &nxt,
 					     .prev = ctx,
 					     .var_def_cnt = 0 };
 
-		print_IR(IR_FORMAT("; var:    %.*s ", Str_Fmt(v->name)));
-		switch (get_type_details_from_type_name(v->type).type) {
-		case VAR_TYPE_FUNC: {
-			print_IR(IR_FORMAT("", "none"));
-			if (compare_str(v->name, STR("main"))) {
-				print_IR("%%entry    ");
-			}
-			print_IR("E_%d: ", id);
-		} break;
-		case VAR_TYPE_STR: {
-			print_IR(IR_FORMAT("%%bind    E_%d    ", id));
-		} break;
-		case VAR_TYPE_COUNT:
-		default:
-			break;
-		}
-		IR_dump_statement(&blk_ctx);
+		varType type = get_var_details(ctx, v->name).type;
+		dump_var_defn(&blk_ctx, v->name, type, id);
 		ctx->n = blk_ctx.n;
-	} else if (s) {
-		int id = ctx->n++;
-		push_var_def(ctx, v->name, v->type, id);
-	} else {
-		assert(0 &&
-		       "cant just declare an immutable type, needs a definition");
 	}
 }
 
@@ -65,38 +113,27 @@ void IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_VAR_DEFN);
 	VarDefn *v = &ctx->next->statement.as.var_defn;
+	varType type = get_var_details(ctx, v->name).type;
 	int id = get_var_details(ctx, v->name).mem_addr;
-	int size = get_type_details_from_type_id(
-			   get_var_details(ctx, v->name).type)
-			   .size;
-	if (size) {
-		assert(0 && "not supported yet");
-		print_IR(IR_FORMAT("PUSH    E_%d", id));
-		IR_dump_statement(ctx);
-		print_IR(IR_FORMAT("WRITE%d     ", size));
-	} else if (id) {
-		print_IR(IR_FORMAT("; var:    %.*s ", Str_Fmt(v->name)));
-		print_IR(IR_FORMAT("%%bind    %d    ", id));
-		int tmp = ctx->b;
-		ctx->b = 999;
-		IR_dump_statement(ctx);
-		ctx->b = tmp;
-	} else {
-		assert(0 && "VARIABLE IS OF IMMUTABLE TYPE!!");
-	}
+
+	StmtNode nxt = (StmtNode){ .next = NULL, .statement = *v->val };
+	Block_Context_IR blk_ctx = { .n = ctx->n,
+				     .b = ctx->b,
+				     .next = &nxt,
+				     .prev = ctx,
+				     .var_def_cnt = 0 };
+	dump_var_defn(&blk_ctx, v->name, type, id);
 }
 
 void IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 {
 	if (compare_str(funcall->name, STR("write"))) {
-		IR_dump_expr(ctx, funcall->args->expr, false);
-		print_IR(IR_FORMAT("CALL    write_str", "none"));
+		for (const FuncallArg *arg = funcall->args; arg != NULL;
+		     arg = arg->next) {
+			IR_dump_expr(ctx, funcall->args->expr);
+			print_IR(IR_FORMAT("CALL    write_str", "none"));
+		}
 	}
-
-	// for (const FuncallArg *arg = funcall->args; arg != NULL;
-	//      arg = arg->next) {
-	// 	IR_dump_expr(arg->expr);
-	// }
 }
 
 static void IR__STMT_BLOCK(Block_Context_IR *ctx)
@@ -136,38 +173,39 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	blk_ctx.var_def_cnt = 0;
 	blk_ctx.next = cond->body.begin;
 
-	print_IR(IR_FORMAT("E_%d:\n; start of cond", cond_id));
+	print_IR(IR_FORMAT("E_%d:                       ", cond_id));
+	print_IR(IR_FORMAT(";cond start                ", ""));
+	print_IR(IR_FORMAT(";--------------------------", ""));
 	update_indent(1);
-	IR_dump_expr(ctx, cond->cond, false);
-	print_IR(IR_FORMAT("NOT", "none"));
+	IR_dump_expr(ctx, cond->cond);
+	print_IR(IR_FORMAT("NOT                        ", ""));
+	print_IR(IR_FORMAT("JMPC    E_%d                ", body_end_id));
 	update_indent(-1);
-	print_IR(IR_FORMAT("JMPC    E_%d", body_end_id));
-	print_IR(IR_FORMAT("E_%d:\n; before body", body_id));
-
-	print_IR(IR_FORMAT("%%scope", "none"));
+	print_IR(IR_FORMAT(";--------------------------", ""));
+	print_IR(IR_FORMAT("E_%d:                       ", body_id));
+	print_IR(IR_FORMAT(";body start                ", ""));
+	print_IR(IR_FORMAT(";--------------------------", ""));
+	print_IR(IR_FORMAT("%%scope                    ", ""));
 	IR_dump_code_block(&blk_ctx);
-	print_IR(IR_FORMAT("%%end", "none"));
-
 	if (cond->repeat) {
 		print_IR(IR_FORMAT("JMPU    E_%d", cond_id));
 	}
-
-	print_IR(IR_FORMAT("E_%d:\n; end of cond", body_end_id));
+	print_IR(IR_FORMAT("%%end                       ", ""));
+	print_IR(IR_FORMAT(";--------------------------", ""));
+	print_IR(IR_FORMAT("E_%d:                       ", body_end_id));
+	print_IR(IR_FORMAT(";body end                  ", ""));
+	print_IR(IR_FORMAT(";--------------------------", ""));
 
 	ctx->n = blk_ctx.n;
 }
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-static void IR_dump_expr(Block_Context_IR *ctx, Expr expr, bool as_val)
+static void IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 {
 	// print_IR(IR_FORMAT(";;;        %d",
 	//       expr.type);
 	switch (expr.type) {
 	case EXPR_TYPE_STR:
-		if (as_val) {
-			print_IR("\"%.*s\"", Str_Fmt(expr.as.str));
-			break;
-		}
 		print_IR(IR_FORMAT("PUSH    \"%.*s\"", Str_Fmt(expr.as.str)));
 		print_IR(IR_FORMAT("PUSH    %d", expr.as.str.len));
 		break;
@@ -186,9 +224,7 @@ static void IR_dump_expr(Block_Context_IR *ctx, Expr expr, bool as_val)
 		print_IR(IR_FORMAT("PUSH    %d", expr.as.num));
 		break;
 	case EXPR_TYPE_VAR:
-		int id = get_var_details(ctx, expr.as.var_nm).mem_addr;
-		print_IR(IR_FORMAT("PUSH    E_%d", id));
-		print_IR(IR_FORMAT("PUSH    len(E_%d)", id));
+		dump_var_accs(ctx, expr.as.var_nm);
 		break;
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
@@ -216,7 +252,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_CONDITIONAL(ctx);
 		break;
 	case STMT_EXPR:
-		IR_dump_expr(ctx, stmt.as.expr, ctx->b == 999);
+		IR_dump_expr(ctx, stmt.as.expr);
 		break;
 	case STMT_VAR_DECL:
 		IR__STMT_VAR_DECL(ctx);

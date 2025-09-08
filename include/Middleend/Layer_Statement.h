@@ -31,7 +31,7 @@ typedef struct Block_Context_IR Block_Context_IR;
 
 void push_var_def(Block_Context_IR *ctx, String name, String type, int id);
 
-Var_IR get_var_details(Block_Context_IR *ctx, String name);
+Var_IR get_var_details(const Block_Context_IR *ctx, String name);
 
 TypeDetailsLUT get_type_details_from_type_name(String name);
 
