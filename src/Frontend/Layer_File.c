@@ -79,7 +79,7 @@ Error file_read(const char *file_path, File_Context *file)
 	CodeBlock global = codeblock_generate(file);
 	(void)global;
 	IR_generate(&global);
-	// AST_generate(&global, true);
+	AST_generate(&global, true);
 
 cleanup:
 	if (file_ptr) {
