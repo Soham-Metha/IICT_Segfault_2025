@@ -15,6 +15,12 @@
       "aliases": ["Simulated Assembly Lang", "sasm"],
       "extensions": [".sasm"],
       "configuration": "./language-configuration.json"
+    },
+    {
+      "id": "sasm_HLL",
+      "aliases": ["Simulated Assembly Lang", "sasm_HLL"],
+      "extensions": [".iict"],
+      "configuration": "./language-configuration.json"
     }],
     "grammars": [{
       "language": "sasm",
