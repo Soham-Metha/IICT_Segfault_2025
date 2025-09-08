@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <Frontend/Layer_Line.h>
 
-#define LOG_CTX(action, lvl) lvl, action, Str_Fmt(get_indent())
+#define LOG_CTX(action, lvl, str, ...) lvl action str, Str_Fmt(get_indent()), ##__VA_ARGS__
 
 #define LOG_FORMAT "\n %6s | %20s %.*s "
 
