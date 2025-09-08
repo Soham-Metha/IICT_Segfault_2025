@@ -12,7 +12,7 @@ static int AST_dump_code_block(const StmtNode *stmtNode, int *n, int *b);
 static int AST_dump_statement(const Stmt *stmt, int *n, int *b);
 static int AST_dump_expression(const Expr *expr, int *n, int *b);
 
-int __STMT_TOKEN(int id, String value)
+int __EXPR_TYPE_TOKEN(int id, String value)
 {
 	print_AST(AST("note", "lightblue", "%.*s"), id, Str_Fmt(value));
 	return id;
@@ -72,19 +72,19 @@ static int AST_dump_expression(const Expr *expr, int *n, int *b)
 	case EXPR_TYPE_FUNCALL:
 		return __STMT_FUNCALL(myId, n, b, &expr->as.funcall);
 	case EXPR_TYPE_STR:
-		return __STMT_TOKEN(myId, expr->as.str);
+		return __EXPR_TYPE_TOKEN(myId, expr->as.str);
 	case EXPR_TYPE_NUMBER: {
 		char buf[32];
 		int len = snprintf(buf, sizeof(buf), "%" PRId64, expr->as.num);
 		String str_num = { (unsigned int)len, buf };
-		return __STMT_TOKEN(myId, str_num);
+		return __EXPR_TYPE_TOKEN(myId, str_num);
 	}
 	case EXPR_TYPE_VAR:
-		return __STMT_TOKEN(myId, expr->as.var_nm);
+		return __EXPR_TYPE_TOKEN(myId, expr->as.var_nm);
 	case EXPR_TYPE_BOOL: {
 		String boolStr = expr->as.boolean ? (String){ 4, "true" } :
 						    (String){ 5, "false" };
-		return __STMT_TOKEN(myId, boolStr);
+		return __EXPR_TYPE_TOKEN(myId, boolStr);
 	}
 	case EXPR_TYPE_BIN_OPR: {
 		print_AST(AST("diamond", "lightgreen", "%d"), myId,
