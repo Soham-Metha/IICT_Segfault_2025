@@ -143,6 +143,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_AND:
 	case TOKEN_TYPE_OR:
 	case TOKEN_TYPE_EQEQ:
+	case TOKEN_TYPE_CNT:
 	default:
 		token_consume(ctx);
 
