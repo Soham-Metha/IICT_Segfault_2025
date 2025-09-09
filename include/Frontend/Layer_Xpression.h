@@ -54,10 +54,6 @@ struct Funcall {
 	FuncallArg *args;
 };
 
-struct BinOpr {
-	BinOprType type;
-	BinOprPrec prec;
-};
 
 union ExprValue {
 	String str;
@@ -65,13 +61,19 @@ union ExprValue {
 	Funcall funcall;
 	String var_nm;
 	bool boolean;
-	BinOpr bin_opr;
+	BinOpr *bin_opr;
 	Token token;
 };
 
 struct Expr {
 	ExprType type;
 	ExprValue as;
+};
+
+struct BinOpr {
+	BinOprType type;
+	Expr lhs;
+	Expr rhs;
 };
 
 struct FuncallArg {
