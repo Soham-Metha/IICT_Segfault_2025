@@ -402,10 +402,10 @@ static void IR_dump_code_block(Block_Context_IR *ctx)
 	assert(ctx);
 	update_indent(1);
 	for (; ctx->next != NULL;) {
-		varType type = IR_dump_statement(ctx);
-		if (type != VAR_TYPE_VOID) {
-			print_IR(IR_FORMAT("SPOP", ""));
-		}
+		 IR_dump_statement(ctx);
+		// if (type != VAR_TYPE_VOID) {
+		// 	print_IR(IR_FORMAT("SPOP", ""));
+		// }
 	}
 	update_indent(-1);
 }
