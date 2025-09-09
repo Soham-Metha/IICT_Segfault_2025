@@ -88,7 +88,7 @@ static int AST_dump_expression(const Expr *expr, int *n, int *b)
 	}
 	case EXPR_TYPE_BIN_OPR: {
 		print_AST(AST("diamond", "lightgreen", "%d"), myId,
-			  expr->as.bin_opr.type);
+			  expr->as.bin_opr->type);
 		return myId;
 	}
 	case EXPR_TYPE_OPEN_CURLY:
