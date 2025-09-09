@@ -1,1 +1,0 @@
-ir.sasm:2: ERROR: Unknown token starts with _
