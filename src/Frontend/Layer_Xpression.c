@@ -6,6 +6,66 @@
 #include <assert.h>
 #include <stdlib.h>
 
+BinOprLUT binOprLUT[BIN_OPR_CNT] = {
+	[BIN_OPR_AND] = {
+		.type = BIN_OPR_AND,
+		.tokn = TOKEN_TYPE_AND,
+		.prec = BIN_OPR_P0
+	},
+	[BIN_OPR_OR] = {
+        .type = BIN_OPR_OR,
+        .tokn = TOKEN_TYPE_OR,
+        .prec = BIN_OPR_P0,
+    },
+    [BIN_OPR_LT] = {
+        .type = BIN_OPR_LT,
+        .tokn = TOKEN_TYPE_LT,
+        .prec = BIN_OPR_P1,
+    },
+    [BIN_OPR_GE] = {
+        .type = BIN_OPR_GE,
+        .tokn = TOKEN_TYPE_GE,
+        .prec = BIN_OPR_P1,
+    },
+    [BIN_OPR_NE] = {
+        .type = BIN_OPR_NE,
+        .tokn = TOKEN_TYPE_NE,
+        .prec = BIN_OPR_P1,
+    },
+    [BIN_OPR_EQ] = {
+        .type = BIN_OPR_EQ,
+        .tokn = TOKEN_TYPE_EQEQ,
+        .prec = BIN_OPR_P1,
+    },
+    [BIN_OPR_PLUS] = {
+        .type = BIN_OPR_PLUS,
+        .tokn = TOKEN_TYPE_PLUS,
+        .prec = BIN_OPR_P2
+    },
+    [BIN_OPR_MINUS] = {
+        .type = BIN_OPR_MINUS,
+        .tokn = TOKEN_TYPE_MINUS,
+        .prec = BIN_OPR_P2
+    },
+    [BIN_OPR_MULT] = {
+        .type = BIN_OPR_MULT,
+        .tokn = TOKEN_TYPE_MULT,
+        .prec = BIN_OPR_P3
+    }
+};
+
+bool bin_opr_get_def(TokenType tok, BinOprLUT *out)
+{
+	for (int i = 0; i < BIN_OPR_CNT; i++) {
+		if (binOprLUT[i].tokn == tok) {
+			if (out)
+				*out = binOprLUT[i];
+			return true;
+		}
+	}
+	return false;
+}
+
 const char *expr_get_name(ExprType type)
 {
 	switch (type) {
@@ -110,7 +170,7 @@ Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 	(void)ctx;
 	(void)p;
 	if (p > COUNT_BIN_OPR_PRECEDENCE) {
-	    return expr_peek_next(ctx);
+		return expr_peek_next(ctx);
 	}
 	// traverse left side of expr tree
 	Expr lhs = expr_parse_with_precedence(ctx, p + 1);
