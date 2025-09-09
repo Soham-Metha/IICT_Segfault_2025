@@ -326,6 +326,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 	default:
 		break;
 	}
+	return VAR_TYPE_COUNT;
 }
 
 static void IR_dump_statement(Block_Context_IR *ctx)
