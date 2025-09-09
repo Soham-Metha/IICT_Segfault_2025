@@ -91,7 +91,7 @@ cleanup:
 
 Line_Context *file_fetch_next_line(File_Context *file)
 {
-	if (file->lines[file->line_num-1].line.len)
+	if (file->line_num && file->lines[file->line_num-1].line.len)
 		return file_fetch_curr_line(file);
 	Line_Context *curr = &(file->lines[file->line_num]);
 
