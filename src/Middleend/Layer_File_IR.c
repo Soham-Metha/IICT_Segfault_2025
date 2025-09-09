@@ -44,7 +44,7 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_COUNT][BIN_OPR_CNT] = {
 					      .inst = "MULI" } },
 };
 
-static void IR_dump_expr(Block_Context_IR *ctx, Expr tok);
+static varType IR_dump_expr(Block_Context_IR *ctx, Expr tok);
 
 static void IR_dump_statement(Block_Context_IR *ctx);
 
@@ -52,7 +52,7 @@ static void IR_dump_code_block(Block_Context_IR *ctx);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
-void dump_var_accs(const Block_Context_IR *ctx, String var_nm)
+varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 {
 	int id = get_var_details(ctx, var_nm).mem_addr;
 	switch (get_var_details(ctx, var_nm).type) {
@@ -61,21 +61,26 @@ void dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 		print_IR(IR_FORMAT("READ8U          ", ""));
 		print_IR(IR_FORMAT("PUSH    E_%d_len", id));
 		print_IR(IR_FORMAT("READ8U          ", ""));
+		return VAR_TYPE_STR;
 	} break;
 	case VAR_TYPE_I64: {
 		print_IR(IR_FORMAT("PUSH    E_%d    ", id));
+		return VAR_TYPE_I64;
 	} break;
 	case VAR_TYPE_FUNC:
+		return VAR_TYPE_FUNC;
 	case VAR_TYPE_COUNT:
+		return VAR_TYPE_COUNT;
 	default:
 		break;
 	}
 }
 
-void dump_var_decl(String var_nm, String type, int id)
+varType dump_var_decl(String var_nm, String type, int id)
 {
 	switch (get_type_details_from_type_name(type).type) {
 	case VAR_TYPE_FUNC:
+		return VAR_TYPE_FUNC;
 		break;
 	case VAR_TYPE_STR: {
 		print_IR(IR_FORMAT("; declaring var:   %.*s     ",
@@ -83,20 +88,24 @@ void dump_var_decl(String var_nm, String type, int id)
 		print_IR(IR_FORMAT("%%bind   E_%d        res(8)", id));
 		print_IR(IR_FORMAT("%%bind   E_%d_len    res(8)", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
+		return VAR_TYPE_STR;
 	} break;
 	case VAR_TYPE_I64: {
 		print_IR(IR_FORMAT("; declaring var:   %.*s     ",
 				   Str_Fmt(var_nm)));
 		print_IR(IR_FORMAT("%%bind   E_%d        res(8)", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
+		return VAR_TYPE_I64;
 	} break;
 	case VAR_TYPE_COUNT:
+		return VAR_TYPE_COUNT;
 	default:
 		break;
 	}
 }
 
-void dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, int id)
+varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
+		      int id)
 {
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 	switch (type) {
@@ -108,6 +117,7 @@ void dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, int id)
 		}
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
+		return VAR_TYPE_FUNC;
 	} break;
 	case VAR_TYPE_STR: {
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_STR);
@@ -125,6 +135,7 @@ void dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, int id)
 		print_IR(IR_FORMAT("WRITE8  ", "none"));
 		print_IR(IR_FORMAT("WRITE8  ", "none"));
 		print_IR(IR_FORMAT(";--------------------------", ""));
+		return VAR_TYPE_STR;
 	} break;
 	case VAR_TYPE_I64: {
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_I64);
@@ -137,22 +148,25 @@ void dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, int id)
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		print_IR(IR_FORMAT("WRITE8  ", "none"));
 		print_IR(IR_FORMAT(";--------------------------", ""));
+		return VAR_TYPE_I64;
 	} break;
 	case VAR_TYPE_COUNT:
+		return VAR_TYPE_COUNT;
 	default:
 		break;
 	}
 }
 
-void IR__STMT_VAR_DECL(Block_Context_IR *ctx)
+varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_VAR_DECL);
 	VarDecl *v = &ctx->next->statement.as.var_decl;
 
 	int id = ctx->n++;
+	varType type;
 	push_var_def(ctx, v->name, v->type, id);
-	dump_var_decl(v->name, v->type, id);
+	type = dump_var_decl(v->name, v->type, id);
 	if (v->has_init) {
 		StmtNode nxt =
 			(StmtNode){ .next = NULL, .statement = *v->init };
@@ -162,13 +176,13 @@ void IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 					     .prev = ctx,
 					     .var_def_cnt = 0 };
 
-		varType type = get_var_details(ctx, v->name).type;
 		dump_var_defn(&blk_ctx, v->name, type, id);
 		ctx->n = blk_ctx.n;
 	}
+	return type;
 }
 
-void IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
+varType IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_VAR_DEFN);
@@ -183,9 +197,10 @@ void IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 				     .prev = ctx,
 				     .var_def_cnt = 0 };
 	dump_var_defn(&blk_ctx, v->name, type, id);
+	return type;
 }
 
-void IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
+varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 {
 	if (compare_str(funcall->name, STR("write"))) {
 		for (const FuncallArg *arg = funcall->args; arg != NULL;
@@ -193,6 +208,7 @@ void IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 			IR_dump_expr(ctx, funcall->args->expr);
 			print_IR(IR_FORMAT("CALL    write_str", "none"));
 		}
+		return VAR_TYPE_FUNC;
 	}
 }
 
@@ -260,7 +276,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 }
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
-static void IR_dump_expr(Block_Context_IR *ctx, Expr expr)
+static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 {
 	// print_IR(IR_FORMAT(";;;        %d",
 	//       expr.type);
@@ -268,31 +284,43 @@ static void IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 	case EXPR_TYPE_STR:
 		print_IR(IR_FORMAT("PUSH    \"%.*s\"", Str_Fmt(expr.as.str)));
 		print_IR(IR_FORMAT("PUSH    %d", expr.as.str.len));
+		return VAR_TYPE_STR;
 		break;
 	case EXPR_TYPE_STATEMENT_END:
 		print_IR("\n; Line end reached");
+		assert(0 && "discard the statement end in the parsing!");
 		break;
 	case EXPR_TYPE_BOOL:
 		print_IR(IR_FORMAT("PUSH    %d", (expr.as.boolean) ? 1 : 0));
+		return VAR_TYPE_I64;
 		break;
 
 	case EXPR_TYPE_FUNCALL:
 		IR__STMT_FUNCALL(ctx, &expr.as.funcall);
+		return VAR_TYPE_FUNC;
 		break;
 
 	case EXPR_TYPE_NUMBER:
 		print_IR(IR_FORMAT("PUSH    %d", expr.as.num));
+		return VAR_TYPE_I64;
 		break;
 	case EXPR_TYPE_VAR:
-		dump_var_accs(ctx, expr.as.var_nm);
+		return dump_var_accs(ctx, expr.as.var_nm);
 		break;
+	case EXPR_TYPE_BIN_OPR:
+		varType l = IR_dump_expr(ctx, expr.as.bin_opr->lhs);
+		varType r = IR_dump_expr(ctx, expr.as.bin_opr->rhs);
+		assert(l == r);
+		print(ctx, WIN_IR,
+		      IR_FORMAT("%s",
+				bin_opr_inst_LUT[l][expr.as.bin_opr->type]));
+
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
 	case EXPR_TYPE_OPEN_CURLY:
 	case EXPR_TYPE_CLOSING_CURLY:
 	case EXPR_TYPE_COLON:
 	case EXPR_TYPE_EQUAL:
-	case EXPR_TYPE_BIN_OPR:
 	default:
 		break;
 	}
