@@ -421,10 +421,10 @@ Error IR_generate(const CodeBlock *blk)
 	ctx.next = blk->begin;
 	ctx.var_def_cnt = 0;
 
-	print_IR(IR_FORMAT("%%entry _start:", ""));
-	print_IR(IR_FORMAT("CALL    main   ", ""));
-	print_IR(IR_FORMAT("SHUTS          ", ""));
-	print_IR(IR_FORMAT("write_str:     ", ""));
+	print_IR(IR_FORMAT("%%entry strt:", ""));
+	print_IR(IR_FORMAT("CALL    main ", ""));
+	print_IR(IR_FORMAT("SHUTS        ", ""));
+	print_IR(IR_FORMAT("write_str:   ", ""));
 	update_indent(1);
 	print_IR(IR_FORMAT("SWAP     1   ", ""));
 	print_IR(IR_FORMAT("SPOPR    [QT]", ""));
