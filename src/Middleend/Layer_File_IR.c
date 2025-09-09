@@ -99,7 +99,7 @@ varType dump_var_decl(String var_nm, String type, int id)
 {
 	switch (get_type_details_from_type_name(type).type) {
 	case VAR_TYPE_FUNC:
-		return VAR_TYPE_FUNC;
+		return VAR_TYPE_VOID;
 		break;
 	case VAR_TYPE_STR: {
 		print_IR(IR_FORMAT("; declaring var:   %.*s     ",
@@ -140,7 +140,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		print_IR(IR_FORMAT("%.*s: ", Str_Fmt(var_nm)));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
-		return VAR_TYPE_FUNC;
+		return VAR_TYPE_VOID;
 	} break;
 	case VAR_TYPE_STR: {
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_STR);
@@ -334,8 +334,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 		break;
 
 	case EXPR_TYPE_FUNCALL:
-		IR__STMT_FUNCALL(ctx, &expr.as.funcall);
-		return VAR_TYPE_FUNC;
+		return IR__STMT_FUNCALL(ctx, &expr.as.funcall);
 		break;
 
 	case EXPR_TYPE_NUMBER:
