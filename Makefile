@@ -39,4 +39,4 @@ run_all: clean all
 	@$(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE) -tui
 
 check: clean all
-	@ltrace $(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE) -tui
+	@gdb --args $(EXEC_FILE) -i $(IN_FILE) -o $(OUT_FILE) -tui
