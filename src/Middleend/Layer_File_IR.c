@@ -102,6 +102,7 @@ varType dump_var_decl(String var_nm, String type, int id)
 	} break;
 	case VAR_TYPE_VOID:
 		return VAR_TYPE_VOID;
+	case VAR_TYPE_CNT:
 	default:
 		break;
 	}
