@@ -403,7 +403,7 @@ static void IR_dump_code_block(Block_Context_IR *ctx)
 	for (; ctx->next != NULL;) {
 		
 		varType type = IR_dump_statement(ctx);
-		if (type != VAR_TYPE_VOID) {
+		if (!ctx->next && type != VAR_TYPE_VOID) {
 			print_IR(IR_FORMAT("SPOP", ""));
 		}
 	}
