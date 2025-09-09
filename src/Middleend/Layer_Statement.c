@@ -17,6 +17,7 @@ static TypeDetailsLUT typeDetails[VAR_TYPE_CNT] = {
 
 void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
 {
+	assert(!compare_str(type,STR("void")));
 	assert(ctx->var_def_cnt < 128);
 	ctx->var_defs[ctx->var_def_cnt++] =
 		(Var_IR){ .name = name,
