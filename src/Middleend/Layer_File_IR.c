@@ -14,7 +14,7 @@ typedef struct {
 } BinOprInstLUT;
 
 static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
-	[VAR_TYPE_FUNC] = { 
+	[VAR_TYPE_FUNC] = {
 			    [BIN_OPR_AND]   = { .allowed = false },
 			    [BIN_OPR_OR]    = { .allowed = false },
 			    [BIN_OPR_LT]    = { .allowed = false },
@@ -24,7 +24,7 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
 			    [BIN_OPR_PLUS]  = { .allowed = false },
 			    [BIN_OPR_MINUS] = { .allowed = false },
 			    [BIN_OPR_MULT]  = { .allowed = false } },
-	[VAR_TYPE_STR] = { 
+	[VAR_TYPE_STR] = {
 			   [BIN_OPR_AND]   = { .allowed = false },
 			   [BIN_OPR_OR]    = { .allowed = false },
 			   [BIN_OPR_LT]    = { .allowed = false },
@@ -34,7 +34,7 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
 			   [BIN_OPR_PLUS]  = { .allowed = false },
 			   [BIN_OPR_MINUS] = { .allowed = false },
 			   [BIN_OPR_MULT]  = { .allowed = false } },
-	[VAR_TYPE_I64] = { 
+	[VAR_TYPE_I64] = {
 			   [BIN_OPR_AND]   = { .allowed = false },
 			   [BIN_OPR_OR]    = { .allowed = false },
 			   [BIN_OPR_LT]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "LTI" },
@@ -44,7 +44,7 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
 			   [BIN_OPR_PLUS]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nADDI    val([QT])\nPUSHR    ref([L2])" },
 			   [BIN_OPR_MINUS] = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nSUBI    val([QT])\nPUSHR    ref([L2])" },
 			   [BIN_OPR_MULT]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nMULI    val([QT])\nPUSHR    ref([L2])" } },
-	[VAR_TYPE_BOOL] = { 
+	[VAR_TYPE_BOOL] = {
 			   [BIN_OPR_AND]   = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "ANDB" },
 			   [BIN_OPR_OR]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = " ORB" },
 			   [BIN_OPR_LT]    = { .allowed = false },
@@ -137,7 +137,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 	switch (type) {
 	case VAR_TYPE_FUNC: {
-		print_IR(IR_FORMAT("%.*s: ", var_nm));
+		print_IR(IR_FORMAT("%.*s: ", Str_Fmt(var_nm)));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		return VAR_TYPE_FUNC;
@@ -147,16 +147,16 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		assert(ctx->next->statement.type == STMT_EXPR);
 		assert(ctx->next->statement.as.expr.type == EXPR_TYPE_STR);
 		int id = get_var_details(ctx, var_nm).mem_addr;
-		print_IR(IR_FORMAT("PUSH   E_%d", id));
-		print_IR(IR_FORMAT("PUSH   E_%d_len", id));
+		print_IR(IR_FORMAT("PUSH   E_%d                ", id));
+		print_IR(IR_FORMAT("PUSH   E_%d_len            ", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
-		print_IR(IR_FORMAT("SWAP   1", "none"));
-		print_IR(IR_FORMAT("SWAP   2", "none"));
-		print_IR(IR_FORMAT("SWAP   1", "none"));
-		print_IR(IR_FORMAT("WRITE8  ", "none"));
-		print_IR(IR_FORMAT("WRITE8  ", "none"));
+		print_IR(IR_FORMAT("SWAP   1                   ", ""));
+		print_IR(IR_FORMAT("SWAP   2                   ", ""));
+		print_IR(IR_FORMAT("SWAP   1                   ", ""));
+		print_IR(IR_FORMAT("WRITE8                     ", ""));
+		print_IR(IR_FORMAT("WRITE8                     ", ""));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		return VAR_TYPE_STR;
 	} break;
@@ -164,11 +164,11 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_I64);
 		assert(ctx->next->statement.type == STMT_EXPR);
 		int id = get_var_details(ctx, var_nm).mem_addr;
-		print_IR(IR_FORMAT("PUSH   E_%d", id));
+		print_IR(IR_FORMAT("PUSH   E_%d                ", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
-		print_IR(IR_FORMAT("WRITE8  ", "none"));
+		print_IR(IR_FORMAT("WRITE8                     ", ""));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		return VAR_TYPE_I64;
 	} break;
@@ -180,7 +180,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
-		print_IR(IR_FORMAT("WRITE1  ", "none"));
+		print_IR(IR_FORMAT("WRITE1                     ", ""));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		return VAR_TYPE_I64;
 	} break;
@@ -240,7 +240,8 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 	if (compare_str(funcall->name, STR("write"))) {
 		for (const FuncallArg *arg = funcall->args; arg != NULL;
 		     arg = arg->next) {
-			assert(IR_dump_expr(ctx, funcall->args->expr)==VAR_TYPE_STR);
+			assert(IR_dump_expr(ctx, funcall->args->expr) ==
+			       VAR_TYPE_STR);
 			print_IR(IR_FORMAT("CALL    write_str", "none"));
 		}
 		return VAR_TYPE_VOID;
@@ -290,7 +291,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	print_IR(IR_FORMAT(";--------------------------", ""));
 	update_indent(1);
 	varType cond_type = IR_dump_expr(ctx, cond->cond);
-	assert(cond_type==VAR_TYPE_BOOL || cond_type == VAR_TYPE_I64);
+	assert(cond_type == VAR_TYPE_BOOL || cond_type == VAR_TYPE_I64);
 	print_IR(IR_FORMAT("NOT                        ", ""));
 	print_IR(IR_FORMAT("JMPC    E_%d                ", body_end_id));
 	update_indent(-1);
@@ -349,8 +350,8 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 		varType r = IR_dump_expr(ctx, expr.as.bin_opr->rhs);
 		assert(l == r);
 		assert(bin_opr_inst_LUT[l][expr.as.bin_opr->type].allowed);
-		print_IR(IR_FORMAT("%s",
-				   bin_opr_inst_LUT[l][expr.as.bin_opr->type].inst));
+		print_IR(IR_FORMAT(
+			"%s", bin_opr_inst_LUT[l][expr.as.bin_opr->type].inst));
 		return bin_opr_inst_LUT[l][expr.as.bin_opr->type].ret;
 
 	case EXPR_TYPE_THEN:
@@ -381,7 +382,6 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 	case STMT_EXPR:
 		varType type = IR_dump_expr(ctx, stmt.as.expr);
 		if (type == VAR_TYPE_VOID) {
-
 		}
 		break;
 	case STMT_VAR_DECL:
@@ -420,15 +420,15 @@ Error IR_generate(const CodeBlock *blk)
 	ctx.next = blk->begin;
 	ctx.var_def_cnt = 0;
 
-	print_IR(IR_FORMAT("%%entry main ",""));
-	print_IR(IR_FORMAT("write_str:   ",""));
+	print_IR(IR_FORMAT("%%entry main ", ""));
+	print_IR(IR_FORMAT("write_str:   ", ""));
 	update_indent(1);
-	print_IR(IR_FORMAT("SWAP     1   ",""));
-	print_IR(IR_FORMAT("SPOPR    [QT]",""));
-	print_IR(IR_FORMAT("SWAP     1   ",""));
-	print_IR(IR_FORMAT("SPOPR    [L0]",""));
-	print_IR(IR_FORMAT("INVOK    7   ",""));
-	print_IR(IR_FORMAT("RET          ",""));
+	print_IR(IR_FORMAT("SWAP     1   ", ""));
+	print_IR(IR_FORMAT("SPOPR    [QT]", ""));
+	print_IR(IR_FORMAT("SWAP     1   ", ""));
+	print_IR(IR_FORMAT("SPOPR    [L0]", ""));
+	print_IR(IR_FORMAT("INVOK    7   ", ""));
+	print_IR(IR_FORMAT("RET          ", ""));
 	update_indent(-2);
 	IR_dump_code_block(&ctx);
 	update_indent(1);
