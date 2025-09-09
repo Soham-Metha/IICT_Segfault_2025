@@ -4,6 +4,32 @@
 #include <Utils/mem_manager.h>
 #include <assert.h>
 
+Stmt stmt_check_stmt_conditional(Line_Context *ctx) 
+{
+	Stmt result = {0};
+	StmtConditional res = {0};
+	Expr expr = expr_parse(ctx);
+	Token next = token_peek_next(ctx);
+
+	if (next.type == TOKEN_TYPE_THEN) {
+		token_expect_next(ctx, TOKEN_TYPE_THEN);
+		res.repeat = false;
+	} else if (next.type == TOKEN_TYPE_REPEAT) {
+		token_expect_next(ctx, TOKEN_TYPE_REPEAT);
+		res.repeat = true;
+	} else {
+		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
+		result.type = STMT_EXPR;
+		result.as.expr = expr;
+		return result;
+	}
+
+	res.cond = expr;
+	result.type = STMT_CONDITIONAL;
+	result.as.cond = res;
+	return result;
+}
+
 StmtConditional get_stmt_conditional(Line_Context *ctx)
 {
 	StmtConditional res = { 0 };
@@ -122,14 +148,16 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	}
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_CHAR:
-	case TOKEN_TYPE_STR:
-	case TOKEN_TYPE_THEN:
-	case TOKEN_TYPE_REPEAT: {
+	case TOKEN_TYPE_STR: {
 		result.type = STMT_EXPR;
 		result.as.expr = expr_parse(ctx);
+		Token nxt = token_peek_next(ctx);
+		if (nxt.type == TOKEN_TYPE_THEN || nxt.type == TOKEN_TYPE_REPEAT)
 		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
 		return result;
 	}
+	case TOKEN_TYPE_THEN:
+	case TOKEN_TYPE_REPEAT:
 	case TOKEN_TYPE_STATEMENT_END:
 	case TOKEN_TYPE_CLOSING_PAREN:
 	case TOKEN_TYPE_COMMA:
