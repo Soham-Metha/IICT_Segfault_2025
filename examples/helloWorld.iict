@@ -1,4 +1,4 @@
-x:str = "Hi"
+x:str = "Hi";
 
 main:func() = {
      x = "Hi";
