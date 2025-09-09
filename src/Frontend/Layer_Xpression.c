@@ -283,6 +283,7 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_OR:
 	case TOKEN_TYPE_EQEQ:
 	case TOKEN_TYPE_STATEMENT_END:
+	case TOKEN_TYPE_CNT:
 	default: {
 		log_to_ctx(ctx,
 			   LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
