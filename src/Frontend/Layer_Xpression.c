@@ -191,6 +191,8 @@ Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 		lhs = expr;
 		tok = token_peek_next(ctx);
 	}
+
+	return lhs;
 }
 
 Expr expr_parse(Line_Context *ctx)
