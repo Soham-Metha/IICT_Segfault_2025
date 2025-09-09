@@ -11,7 +11,7 @@ static TypeDetailsLUT typeDetails[VAR_TYPE_CNT] = {
 			    .size = 0,
 			    .name = { .data = "func", .len = 4 } },
 	[VAR_TYPE_I64] = { .type = VAR_TYPE_I64,
-			   .size = 0,
+			   .size = 8,
 			   .name = { .data = "i64", .len = 3 } },
 };
 
