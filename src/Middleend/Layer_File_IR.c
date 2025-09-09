@@ -158,13 +158,24 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
 	case VAR_TYPE_I64: {
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_I64);
 		assert(ctx->next->statement.type == STMT_EXPR);
-		// assert(ctx->next->statement.as.expr.type == EXPR_TYPE_NUMBER);
 		int id = get_var_details(ctx, var_nm).mem_addr;
 		print_IR(IR_FORMAT("PUSH   E_%d", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		print_IR(IR_FORMAT("WRITE8  ", "none"));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+		return VAR_TYPE_I64;
+	} break;
+	case VAR_TYPE_BOOL: {
+		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_BOOL);
+		assert(ctx->next->statement.type == STMT_EXPR);
+		int id = get_var_details(ctx, var_nm).mem_addr;
+		print_IR(IR_FORMAT("PUSH   E_%d", id));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+		IR_dump_statement(ctx);
+		print_IR(IR_FORMAT(";--------------------------", ""));
+		print_IR(IR_FORMAT("WRITE1  ", "none"));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		return VAR_TYPE_I64;
 	} break;
