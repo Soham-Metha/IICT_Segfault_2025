@@ -11,13 +11,15 @@
 // } Var_IR;
 
 typedef enum {
+	VAR_TYPE_VOID,
 	VAR_TYPE_STR,
 	VAR_TYPE_I64,
+	VAR_TYPE_BOOL,
 	// VAR_TYPE_F64,
 	// VAR_TYPE_CHAR,
 	VAR_TYPE_FUNC,
 	// VAR_TYPE_STRUCT,
-	VAR_TYPE_COUNT,
+	VAR_TYPE_CNT,
 } varType;
 
 typedef struct {

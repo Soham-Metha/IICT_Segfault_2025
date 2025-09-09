@@ -3,20 +3,24 @@
 #include <Utils/strings.h>
 #include <Middleend/Layer_Line.h>
 
-static TypeDetailsLUT typeDetails[VAR_TYPE_COUNT] = {
+static TypeDetailsLUT typeDetails[VAR_TYPE_CNT] = {
 	[VAR_TYPE_STR] = { .type = VAR_TYPE_STR,
-			   .size = 0,
+			   .size = 16,
 			   .name = { .data = "str", .len = 3 } },
 	[VAR_TYPE_FUNC] = { .type = VAR_TYPE_FUNC,
 			    .size = 0,
 			    .name = { .data = "func", .len = 4 } },
 	[VAR_TYPE_I64] = { .type = VAR_TYPE_I64,
-			   .size = 0,
+			   .size = 8,
 			   .name = { .data = "i64", .len = 3 } },
+	[VAR_TYPE_BOOL] = { .type = VAR_TYPE_BOOL,
+			    .size = 1,
+			    .name = { .data = "bool", .len = 4 } },
 };
 
 void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
 {
+	assert(!compare_str(type, STR("void")));
 	assert(ctx->var_def_cnt < 128);
 	ctx->var_defs[ctx->var_def_cnt++] =
 		(Var_IR){ .name = name,
@@ -38,7 +42,7 @@ Var_IR get_var_details(const Block_Context_IR *ctx, String name)
 
 TypeDetailsLUT get_type_details_from_type_name(String name)
 {
-	for (int i = 0; i < VAR_TYPE_COUNT; i++) {
+	for (int i = 0; i < VAR_TYPE_CNT; i++) {
 		if (compare_str(name, typeDetails[i].name)) {
 			return typeDetails[i];
 		}
