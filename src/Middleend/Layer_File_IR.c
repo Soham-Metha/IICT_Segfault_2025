@@ -101,6 +101,13 @@ varType dump_var_decl(String var_nm, String type, int id)
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		return VAR_TYPE_I64;
 	} break;
+	case VAR_TYPE_BOOL: {
+		print_IR(IR_FORMAT("; declaring var:   %.*s     ",
+				   Str_Fmt(var_nm)));
+		print_IR(IR_FORMAT("%%bind   E_%d        res(1)", id));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+		return VAR_TYPE_I64;
+	} break;
 	case VAR_TYPE_VOID:
 		return VAR_TYPE_VOID;
 	case VAR_TYPE_CNT:
