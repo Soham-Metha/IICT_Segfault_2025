@@ -8,7 +8,10 @@ main:func() = {
      % write(y); not yet supported
 
      y:i64 = 0;
-     (y<10) <-> { write("hello,world!\n"); y = y + 1; }
+     (y<10) <-> { 
+          write("hello,world!\n"); 
+          y = y + 1; 
+     }
      (false) repeat {
           write("bye,world!\n");
      }
