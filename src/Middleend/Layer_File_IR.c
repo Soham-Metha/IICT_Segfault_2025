@@ -37,13 +37,23 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
 	[VAR_TYPE_I64] = { 
 			   [BIN_OPR_AND]   = { .allowed = false },
 			   [BIN_OPR_OR]    = { .allowed = false },
-			   [BIN_OPR_LT]    = { .allowed = true, .ret =VAR_TYPE_BOOL, .inst = "LTI" },
-			   [BIN_OPR_GE]    = { .allowed = true, .ret =VAR_TYPE_BOOL, .inst = "GEI" },
-			   [BIN_OPR_NE]    = { .allowed = true, .ret =VAR_TYPE_BOOL, .inst = "NEI" },
-			   [BIN_OPR_EQ]    = { .allowed = true, .ret =VAR_TYPE_BOOL, .inst = "EQI" },
-			   [BIN_OPR_PLUS]  = { .allowed = true, .ret =VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nADDI    val([QT])\nPUSHR    ref([L2])" },
-			   [BIN_OPR_MINUS] = { .allowed = true, .ret =VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nSUBI    val([QT])\nPUSHR    ref([L2])" },
-			   [BIN_OPR_MULT]  = { .allowed = true, .ret =VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nMULI    val([QT])\nPUSHR    ref([L2])" } },
+			   [BIN_OPR_LT]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "LTI" },
+			   [BIN_OPR_GE]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "GEI" },
+			   [BIN_OPR_NE]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "NEI" },
+			   [BIN_OPR_EQ]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "EQI" },
+			   [BIN_OPR_PLUS]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nADDI    val([QT])\nPUSHR    ref([L2])" },
+			   [BIN_OPR_MINUS] = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nSUBI    val([QT])\nPUSHR    ref([L2])" },
+			   [BIN_OPR_MULT]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nMULI    val([QT])\nPUSHR    ref([L2])" } },
+	[VAR_TYPE_BOOL] = { 
+			   [BIN_OPR_AND]   = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "ANDB" },
+			   [BIN_OPR_OR]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = " ORB" },
+			   [BIN_OPR_LT]    = { .allowed = false },
+			   [BIN_OPR_GE]    = { .allowed = false },
+			   [BIN_OPR_NE]    = { .allowed = false },
+			   [BIN_OPR_EQ]    = { .allowed = false },
+			   [BIN_OPR_PLUS]  = { .allowed = false },
+			   [BIN_OPR_MINUS] = { .allowed = false },
+			   [BIN_OPR_MULT]  = { .allowed = false } },
 };
 
 static varType IR_dump_expr(Block_Context_IR *ctx, Expr tok);
