@@ -68,6 +68,7 @@ const char *token_get_name(TokenType type)
 		return "Binary operator ==";
 	case TOKEN_TYPE_STATEMENT_END:
 		return "Statement ended with";
+	case TOKEN_TYPE_CNT:
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
