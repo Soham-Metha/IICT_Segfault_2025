@@ -113,6 +113,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 				statement.as.var_defn.val->as.block =
 					codeblock_generate(context).begin;
 			}
+			token_consume(ctx);
 			break;
 		case STMT_EXPR:
 		default:
