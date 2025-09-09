@@ -103,6 +103,7 @@ varType dump_var_decl(String var_nm, String type, int id)
 	default:
 		break;
 	}
+	return VAR_TYPE_COUNT;
 }
 
 varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
