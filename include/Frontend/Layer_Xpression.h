@@ -32,6 +32,7 @@ typedef enum {
 	BIN_OPR_AND,
 	BIN_OPR_OR,
 	BIN_OPR_EQ,
+	BIN_OPR_CNT,
 } BinOprType;
 
 typedef enum {
