@@ -176,19 +176,21 @@ Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 	Expr lhs = expr_parse_with_precedence(ctx, p + 1);
 	Token tok = token_peek_next(ctx);
 	BinOprLUT dets;
-	while (bin_opr_get_def(tok.type,&dets) && dets.prec==p) {
+	while (bin_opr_get_def(tok.type, &dets) && dets.prec == p) {
 		assert(token_consume(ctx));
-		Expr expr = {0};
+		Expr expr = { 0 };
 		expr.type = EXPR_TYPE_BIN_OPR;
 		BinOpr *opr = region_allocate(sizeof(*opr));
 
 		opr->type = dets.type;
 		opr->lhs = lhs;
-		opr->rhs =  expr_parse_with_precedence(ctx, p + 1);
+		opr->rhs = expr_parse_with_precedence(ctx, p + 1);
 
 		expr.as.bin_opr = opr;
+
+		lhs = expr;
+		tok = token_peek_next(ctx);
 	}
-	assert(0 && "TODO");
 }
 
 Expr expr_parse(Line_Context *ctx)
