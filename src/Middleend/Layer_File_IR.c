@@ -70,6 +70,11 @@ varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 		print_IR(IR_FORMAT("READ8I          ", id));
 		return VAR_TYPE_I64;
 	} break;
+	case VAR_TYPE_BOOL: {
+		print_IR(IR_FORMAT("PUSH    E_%d    ", id));
+		print_IR(IR_FORMAT("READ1U          ", id));
+		return VAR_TYPE_BOOL;
+	} break;
 	case VAR_TYPE_FUNC:
 		return VAR_TYPE_FUNC;
 	case VAR_TYPE_VOID:
