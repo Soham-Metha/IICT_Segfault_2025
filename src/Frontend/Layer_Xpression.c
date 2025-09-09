@@ -174,8 +174,11 @@ Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 	}
 	// traverse left side of expr tree
 	Expr lhs = expr_parse_with_precedence(ctx, p + 1);
+
 	Token tok = token_peek_next(ctx);
 	BinOprLUT dets;
+
+	// if next token is a binary opr, then traverse the rhs
 	while (bin_opr_get_def(tok.type, &dets) && dets.prec == p) {
 		assert(token_consume(ctx));
 		Expr expr = { 0 };
