@@ -66,6 +66,11 @@ bool bin_opr_get_def(TokenType tok, BinOprLUT *out)
 	return false;
 }
 
+const char *bin_opr_get_name(BinOprType type)
+{
+	return token_get_name(binOprLUT[type].tokn);
+}
+
 const char *expr_get_name(ExprType type)
 {
 	switch (type) {
