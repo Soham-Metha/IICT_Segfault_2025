@@ -19,6 +19,8 @@ main:func() = {
 
     x = "hello,world!";
     write(x);
+
+    1;
 };
 
 % Language name: undecided
