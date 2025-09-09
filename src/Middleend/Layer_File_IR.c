@@ -381,7 +381,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 	case STMT_EXPR:
 		varType type = IR_dump_expr(ctx, stmt.as.expr);
 		if (type != VAR_TYPE_VOID) {
-			print_IR(IR_FORMAT("SPOP", ""));
+			// print_IR(IR_FORMAT("SPOP", ""));
 		}
 		break;
 	case STMT_VAR_DECL:
