@@ -87,7 +87,6 @@ static int AST_dump_expression(const Expr *expr, int *n, int *b)
 		return __EXPR_TYPE_TOKEN(myId, boolStr);
 	}
 	case EXPR_TYPE_BIN_OPR: {
-		BinOprLUT dets;
 		print_AST(AST("diamond", "lightgreen", "%s"), myId,
 			  bin_opr_get_name(expr->as.bin_opr->type));
 		int child1 = AST_dump_expression(&expr->as.bin_opr->lhs, n, b);
