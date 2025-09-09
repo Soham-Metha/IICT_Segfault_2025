@@ -142,10 +142,9 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		print_IR(IR_FORMAT("JMPU    E_%d               ", id));
 		print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
 		varType func_out = IR_dump_statement(ctx);
-		if (func_out==VAR_TYPE_VOID) {
-			print_IR(IR_FORMAT("PUSH    0              ", ""));
+		if (func_out==VAR_TYPE_I64) {
+			print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
 		}
-		print_IR(IR_FORMAT("SWAP    1                  ", ""));
 		print_IR(IR_FORMAT("RET                        ", ""));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		print_IR(IR_FORMAT("E_%d:                      ", id));
