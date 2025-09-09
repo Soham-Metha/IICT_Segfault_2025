@@ -55,7 +55,7 @@ VarDefn stmt_parse_var_defn(Line_Context *ctx)
 	res.val = region_allocate(sizeof(Stmt));
 	*res.val = stmt_fetch_next(ctx);
 	if (res.val->type != STMT_BLOCK_START) {
-		token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
+		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
 	}
 	return res;
 }
@@ -157,5 +157,5 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		exit(1);
 	}
 
-	token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
+	// token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
 }
