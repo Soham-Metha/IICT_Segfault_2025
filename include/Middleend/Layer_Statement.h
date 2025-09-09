@@ -39,4 +39,5 @@ TypeDetailsLUT get_type_details_from_type_name(String name);
 
 TypeDetailsLUT get_type_details_from_type_id(varType id);
 
+void set_var_as_defined(Block_Context_IR *ctx, String name);
 #endif
