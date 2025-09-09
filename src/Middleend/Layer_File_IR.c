@@ -157,6 +157,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
 	default:
 		break;
 	}
+	return VAR_TYPE_COUNT;
 }
 
 varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
