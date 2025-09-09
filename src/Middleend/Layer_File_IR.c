@@ -7,6 +7,43 @@
 #include <inttypes.h>
 #include <assert.h>
 
+typedef struct {
+	bool allowed;
+	const char *inst;
+} BinOprInstLUT;
+
+static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_COUNT][BIN_OPR_CNT] = {
+	[VAR_TYPE_FUNC] = { [BIN_OPR_AND] = { .allowed = false },
+			    [BIN_OPR_OR] = { .allowed = false },
+			    [BIN_OPR_LT] = { .allowed = false },
+			    [BIN_OPR_GE] = { .allowed = false },
+			    [BIN_OPR_NE] = { .allowed = false },
+			    [BIN_OPR_EQ] = { .allowed = false },
+			    [BIN_OPR_PLUS] = { .allowed = false },
+			    [BIN_OPR_MINUS] = { .allowed = false },
+			    [BIN_OPR_MULT] = { .allowed = false } },
+	[VAR_TYPE_STR] = { [BIN_OPR_AND] = { .allowed = false },
+			   [BIN_OPR_OR] = { .allowed = false },
+			   [BIN_OPR_LT] = { .allowed = false },
+			   [BIN_OPR_GE] = { .allowed = false },
+			   [BIN_OPR_NE] = { .allowed = false },
+			   [BIN_OPR_EQ] = { .allowed = false },
+			   [BIN_OPR_PLUS] = { .allowed = false },
+			   [BIN_OPR_MINUS] = { .allowed = false },
+			   [BIN_OPR_MULT] = { .allowed = false } },
+	[VAR_TYPE_I64] = { [BIN_OPR_AND] = { .allowed = false },
+			   [BIN_OPR_OR] = { .allowed = false },
+			   [BIN_OPR_LT] = { .allowed = true, .inst = "LTI" },
+			   [BIN_OPR_GE] = { .allowed = true, .inst = "GEI" },
+			   [BIN_OPR_NE] = { .allowed = true, .inst = "NEI" },
+			   [BIN_OPR_EQ] = { .allowed = true, .inst = "EQI" },
+			   [BIN_OPR_PLUS] = { .allowed = true, .inst = "ADDI" },
+			   [BIN_OPR_MINUS] = { .allowed = true,
+					       .inst = "SUBI" },
+			   [BIN_OPR_MULT] = { .allowed = true,
+					      .inst = "MULI" } },
+};
+
 static void IR_dump_expr(Block_Context_IR *ctx, Expr tok);
 
 static void IR_dump_statement(Block_Context_IR *ctx);
