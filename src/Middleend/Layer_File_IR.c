@@ -87,8 +87,6 @@ varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 		return VAR_TYPE_BOOL;
 	} break;
 	case VAR_TYPE_FUNC:
-		int id = get_var_details(ctx, var_nm).mem_addr;
-		print_IR(IR_FORMAT("CALL    E_%d    ", id));
 		return VAR_TYPE_FUNC;
 	case VAR_TYPE_VOID:
 		return VAR_TYPE_VOID;
@@ -265,6 +263,9 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		}
 		return VAR_TYPE_VOID;
 	}
+	int id = get_var_details(ctx, funcall->name).mem_addr;
+	print_IR(IR_FORMAT("CALL    E_%d    ", id));
+
 	return VAR_TYPE_VOID;
 }
 
