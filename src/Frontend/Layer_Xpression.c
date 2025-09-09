@@ -200,8 +200,7 @@ Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 
 Expr expr_parse(Line_Context *ctx)
 {
-	// return expr_parse_with_precedence(ctx, 0);
-	return expr_peek_next(ctx);
+	return expr_parse_with_precedence(ctx, 0);
 }
 
 Expr expr_peek_next(Line_Context *ctx)
