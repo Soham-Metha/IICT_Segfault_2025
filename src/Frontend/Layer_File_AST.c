@@ -153,8 +153,8 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 		return myId;
 	}
 	case STMT_CONDITIONAL: {
-		print_AST(AST("septagon", "lightslategrey", "Cond: repeat=%d"),
-			  myId, stmt->as.cond.repeat);
+		print_AST(AST("septagon", "lightslategrey", "%s"),
+			  myId, (stmt->as.cond.repeat)?"While":"If");
 		int condId = AST_dump_expression(&stmt->as.cond.cond, n, b);
 		int bodyId =
 			__STMT_BLOCK((*n)++, n, b, stmt->as.cond.body.begin);
