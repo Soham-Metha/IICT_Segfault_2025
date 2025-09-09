@@ -114,6 +114,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		return result;
 	} break;
 	case TOKEN_TYPE_OPEN_PAREN: {
+		token_consume(ctx);
 		result.type = STMT_CONDITIONAL;
 		result.as.cond = get_stmt_conditional(ctx);
 		return result;
