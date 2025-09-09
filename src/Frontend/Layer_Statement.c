@@ -22,7 +22,7 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 		token_consume(ctx);
 		res.repeat = true;
 	} else {
-		log_to_ctx(ctx," GOT %d",next.type);
+		log_to_ctx(ctx," GOT %d\n\n",next.type);
 		assert(0 && "EXPECTED THEN OR REPEAT");
 	}
 
