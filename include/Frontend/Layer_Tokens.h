@@ -28,6 +28,7 @@ enum TokenType {
 	TOKEN_TYPE_AND,
 	TOKEN_TYPE_OR,
 	TOKEN_TYPE_EQEQ,
+	TOKEN_TYPE_CNT,
 };
 
 typedef struct Token Token;
