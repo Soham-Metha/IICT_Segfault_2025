@@ -12,7 +12,7 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
 	       res.cond.type == EXPR_TYPE_BOOL ||
 	       res.cond.type == EXPR_TYPE_NUMBER);
-
+	token_expect_next(ctx,TOKEN_TYPE_CLOSING_PAREN);
 	Token next = token_peek_next(ctx);
 
 	if (next.type == TOKEN_TYPE_THEN) {
@@ -22,6 +22,7 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 		token_consume(ctx);
 		res.repeat = true;
 	} else {
+		log_to_ctx(ctx," GOT %d\n\n",next.type);
 		assert(0 && "EXPECTED THEN OR REPEAT");
 	}
 
@@ -87,9 +88,9 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 	} else {
 		result.type = STMT_EXPR;
 		result.as.expr = expr_parse(ctx);
+		(void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 		return result;
 	}
-	// (void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
 	return result;
 }
 
@@ -114,6 +115,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		return result;
 	} break;
 	case TOKEN_TYPE_OPEN_PAREN: {
+		token_consume(ctx);
 		result.type = STMT_CONDITIONAL;
 		result.as.cond = get_stmt_conditional(ctx);
 		return result;
@@ -134,6 +136,16 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_COLON:
 	case TOKEN_TYPE_EQUAL:
 	case TOKEN_TYPE_EOL:
+	case TOKEN_TYPE_PLUS:
+	case TOKEN_TYPE_MINUS:
+	case TOKEN_TYPE_MULT:
+	case TOKEN_TYPE_LT:
+	case TOKEN_TYPE_GE:
+	case TOKEN_TYPE_NE:
+	case TOKEN_TYPE_AND:
+	case TOKEN_TYPE_OR:
+	case TOKEN_TYPE_EQEQ:
+	case TOKEN_TYPE_CNT:
 	default:
 		token_consume(ctx);
 
@@ -144,5 +156,5 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 		exit(1);
 	}
 
-	token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
+	// token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
 }

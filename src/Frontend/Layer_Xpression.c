@@ -6,6 +6,71 @@
 #include <assert.h>
 #include <stdlib.h>
 
+BinOprLUT binOprLUT[BIN_OPR_CNT] = {
+	[BIN_OPR_AND] = {
+		.type = BIN_OPR_AND,
+		.tokn = TOKEN_TYPE_AND,
+		.prec = BIN_OPR_P0
+	},
+	[BIN_OPR_OR] = {
+        .type = BIN_OPR_OR,
+        .tokn = TOKEN_TYPE_OR,
+        .prec = BIN_OPR_P0,
+    },
+    [BIN_OPR_LT] = {
+        .type = BIN_OPR_LT,
+        .tokn = TOKEN_TYPE_LT,
+        .prec = BIN_OPR_P1,
+    },
+    [BIN_OPR_GE] = {
+        .type = BIN_OPR_GE,
+        .tokn = TOKEN_TYPE_GE,
+        .prec = BIN_OPR_P1,
+    },
+    [BIN_OPR_NE] = {
+        .type = BIN_OPR_NE,
+        .tokn = TOKEN_TYPE_NE,
+        .prec = BIN_OPR_P1,
+    },
+    [BIN_OPR_EQ] = {
+        .type = BIN_OPR_EQ,
+        .tokn = TOKEN_TYPE_EQEQ,
+        .prec = BIN_OPR_P1,
+    },
+    [BIN_OPR_PLUS] = {
+        .type = BIN_OPR_PLUS,
+        .tokn = TOKEN_TYPE_PLUS,
+        .prec = BIN_OPR_P2
+    },
+    [BIN_OPR_MINUS] = {
+        .type = BIN_OPR_MINUS,
+        .tokn = TOKEN_TYPE_MINUS,
+        .prec = BIN_OPR_P2
+    },
+    [BIN_OPR_MULT] = {
+        .type = BIN_OPR_MULT,
+        .tokn = TOKEN_TYPE_MULT,
+        .prec = BIN_OPR_P3
+    }
+};
+
+bool bin_opr_get_def(TokenType tok, BinOprLUT *out)
+{
+	for (int i = 0; i < BIN_OPR_CNT; i++) {
+		if (binOprLUT[i].tokn == tok) {
+			if (out)
+				*out = binOprLUT[i];
+			return true;
+		}
+	}
+	return false;
+}
+
+const char *bin_opr_get_name(BinOprType type)
+{
+	return token_get_name(binOprLUT[type].tokn);
+}
+
 const char *expr_get_name(ExprType type)
 {
 	switch (type) {
@@ -17,7 +82,6 @@ const char *expr_get_name(ExprType type)
 		return "Numeric value";
 	case EXPR_TYPE_VAR:
 		return "Variable Name";
-		return "Closing parenthesis";
 	case EXPR_TYPE_OPEN_CURLY:
 		return "Open curly brace";
 	case EXPR_TYPE_CLOSING_CURLY:
@@ -105,22 +169,43 @@ Funcall parse_expr_funcall(Line_Context *ctx)
 	return res;
 }
 
-// Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
-// {
-// 	(void)ctx;
-// 	(void)p;
-// 	// if (p > COUNT_BIN_OPR_PRECEDENCE) {
-// 	//     return expr_peek_next(ctx);
-// 	// }
-// 	// // traverse left side of expr tree
-// 	// Expr lhs = expr_parse_with_precedence(ctx, p + 1);
-// 	assert(0 && "TODO");
-// }
+Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
+{
+	(void)ctx;
+	(void)p;
+	if (p > COUNT_BIN_OPR_PRECEDENCE) {
+		return expr_peek_next(ctx);
+	}
+	// traverse left side of expr tree
+	Expr lhs = expr_parse_with_precedence(ctx, p + 1);
+
+	Token tok = token_peek_next(ctx);
+	BinOprLUT dets;
+
+	// if next token is a binary opr, then traverse the rhs
+	while (bin_opr_get_def(tok.type, &dets) && dets.prec == p) {
+		log_to_ctx(ctx, LOG_FORMAT("[EXPR]","[BINOP]", "found bin op %d",dets.type));
+		assert(token_consume(ctx));
+		Expr expr = { 0 };
+		expr.type = EXPR_TYPE_BIN_OPR;
+		BinOpr *opr = region_allocate(sizeof(*opr));
+
+		opr->type = dets.type;
+		opr->lhs = lhs;
+		opr->rhs = expr_parse_with_precedence(ctx, p + 1);
+
+		expr.as.bin_opr = opr;
+
+		lhs = expr;
+		tok = token_peek_next(ctx);
+	}
+
+	return lhs;
+}
 
 Expr expr_parse(Line_Context *ctx)
 {
-	// return expr_parse_with_precedence(ctx, 0);
-	return expr_peek_next(ctx);
+	return expr_parse_with_precedence(ctx, 0);
 }
 
 Expr expr_peek_next(Line_Context *ctx)
@@ -149,8 +234,6 @@ Expr expr_peek_next(Line_Context *ctx)
 						      Str_Fmt(token.text)));
 				expr.type = EXPR_TYPE_FUNCALL;
 				expr.as.funcall = parse_expr_funcall(ctx);
-				token_expect_next(ctx,
-						  TOKEN_TYPE_STATEMENT_END);
 				return expr;
 			} else {
 				expr.type = EXPR_TYPE_VAR;
@@ -193,7 +276,17 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_EOL:
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
+	case TOKEN_TYPE_PLUS:
+	case TOKEN_TYPE_MINUS:
+	case TOKEN_TYPE_MULT:
+	case TOKEN_TYPE_LT:
+	case TOKEN_TYPE_GE:
+	case TOKEN_TYPE_NE:
+	case TOKEN_TYPE_AND:
+	case TOKEN_TYPE_OR:
+	case TOKEN_TYPE_EQEQ:
 	case TOKEN_TYPE_STATEMENT_END:
+	case TOKEN_TYPE_CNT:
 	default: {
 		log_to_ctx(ctx,
 			   LOG_FORMAT("[IDENTIFICATION]", "[STMT]",

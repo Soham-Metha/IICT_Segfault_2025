@@ -10,6 +10,9 @@ static TypeDetailsLUT typeDetails[VAR_TYPE_COUNT] = {
 	[VAR_TYPE_FUNC] = { .type = VAR_TYPE_FUNC,
 			    .size = 0,
 			    .name = { .data = "func", .len = 4 } },
+	[VAR_TYPE_I64] = { .type = VAR_TYPE_I64,
+			   .size = 0,
+			   .name = { .data = "i64", .len = 3 } },
 };
 
 void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
@@ -23,7 +26,8 @@ void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
 
 Var_IR get_var_details(const Block_Context_IR *ctx, String name)
 {
-	for (const Block_Context_IR *curr = ctx; curr != NULL; curr = curr->prev)
+	for (const Block_Context_IR *curr = ctx; curr != NULL;
+	     curr = curr->prev)
 		for (int i = curr->var_def_cnt - 1; i >= 0; i--) {
 			if (compare_str(name, curr->var_defs[i].name)) {
 				return curr->var_defs[i];

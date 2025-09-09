@@ -32,6 +32,7 @@ typedef enum {
 	BIN_OPR_AND,
 	BIN_OPR_OR,
 	BIN_OPR_EQ,
+	BIN_OPR_CNT,
 } BinOprType;
 
 typedef enum {
@@ -48,15 +49,17 @@ typedef struct Expr Expr;
 typedef union ExprValue ExprValue;
 typedef struct Line_Context Line_Context;
 typedef struct BinOpr BinOpr;
+typedef struct BinOprLUT BinOprLUT;
 
 struct Funcall {
 	String name;
 	FuncallArg *args;
 };
 
-struct BinOpr {
+struct BinOprLUT {
 	BinOprType type;
 	BinOprPrec prec;
+	TokenType  tokn;
 };
 
 union ExprValue {
@@ -65,13 +68,19 @@ union ExprValue {
 	Funcall funcall;
 	String var_nm;
 	bool boolean;
-	BinOpr bin_opr;
+	BinOpr *bin_opr;
 	Token token;
 };
 
 struct Expr {
 	ExprType type;
 	ExprValue as;
+};
+
+struct BinOpr {
+	BinOprType type;
+	Expr lhs;
+	Expr rhs;
 };
 
 struct FuncallArg {
@@ -83,5 +92,6 @@ Expr expr_parse(Line_Context *ctx);
 Expr expr_peek_next(Line_Context *ctx);
 const char *expr_get_name(ExprType type);
 FuncallArg *parse_funcall_arglist(Line_Context *ctx);
+const char *bin_opr_get_name(BinOprType type);
 
 #endif

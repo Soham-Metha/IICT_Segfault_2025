@@ -9,8 +9,7 @@ $(BUILDS):
 
 clean: | $(BUILDS)
 	@rm -f $(BUILDS)/*
-	@rm -f ast.dot
-	@rm -f ast.png
+	@rm -f ast.dot ast.png logs.txt ir.sasm ir.dot ir.png t.sm
 	@printf  "\n\e[36m  CLEANED ALL OBJECT FILES AND EXECUTABLES	\e[0m\n\n"
 
 define BUILD_RULE

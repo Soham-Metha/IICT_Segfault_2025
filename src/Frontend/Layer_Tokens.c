@@ -48,9 +48,27 @@ const char *token_get_name(TokenType type)
 		return "token Conditional pattern match";
 	case TOKEN_TYPE_REPEAT:
 		return "token Conditional retetition";
-	// case TOKEN_TYPE_FUNC: 			return "func";
+	case TOKEN_TYPE_PLUS:
+		return "Binary operator +";
+	case TOKEN_TYPE_MINUS:
+		return "Binary operator -";
+	case TOKEN_TYPE_MULT:
+		return "Binary operator *";
+	case TOKEN_TYPE_LT:
+		return "Binary operator <";
+	case TOKEN_TYPE_GE:
+		return "Binary operator >=";
+	case TOKEN_TYPE_NE:
+		return "Binary operator !=";
+	case TOKEN_TYPE_AND:
+		return "Binary operator &&";
+	case TOKEN_TYPE_OR:
+		return "Binary operator ||";
+	case TOKEN_TYPE_EQEQ:
+		return "Binary operator ==";
 	case TOKEN_TYPE_STATEMENT_END:
 		return "Statement ended with";
+	case TOKEN_TYPE_CNT:
 	default: {
 		assert(0 && "token_get_name: unreachable");
 		exit(1);
@@ -62,6 +80,7 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 {
 	update_indent(1);
 	Token token = token_peek_next(ctx);
+	assert(cachedCnt>=0);
 	log_to_ctx(ctx, LOG_FORMAT("[TOKEN CHECK]", "[TOKN]", "Expected: '%s'",
 				   token_get_name(expected),
 				   token_get_name(token.type)));
@@ -83,6 +102,38 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 	return token;
 }
 
+typedef struct TokenTextLUT {
+	String txt;
+	TokenType type;
+} TokenTextLUT;
+
+static TokenTextLUT tokenTextLUT[] = {
+	{.type = TOKEN_TYPE_REPEAT, .txt = {.data="repeat", .len=6}},
+	{.type = TOKEN_TYPE_THEN,   .txt = {.data="then", .len=4}},
+	{.type = TOKEN_TYPE_REPEAT, .txt = {.data="<->", .len=3}},
+	{.type = TOKEN_TYPE_THEN, .txt = {.data="->", .len=2}},
+	{.type = TOKEN_TYPE_EQEQ, .txt = {.data="==", .len=2}},
+	{.type = TOKEN_TYPE_AND,  .txt = {.data="&&", .len=2}},
+	{.type = TOKEN_TYPE_GE,   .txt = {.data=">=", .len=2}},
+	{.type = TOKEN_TYPE_NE,   .txt = {.data="!=", .len=2}},
+	{.type = TOKEN_TYPE_OR,   .txt = {.data="||", .len=2}},
+
+	{.type = TOKEN_TYPE_LT,            .txt = {.data="<", .len=1}},
+	{.type = TOKEN_TYPE_MULT,          .txt = {.data="*", .len=1}},
+	{.type = TOKEN_TYPE_PLUS,          .txt = {.data="+", .len=1}},
+	{.type = TOKEN_TYPE_MINUS,         .txt = {.data="-", .len=1}},
+	{.type = TOKEN_TYPE_COMMA,         .txt = {.data=",", .len=1}},
+	{.type = TOKEN_TYPE_COLON,         .txt = {.data=":", .len=1}},
+	{.type = TOKEN_TYPE_EQUAL,         .txt = {.data="=", .len=1}},
+	{.type = TOKEN_TYPE_OPEN_CURLY,    .txt = {.data="{", .len=1}},
+	{.type = TOKEN_TYPE_OPEN_PAREN,    .txt = {.data="(", .len=1}},
+	{.type = TOKEN_TYPE_CLOSING_PAREN, .txt = {.data=")", .len=1}},
+	{.type = TOKEN_TYPE_CLOSING_CURLY, .txt = {.data="}", .len=1}},
+	{.type = TOKEN_TYPE_STATEMENT_END, .txt = {.data=";", .len=1}},
+};
+
+static const int tokensLUT_len = sizeof(tokenTextLUT) / sizeof(tokenTextLUT[0]);
+
 Token token_peek_next(Line_Context *ctx)
 {
 	String *line = &ctx->line;
@@ -90,53 +141,23 @@ Token token_peek_next(Line_Context *ctx)
 		Token token = { 0 };
 		(*line) = trim(*line);
 
-		if (line->len == 0 && cachedCnt > 0) {
+		if (line->len == 0) {
 			break;
-		} else if (line->len == 0) {
-			assert(0 && "reached End of line!");
 		}
 
+		int old_cached_cnt = cachedCnt;
+		for (int i = 0; i < tokensLUT_len; i++) {
+			if (starts_with(*line, tokenTextLUT[i].txt)) {
+				token.type = tokenTextLUT[i].type;
+				token.text = split_str_by_len(line, tokenTextLUT[i].txt.len);
+				tok_cache[cachedCnt] = token;
+				cachedCnt++;
+				break;
+			}
+		}
+		if(old_cached_cnt!=cachedCnt) continue;
+
 		switch (line->data[0]) {
-		case '(': {
-			token.type = TOKEN_TYPE_OPEN_PAREN;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case ';': {
-			token.type = TOKEN_TYPE_STATEMENT_END;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case ')': {
-			token.type = TOKEN_TYPE_CLOSING_PAREN;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case '{': {
-			token.type = TOKEN_TYPE_OPEN_CURLY;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case '}': {
-			token.type = TOKEN_TYPE_CLOSING_CURLY;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case ',': {
-			token.type = TOKEN_TYPE_COMMA;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case ':': {
-			token.type = TOKEN_TYPE_COLON;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case '=': {
-			token.type = TOKEN_TYPE_EQUAL;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
 		case '"': {
 			split_str_by_len(line, 1); // discard opening "
 
@@ -168,24 +189,11 @@ Token token_peek_next(Line_Context *ctx)
 		} break;
 
 		default: {
-			if (starts_with(*line, STR("->"))) {
-				token.type = TOKEN_TYPE_THEN;
-				token.text = split_str_by_len(line, 2);
-			} else if (starts_with(*line, STR("then"))) {
-				token.type = TOKEN_TYPE_THEN;
-				token.text = split_str_by_len(line, 4);
-			} else if (starts_with(*line, STR("<->"))) {
-				token.type = TOKEN_TYPE_REPEAT;
-				token.text = split_str_by_len(line, 3);
-			} else if (starts_with(*line, STR("repeat"))) {
-				token.type = TOKEN_TYPE_REPEAT;
-				token.text = split_str_by_len(line, 6);
-			} else if (isalpha(line->data[0])) {
+			if (isalpha(line->data[0])) {
 				token.type = TOKEN_TYPE_NAME;
 				token.text =
 					split_str_by_condition(line, isName);
-			} else if (isdigit(line->data[0]) ||
-				   line->data[0] == '-') {
+			} else if (isdigit(line->data[0])) {
 				token.type = TOKEN_TYPE_NUMBER;
 				token.text =
 					split_str_by_condition(line, isNumber);
