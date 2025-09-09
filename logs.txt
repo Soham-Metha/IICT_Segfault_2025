@@ -1,2 +1,0 @@
-ERROR : can't open file
- ir.sasm : No such file or directory
