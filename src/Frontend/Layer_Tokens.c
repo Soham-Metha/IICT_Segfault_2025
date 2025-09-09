@@ -146,7 +146,7 @@ Token token_peek_next(Line_Context *ctx)
 			assert(0 && "reached End of line!");
 		}
 
-		int old_cached_cnt = 0;
+		int old_cached_cnt = cachedCnt;
 		for (int i = 0; i < tokensLUT_len; i++) {
 			if (starts_with(*line, tokenTextLUT[i].txt)) {
 				token.type = tokenTextLUT[i].type;
