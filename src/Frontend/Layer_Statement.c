@@ -4,10 +4,10 @@
 #include <Utils/mem_manager.h>
 #include <assert.h>
 
-Stmt stmt_check_stmt_conditional(Line_Context *ctx) 
+Stmt stmt_check_stmt_conditional(Line_Context *ctx)
 {
-	Stmt result = {0};
-	StmtConditional res = {0};
+	Stmt result = { 0 };
+	StmtConditional res = { 0 };
 	Expr expr = expr_parse(ctx);
 	Token next = token_peek_next(ctx);
 
@@ -38,7 +38,7 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
 	       res.cond.type == EXPR_TYPE_BOOL ||
 	       res.cond.type == EXPR_TYPE_NUMBER);
-	token_expect_next(ctx,TOKEN_TYPE_CLOSING_PAREN);
+	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
 	Token next = token_peek_next(ctx);
 
 	if (next.type == TOKEN_TYPE_THEN) {
@@ -48,7 +48,7 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 		token_consume(ctx);
 		res.repeat = true;
 	} else {
-		log_to_ctx(ctx," GOT %d\n\n",next.type);
+		log_to_ctx(ctx, " GOT %d\n\n", next.type);
 		assert(0 && "EXPECTED THEN OR REPEAT");
 	}
 
@@ -112,10 +112,7 @@ static inline Stmt __TOKEN_TYPE_NAME(Token tok, Line_Context *ctx)
 		result.as.var_defn = stmt_parse_var_defn(ctx);
 		return result;
 	} else {
-		result.type = STMT_EXPR;
-		result.as.expr = expr_parse(ctx);
-		(void)token_expect_next(ctx,TOKEN_TYPE_STATEMENT_END);
-		return result;
+		return stmt_check_stmt_conditional(ctx);
 	}
 	return result;
 }
@@ -149,12 +146,7 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_NUMBER:
 	case TOKEN_TYPE_CHAR:
 	case TOKEN_TYPE_STR: {
-		result.type = STMT_EXPR;
-		result.as.expr = expr_parse(ctx);
-		Token nxt = token_peek_next(ctx);
-		if (nxt.type == TOKEN_TYPE_THEN || nxt.type == TOKEN_TYPE_REPEAT)
-		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
-		return result;
+		return stmt_check_stmt_conditional(ctx);
 	}
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
