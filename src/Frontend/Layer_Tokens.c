@@ -80,7 +80,7 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 {
 	update_indent(1);
 	Token token = token_peek_next(ctx);
-	assert(cachedCnt);
+	assert(cachedCnt>=0);
 	log_to_ctx(ctx, LOG_FORMAT("[TOKEN CHECK]", "[TOKN]", "Expected: '%s'",
 				   token_get_name(expected),
 				   token_get_name(token.type)));
