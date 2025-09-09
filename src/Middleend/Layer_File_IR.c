@@ -66,6 +66,7 @@ static varType IR_dump_code_block(Block_Context_IR *ctx);
 
 varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 {
+	assert(get_var_details(ctx, var_nm).has_def);
 	int id = get_var_details(ctx, var_nm).mem_addr;
 	switch (get_var_details(ctx, var_nm).type) {
 	case VAR_TYPE_STR: {
@@ -138,7 +139,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 {
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 
-	set_var_as_defined(ctx,var_nm);
+	set_var_as_defined(ctx, var_nm);
 
 	switch (type) {
 	case VAR_TYPE_FUNC: {
