@@ -142,7 +142,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
 	case VAR_TYPE_I64: {
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_I64);
 		assert(ctx->next->statement.type == STMT_EXPR);
-		assert(ctx->next->statement.as.expr.type == EXPR_TYPE_NUMBER);
+		// assert(ctx->next->statement.as.expr.type == EXPR_TYPE_NUMBER);
 		int id = get_var_details(ctx, var_nm).mem_addr;
 		print_IR(IR_FORMAT("PUSH   E_%d", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
