@@ -55,7 +55,7 @@ const char *token_get_name(TokenType type)
 	case TOKEN_TYPE_MULT:
 		return "Binary operator *";
 	case TOKEN_TYPE_LT:
-		return "Binary operator <=";
+		return "Binary operator <";
 	case TOKEN_TYPE_GE:
 		return "Binary operator >=";
 	case TOKEN_TYPE_NE:
@@ -114,6 +114,43 @@ Token token_peek_next(Line_Context *ctx)
 		}
 
 		switch (line->data[0]) {
+		case '+': {
+			token.type = TOKEN_TYPE_PLUS;
+			token.text = split_str_by_len(line, 1);
+		} break;
+		case '-': {
+			token.type = TOKEN_TYPE_MINUS;
+			token.text = split_str_by_len(line, 1);
+		} break;
+		case '*': {
+			token.type = TOKEN_TYPE_MULT;
+			token.text = split_str_by_len(line, 1);
+		} break;
+		case '<': {
+			token.type = TOKEN_TYPE_LT;
+			token.text = split_str_by_len(line, 1);
+		} break;
+		case '>=': {
+			token.type = TOKEN_TYPE_GE;
+			token.text = split_str_by_len(line, 2);
+		} break;
+		case '<>': 
+		case '!=': {
+			token.type = TOKEN_TYPE_NE;
+			token.text = split_str_by_len(line, 2);
+		} break;
+		case '&&': {
+			token.type = TOKEN_TYPE_AND;
+			token.text = split_str_by_len(line, 2);
+		} break;
+		case '||': {
+			token.type = TOKEN_TYPE_OR;
+			token.text = split_str_by_len(line, 2);
+		} break;
+		case '==': {
+			token.type = TOKEN_TYPE_EQEQ;
+			token.text = split_str_by_len(line, 2);
+		} break;
 		case '(': {
 			token.type = TOKEN_TYPE_OPEN_PAREN;
 			token.text = split_str_by_len(line, 1);
