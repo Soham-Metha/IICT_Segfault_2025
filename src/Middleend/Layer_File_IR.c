@@ -369,6 +369,7 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 {
 	assert(ctx->next != NULL);
 	Stmt stmt = ctx->next->statement;
+	ctx->next = ctx->next->next;
 	// print_IR(IR_FORMAT(";;        %d",
 	//       ctx->next->statement.type);
 	switch (stmt.type) {
@@ -392,7 +393,6 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 	default:
 		break;
 	}
-	ctx->next = ctx->next->next;
 	return VAR_TYPE_VOID;
 }
 
@@ -403,7 +403,7 @@ static void IR_dump_code_block(Block_Context_IR *ctx)
 	for (; ctx->next != NULL;) {
 		
 		varType type = IR_dump_statement(ctx);
-		if (!ctx->next && type != VAR_TYPE_VOID) {
+		if (type != VAR_TYPE_VOID) {
 			print_IR(IR_FORMAT("SPOP", ""));
 		}
 	}
