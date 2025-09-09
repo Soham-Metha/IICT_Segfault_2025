@@ -164,7 +164,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_I64);
 		assert(ctx->next->statement.type == STMT_EXPR);
 		int id = get_var_details(ctx, var_nm).mem_addr;
-		print_IR(IR_FORMAT("PUSH   E_%d                ", id));
+		print_IR(IR_FORMAT("PUSH   E_%d                 ", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
@@ -176,7 +176,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_BOOL);
 		assert(ctx->next->statement.type == STMT_EXPR);
 		int id = get_var_details(ctx, var_nm).mem_addr;
-		print_IR(IR_FORMAT("PUSH   E_%d", id));
+		print_IR(IR_FORMAT("PUSH   E_%d                ", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
@@ -286,17 +286,17 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	blk_ctx.var_def_cnt = 0;
 	blk_ctx.next = cond->body.begin;
 
-	print_IR(IR_FORMAT("E_%d:                       ", cond_id));
+	print_IR(IR_FORMAT("E_%d:                      ", cond_id));
 	print_IR(IR_FORMAT(";cond start                ", ""));
 	print_IR(IR_FORMAT(";--------------------------", ""));
 	update_indent(1);
 	varType cond_type = IR_dump_expr(ctx, cond->cond);
 	assert(cond_type == VAR_TYPE_BOOL || cond_type == VAR_TYPE_I64);
 	print_IR(IR_FORMAT("NOT                        ", ""));
-	print_IR(IR_FORMAT("JMPC    E_%d                ", body_end_id));
+	print_IR(IR_FORMAT("JMPC    E_%d               ", body_end_id));
 	update_indent(-1);
 	print_IR(IR_FORMAT(";--------------------------", ""));
-	print_IR(IR_FORMAT("E_%d:                       ", body_id));
+	print_IR(IR_FORMAT("E_%d:                      ", body_id));
 	print_IR(IR_FORMAT(";body start                ", ""));
 	print_IR(IR_FORMAT(";--------------------------", ""));
 	print_IR(IR_FORMAT("%%scope                    ", ""));
@@ -304,9 +304,9 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	if (cond->repeat) {
 		print_IR(IR_FORMAT("JMPU    E_%d", cond_id));
 	}
-	print_IR(IR_FORMAT("%%end                       ", ""));
+	print_IR(IR_FORMAT("%%end                      ", ""));
 	print_IR(IR_FORMAT(";--------------------------", ""));
-	print_IR(IR_FORMAT("E_%d:                       ", body_end_id));
+	print_IR(IR_FORMAT("E_%d:                      ", body_end_id));
 	print_IR(IR_FORMAT(";body end                  ", ""));
 	print_IR(IR_FORMAT(";--------------------------", ""));
 
@@ -321,7 +321,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 	switch (expr.type) {
 	case EXPR_TYPE_STR:
 		print_IR(IR_FORMAT("PUSH    \"%.*s\"", Str_Fmt(expr.as.str)));
-		print_IR(IR_FORMAT("PUSH    %d", expr.as.str.len));
+		print_IR(IR_FORMAT("PUSH    %d      ", expr.as.str.len));
 		return VAR_TYPE_STR;
 		break;
 	case EXPR_TYPE_STATEMENT_END:
