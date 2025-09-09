@@ -3,7 +3,7 @@
 #include <Utils/strings.h>
 #include <Middleend/Layer_Line.h>
 
-static TypeDetailsLUT typeDetails[VAR_TYPE_VOID] = {
+static TypeDetailsLUT typeDetails[VAR_TYPE_CNT] = {
 	[VAR_TYPE_STR] = { .type = VAR_TYPE_STR,
 			   .size = 0,
 			   .name = { .data = "str", .len = 3 } },
