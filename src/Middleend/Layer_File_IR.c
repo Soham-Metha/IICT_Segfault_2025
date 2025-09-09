@@ -140,6 +140,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		print_IR(IR_FORMAT("%.*s: ", Str_Fmt(var_nm)));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
+		print_IR(IR_FORMAT("RET                        ", ""));
 		return VAR_TYPE_VOID;
 	} break;
 	case VAR_TYPE_STR: {
