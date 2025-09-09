@@ -1,0 +1,1 @@
+ir.sasm:3: ERROR: couldnt find binding `main`.
