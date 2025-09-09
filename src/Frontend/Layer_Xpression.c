@@ -77,7 +77,6 @@ const char *expr_get_name(ExprType type)
 		return "Numeric value";
 	case EXPR_TYPE_VAR:
 		return "Variable Name";
-		return "Closing parenthesis";
 	case EXPR_TYPE_OPEN_CURLY:
 		return "Open curly brace";
 	case EXPR_TYPE_CLOSING_CURLY:
