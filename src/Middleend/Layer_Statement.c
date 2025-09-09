@@ -3,7 +3,7 @@
 #include <Utils/strings.h>
 #include <Middleend/Layer_Line.h>
 
-static TypeDetailsLUT typeDetails[VAR_TYPE_COUNT] = {
+static TypeDetailsLUT typeDetails[VAR_TYPE_VOID] = {
 	[VAR_TYPE_STR] = { .type = VAR_TYPE_STR,
 			   .size = 0,
 			   .name = { .data = "str", .len = 3 } },
@@ -38,7 +38,7 @@ Var_IR get_var_details(const Block_Context_IR *ctx, String name)
 
 TypeDetailsLUT get_type_details_from_type_name(String name)
 {
-	for (int i = 0; i < VAR_TYPE_COUNT; i++) {
+	for (int i = 0; i < VAR_TYPE_VOID; i++) {
 		if (compare_str(name, typeDetails[i].name)) {
 			return typeDetails[i];
 		}

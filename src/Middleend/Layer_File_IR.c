@@ -12,7 +12,7 @@ typedef struct {
 	const char *inst;
 } BinOprInstLUT;
 
-static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_COUNT][BIN_OPR_CNT] = {
+static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_VOID][BIN_OPR_CNT] = {
 	[VAR_TYPE_FUNC] = { 
 			    [BIN_OPR_AND]   = { .allowed = false },
 			    [BIN_OPR_OR]    = { .allowed = false },
@@ -71,12 +71,12 @@ varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 	} break;
 	case VAR_TYPE_FUNC:
 		return VAR_TYPE_FUNC;
-	case VAR_TYPE_COUNT:
-		return VAR_TYPE_COUNT;
+	case VAR_TYPE_VOID:
+		return VAR_TYPE_VOID;
 	default:
 		break;
 	}
-	return VAR_TYPE_COUNT;
+	return VAR_TYPE_VOID;
 }
 
 varType dump_var_decl(String var_nm, String type, int id)
@@ -100,12 +100,12 @@ varType dump_var_decl(String var_nm, String type, int id)
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		return VAR_TYPE_I64;
 	} break;
-	case VAR_TYPE_COUNT:
-		return VAR_TYPE_COUNT;
+	case VAR_TYPE_VOID:
+		return VAR_TYPE_VOID;
 	default:
 		break;
 	}
-	return VAR_TYPE_COUNT;
+	return VAR_TYPE_VOID;
 }
 
 varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
@@ -154,12 +154,12 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		return VAR_TYPE_I64;
 	} break;
-	case VAR_TYPE_COUNT:
-		return VAR_TYPE_COUNT;
+	case VAR_TYPE_VOID:
+		return VAR_TYPE_VOID;
 	default:
 		break;
 	}
-	return VAR_TYPE_COUNT;
+	return VAR_TYPE_VOID;
 }
 
 varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
@@ -215,7 +215,7 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		}
 		return VAR_TYPE_FUNC;
 	}
-	return VAR_TYPE_COUNT;
+	return VAR_TYPE_VOID;
 }
 
 static void IR__STMT_BLOCK(Block_Context_IR *ctx)
@@ -330,7 +330,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 	default:
 		break;
 	}
-	return VAR_TYPE_COUNT;
+	return VAR_TYPE_VOID;
 }
 
 static void IR_dump_statement(Block_Context_IR *ctx)

@@ -17,7 +17,7 @@ typedef enum {
 	// VAR_TYPE_CHAR,
 	VAR_TYPE_FUNC,
 	// VAR_TYPE_STRUCT,
-	VAR_TYPE_COUNT,
+	VAR_TYPE_VOID,
 } varType;
 
 typedef struct {
