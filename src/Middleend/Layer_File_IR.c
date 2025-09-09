@@ -132,8 +132,7 @@ varType dump_var_decl(String var_nm, String type, int id)
 	return VAR_TYPE_VOID;
 }
 
-varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
-		      int id)
+varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 {
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 	switch (type) {
@@ -213,7 +212,7 @@ varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 					     .prev = ctx,
 					     .var_def_cnt = 0 };
 
-		dump_var_defn(&blk_ctx, v->name, type, id);
+		dump_var_defn(&blk_ctx, v->name, type);
 		ctx->n = blk_ctx.n;
 	}
 	return type;
@@ -225,7 +224,6 @@ varType IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 	assert(ctx->next->statement.type == STMT_VAR_DEFN);
 	VarDefn *v = &ctx->next->statement.as.var_defn;
 	varType type = get_var_details(ctx, v->name).type;
-	int id = get_var_details(ctx, v->name).mem_addr;
 
 	StmtNode nxt = (StmtNode){ .next = NULL, .statement = *v->val };
 	Block_Context_IR blk_ctx = { .n = ctx->n,
@@ -233,7 +231,7 @@ varType IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 				     .next = &nxt,
 				     .prev = ctx,
 				     .var_def_cnt = 0 };
-	dump_var_defn(&blk_ctx, v->name, type, id);
+	dump_var_defn(&blk_ctx, v->name, type);
 	return type;
 }
 
