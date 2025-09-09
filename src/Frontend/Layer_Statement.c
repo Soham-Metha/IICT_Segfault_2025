@@ -122,13 +122,13 @@ Stmt stmt_fetch_next(Line_Context *ctx)
 	case TOKEN_TYPE_CHAR:
 	case TOKEN_TYPE_STR:
 	case TOKEN_TYPE_THEN:
+	case TOKEN_TYPE_STATEMENT_END:
 	case TOKEN_TYPE_REPEAT: {
 		result.type = STMT_EXPR;
 		result.as.expr = expr_parse(ctx);
 		token_expect_next(ctx, TOKEN_TYPE_STATEMENT_END);
 		return result;
 	}
-	case TOKEN_TYPE_STATEMENT_END:
 	case TOKEN_TYPE_CLOSING_PAREN:
 	case TOKEN_TYPE_COMMA:
 	case TOKEN_TYPE_COLON:
