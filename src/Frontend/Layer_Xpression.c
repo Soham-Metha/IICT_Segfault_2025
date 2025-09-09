@@ -156,7 +156,6 @@ FuncallArg *parse_funcall_arglist(Line_Context *ctx)
 		      token_get_name(TOKEN_TYPE_CLOSING_PAREN));
 		exit(1);
 	}
-	token_consume(ctx); // closing paren
 	update_indent(-2);
 
 	return first;
