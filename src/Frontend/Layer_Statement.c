@@ -12,7 +12,7 @@ StmtConditional get_stmt_conditional(Line_Context *ctx)
 	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
 	       res.cond.type == EXPR_TYPE_BOOL ||
 	       res.cond.type == EXPR_TYPE_NUMBER);
-
+	token_expect_next(ctx,TOKEN_TYPE_CLOSING_PAREN);
 	Token next = token_peek_next(ctx);
 
 	if (next.type == TOKEN_TYPE_THEN) {
