@@ -58,7 +58,7 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
 
 static varType IR_dump_expr(Block_Context_IR *ctx, Expr tok);
 
-static void IR_dump_statement(Block_Context_IR *ctx);
+static varType IR_dump_statement(Block_Context_IR *ctx);
 
 static void IR_dump_code_block(Block_Context_IR *ctx);
 
@@ -365,7 +365,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 	return VAR_TYPE_VOID;
 }
 
-static void IR_dump_statement(Block_Context_IR *ctx)
+static varType IR_dump_statement(Block_Context_IR *ctx)
 {
 	assert(ctx->next != NULL);
 	Stmt stmt = ctx->next->statement;
@@ -379,10 +379,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_CONDITIONAL(ctx);
 		break;
 	case STMT_EXPR:
-		varType type = IR_dump_expr(ctx, stmt.as.expr);
-		if (type != VAR_TYPE_VOID) {
-			// print_IR(IR_FORMAT("SPOP", ""));
-		}
+		return IR_dump_expr(ctx, stmt.as.expr);
 		break;
 	case STMT_VAR_DECL:
 		IR__STMT_VAR_DECL(ctx);
@@ -396,6 +393,7 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		break;
 	}
 	ctx->next = ctx->next->next;
+	return VAR_TYPE_VOID;
 }
 
 static void IR_dump_code_block(Block_Context_IR *ctx)
@@ -403,7 +401,11 @@ static void IR_dump_code_block(Block_Context_IR *ctx)
 	assert(ctx);
 	update_indent(1);
 	for (; ctx->next != NULL;) {
-		IR_dump_statement(ctx);
+		
+		varType type = IR_dump_statement(ctx);
+		if (type != VAR_TYPE_VOID) {
+			print_IR(IR_FORMAT("SPOP", ""));
+		}
 	}
 	update_indent(-1);
 }
