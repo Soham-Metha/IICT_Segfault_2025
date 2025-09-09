@@ -154,10 +154,7 @@ void IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		for (const FuncallArg *arg = funcall->args; arg != NULL;
 		     arg = arg->next) {
 			assert((funcall->args->expr.type = EXPR_TYPE_STR) ||
-			       (funcall->args->expr.type == EXPR_TYPE_VAR &&
-					get_var_details(ctx,
-						funcall->args->expr.as.var_nm)
-						.type == VAR_TYPE_STR));
+			       (funcall->args->expr.type == EXPR_TYPE_VAR));
 			IR_dump_expr(ctx, funcall->args->expr);
 			print_IR(IR_FORMAT("CALL    write_str", "none"));
 		}
