@@ -48,7 +48,24 @@ const char *token_get_name(TokenType type)
 		return "token Conditional pattern match";
 	case TOKEN_TYPE_REPEAT:
 		return "token Conditional retetition";
-	// case TOKEN_TYPE_FUNC: 			return "func";
+	case TOKEN_TYPE_PLUS:
+		return "Binary operator +";
+	case TOKEN_TYPE_MINUS:
+		return "Binary operator -";
+	case TOKEN_TYPE_MULT:
+		return "Binary operator *";
+	case TOKEN_TYPE_LT:
+		return "Binary operator <=";
+	case TOKEN_TYPE_GE:
+		return "Binary operator >=";
+	case TOKEN_TYPE_NE:
+		return "Binary operator !=";
+	case TOKEN_TYPE_AND:
+		return "Binary operator &&";
+	case TOKEN_TYPE_OR:
+		return "Binary operator ||";
+	case TOKEN_TYPE_EQEQ:
+		return "Binary operator ==";
 	case TOKEN_TYPE_STATEMENT_END:
 		return "Statement ended with";
 	default: {
