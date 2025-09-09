@@ -381,7 +381,8 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		break;
 	case STMT_EXPR:
 		varType type = IR_dump_expr(ctx, stmt.as.expr);
-		if (type == VAR_TYPE_VOID) {
+		if (type != VAR_TYPE_VOID) {
+			print_IR(IR_FORMAT("SPOP", ""));
 		}
 		break;
 	case STMT_VAR_DECL:
@@ -420,8 +421,10 @@ Error IR_generate(const CodeBlock *blk)
 	ctx.next = blk->begin;
 	ctx.var_def_cnt = 0;
 
-	print_IR(IR_FORMAT("%%entry main ", ""));
-	print_IR(IR_FORMAT("write_str:   ", ""));
+	print_IR(IR_FORMAT("%%entry _start:", ""));
+	print_IR(IR_FORMAT("CALL    main   ", ""));
+	print_IR(IR_FORMAT("SHUTS          ", ""));
+	print_IR(IR_FORMAT("write_str:     ", ""));
 	update_indent(1);
 	print_IR(IR_FORMAT("SWAP     1   ", ""));
 	print_IR(IR_FORMAT("SPOPR    [QT]", ""));
@@ -432,7 +435,6 @@ Error IR_generate(const CodeBlock *blk)
 	update_indent(-2);
 	IR_dump_code_block(&ctx);
 	update_indent(1);
-	print_IR(IR_FORMAT("SHUTS", "none"));
 
 	return ERR_OK;
 }
