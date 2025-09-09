@@ -38,7 +38,7 @@ Var_IR get_var_details(const Block_Context_IR *ctx, String name)
 
 TypeDetailsLUT get_type_details_from_type_name(String name)
 {
-	for (int i = 0; i < VAR_TYPE_VOID; i++) {
+	for (int i = 0; i < VAR_TYPE_CNT; i++) {
 		if (compare_str(name, typeDetails[i].name)) {
 			return typeDetails[i];
 		}
