@@ -103,12 +103,12 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 String tokenTextLUT[TOKEN_TYPE_CNT] = {
 	[TOKEN_TYPE_REPEAT] = {.data="<->", .len=3},
 
+	[TOKEN_TYPE_THEN] = {.data="->", .len=2},
+	[TOKEN_TYPE_EQEQ] = {.data="==", .len=2},
+	[TOKEN_TYPE_AND]  = {.data="&&", .len=2},
 	[TOKEN_TYPE_GE]   = {.data=">=", .len=2},
 	[TOKEN_TYPE_NE]   = {.data="!=", .len=2},
 	[TOKEN_TYPE_OR]   = {.data="||", .len=2},
-	[TOKEN_TYPE_AND]  = {.data="&&", .len=2},
-	[TOKEN_TYPE_THEN] = {.data="->", .len=2},
-	[TOKEN_TYPE_EQEQ] = {.data="==", .len=2},
 
 	[TOKEN_TYPE_LT]            = {.data="<", .len=1},
 	[TOKEN_TYPE_MULT]          = {.data="*", .len=1},
