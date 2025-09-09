@@ -3,8 +3,8 @@ x:str = "Hi";
 main:func() = {
 
      y:i64 = 0;
-     y < 10 <-> { 
-          write("hello,world!\n"); 
+     y < 10 <-> {
+          write("hello,world!\n");
           y = y + 1; 
      }
      x = "Hi";
