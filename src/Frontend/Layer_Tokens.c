@@ -147,7 +147,7 @@ Token token_peek_next(Line_Context *ctx)
 		}
 
 		int old_cached_cnt = cachedCnt;
-		for (int i = 0; i < tokensLUT_len; i++) {
+		for (int i = 0; i <= tokensLUT_len; i++) {
 			if (starts_with(*line, tokenTextLUT[i].txt)) {
 				token.type = tokenTextLUT[i].type;
 				token.text = split_str_by_len(line, tokenTextLUT[i].txt.len);
