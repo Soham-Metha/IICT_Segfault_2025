@@ -8,7 +8,7 @@ main:func() = {
      write(x);
      % write(y); not yet supported
 
-     (1) -> {
+     (0+1) -> {
           write("hello,world!\n");
      }
      (false) repeat {
