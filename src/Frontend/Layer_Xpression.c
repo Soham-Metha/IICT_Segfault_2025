@@ -273,6 +273,15 @@ Expr expr_peek_next(Line_Context *ctx)
 	case TOKEN_TYPE_EOL:
 	case TOKEN_TYPE_THEN:
 	case TOKEN_TYPE_REPEAT:
+	case TOKEN_TYPE_PLUS:
+	case TOKEN_TYPE_MINUS:
+	case TOKEN_TYPE_MULT:
+	case TOKEN_TYPE_LT:
+	case TOKEN_TYPE_GE:
+	case TOKEN_TYPE_NE:
+	case TOKEN_TYPE_AND:
+	case TOKEN_TYPE_OR:
+	case TOKEN_TYPE_EQEQ:
 	case TOKEN_TYPE_STATEMENT_END:
 	default: {
 		log_to_ctx(ctx,
