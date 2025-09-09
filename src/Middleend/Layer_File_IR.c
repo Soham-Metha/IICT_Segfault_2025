@@ -213,6 +213,7 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		}
 		return VAR_TYPE_FUNC;
 	}
+	return VAR_TYPE_COUNT;
 }
 
 static void IR__STMT_BLOCK(Block_Context_IR *ctx)
