@@ -34,7 +34,7 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 	     arg = arg->next) {
 		int childId = AST_dump_expression(&arg->expr, n, b);
 		if (childId >= 0)
-			print_AST("  Expr_%d -> Expr_%d;\n", id, childId);
+			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", id, childId);
 	}
 	return id;
 }
@@ -91,8 +91,8 @@ static int AST_dump_expression(const Expr *expr, int *n, int *b)
 			  bin_opr_get_name(expr->as.bin_opr->type));
 		int child1 = AST_dump_expression(&expr->as.bin_opr->lhs, n, b);
 		int child2 = AST_dump_expression(&expr->as.bin_opr->rhs, n, b);
-		print_AST("  Expr_%d -> Expr_%d;\n", myId, child1);
-		print_AST("  Expr_%d -> Expr_%d;\n", myId, child2);
+		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, child1);
+		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, child2);
 		return myId;
 	}
 	case EXPR_TYPE_OPEN_CURLY:
@@ -138,7 +138,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 		    stmt->as.var_decl.init != NULL) {
 			int childId = AST_dump_statement(stmt->as.var_decl.init,
 							 n, b);
-			print_AST("  Expr_%d -> Expr_%d;\n", myId, childId);
+			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, childId);
 		}
 		return myId;
 	}
@@ -148,7 +148,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 		if (stmt->as.var_defn.val != NULL) {
 			int childId =
 				AST_dump_statement(stmt->as.var_defn.val, n, b);
-			print_AST("  Expr_%d -> Expr_%d;\n", myId, childId);
+			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, childId);
 		}
 		return myId;
 	}
@@ -158,8 +158,8 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 		int condId = AST_dump_expression(&stmt->as.cond.cond, n, b);
 		int bodyId =
 			__STMT_BLOCK((*n)++, n, b, stmt->as.cond.body.begin);
-		print_AST("  Expr_%d -> Expr_%d;\n", myId, condId);
-		print_AST("  Expr_%d -> Expr_%d;\n", myId, bodyId);
+		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, condId);
+		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, bodyId);
 		return myId;
 	}
 	case STMT_BLOCK_END:
