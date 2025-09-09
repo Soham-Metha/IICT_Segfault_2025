@@ -5,7 +5,7 @@
 String ltrim(String s)
 {
 	size_t i = 0;
-	while (i < s.len && isspace(s.data[i])) {
+	while (i < s.len && (isspace(s.data[i]) || s.data[i]=='\n')) {
 		i++;
 	}
 	return (String){ .len = s.len - i, .data = s.data + i };
@@ -14,7 +14,7 @@ String ltrim(String s)
 String rtrim(String s)
 {
 	size_t i = s.len;
-	while (i > 0 && isspace(s.data[i - 1])) {
+	while (i > 0 && (isspace(s.data[i - 1] || s.data[i]=='\n'))) {
 		i--;
 	}
 	return (String){ .len = i, .data = s.data };
