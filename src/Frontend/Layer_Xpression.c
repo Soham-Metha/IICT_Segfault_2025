@@ -180,6 +180,7 @@ Expr expr_parse_with_precedence(Line_Context *ctx, BinOprPrec p)
 
 	// if next token is a binary opr, then traverse the rhs
 	while (bin_opr_get_def(tok.type, &dets) && dets.prec == p) {
+		log_to_ctx(ctx, LOG_FORMAT("[EXPR]","[BINOP]", "found bin op %d",dets.type));
 		assert(token_consume(ctx));
 		Expr expr = { 0 };
 		expr.type = EXPR_TYPE_BIN_OPR;
