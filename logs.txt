@@ -1,0 +1,4 @@
+
+|   |                                                                                                                              |
+| W | ERROR | '10' | Unknown instruction detected!                                                                               |
+|   |                                                                                                                              |
