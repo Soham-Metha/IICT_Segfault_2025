@@ -157,6 +157,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
 	} break;
 	case VAR_TYPE_VOID:
 		return VAR_TYPE_VOID;
+	case VAR_TYPE_CNT:
 	default:
 		break;
 	}
