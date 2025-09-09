@@ -87,8 +87,13 @@ static int AST_dump_expression(const Expr *expr, int *n, int *b)
 		return __EXPR_TYPE_TOKEN(myId, boolStr);
 	}
 	case EXPR_TYPE_BIN_OPR: {
-		print_AST(AST("diamond", "lightgreen", "%d"), myId,
-			  expr->as.bin_opr->type);
+		BinOprLUT dets;
+		print_AST(AST("diamond", "lightgreen", "%s"), myId,
+			  bin_opr_get_name(expr->as.bin_opr->type));
+		int child1 = AST_dump_expression(&expr->as.bin_opr->lhs, n, b);
+		int child2 = AST_dump_expression(&expr->as.bin_opr->rhs, n, b);
+		print_AST("  Expr_%d -> Expr_%d;\n", myId, child1);
+		print_AST("  Expr_%d -> Expr_%d;\n", myId, child2);
 		return myId;
 	}
 	case EXPR_TYPE_OPEN_CURLY:
