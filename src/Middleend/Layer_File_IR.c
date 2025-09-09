@@ -146,7 +146,11 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		int id = ctx->n++;
 		// jump over the function defn, unless it's called
 		print_IR(IR_FORMAT("JMPU    E_%d               ", id));
-		print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
+		if (compare_str(var_nm,STR("main"))) {
+			print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
+		} else {
+			print_IR(IR_FORMAT("E_%d:                      ", get_var_details(ctx, var_nm).mem_addr));
+		};
 		varType func_out = IR_dump_statement(ctx);
 		if (func_out==VAR_TYPE_I64) {
 			print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
