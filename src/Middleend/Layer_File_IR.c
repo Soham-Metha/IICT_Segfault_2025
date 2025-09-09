@@ -146,6 +146,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 			print_IR(IR_FORMAT("PUSH    0              ", ""));
 		}
 		print_IR(IR_FORMAT("SWAP    1                  ", ""));
+		print_IR(IR_FORMAT("RET                        ", ""));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 		print_IR(IR_FORMAT("E_%d:                      ", id));
 		return VAR_TYPE_VOID;
