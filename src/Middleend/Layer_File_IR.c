@@ -394,7 +394,7 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_VAR_DECL(ctx);
 		break;
 	case STMT_VAR_DEFN:
-		ret = IR__STMT_VAR_DEFN(ctx);
+		IR__STMT_VAR_DEFN(ctx);
 		break;
 	case STMT_MATCH:
 	case STMT_BLOCK_END:
