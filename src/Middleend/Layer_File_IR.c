@@ -356,7 +356,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 		assert(bin_opr_inst_LUT[l][expr.as.bin_opr->type].allowed);
 		print_IR(IR_FORMAT("%s",
 				   bin_opr_inst_LUT[l][expr.as.bin_opr->type].inst));
-		return l;
+		return bin_opr_inst_LUT[l][expr.as.bin_opr->type].ret;
 
 	case EXPR_TYPE_THEN:
 	case EXPR_TYPE_REPEAT:
