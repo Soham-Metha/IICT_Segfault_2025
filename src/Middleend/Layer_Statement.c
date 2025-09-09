@@ -43,12 +43,14 @@ Var_IR get_var_details(const Block_Context_IR *ctx, String name)
 
 void set_var_as_defined(Block_Context_IR *ctx, String name)
 {
-	for (Block_Context_IR *curr = ctx; curr != NULL; curr = curr->prev)
+	for (Block_Context_IR *curr = ctx; curr != NULL; curr = curr->prev) {
 		for (int i = curr->var_def_cnt - 1; i >= 0; i--) {
 			if (compare_str(name, curr->var_defs[i].name)) {
 				curr->var_defs[i].has_def = true;
+				return;
 			}
 		}
+	}
 	assert(0 && "VAR NOT IN SCOPE");
 }
 
