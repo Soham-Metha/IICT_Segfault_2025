@@ -137,9 +137,13 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 	switch (type) {
 	case VAR_TYPE_FUNC: {
-		print_IR(IR_FORMAT("%.*s: ", Str_Fmt(var_nm)));
+		int id = ctx->n++;
+		// jump over the function defn, unless it's called
+		print_IR(IR_FORMAT("JMPU    E_%d               ", id));
+		print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
+		print_IR(IR_FORMAT("E_%d:                      ", id));
 		return VAR_TYPE_VOID;
 	} break;
 	case VAR_TYPE_STR: {
