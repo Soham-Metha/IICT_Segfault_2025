@@ -100,6 +100,33 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 	return token;
 }
 
+String tokenTextLUT[TOKEN_TYPE_CNT] = {
+	[TOKEN_TYPE_STR] = {.data="", .len=0},
+	[TOKEN_TYPE_CHAR] = {.data="", .len=0},
+	[TOKEN_TYPE_NUMBER] = {.data="", .len=0},
+	[TOKEN_TYPE_NAME] = {.data="", .len=0},
+	[TOKEN_TYPE_OPEN_PAREN] = {.data="", .len=0},
+	[TOKEN_TYPE_CLOSING_PAREN] = {.data="", .len=0},
+	[TOKEN_TYPE_OPEN_CURLY] = {.data="", .len=0},
+	[TOKEN_TYPE_CLOSING_CURLY] = {.data="", .len=0},
+	[TOKEN_TYPE_STATEMENT_END] = {.data="", .len=0},
+	[TOKEN_TYPE_THEN] = {.data="", .len=0},
+	[TOKEN_TYPE_REPEAT] = {.data="", .len=0},
+	[TOKEN_TYPE_COMMA] = {.data="", .len=0},
+	[TOKEN_TYPE_COLON] = {.data="", .len=0},
+	[TOKEN_TYPE_EQUAL] = {.data="", .len=0},
+	[TOKEN_TYPE_EOL] = {.data="", .len=0},
+	[TOKEN_TYPE_PLUS] = {.data="", .len=0},
+	[TOKEN_TYPE_MINUS] = {.data="", .len=0},
+	[TOKEN_TYPE_MULT] = {.data="", .len=0},
+	[TOKEN_TYPE_LT] = {.data="", .len=0},
+	[TOKEN_TYPE_GE] = {.data="", .len=0},
+	[TOKEN_TYPE_NE] = {.data="", .len=0},
+	[TOKEN_TYPE_AND] = {.data="", .len=0},
+	[TOKEN_TYPE_OR] = {.data="", .len=0},
+	[TOKEN_TYPE_EQEQ] = {.data="", .len=0},
+}
+
 Token token_peek_next(Line_Context *ctx)
 {
 	String *line = &ctx->line;
@@ -134,7 +161,7 @@ Token token_peek_next(Line_Context *ctx)
 			token.type = TOKEN_TYPE_GE;
 			token.text = split_str_by_len(line, 2);
 		} break;
-		case '<>': 
+		case '<>':
 		case '!=': {
 			token.type = TOKEN_TYPE_NE;
 			token.text = split_str_by_len(line, 2);
