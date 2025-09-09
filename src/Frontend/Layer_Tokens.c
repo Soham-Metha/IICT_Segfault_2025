@@ -101,35 +101,37 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 	return token;
 }
 
-String tokenTextLUT[TOKEN_TYPE_CNT] = {
-	[TOKEN_TYPE_REPEAT] = {.data="<->", .len=3},
+typedef struct TokenTextLUT {
+	String txt;
+	TokenType type;
+} TokenTextLUT;
 
-	[TOKEN_TYPE_THEN] = {.data="->", .len=2},
-	[TOKEN_TYPE_EQEQ] = {.data="==", .len=2},
-	[TOKEN_TYPE_AND]  = {.data="&&", .len=2},
-	[TOKEN_TYPE_GE]   = {.data=">=", .len=2},
-	[TOKEN_TYPE_NE]   = {.data="!=", .len=2},
-	[TOKEN_TYPE_OR]   = {.data="||", .len=2},
+static TokenTextLUT tokenTextLUT[] = {
+	{.type = TOKEN_TYPE_REPEAT, .txt = {.data="repeat", .len=6}},
+	{.type = TOKEN_TYPE_THEN,   .txt = {.data="then", .len=4}},
+	{.type = TOKEN_TYPE_REPEAT, .txt = {.data="<->", .len=3}},
+	{.type = TOKEN_TYPE_THEN, .txt = {.data="->", .len=2}},
+	{.type = TOKEN_TYPE_EQEQ, .txt = {.data="==", .len=2}},
+	{.type = TOKEN_TYPE_AND,  .txt = {.data="&&", .len=2}},
+	{.type = TOKEN_TYPE_GE,   .txt = {.data=">=", .len=2}},
+	{.type = TOKEN_TYPE_NE,   .txt = {.data="!=", .len=2}},
+	{.type = TOKEN_TYPE_OR,   .txt = {.data="||", .len=2}},
 
-	[TOKEN_TYPE_LT]            = {.data="<", .len=1},
-	[TOKEN_TYPE_MULT]          = {.data="*", .len=1},
-	[TOKEN_TYPE_PLUS]          = {.data="+", .len=1},
-	[TOKEN_TYPE_MINUS]         = {.data="-", .len=1},
-	[TOKEN_TYPE_COMMA]         = {.data=",", .len=1},
-	[TOKEN_TYPE_COLON]         = {.data=":", .len=1},
-	[TOKEN_TYPE_EQUAL]         = {.data="=", .len=1},
-	[TOKEN_TYPE_OPEN_CURLY]    = {.data="{", .len=1},
-	[TOKEN_TYPE_OPEN_PAREN]    = {.data="(", .len=1},
-	[TOKEN_TYPE_CLOSING_PAREN] = {.data=")", .len=1},
-	[TOKEN_TYPE_CLOSING_CURLY] = {.data="}", .len=1},
-	[TOKEN_TYPE_STATEMENT_END] = {.data=";", .len=1},
-
-	[TOKEN_TYPE_EOL]    = {.data="", .len=0},
-	[TOKEN_TYPE_STR]    = {.data="", .len=0},
-	[TOKEN_TYPE_NAME]   = {.data="", .len=0},
-	[TOKEN_TYPE_CHAR]   = {.data="", .len=0},
-	[TOKEN_TYPE_NUMBER] = {.data="", .len=0},
+	{.type = TOKEN_TYPE_LT,            .txt = {.data="<", .len=1}},
+	{.type = TOKEN_TYPE_MULT,          .txt = {.data="*", .len=1}},
+	{.type = TOKEN_TYPE_PLUS,          .txt = {.data="+", .len=1}},
+	{.type = TOKEN_TYPE_MINUS,         .txt = {.data="-", .len=1}},
+	{.type = TOKEN_TYPE_COMMA,         .txt = {.data=",", .len=1}},
+	{.type = TOKEN_TYPE_COLON,         .txt = {.data=":", .len=1}},
+	{.type = TOKEN_TYPE_EQUAL,         .txt = {.data="=", .len=1}},
+	{.type = TOKEN_TYPE_OPEN_CURLY,    .txt = {.data="{", .len=1}},
+	{.type = TOKEN_TYPE_OPEN_PAREN,    .txt = {.data="(", .len=1}},
+	{.type = TOKEN_TYPE_CLOSING_PAREN, .txt = {.data=")", .len=1}},
+	{.type = TOKEN_TYPE_CLOSING_CURLY, .txt = {.data="}", .len=1}},
+	{.type = TOKEN_TYPE_STATEMENT_END, .txt = {.data=";", .len=1}},
 };
+
+static const int tokensLUT_len = sizeof(tokenTextLUT) / sizeof(tokenTextLUT[0]);
 
 Token token_peek_next(Line_Context *ctx)
 {
@@ -144,11 +146,11 @@ Token token_peek_next(Line_Context *ctx)
 			assert(0 && "reached End of line!");
 		}
 
-		for (TokenType i = 0; i < TOKEN_TYPE_CNT; i++) {
-			if (starts_with(*line, tokenTextLUT[i])) {
+		for (int i = 0; i < tokensLUT_len; i++) {
+			if (starts_with(*line, tokenTextLUT[i].txt)) {
 				token.type = i;
 				token.text = split_str_by_len(
-					line, tokenTextLUT[i].len);
+					line, tokenTextLUT[i].txt.len);
 				tok_cache[cachedCnt] = token;
 				cachedCnt++;
 				continue;
@@ -187,21 +189,18 @@ Token token_peek_next(Line_Context *ctx)
 		} break;
 
 		default: {
-			if (starts_with(*line, STR("then"))) {
-				token.type = TOKEN_TYPE_THEN;
-				token.text = split_str_by_len(line, 4);
-			} else if (starts_with(*line, STR("repeat"))) {
-				token.type = TOKEN_TYPE_REPEAT;
-				token.text = split_str_by_len(line, 6);
-			} else if (isalpha(line->data[0])) {
+			if (isalpha(line->data[0])) {
 				token.type = TOKEN_TYPE_NAME;
-				token.text = split_str_by_condition(line, isName);
-			} else if (isdigit(line->data[0]) ||
-				   line->data[0] == '-') {
+				token.text =
+					split_str_by_condition(line, isName);
+			} else if (isdigit(line->data[0])) {
 				token.type = TOKEN_TYPE_NUMBER;
-				token.text = split_str_by_condition(line, isNumber);
+				token.text =
+					split_str_by_condition(line, isNumber);
 			} else {
-				print(ctx, WIN_STDERR, "Unknown token starting with '%c'\n", line->data[0]);
+				print(ctx, WIN_STDERR,
+				      "Unknown token starting with '%c'\n",
+				      line->data[0]);
 				exit(1);
 			}
 		}
