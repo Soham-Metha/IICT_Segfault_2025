@@ -19,12 +19,15 @@ void dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 {
 	int id = get_var_details(ctx, var_nm).mem_addr;
 	switch (get_var_details(ctx, var_nm).type) {
-	case VAR_TYPE_STR:
+	case VAR_TYPE_STR: {
 		print_IR(IR_FORMAT("PUSH    E_%d    ", id));
 		print_IR(IR_FORMAT("READ8U          ", ""));
 		print_IR(IR_FORMAT("PUSH    E_%d_len", id));
 		print_IR(IR_FORMAT("READ8U          ", ""));
-		break;
+	} break;
+	case VAR_TYPE_I64: {
+		print_IR(IR_FORMAT("PUSH    E_%d    ", id));
+	} break;
 	case VAR_TYPE_FUNC:
 	case VAR_TYPE_COUNT:
 	default:
@@ -42,6 +45,12 @@ void dump_var_decl(String var_nm, String type, int id)
 				   Str_Fmt(var_nm)));
 		print_IR(IR_FORMAT("%%bind   E_%d        res(8)", id));
 		print_IR(IR_FORMAT("%%bind   E_%d_len    res(8)", id));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+	} break;
+	case VAR_TYPE_I64: {
+		print_IR(IR_FORMAT("; declaring var:   %.*s     ",
+				   Str_Fmt(var_nm)));
+		print_IR(IR_FORMAT("%%bind   E_%d        res(8)", id));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 	} break;
 	case VAR_TYPE_COUNT:
@@ -65,6 +74,8 @@ void dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, int id)
 	} break;
 	case VAR_TYPE_STR: {
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_STR);
+		assert(ctx->next->statement.type == STMT_EXPR);
+		assert(ctx->next->statement.as.expr.type == EXPR_TYPE_STR);
 		int id = get_var_details(ctx, var_nm).mem_addr;
 		print_IR(IR_FORMAT("PUSH   E_%d", id));
 		print_IR(IR_FORMAT("PUSH   E_%d_len", id));
@@ -75,6 +86,18 @@ void dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, int id)
 		print_IR(IR_FORMAT("SWAP   2", "none"));
 		print_IR(IR_FORMAT("SWAP   1", "none"));
 		print_IR(IR_FORMAT("WRITE8  ", "none"));
+		print_IR(IR_FORMAT("WRITE8  ", "none"));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+	} break;
+	case VAR_TYPE_I64: {
+		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_I64);
+		assert(ctx->next->statement.type == STMT_EXPR);
+		assert(ctx->next->statement.as.expr.type == EXPR_TYPE_NUMBER);
+		int id = get_var_details(ctx, var_nm).mem_addr;
+		print_IR(IR_FORMAT("PUSH   E_%d", id));
+		print_IR(IR_FORMAT(";--------------------------", ""));
+		IR_dump_statement(ctx);
+		print_IR(IR_FORMAT(";--------------------------", ""));
 		print_IR(IR_FORMAT("WRITE8  ", "none"));
 		print_IR(IR_FORMAT(";--------------------------", ""));
 	} break;
@@ -130,6 +153,7 @@ void IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 	if (compare_str(funcall->name, STR("write"))) {
 		for (const FuncallArg *arg = funcall->args; arg != NULL;
 		     arg = arg->next) {
+			assert(funcall->args->expr.type = EXPR_TYPE_STR);
 			IR_dump_expr(ctx, funcall->args->expr);
 			print_IR(IR_FORMAT("CALL    write_str", "none"));
 		}

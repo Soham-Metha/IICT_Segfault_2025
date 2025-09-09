@@ -12,7 +12,7 @@
 
 typedef enum {
 	VAR_TYPE_STR,
-	// VAR_TYPE_I64,
+	VAR_TYPE_I64,
 	// VAR_TYPE_F64,
 	// VAR_TYPE_CHAR,
 	VAR_TYPE_FUNC,
