@@ -92,5 +92,6 @@ Expr expr_parse(Line_Context *ctx);
 Expr expr_peek_next(Line_Context *ctx);
 const char *expr_get_name(ExprType type);
 FuncallArg *parse_funcall_arglist(Line_Context *ctx);
+bool bin_opr_get_def(TokenType tok, BinOprLUT *out);
 
 #endif
