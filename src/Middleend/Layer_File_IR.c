@@ -60,7 +60,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr tok);
 
 static varType IR_dump_statement(Block_Context_IR *ctx);
 
-static void IR_dump_code_block(Block_Context_IR *ctx);
+static varType IR_dump_code_block(Block_Context_IR *ctx);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
@@ -249,7 +249,7 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 	return VAR_TYPE_VOID;
 }
 
-static void IR__STMT_BLOCK(Block_Context_IR *ctx)
+static varType IR__STMT_BLOCK(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_BLOCK_START);
@@ -263,10 +263,11 @@ static void IR__STMT_BLOCK(Block_Context_IR *ctx)
 	blk_ctx.var_def_cnt = 0;
 
 	print_IR(IR_FORMAT("%%scope", "none"));
-	IR_dump_code_block(&blk_ctx);
+	varType ret = IR_dump_code_block(&blk_ctx);
 	print_IR(IR_FORMAT("%%end", "none"));
 
 	ctx->n = blk_ctx.n;
+	return ret;
 }
 
 static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
@@ -300,7 +301,9 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	print_IR(IR_FORMAT(";body start                ", ""));
 	print_IR(IR_FORMAT(";--------------------------", ""));
 	print_IR(IR_FORMAT("%%scope                    ", ""));
-	IR_dump_code_block(&blk_ctx);
+	if (IR_dump_code_block(&blk_ctx) != VAR_TYPE_VOID) {
+		print_IR(IR_FORMAT("SPOP", ""));
+	}
 	if (cond->repeat) {
 		print_IR(IR_FORMAT("JMPU    E_%d", cond_id));
 	}
@@ -397,18 +400,20 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 	return ret;
 }
 
-static void IR_dump_code_block(Block_Context_IR *ctx)
+static varType IR_dump_code_block(Block_Context_IR *ctx)
 {
 	assert(ctx);
+	varType ret = VAR_TYPE_VOID;
 	update_indent(1);
 	for (; ctx->next != NULL;) {
 		
-		varType type = IR_dump_statement(ctx);
-		if (type != VAR_TYPE_VOID) {
+		ret = IR_dump_statement(ctx);
+		if (ctx->next && ret != VAR_TYPE_VOID) {
 			print_IR(IR_FORMAT("SPOP", ""));
 		}
 	}
 	update_indent(-1);
+	return ret;
 }
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
