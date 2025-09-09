@@ -12,7 +12,7 @@ typedef struct {
 	const char *inst;
 } BinOprInstLUT;
 
-static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_VOID][BIN_OPR_CNT] = {
+static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
 	[VAR_TYPE_FUNC] = { 
 			    [BIN_OPR_AND]   = { .allowed = false },
 			    [BIN_OPR_OR]    = { .allowed = false },
