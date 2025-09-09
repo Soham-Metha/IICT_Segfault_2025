@@ -232,6 +232,7 @@ varType IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 				     .prev = ctx,
 				     .var_def_cnt = 0 };
 	dump_var_defn(&blk_ctx, v->name, type);
+	ctx->n = blk_ctx.n;
 	return type;
 }
 
@@ -377,7 +378,7 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 	//       ctx->next->statement.type);
 	switch (stmt.type) {
 	case STMT_BLOCK_START:
-		IR__STMT_BLOCK(ctx);
+		ret = IR__STMT_BLOCK(ctx);
 		break;
 	case STMT_CONDITIONAL:
 		IR__STMT_CONDITIONAL(ctx);
@@ -389,7 +390,7 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_VAR_DECL(ctx);
 		break;
 	case STMT_VAR_DEFN:
-		IR__STMT_VAR_DEFN(ctx);
+		ret = IR__STMT_VAR_DEFN(ctx);
 		break;
 	case STMT_MATCH:
 	case STMT_BLOCK_END:
