@@ -48,12 +48,18 @@ typedef struct Expr Expr;
 typedef union ExprValue ExprValue;
 typedef struct Line_Context Line_Context;
 typedef struct BinOpr BinOpr;
+typedef struct BinOprLUT BinOprLUT;
 
 struct Funcall {
 	String name;
 	FuncallArg *args;
 };
 
+struct BinOprLUT {
+	BinOprType type;
+	BinOprPrec prec;
+	TokenType  tokn;
+};
 
 union ExprValue {
 	String str;
