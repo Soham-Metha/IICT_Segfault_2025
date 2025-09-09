@@ -1,4 +1,1 @@
-
-|   |                                                                                                                              |
-| W | ERROR | '10' | Unknown instruction detected!                                                                               |
-|   |                                                                                                                              |
+ir.sasm:77: ERROR: Cannot parse empty expression
