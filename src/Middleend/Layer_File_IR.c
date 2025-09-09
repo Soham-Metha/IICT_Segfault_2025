@@ -74,6 +74,7 @@ varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 	default:
 		break;
 	}
+	return VAR_TYPE_COUNT;
 }
 
 varType dump_var_decl(String var_nm, String type, int id)
