@@ -37,11 +37,11 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_COUNT][BIN_OPR_CNT] = {
 			   [BIN_OPR_GE] = { .allowed = true, .inst = "GEI" },
 			   [BIN_OPR_NE] = { .allowed = true, .inst = "NEI" },
 			   [BIN_OPR_EQ] = { .allowed = true, .inst = "EQI" },
-			   [BIN_OPR_PLUS] = { .allowed = true, .inst = "ADDI" },
+			   [BIN_OPR_PLUS] = { .allowed = true, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nADDI    [QT]ADDI" },
 			   [BIN_OPR_MINUS] = { .allowed = true,
-					       .inst = "SUBI" },
+					       .inst = "SPOPR   [QT]\nSPOPR   [L2]\nSUBI" },
 			   [BIN_OPR_MULT] = { .allowed = true,
-					      .inst = "MULI" } },
+					      .inst = "SPOPR   [QT]\nSPOPR   [L2]\nMULI" } },
 };
 
 static varType IR_dump_expr(Block_Context_IR *ctx, Expr tok);
