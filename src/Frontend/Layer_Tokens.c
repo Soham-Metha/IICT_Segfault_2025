@@ -80,6 +80,7 @@ Token token_expect_next(Line_Context *ctx, TokenType expected)
 {
 	update_indent(1);
 	Token token = token_peek_next(ctx);
+	assert(cachedCnt);
 	log_to_ctx(ctx, LOG_FORMAT("[TOKEN CHECK]", "[TOKN]", "Expected: '%s'",
 				   token_get_name(expected),
 				   token_get_name(token.type)));
@@ -140,10 +141,8 @@ Token token_peek_next(Line_Context *ctx)
 		Token token = { 0 };
 		(*line) = trim(*line);
 
-		if (line->len == 0 && cachedCnt > 0) {
+		if (line->len == 0) {
 			break;
-		} else if (line->len == 0) {
-			assert(0 && "reached End of line!");
 		}
 
 		int old_cached_cnt = cachedCnt;
