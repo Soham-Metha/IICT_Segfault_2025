@@ -368,8 +368,8 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 static varType IR_dump_statement(Block_Context_IR *ctx)
 {
 	assert(ctx->next != NULL);
+	varType ret = VAR_TYPE_VOID;
 	Stmt stmt = ctx->next->statement;
-	ctx->next = ctx->next->next;
 	// print_IR(IR_FORMAT(";;        %d",
 	//       ctx->next->statement.type);
 	switch (stmt.type) {
@@ -380,7 +380,7 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_CONDITIONAL(ctx);
 		break;
 	case STMT_EXPR:
-		return IR_dump_expr(ctx, stmt.as.expr);
+		ret = IR_dump_expr(ctx, stmt.as.expr);
 		break;
 	case STMT_VAR_DECL:
 		IR__STMT_VAR_DECL(ctx);
@@ -393,7 +393,8 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 	default:
 		break;
 	}
-	return VAR_TYPE_VOID;
+	ctx->next = ctx->next->next;
+	return ret;
 }
 
 static void IR_dump_code_block(Block_Context_IR *ctx)
