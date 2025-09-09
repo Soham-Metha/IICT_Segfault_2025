@@ -249,7 +249,7 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 			assert(IR_dump_expr(ctx, funcall->args->expr)==VAR_TYPE_STR);
 			print_IR(IR_FORMAT("CALL    write_str", "none"));
 		}
-		return VAR_TYPE_FUNC;
+		return VAR_TYPE_VOID;
 	}
 	return VAR_TYPE_VOID;
 }
@@ -385,7 +385,10 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_CONDITIONAL(ctx);
 		break;
 	case STMT_EXPR:
-		IR_dump_expr(ctx, stmt.as.expr);
+		varType type = IR_dump_expr(ctx, stmt.as.expr);
+		if (type == VAR_TYPE_VOID) {
+
+		}
 		break;
 	case STMT_VAR_DECL:
 		IR__STMT_VAR_DECL(ctx);
@@ -424,7 +427,7 @@ Error IR_generate(const CodeBlock *blk)
 	ctx.var_def_cnt = 0;
 
 	print_IR(
-		"write_str:\nDUPS     1\nSPOPR    [QT]\nDUPS     2\nSPOPR    [L0]\nINVOK    7\nRET");
+		"write_str:\nSWAP     1\nSPOPR    [QT]\nSWAP     1\nSPOPR    [L0]\nINVOK    7\nRET");
 	update_indent(-1);
 	IR_dump_code_block(&ctx);
 	update_indent(1);
