@@ -194,17 +194,13 @@ Token token_peek_next(Line_Context *ctx)
 				token.text = split_str_by_len(line, 6);
 			} else if (isalpha(line->data[0])) {
 				token.type = TOKEN_TYPE_NAME;
-				token.text =
-					split_str_by_condition(line, isName);
+				token.text = split_str_by_condition(line, isName);
 			} else if (isdigit(line->data[0]) ||
 				   line->data[0] == '-') {
 				token.type = TOKEN_TYPE_NUMBER;
-				token.text =
-					split_str_by_condition(line, isNumber);
+				token.text = split_str_by_condition(line, isNumber);
 			} else {
-				print(ctx, WIN_STDERR,
-				      "Unknown token starting with '%c'\n",
-				      line->data[0]);
+				print(ctx, WIN_STDERR, "Unknown token starting with '%c'\n", line->data[0]);
 				exit(1);
 			}
 		}
