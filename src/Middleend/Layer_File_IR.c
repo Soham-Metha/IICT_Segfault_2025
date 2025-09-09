@@ -58,7 +58,7 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
 
 static varType IR_dump_expr(Block_Context_IR *ctx, Expr tok);
 
-static varType IR_dump_statement(Block_Context_IR *ctx);
+static void IR_dump_statement(Block_Context_IR *ctx);
 
 static void IR_dump_code_block(Block_Context_IR *ctx);
 
@@ -140,7 +140,6 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 		print_IR(IR_FORMAT("%.*s: ", Str_Fmt(var_nm)));
 		IR_dump_statement(ctx);
 		print_IR(IR_FORMAT(";--------------------------", ""));
-		print_IR(IR_FORMAT("RET                        ", ""));
 		return VAR_TYPE_VOID;
 	} break;
 	case VAR_TYPE_STR: {
@@ -335,8 +334,8 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 		break;
 
 	case EXPR_TYPE_FUNCALL:
-		IR__STMT_FUNCALL(ctx, &expr.as.funcall);
-		return VAR_TYPE_FUNC;
+		return IR__STMT_FUNCALL(ctx, &expr.as.funcall);
+		break;
 
 	case EXPR_TYPE_NUMBER:
 		print_IR(IR_FORMAT("PUSH    %d", expr.as.num));
@@ -366,7 +365,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 	return VAR_TYPE_VOID;
 }
 
-static varType IR_dump_statement(Block_Context_IR *ctx)
+static void IR_dump_statement(Block_Context_IR *ctx)
 {
 	assert(ctx->next != NULL);
 	Stmt stmt = ctx->next->statement;
@@ -380,7 +379,10 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 		IR__STMT_CONDITIONAL(ctx);
 		break;
 	case STMT_EXPR:
-		return IR_dump_expr(ctx, stmt.as.expr);
+		varType type = IR_dump_expr(ctx, stmt.as.expr);
+		if (type != VAR_TYPE_VOID) {
+			// print_IR(IR_FORMAT("SPOP", ""));
+		}
 		break;
 	case STMT_VAR_DECL:
 		IR__STMT_VAR_DECL(ctx);
@@ -394,7 +396,6 @@ static varType IR_dump_statement(Block_Context_IR *ctx)
 		break;
 	}
 	ctx->next = ctx->next->next;
-	return VAR_TYPE_VOID;
 }
 
 static void IR_dump_code_block(Block_Context_IR *ctx)
@@ -402,10 +403,7 @@ static void IR_dump_code_block(Block_Context_IR *ctx)
 	assert(ctx);
 	update_indent(1);
 	for (; ctx->next != NULL;) {
-		 IR_dump_statement(ctx);
-		// if (type != VAR_TYPE_VOID) {
-		// 	print_IR(IR_FORMAT("SPOP", ""));
-		// }
+		IR_dump_statement(ctx);
 	}
 	update_indent(-1);
 }
