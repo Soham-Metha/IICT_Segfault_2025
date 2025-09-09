@@ -65,6 +65,7 @@ varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 	} break;
 	case VAR_TYPE_I64: {
 		print_IR(IR_FORMAT("PUSH    E_%d    ", id));
+		print_IR(IR_FORMAT("READ8I          ", id));
 		return VAR_TYPE_I64;
 	} break;
 	case VAR_TYPE_FUNC:
