@@ -143,84 +143,18 @@ Token token_peek_next(Line_Context *ctx)
 			assert(0 && "reached End of line!");
 		}
 
+		for (TokenType i = 0; i < TOKEN_TYPE_CNT; i++) {
+			if (starts_with(*line, tokenTextLUT[i])) {
+				token.type = i;
+				token.text = split_str_by_len(
+					line, tokenTextLUT[i].len);
+				tok_cache[cachedCnt] = token;
+				cachedCnt++;
+				continue;
+			}
+		}
+
 		switch (line->data[0]) {
-		case '+': {
-			token.type = TOKEN_TYPE_PLUS;
-			token.text = split_str_by_len(line, 1);
-		} break;
-		case '-': {
-			token.type = TOKEN_TYPE_MINUS;
-			token.text = split_str_by_len(line, 1);
-		} break;
-		case '*': {
-			token.type = TOKEN_TYPE_MULT;
-			token.text = split_str_by_len(line, 1);
-		} break;
-		case '<': {
-			token.type = TOKEN_TYPE_LT;
-			token.text = split_str_by_len(line, 1);
-		} break;
-		case '>=': {
-			token.type = TOKEN_TYPE_GE;
-			token.text = split_str_by_len(line, 2);
-		} break;
-		case '<>':
-		case '!=': {
-			token.type = TOKEN_TYPE_NE;
-			token.text = split_str_by_len(line, 2);
-		} break;
-		case '&&': {
-			token.type = TOKEN_TYPE_AND;
-			token.text = split_str_by_len(line, 2);
-		} break;
-		case '||': {
-			token.type = TOKEN_TYPE_OR;
-			token.text = split_str_by_len(line, 2);
-		} break;
-		case '==': {
-			token.type = TOKEN_TYPE_EQEQ;
-			token.text = split_str_by_len(line, 2);
-		} break;
-		case '(': {
-			token.type = TOKEN_TYPE_OPEN_PAREN;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case ';': {
-			token.type = TOKEN_TYPE_STATEMENT_END;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case ')': {
-			token.type = TOKEN_TYPE_CLOSING_PAREN;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case '{': {
-			token.type = TOKEN_TYPE_OPEN_CURLY;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case '}': {
-			token.type = TOKEN_TYPE_CLOSING_CURLY;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case ',': {
-			token.type = TOKEN_TYPE_COMMA;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case ':': {
-			token.type = TOKEN_TYPE_COLON;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
-		case '=': {
-			token.type = TOKEN_TYPE_EQUAL;
-			token.text = split_str_by_len(line, 1);
-		} break;
-
 		case '"': {
 			split_str_by_len(line, 1); // discard opening "
 
@@ -252,15 +186,9 @@ Token token_peek_next(Line_Context *ctx)
 		} break;
 
 		default: {
-			if (starts_with(*line, STR("->"))) {
-				token.type = TOKEN_TYPE_THEN;
-				token.text = split_str_by_len(line, 2);
-			} else if (starts_with(*line, STR("then"))) {
+			if (starts_with(*line, STR("then"))) {
 				token.type = TOKEN_TYPE_THEN;
 				token.text = split_str_by_len(line, 4);
-			} else if (starts_with(*line, STR("<->"))) {
-				token.type = TOKEN_TYPE_REPEAT;
-				token.text = split_str_by_len(line, 3);
 			} else if (starts_with(*line, STR("repeat"))) {
 				token.type = TOKEN_TYPE_REPEAT;
 				token.text = split_str_by_len(line, 6);
