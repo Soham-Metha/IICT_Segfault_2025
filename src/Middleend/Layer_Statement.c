@@ -24,6 +24,7 @@ void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
 	assert(ctx->var_def_cnt < 128);
 	ctx->var_defs[ctx->var_def_cnt++] =
 		(Var_IR){ .name = name,
+			  .has_def = false,
 			  .type = get_type_details_from_type_name(type).type,
 			  .mem_addr = id };
 }
@@ -37,6 +38,19 @@ Var_IR get_var_details(const Block_Context_IR *ctx, String name)
 				return curr->var_defs[i];
 			}
 		}
+	assert(0 && "VAR NOT IN SCOPE");
+}
+
+void set_var_as_defined(Block_Context_IR *ctx, String name)
+{
+	for (Block_Context_IR *curr = ctx; curr != NULL; curr = curr->prev) {
+		for (int i = curr->var_def_cnt - 1; i >= 0; i--) {
+			if (compare_str(name, curr->var_defs[i].name)) {
+				curr->var_defs[i].has_def = true;
+				return;
+			}
+		}
+	}
 	assert(0 && "VAR NOT IN SCOPE");
 }
 

@@ -66,6 +66,7 @@ static varType IR_dump_code_block(Block_Context_IR *ctx);
 
 varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 {
+	assert(get_var_details(ctx, var_nm).has_def);
 	int id = get_var_details(ctx, var_nm).mem_addr;
 	switch (get_var_details(ctx, var_nm).type) {
 	case VAR_TYPE_STR: {
@@ -135,12 +136,19 @@ varType dump_var_decl(String var_nm, String type, int id)
 varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 {
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
+
+	set_var_as_defined(ctx, var_nm);
+
 	switch (type) {
 	case VAR_TYPE_FUNC: {
 		int id = ctx->n++;
 		// jump over the function defn, unless it's called
 		print_IR(IR_FORMAT("JMPU    E_%d               ", id));
-		print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
+		if (compare_str(var_nm,STR("main"))) {
+			print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
+		} else {
+			print_IR(IR_FORMAT("E_%d:                      ", get_var_details(ctx, var_nm).mem_addr));
+		};
 		varType func_out = IR_dump_statement(ctx);
 		if (func_out==VAR_TYPE_I64) {
 			print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
@@ -255,6 +263,9 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		}
 		return VAR_TYPE_VOID;
 	}
+	int id = get_var_details(ctx, funcall->name).mem_addr;
+	print_IR(IR_FORMAT("CALL    E_%d    ", id));
+
 	return VAR_TYPE_VOID;
 }
 

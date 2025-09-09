@@ -1,20 +1,27 @@
 x:str = "Hi";
+y:i64 = 0;
+
+sayHi:func() = {
+     write("hello,world!\n");
+     y = y + 1;
+     y < 10 -> { sayHi(); }
+}
+
+sayBye:func() = {
+     write("bye,world!\n");
+}
 
 main:func() = {
 
-     y:i64 = 0;
-     y < 10 <-> {
-          write("hello,world!\n");
-          y = y + 1;
-     }
+     sayHi();
      x = "Hi";
      % TODO: control directly jumps to main
      % without defining the global variables
      write(x);
      % write(y); not yet supported
      
-     (false) repeat {
-          write("bye,world!\n");
+     (1) then {
+          sayBye();
      }
 
     x = "hello,world!";

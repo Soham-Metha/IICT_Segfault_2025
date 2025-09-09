@@ -10,6 +10,7 @@ typedef struct Var_IR {
 	String name;
 	int type;
 	int mem_addr;
+	bool has_def;
 } Var_IR;
 
 struct Block_Context_IR {
