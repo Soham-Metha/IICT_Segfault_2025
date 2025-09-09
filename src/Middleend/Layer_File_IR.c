@@ -58,9 +58,9 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
 
 static varType IR_dump_expr(Block_Context_IR *ctx, Expr tok);
 
-static void IR_dump_statement(Block_Context_IR *ctx);
+static varType IR_dump_statement(Block_Context_IR *ctx);
 
-static void IR_dump_code_block(Block_Context_IR *ctx);
+static varType IR_dump_code_block(Block_Context_IR *ctx);
 
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
@@ -137,10 +137,18 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 	switch (type) {
 	case VAR_TYPE_FUNC: {
-		print_IR(IR_FORMAT("%.*s: ", Str_Fmt(var_nm)));
-		IR_dump_statement(ctx);
+		int id = ctx->n++;
+		// jump over the function defn, unless it's called
+		print_IR(IR_FORMAT("JMPU    E_%d               ", id));
+		print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
+		varType func_out = IR_dump_statement(ctx);
+		if (func_out==VAR_TYPE_I64) {
+			print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
+		}
+		print_IR(IR_FORMAT("RET                        ", ""));
 		print_IR(IR_FORMAT(";--------------------------", ""));
-		return VAR_TYPE_FUNC;
+		print_IR(IR_FORMAT("E_%d:                      ", id));
+		return VAR_TYPE_VOID;
 	} break;
 	case VAR_TYPE_STR: {
 		assert(get_var_details(ctx, var_nm).type == VAR_TYPE_STR);
@@ -232,6 +240,7 @@ varType IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 				     .prev = ctx,
 				     .var_def_cnt = 0 };
 	dump_var_defn(&blk_ctx, v->name, type);
+	ctx->n = blk_ctx.n;
 	return type;
 }
 
@@ -249,7 +258,7 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 	return VAR_TYPE_VOID;
 }
 
-static void IR__STMT_BLOCK(Block_Context_IR *ctx)
+static varType IR__STMT_BLOCK(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_BLOCK_START);
@@ -263,10 +272,11 @@ static void IR__STMT_BLOCK(Block_Context_IR *ctx)
 	blk_ctx.var_def_cnt = 0;
 
 	print_IR(IR_FORMAT("%%scope", "none"));
-	IR_dump_code_block(&blk_ctx);
+	varType ret = IR_dump_code_block(&blk_ctx);
 	print_IR(IR_FORMAT("%%end", "none"));
 
 	ctx->n = blk_ctx.n;
+	return ret;
 }
 
 static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
@@ -300,7 +310,9 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	print_IR(IR_FORMAT(";body start                ", ""));
 	print_IR(IR_FORMAT(";--------------------------", ""));
 	print_IR(IR_FORMAT("%%scope                    ", ""));
-	IR_dump_code_block(&blk_ctx);
+	if (IR_dump_code_block(&blk_ctx) != VAR_TYPE_VOID) {
+		print_IR(IR_FORMAT("SPOP", ""));
+	}
 	if (cond->repeat) {
 		print_IR(IR_FORMAT("JMPU    E_%d", cond_id));
 	}
@@ -334,8 +346,7 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 		break;
 
 	case EXPR_TYPE_FUNCALL:
-		IR__STMT_FUNCALL(ctx, &expr.as.funcall);
-		return VAR_TYPE_FUNC;
+		return IR__STMT_FUNCALL(ctx, &expr.as.funcall);
 		break;
 
 	case EXPR_TYPE_NUMBER:
@@ -366,23 +377,22 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 	return VAR_TYPE_VOID;
 }
 
-static void IR_dump_statement(Block_Context_IR *ctx)
+static varType IR_dump_statement(Block_Context_IR *ctx)
 {
 	assert(ctx->next != NULL);
+	varType ret = VAR_TYPE_VOID;
 	Stmt stmt = ctx->next->statement;
 	// print_IR(IR_FORMAT(";;        %d",
 	//       ctx->next->statement.type);
 	switch (stmt.type) {
 	case STMT_BLOCK_START:
-		IR__STMT_BLOCK(ctx);
+		ret = IR__STMT_BLOCK(ctx);
 		break;
 	case STMT_CONDITIONAL:
 		IR__STMT_CONDITIONAL(ctx);
 		break;
 	case STMT_EXPR:
-		varType type = IR_dump_expr(ctx, stmt.as.expr);
-		if (type == VAR_TYPE_VOID) {
-		}
+		ret = IR_dump_expr(ctx, stmt.as.expr);
 		break;
 	case STMT_VAR_DECL:
 		IR__STMT_VAR_DECL(ctx);
@@ -396,16 +406,23 @@ static void IR_dump_statement(Block_Context_IR *ctx)
 		break;
 	}
 	ctx->next = ctx->next->next;
+	return ret;
 }
 
-static void IR_dump_code_block(Block_Context_IR *ctx)
+static varType IR_dump_code_block(Block_Context_IR *ctx)
 {
 	assert(ctx);
+	varType ret = VAR_TYPE_VOID;
 	update_indent(1);
 	for (; ctx->next != NULL;) {
-		IR_dump_statement(ctx);
+		
+		ret = IR_dump_statement(ctx);
+		if (ctx->next && ret != VAR_TYPE_VOID) {
+			print_IR(IR_FORMAT("SPOP", ""));
+		}
 	}
 	update_indent(-1);
+	return ret;
 }
 
 // ----------------------------------------------------------- ACTUAL WORK -------------------------------------------------------------------
@@ -420,7 +437,9 @@ Error IR_generate(const CodeBlock *blk)
 	ctx.next = blk->begin;
 	ctx.var_def_cnt = 0;
 
-	print_IR(IR_FORMAT("%%entry main ", ""));
+	print_IR(IR_FORMAT("%%entry strt:", ""));
+	print_IR(IR_FORMAT("CALL    main ", ""));
+	print_IR(IR_FORMAT("SHUTS        ", ""));
 	print_IR(IR_FORMAT("write_str:   ", ""));
 	update_indent(1);
 	print_IR(IR_FORMAT("SWAP     1   ", ""));
@@ -432,7 +451,6 @@ Error IR_generate(const CodeBlock *blk)
 	update_indent(-2);
 	IR_dump_code_block(&ctx);
 	update_indent(1);
-	print_IR(IR_FORMAT("SHUTS", "none"));
 
 	return ERR_OK;
 }
