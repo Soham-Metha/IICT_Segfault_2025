@@ -99,7 +99,7 @@ varType dump_var_decl(String var_nm, String type, int id)
 {
 	switch (get_type_details_from_type_name(type).type) {
 	case VAR_TYPE_FUNC:
-		return VAR_TYPE_VOID;
+		return VAR_TYPE_FUNC;
 		break;
 	case VAR_TYPE_STR: {
 		print_IR(IR_FORMAT("; declaring var:   %.*s     ",
