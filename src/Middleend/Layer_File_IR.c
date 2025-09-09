@@ -336,7 +336,6 @@ static varType IR_dump_expr(Block_Context_IR *ctx, Expr expr)
 
 	case EXPR_TYPE_FUNCALL:
 		return IR__STMT_FUNCALL(ctx, &expr.as.funcall);
-		break;
 
 	case EXPR_TYPE_NUMBER:
 		print_IR(IR_FORMAT("PUSH    %d", expr.as.num));
