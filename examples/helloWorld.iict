@@ -1,4 +1,4 @@
-sayHi:func(n:i64;,y:i64) = {
+sayHi:func(n:i64,y:i64) = {
      write("hello,world!\n");
      y < n -> {
           y = y+1;
