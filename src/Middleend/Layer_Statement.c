@@ -18,12 +18,14 @@ static TypeDetailsLUT typeDetails[VAR_TYPE_CNT] = {
 			    .name = { .data = "bool", .len = 4 } },
 };
 
-void push_var_def(Block_Context_IR *ctx, String name, String type, int id)
+void push_var_def(Block_Context_IR *ctx, String name, String type, int id,
+		  int argc)
 {
 	assert(!compare_str(type, STR("void")));
 	assert(ctx->var_def_cnt < 128);
 	ctx->var_defs[ctx->var_def_cnt++] =
 		(Var_IR){ .name = name,
+			  .argc = argc,
 			  .has_def = false,
 			  .type = get_type_details_from_type_name(type).type,
 			  .mem_addr = id };
