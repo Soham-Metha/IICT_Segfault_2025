@@ -7,5 +7,5 @@ sayHi:func(n:i64,y:i64) = {
 }
 
 main:func() = {
-     sayHi(10,0);
+     sayHi(0,10);
 }
