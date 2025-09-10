@@ -1,6 +1,6 @@
 n:i64;
 
-main:func() = {
+main:func(;) = {
      n = 10;
      write("hello,world!\n");
 }
