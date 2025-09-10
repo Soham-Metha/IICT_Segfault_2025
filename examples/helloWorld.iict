@@ -1,4 +1,5 @@
 n:i64;
+
 main:func() = {
      n = 10;
      write("hello,world!\n");
