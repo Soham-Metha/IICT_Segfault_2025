@@ -1,10 +1,9 @@
 x:str = "Hi";
-y:i64 = 0;
 
-sayHi:func() = {
+sayHi:func(n:i64, y:i64=0;) = {
      write("hello,world!\n");
      y = y + 1;
-     y < 10 -> { sayHi(); }
+     y < n -> { sayHi(); }
 }
 
 sayBye:func() = {
