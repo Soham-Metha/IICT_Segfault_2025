@@ -130,7 +130,7 @@ FuncallArg *parse_funcall_arglist(Line_Context *ctx)
 
 	do {
 		FuncallArg *arg = region_allocate(sizeof(FuncallArg));
-		arg->expr = expr_peek_next(ctx);
+		arg->expr = expr_parse(ctx);
 		arg->next = NULL;
 
 		if (first == NULL) {
