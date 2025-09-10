@@ -246,8 +246,9 @@ void dump_typelist(Block_Context_IR *ctx, TypeList *list)
 		print_IR(IR_FORMAT("SWAP    1", ""));
 		print_IR(IR_FORMAT("PUSH    E_%d ", id));
 		print_IR(IR_FORMAT("SWAP    1", ""));
-		print_IR(IR_FORMAT("%s       ",get_type_details_from_type_id(type).write));
-		set_var_as_defined(ctx,v->name);
+		print_IR(IR_FORMAT("%s       ",
+				   get_type_details_from_type_id(type).write));
+		set_var_as_defined(ctx, v->name);
 	}
 }
 
@@ -309,20 +310,22 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		return VAR_TYPE_VOID;
 	}
 	Var_IR dets = get_var_details(ctx, funcall->name);
-	assert(dets.type == VAR_TYPE_FUNC);
-	assert(dets.list);
 	int id = dets.mem_addr;
-	int i = 0;
-	for (const FuncallArg *arg = funcall->args; arg != NULL;
-	     arg = arg->next) {
-		varType argtype = IR_dump_expr(ctx, funcall->args->expr);
-		varType expectedtype =
-			get_type_details_from_type_name(dets.list->var[i].type)
-				.type;
-		assert(expectedtype == argtype);
-		i++;
+	assert(dets.type == VAR_TYPE_FUNC);
+	if (dets.list) {
+		int i = 0;
+		for (const FuncallArg *arg = funcall->args; arg != NULL;
+		     arg = arg->next) {
+			varType argtype =
+				IR_dump_expr(ctx, funcall->args->expr);
+			varType expectedtype = get_type_details_from_type_name(
+						       dets.list->var[i].type)
+						       .type;
+			assert(expectedtype == argtype);
+			i++;
+		}
+		assert(i == dets.list->count);
 	}
-	assert(i == dets.list->count);
 	print_IR(IR_FORMAT("CALL    E_%d    ", id));
 
 	return VAR_TYPE_VOID;
