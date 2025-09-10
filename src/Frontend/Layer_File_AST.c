@@ -33,9 +33,12 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 	for (const FuncallArg *arg = funcall->args; arg != NULL;
 	     arg = arg->next) {
 		int childId = AST_dump_expression(&arg->expr, n, b);
-		if (childId >= 0)
+		if (childId >= 0) {
 			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", id,
 				  childId);
+			print_AST("  {rank=same; Expr_%d; Expr_%d};\n", id,
+				  childId);
+		}
 	}
 	return id;
 }
