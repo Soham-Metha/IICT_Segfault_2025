@@ -26,7 +26,7 @@ typedef struct Var_IR Var_IR;
 typedef struct Block_Context_IR Block_Context_IR;
 
 void push_var_def(Block_Context_IR *ctx, String name, String type, int id,
-	TypeList list);
+	TypeList *list);
 
 Var_IR get_var_details(const Block_Context_IR *ctx, String name);
 
