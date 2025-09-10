@@ -317,7 +317,7 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		for (const FuncallArg *arg = funcall->args; arg != NULL;
 		     arg = arg->next) {
 			varType argtype =
-				IR_dump_expr(ctx, funcall->args->expr);
+				IR_dump_expr(ctx, arg->expr);
 			varType expectedtype = get_type_details_from_type_name(
 						       dets.list->var[i].type)
 						       .type;
