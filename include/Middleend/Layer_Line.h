@@ -11,7 +11,6 @@ typedef struct Var_IR {
 	int type;
 	int mem_addr;
 	bool has_def;
-	bool is_func;
 	int argc;
 } Var_IR;
 
