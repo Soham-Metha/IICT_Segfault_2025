@@ -25,7 +25,8 @@ typedef struct {
 typedef struct Var_IR Var_IR;
 typedef struct Block_Context_IR Block_Context_IR;
 
-void push_var_def(Block_Context_IR *ctx, String name, String type, int id);
+void push_var_def(Block_Context_IR *ctx, String name, String type, int id,
+		  int argc);
 
 Var_IR get_var_details(const Block_Context_IR *ctx, String name);
 
