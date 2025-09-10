@@ -194,7 +194,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 			__STMT_BLOCK((*n)++, n, b, stmt->as.cond.body.begin);
 		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
 			  condId);
-		print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, condId);
+		print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, bodyId);
 		print_AST("  Expr_%d -> Expr_%d;\n", myId, bodyId);
 		return myId;
 	}
