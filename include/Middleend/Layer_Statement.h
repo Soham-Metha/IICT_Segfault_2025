@@ -19,6 +19,8 @@ typedef enum {
 typedef struct {
 	varType type;
 	String name;
+	const char* read;
+	const char* write;
 	int size;
 } TypeDetailsLUT;
 
