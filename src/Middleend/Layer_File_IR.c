@@ -76,7 +76,7 @@ static varType IR_dump_statement(Block_Context_IR *ctx);
 
 static varType IR_dump_code_block(Block_Context_IR *ctx);
 
-void dump_typelist(Block_Context_IR *ctx,TypeList *list);
+void dump_typelist(Block_Context_IR *ctx, TypeList *list);
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
 varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
@@ -149,7 +149,8 @@ varType dump_var_decl(String var_nm, String type, int id)
 	return VAR_TYPE_VOID;
 }
 
-varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, TypeList *list)
+varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
+		      TypeList *list)
 {
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 
@@ -161,11 +162,14 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, TypeLi
 
 		print_IR(IR_FORMAT("JMPU    E_%d               ", id));
 		if (compare_str(var_nm, STR("main"))) {
-			print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
+			print_IR(IR_FORMAT("%.*s:                      ",
+					   Str_Fmt(var_nm)));
 		} else {
-			print_IR(IR_FORMAT("E_%d:                      ", get_var_details(ctx, var_nm).mem_addr));
+			print_IR(IR_FORMAT(
+				"E_%d:                      ",
+				get_var_details(ctx, var_nm).mem_addr));
 		};
-		dump_typelist(ctx,list);
+		dump_typelist(ctx, list);
 		varType func_out = IR_dump_statement(ctx);
 		if (func_out == VAR_TYPE_I64) {
 			print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
@@ -226,23 +230,24 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, TypeLi
 	return VAR_TYPE_VOID;
 }
 
-void dump_typelist(Block_Context_IR *ctx,TypeList *list) 
+void dump_typelist(Block_Context_IR *ctx, TypeList *list)
 {
-	if(!list) return;
-	for (int i = 0; i < list->count; i++)
-	{
+	if (!list)
+		return;
+	for (int i = 0; i < list->count; i++) {
 		VarDecl *v = &list->var[i];
 		int id = ctx->n++;
 		varType type;
 		if (v->args)
 			push_var_def(ctx, v->name, v->type, id, v->args);
-		else 
+		else
 			push_var_def(ctx, v->name, v->type, id, NULL);
 		type = dump_var_decl(v->name, v->type, id);
-		print_IR(IR_FORMAT("SWAP    1",""));
+		print_IR(IR_FORMAT("SWAP    1", ""));
 		print_IR(IR_FORMAT("PUSH    E_%d ", id));
-		print_IR(IR_FORMAT("SWAP    1",""));
-		print_IR(IR_FORMAT("%s       ",get_type_details_from_type_id(type).write));
+		print_IR(IR_FORMAT("SWAP    1", ""));
+		print_IR(IR_FORMAT("%s       ",
+				   get_type_details_from_type_id(type).write));
 	}
 }
 
@@ -256,7 +261,7 @@ varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 	varType type;
 	if (v->args)
 		push_var_def(ctx, v->name, v->type, id, v->args);
-	else 
+	else
 		push_var_def(ctx, v->name, v->type, id, NULL);
 	type = dump_var_decl(v->name, v->type, id);
 	if (v->has_init) {
@@ -268,7 +273,7 @@ varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 					     .prev = ctx,
 					     .var_def_cnt = 0 };
 
-		dump_var_defn(&blk_ctx, v->name, type,v->args);
+		dump_var_defn(&blk_ctx, v->name, type, v->args);
 		ctx->n = blk_ctx.n;
 	}
 	return type;
@@ -303,7 +308,21 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		}
 		return VAR_TYPE_VOID;
 	}
-	int id = get_var_details(ctx, funcall->name).mem_addr;
+	Var_IR dets = get_var_details(ctx, funcall->name);
+	assert(dets.type == VAR_TYPE_FUNC);
+	assert(dets.list);
+	int id = dets.mem_addr;
+	int i = 0;
+	for (const FuncallArg *arg = funcall->args; arg != NULL;
+	     arg = arg->next) {
+		varType argtype = IR_dump_expr(ctx, funcall->args->expr);
+		varType expectedtype =
+			get_type_details_from_type_name(dets.list->var[i].type)
+				.type;
+		assert(expectedtype == argtype);
+		i++;
+	}
+	assert(i == dets.list->count);
 	print_IR(IR_FORMAT("CALL    E_%d    ", id));
 
 	return VAR_TYPE_VOID;
