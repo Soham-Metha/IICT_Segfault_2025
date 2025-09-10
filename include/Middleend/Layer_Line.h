@@ -11,7 +11,7 @@ typedef struct Var_IR {
 	int type;
 	int mem_addr;
 	bool has_def;
-	int argc;
+	TypeList *list;
 } Var_IR;
 
 struct Block_Context_IR {
