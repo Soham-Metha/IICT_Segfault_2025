@@ -4,12 +4,6 @@
 #include <Utils/strings.h>
 #include <Middleend/Layer_Line.h>
 
-// typedef struct Var_IR {
-// 	String name;
-// 	int type;
-// 	int mem_addr;
-// } Var_IR;
-
 typedef enum {
 	VAR_TYPE_VOID,
 	VAR_TYPE_STR,
