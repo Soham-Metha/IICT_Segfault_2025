@@ -36,8 +36,8 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 		if (childId >= 0) {
 			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", id,
 				  childId);
-			print_AST("  {rank=same; Expr_%d; Expr_%d};\n", id,
-				  childId);
+			// print_AST("  {rank=same; Expr_%d; Expr_%d};\n", id,
+			// 	  childId);
 		}
 	}
 	return id;
@@ -99,6 +99,10 @@ static int AST_dump_expression(const Expr *expr, int *n, int *b)
 			  child1);
 		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
 			  child2);
+
+		print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, child1);
+
+		print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, child2);
 		return myId;
 	}
 	case EXPR_TYPE_OPEN_CURLY:
