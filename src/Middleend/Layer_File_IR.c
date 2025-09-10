@@ -246,8 +246,8 @@ void dump_typelist(Block_Context_IR *ctx, TypeList *list)
 		print_IR(IR_FORMAT("SWAP    1", ""));
 		print_IR(IR_FORMAT("PUSH    E_%d ", id));
 		print_IR(IR_FORMAT("SWAP    1", ""));
-		print_IR(IR_FORMAT("%s       ",
-				   get_type_details_from_type_id(type).write));
+		print_IR(IR_FORMAT("%s       ",get_type_details_from_type_id(type).write));
+		set_var_as_defined(ctx,v->name);
 	}
 }
 
