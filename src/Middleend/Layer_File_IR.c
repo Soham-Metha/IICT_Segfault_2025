@@ -234,7 +234,7 @@ void dump_typelist(Block_Context_IR *ctx, TypeList *list)
 {
 	if (!list)
 		return;
-	for (int i = 0; i < list->count; i++) {
+	for (int i = list->count-1; i >=0; i--) {
 		VarDecl *v = &list->var[i];
 		int id = ctx->n++;
 		varType type;
