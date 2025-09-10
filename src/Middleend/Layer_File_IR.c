@@ -234,7 +234,10 @@ void dump_typelist(Block_Context_IR *ctx,TypeList *list)
 		VarDecl *v = &list->var[i];
 		int id = ctx->n++;
 		varType type;
-		push_var_def(ctx, v->name, v->type, id);
+		if (v->args)
+			push_var_def(ctx, v->name, v->type, id, v->args->count);
+		else 
+			push_var_def(ctx, v->name, v->type, id, 0);
 		type = dump_var_decl(v->name, v->type, id);
 		if (v->has_init) {
 			StmtNode nxt =
@@ -259,7 +262,10 @@ varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 
 	int id = ctx->n++;
 	varType type;
-	push_var_def(ctx, v->name, v->type, id);
+	if (v->args)
+		push_var_def(ctx, v->name, v->type, id, v->args->count);
+	else 
+		push_var_def(ctx, v->name, v->type, id, 0);
 	type = dump_var_decl(v->name, v->type, id);
 	if (v->has_init) {
 		StmtNode nxt =
