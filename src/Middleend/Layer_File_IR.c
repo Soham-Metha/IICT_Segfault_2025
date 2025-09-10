@@ -239,18 +239,10 @@ void dump_typelist(Block_Context_IR *ctx,TypeList *list)
 		else 
 			push_var_def(ctx, v->name, v->type, id, NULL);
 		type = dump_var_decl(v->name, v->type, id);
-		if (v->has_init) {
-			StmtNode nxt =
-				(StmtNode){ .next = NULL, .statement = *v->init };
-			Block_Context_IR blk_ctx = { .n = ctx->n,
-							.b = ctx->b,
-							.next = &nxt,
-							.prev = ctx,
-							.var_def_cnt = 0 };
-
-			dump_var_defn(&blk_ctx, v->name, type, v->args);
-			ctx->n = blk_ctx.n;
-		}
+		print_IR(IR_FORMAT("SWAP    1",""));
+		print_IR(IR_FORMAT("PUSH    E_%d ", id));
+		print_IR(IR_FORMAT("SWAP    1",""));
+		print_IR(IR_FORMAT("%s       ",get_type_details_from_type_id(type).write));
 	}
 }
 
