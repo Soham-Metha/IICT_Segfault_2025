@@ -1,9 +1,10 @@
 x:str = "Hi";
 
-sayHi:func(n:i64 = 10;, y:i64 = 0;) = {
+sayHi:func(n:i64, y:i64) = {
      write("hello,world!\n");
-     y = y + 1;
-     y < n -> { sayHi(); }
+     y < n -> { 
+          sayHi(n, y+1 ); 
+     }
 }
 
 sayBye:func() = {
@@ -12,7 +13,7 @@ sayBye:func() = {
 
 main:func() = {
 
-     sayHi();
+     sayHi(10,0);
      x = "Hi";
      % TODO: control directly jumps to main
      % without defining the global variables
