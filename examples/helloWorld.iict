@@ -8,7 +8,7 @@ sayHi:func(n:i64, y:i64) = {
      }
 }
 
-sayBye:func(n:64) = {
+sayBye:func(n:i64) = {
      y:i64 = 0;
      y < n <-> {
           write("bye,world!\n");
