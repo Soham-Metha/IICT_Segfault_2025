@@ -510,6 +510,7 @@ Error IR_generate(const CodeBlock *blk)
 	ctx.var_def_cnt = 0;
 
 	print_IR(IR_FORMAT("%%entry strt:", ""));
+	IR_dump_code_block(&ctx);
 	print_IR(IR_FORMAT("CALL    main ", ""));
 	print_IR(IR_FORMAT("SHUTS        ", ""));
 	print_IR(IR_FORMAT("write_str:   ", ""));
@@ -521,7 +522,6 @@ Error IR_generate(const CodeBlock *blk)
 	print_IR(IR_FORMAT("INVOK    7   ", ""));
 	print_IR(IR_FORMAT("RET          ", ""));
 	update_indent(-2);
-	IR_dump_code_block(&ctx);
 	update_indent(1);
 
 	return ERR_OK;
