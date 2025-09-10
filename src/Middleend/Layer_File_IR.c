@@ -229,7 +229,7 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 void dump_typelist(Block_Context_IR *ctx,TypeList *list) 
 {
 	if(!list) return;
-	for (size_t i = 0; i < list->count; i++)
+	for (int i = 0; i < list->count; i++)
 	{
 		VarDecl *v = &list->var[i];
 		int id = ctx->n++;
