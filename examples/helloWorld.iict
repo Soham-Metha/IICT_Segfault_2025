@@ -15,7 +15,6 @@ sayBye:func() = {
 main:func() = {
 
      sayHi(10,0);
-     x = "Hi";
      % TODO: control directly jumps to main
      % without defining the global variables
      write(x);
