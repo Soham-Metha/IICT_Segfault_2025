@@ -4,6 +4,8 @@
 #include <Utils/mem_manager.h>
 #include <assert.h>
 
+TypeList *parse_typelist(Line_Context *ctx);
+
 Stmt stmt_check_stmt_conditional(Line_Context *ctx)
 {
 	Stmt result = { 0 };
@@ -62,7 +64,7 @@ VarDecl stmt_parse_var_decl(Line_Context *ctx)
 	(void)token_expect_next(ctx, TOKEN_TYPE_COLON);
 	res.type = token_expect_next(ctx, TOKEN_TYPE_NAME).text;
 	if (compare_str(res.type, STR("func"))) {
-		res.args = parse_funcall_arglist(ctx);
+		res.args = parse_typelist(ctx);
 	}
 	Token nxt = token_peek_next(ctx);
 	if (nxt.type == TOKEN_TYPE_EQUAL) {
@@ -73,6 +75,50 @@ VarDecl stmt_parse_var_decl(Line_Context *ctx)
 	}
 	return res;
 }
+
+TypeList *parse_typelist(Line_Context *ctx)
+{
+	Token token = token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
+	TypeList *list = region_allocate(sizeof(*list));
+	list->count=0;
+
+	update_indent(1);
+	log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+				   "- Parameters:", ""));
+
+	update_indent(1);
+	token = token_peek_next(ctx);
+	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
+		token_consume(ctx);
+		log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+					   " NO ARGS !", ""));
+		update_indent(-2);
+		return NULL;
+	}
+
+	do {
+		list->var[list->count++] = stmt_parse_var_decl(ctx);
+
+		token = token_peek_next(ctx);
+		if (!token_consume(ctx)) {
+			print(ctx, WIN_STDERR, " ERROR: expected %s or %s\n",
+			      token_get_name(TOKEN_TYPE_CLOSING_PAREN),
+			      token_get_name(TOKEN_TYPE_COMMA));
+			exit(1);
+		}
+
+	} while (token.type == TOKEN_TYPE_COMMA);
+
+	if (token.type != TOKEN_TYPE_CLOSING_PAREN) {
+		print(ctx, WIN_STDERR, " ERROR: expected %s\n",
+		      token_get_name(TOKEN_TYPE_CLOSING_PAREN));
+		exit(1);
+	}
+	update_indent(-2);
+
+	return list;
+}
+
 VarDefn stmt_parse_var_defn(Line_Context *ctx)
 {
 	VarDefn res = { 0 };

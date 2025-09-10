@@ -4,12 +4,6 @@
 #include <Utils/strings.h>
 #include <Middleend/Layer_Line.h>
 
-// typedef struct Var_IR {
-// 	String name;
-// 	int type;
-// 	int mem_addr;
-// } Var_IR;
-
 typedef enum {
 	VAR_TYPE_VOID,
 	VAR_TYPE_STR,
@@ -25,13 +19,16 @@ typedef enum {
 typedef struct {
 	varType type;
 	String name;
+	const char* read;
+	const char* write;
 	int size;
 } TypeDetailsLUT;
 
 typedef struct Var_IR Var_IR;
 typedef struct Block_Context_IR Block_Context_IR;
 
-void push_var_def(Block_Context_IR *ctx, String name, String type, int id);
+void push_var_def(Block_Context_IR *ctx, String name, String type, int id,
+	TypeList *list);
 
 Var_IR get_var_details(const Block_Context_IR *ctx, String name);
 

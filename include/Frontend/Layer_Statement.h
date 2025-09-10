@@ -23,14 +23,19 @@ typedef struct StmtNode StmtNode;
 typedef struct Line_Context Line_Context;
 // typedef struct PatternMatch PatternMatch;
 typedef struct StmtConditional StmtConditional;
-
+typedef struct TypeList TypeList;
 struct VarDecl {
 	String name;
 	String type;
-	FuncallArg *args;
+	TypeList *args;
 
 	Stmt *init;
 	bool has_init;
+};
+
+struct TypeList {
+	VarDecl var[5];
+	int count;
 };
 
 struct VarDefn {

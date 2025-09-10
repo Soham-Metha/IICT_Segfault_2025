@@ -1,0 +1,11 @@
+sayHi:func(n:i64,y:i64) = {
+     y < n -> {
+          write("hello,world!\n");
+          y = y+1;
+          sayHi(n,y);
+     }
+}
+
+main:func() = {
+     sayHi(10,0);
+}

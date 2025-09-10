@@ -1,34 +1,35 @@
-x:str = "Hi";
-y:i64 = 0;
+x:str = "Hi\n";
 
-sayHi:func() = {
+sayHi:func(n:i64, y:i64) = {
      write("hello,world!\n");
-     y = y + 1;
-     y < 10 -> { sayHi(); }
+     y < n -> {
+          % write(y); not yet supported
+          sayHi(n, y+1 ); 
+     }
 }
 
-sayBye:func() = {
-     write("bye,world!\n");
+sayBye:func(n:i64) = {
+     y:i64 = 0;
+     y < n <-> {
+          write("bye,world!\n");
+          y = y+1; 
+     }
 }
 
 main:func() = {
 
-     sayHi();
-     x = "Hi";
-     % TODO: control directly jumps to main
-     % without defining the global variables
+     sayHi(5,0);
      write(x);
-     % write(y); not yet supported
      
      (1) then {
-          sayBye();
+          sayBye(5);
      }
 
     x = "hello,world!";
     write(x);
 
-    1+2+3;
-};
+    1+2+3; % return value
+}
 
 % Language name: undecided
 % Created as a part of the 

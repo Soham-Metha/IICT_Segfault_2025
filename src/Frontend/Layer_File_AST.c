@@ -34,7 +34,8 @@ int __STMT_FUNCALL(int id, int *n, int *b, const Funcall *funcall)
 	     arg = arg->next) {
 		int childId = AST_dump_expression(&arg->expr, n, b);
 		if (childId >= 0)
-			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", id, childId);
+			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", id,
+				  childId);
 	}
 	return id;
 }
@@ -91,8 +92,10 @@ static int AST_dump_expression(const Expr *expr, int *n, int *b)
 			  bin_opr_get_name(expr->as.bin_opr->type));
 		int child1 = AST_dump_expression(&expr->as.bin_opr->lhs, n, b);
 		int child2 = AST_dump_expression(&expr->as.bin_opr->rhs, n, b);
-		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, child1);
-		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, child2);
+		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
+			  child1);
+		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
+			  child2);
 		return myId;
 	}
 	case EXPR_TYPE_OPEN_CURLY:
@@ -134,11 +137,32 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	case STMT_VAR_DECL: {
 		print_AST(AST("folder", "gold", "Decl: %.*s"), myId,
 			  Str_Fmt(stmt->as.var_decl.name));
+
+		if (stmt->as.var_decl.args)
+			for (int i = 0; i < stmt->as.var_decl.args->count;
+			     i++) {
+				VarDecl decl = stmt->as.var_decl.args->var[i];
+				int argId = (*n)++;
+				print_AST(AST("folder", "gold", "Decl: %.*s"),
+					  argId, Str_Fmt(decl.name));
+				print_AST(
+					"  Expr_%d -> Expr_%d[style=dotted];\n",
+					myId, argId);
+				if (decl.has_init && decl.init != NULL) {
+					int childId = AST_dump_statement(
+						decl.init, n, b);
+					print_AST(
+						"  Expr_%d -> Expr_%d[style=dotted];\n",
+						argId, childId);
+				}
+			}
+
 		if (stmt->as.var_decl.has_init &&
 		    stmt->as.var_decl.init != NULL) {
 			int childId = AST_dump_statement(stmt->as.var_decl.init,
 							 n, b);
-			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, childId);
+			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
+				  childId);
 		}
 		return myId;
 	}
@@ -148,18 +172,20 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 		if (stmt->as.var_defn.val != NULL) {
 			int childId =
 				AST_dump_statement(stmt->as.var_defn.val, n, b);
-			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, childId);
+			print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
+				  childId);
 		}
 		return myId;
 	}
 	case STMT_CONDITIONAL: {
-		print_AST(AST("septagon", "lightslategrey", "%s"),
-			  myId, (stmt->as.cond.repeat)?"While":"If");
+		print_AST(AST("septagon", "lightslategrey", "%s"), myId,
+			  (stmt->as.cond.repeat) ? "While" : "If");
 		int condId = AST_dump_expression(&stmt->as.cond.cond, n, b);
 		int bodyId =
 			__STMT_BLOCK((*n)++, n, b, stmt->as.cond.body.begin);
-		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, condId);
-		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, bodyId);
+		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
+			  condId);
+		print_AST("  Expr_%d -> Expr_%d;\n", myId, bodyId);
 		return myId;
 	}
 	case STMT_BLOCK_END:

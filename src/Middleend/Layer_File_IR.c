@@ -14,46 +14,60 @@ typedef struct {
 } BinOprInstLUT;
 
 static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
-	[VAR_TYPE_FUNC] = {
-			    [BIN_OPR_AND]   = { .allowed = false },
-			    [BIN_OPR_OR]    = { .allowed = false },
-			    [BIN_OPR_LT]    = { .allowed = false },
-			    [BIN_OPR_GE]    = { .allowed = false },
-			    [BIN_OPR_NE]    = { .allowed = false },
-			    [BIN_OPR_EQ]    = { .allowed = false },
-			    [BIN_OPR_PLUS]  = { .allowed = false },
+	[VAR_TYPE_FUNC] = { [BIN_OPR_AND] = { .allowed = false },
+			    [BIN_OPR_OR] = { .allowed = false },
+			    [BIN_OPR_LT] = { .allowed = false },
+			    [BIN_OPR_GE] = { .allowed = false },
+			    [BIN_OPR_NE] = { .allowed = false },
+			    [BIN_OPR_EQ] = { .allowed = false },
+			    [BIN_OPR_PLUS] = { .allowed = false },
 			    [BIN_OPR_MINUS] = { .allowed = false },
-			    [BIN_OPR_MULT]  = { .allowed = false } },
-	[VAR_TYPE_STR] = {
-			   [BIN_OPR_AND]   = { .allowed = false },
-			   [BIN_OPR_OR]    = { .allowed = false },
-			   [BIN_OPR_LT]    = { .allowed = false },
-			   [BIN_OPR_GE]    = { .allowed = false },
-			   [BIN_OPR_NE]    = { .allowed = false },
-			   [BIN_OPR_EQ]    = { .allowed = false },
-			   [BIN_OPR_PLUS]  = { .allowed = false },
+			    [BIN_OPR_MULT] = { .allowed = false } },
+	[VAR_TYPE_STR] = { [BIN_OPR_AND] = { .allowed = false },
+			   [BIN_OPR_OR] = { .allowed = false },
+			   [BIN_OPR_LT] = { .allowed = false },
+			   [BIN_OPR_GE] = { .allowed = false },
+			   [BIN_OPR_NE] = { .allowed = false },
+			   [BIN_OPR_EQ] = { .allowed = false },
+			   [BIN_OPR_PLUS] = { .allowed = false },
 			   [BIN_OPR_MINUS] = { .allowed = false },
-			   [BIN_OPR_MULT]  = { .allowed = false } },
-	[VAR_TYPE_I64] = {
-			   [BIN_OPR_AND]   = { .allowed = false },
-			   [BIN_OPR_OR]    = { .allowed = false },
-			   [BIN_OPR_LT]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "LTI" },
-			   [BIN_OPR_GE]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "GEI" },
-			   [BIN_OPR_NE]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "NEI" },
-			   [BIN_OPR_EQ]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "EQI" },
-			   [BIN_OPR_PLUS]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nADDI    val([QT])\nPUSHR    ref([L2])" },
-			   [BIN_OPR_MINUS] = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nSUBI    val([QT])\nPUSHR    ref([L2])" },
-			   [BIN_OPR_MULT]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nMULI    val([QT])\nPUSHR    ref([L2])" } },
-	[VAR_TYPE_BOOL] = {
-			   [BIN_OPR_AND]   = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "ANDB" },
-			   [BIN_OPR_OR]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = " ORB" },
-			   [BIN_OPR_LT]    = { .allowed = false },
-			   [BIN_OPR_GE]    = { .allowed = false },
-			   [BIN_OPR_NE]    = { .allowed = false },
-			   [BIN_OPR_EQ]    = { .allowed = false },
-			   [BIN_OPR_PLUS]  = { .allowed = false },
-			   [BIN_OPR_MINUS] = { .allowed = false },
-			   [BIN_OPR_MULT]  = { .allowed = false } },
+			   [BIN_OPR_MULT] = { .allowed = false } },
+	[VAR_TYPE_I64] = { [BIN_OPR_AND] = { .allowed = false },
+			   [BIN_OPR_OR] = { .allowed = false },
+			   [BIN_OPR_LT] = { .allowed = true,
+					    .ret = VAR_TYPE_BOOL,
+					    .inst = "LTI" },
+			   [BIN_OPR_GE] = { .allowed = true,
+					    .ret = VAR_TYPE_BOOL,
+					    .inst = "GEI" },
+			   [BIN_OPR_NE] = { .allowed = true,
+					    .ret = VAR_TYPE_BOOL,
+					    .inst = "NEI" },
+			   [BIN_OPR_EQ] = { .allowed = true,
+					    .ret = VAR_TYPE_BOOL,
+					    .inst = "EQI" },
+			   [BIN_OPR_PLUS] = { .allowed = true,
+					      .ret = VAR_TYPE_I64,
+					      .inst = "SPOPR   [QT]\nSPOPR   [L2]\nADDI    val([QT])\nPUSHR    ref([L2])" },
+			   [BIN_OPR_MINUS] = { .allowed = true,
+					       .ret = VAR_TYPE_I64,
+					       .inst = "SPOPR   [QT]\nSPOPR   [L2]\nSUBI    val([QT])\nPUSHR    ref([L2])" },
+			   [BIN_OPR_MULT] = { .allowed = true,
+					      .ret = VAR_TYPE_I64,
+					      .inst = "SPOPR   [QT]\nSPOPR   [L2]\nMULI    val([QT])\nPUSHR    ref([L2])" } },
+	[VAR_TYPE_BOOL] = { [BIN_OPR_AND] = { .allowed = true,
+					      .ret = VAR_TYPE_BOOL,
+					      .inst = "ANDB" },
+			    [BIN_OPR_OR] = { .allowed = true,
+					     .ret = VAR_TYPE_BOOL,
+					     .inst = " ORB" },
+			    [BIN_OPR_LT] = { .allowed = false },
+			    [BIN_OPR_GE] = { .allowed = false },
+			    [BIN_OPR_NE] = { .allowed = false },
+			    [BIN_OPR_EQ] = { .allowed = false },
+			    [BIN_OPR_PLUS] = { .allowed = false },
+			    [BIN_OPR_MINUS] = { .allowed = false },
+			    [BIN_OPR_MULT] = { .allowed = false } },
 };
 
 static varType IR_dump_expr(Block_Context_IR *ctx, Expr tok);
@@ -62,6 +76,7 @@ static varType IR_dump_statement(Block_Context_IR *ctx);
 
 static varType IR_dump_code_block(Block_Context_IR *ctx);
 
+void dump_typelist(Block_Context_IR *ctx, TypeList *list);
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
 varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
@@ -87,6 +102,7 @@ varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 		return VAR_TYPE_BOOL;
 	} break;
 	case VAR_TYPE_FUNC:
+		print_IR(IR_FORMAT("PUSH    E_%d    ", id));
 		return VAR_TYPE_FUNC;
 	case VAR_TYPE_VOID:
 		return VAR_TYPE_VOID;
@@ -133,7 +149,8 @@ varType dump_var_decl(String var_nm, String type, int id)
 	return VAR_TYPE_VOID;
 }
 
-varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
+varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type,
+		      TypeList *list)
 {
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 
@@ -142,15 +159,19 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 	switch (type) {
 	case VAR_TYPE_FUNC: {
 		int id = ctx->n++;
-		// jump over the function defn, unless it's called
+
 		print_IR(IR_FORMAT("JMPU    E_%d               ", id));
-		if (compare_str(var_nm,STR("main"))) {
-			print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
+		if (compare_str(var_nm, STR("main"))) {
+			print_IR(IR_FORMAT("%.*s:                      ",
+					   Str_Fmt(var_nm)));
 		} else {
-			print_IR(IR_FORMAT("E_%d:                      ", get_var_details(ctx, var_nm).mem_addr));
+			print_IR(IR_FORMAT(
+				"E_%d:                      ",
+				get_var_details(ctx, var_nm).mem_addr));
 		};
+		dump_typelist(ctx, list);
 		varType func_out = IR_dump_statement(ctx);
-		if (func_out==VAR_TYPE_I64) {
+		if (func_out == VAR_TYPE_I64) {
 			print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
 		}
 		print_IR(IR_FORMAT("RET                        ", ""));
@@ -209,6 +230,28 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 	return VAR_TYPE_VOID;
 }
 
+void dump_typelist(Block_Context_IR *ctx, TypeList *list)
+{
+	if (!list)
+		return;
+	for (int i = list->count-1; i >=0; i--) {
+		VarDecl *v = &list->var[i];
+		int id = ctx->n++;
+		varType type;
+		if (v->args)
+			push_var_def(ctx, v->name, v->type, id, v->args);
+		else
+			push_var_def(ctx, v->name, v->type, id, NULL);
+		type = dump_var_decl(v->name, v->type, id);
+		print_IR(IR_FORMAT("SWAP    1", ""));
+		print_IR(IR_FORMAT("PUSH    E_%d ", id));
+		print_IR(IR_FORMAT("SWAP    1", ""));
+		print_IR(IR_FORMAT("%s       ",
+				   get_type_details_from_type_id(type).write));
+		set_var_as_defined(ctx, v->name);
+	}
+}
+
 varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 {
 	assert(ctx);
@@ -217,7 +260,10 @@ varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 
 	int id = ctx->n++;
 	varType type;
-	push_var_def(ctx, v->name, v->type, id);
+	if (v->args)
+		push_var_def(ctx, v->name, v->type, id, v->args);
+	else
+		push_var_def(ctx, v->name, v->type, id, NULL);
 	type = dump_var_decl(v->name, v->type, id);
 	if (v->has_init) {
 		StmtNode nxt =
@@ -228,7 +274,7 @@ varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 					     .prev = ctx,
 					     .var_def_cnt = 0 };
 
-		dump_var_defn(&blk_ctx, v->name, type);
+		dump_var_defn(&blk_ctx, v->name, type, v->args);
 		ctx->n = blk_ctx.n;
 	}
 	return type;
@@ -247,7 +293,7 @@ varType IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 				     .next = &nxt,
 				     .prev = ctx,
 				     .var_def_cnt = 0 };
-	dump_var_defn(&blk_ctx, v->name, type);
+	dump_var_defn(&blk_ctx, v->name, type, NULL);
 	ctx->n = blk_ctx.n;
 	return type;
 }
@@ -263,7 +309,23 @@ varType IR__STMT_FUNCALL(Block_Context_IR *ctx, const Funcall *funcall)
 		}
 		return VAR_TYPE_VOID;
 	}
-	int id = get_var_details(ctx, funcall->name).mem_addr;
+	Var_IR dets = get_var_details(ctx, funcall->name);
+	int id = dets.mem_addr;
+	assert(dets.type == VAR_TYPE_FUNC);
+	if (dets.list) {
+		int i = 0;
+		for (const FuncallArg *arg = funcall->args; arg != NULL;
+		     arg = arg->next) {
+			varType argtype =
+				IR_dump_expr(ctx, arg->expr);
+			varType expectedtype = get_type_details_from_type_name(
+						       dets.list->var[i].type)
+						       .type;
+			assert(expectedtype == argtype);
+			i++;
+		}
+		assert(i == dets.list->count);
+	}
 	print_IR(IR_FORMAT("CALL    E_%d    ", id));
 
 	return VAR_TYPE_VOID;
@@ -426,7 +488,6 @@ static varType IR_dump_code_block(Block_Context_IR *ctx)
 	varType ret = VAR_TYPE_VOID;
 	update_indent(1);
 	for (; ctx->next != NULL;) {
-		
 		ret = IR_dump_statement(ctx);
 		if (ctx->next && ret != VAR_TYPE_VOID) {
 			print_IR(IR_FORMAT("SPOP", ""));
@@ -449,6 +510,7 @@ Error IR_generate(const CodeBlock *blk)
 	ctx.var_def_cnt = 0;
 
 	print_IR(IR_FORMAT("%%entry strt:", ""));
+	IR_dump_code_block(&ctx);
 	print_IR(IR_FORMAT("CALL    main ", ""));
 	print_IR(IR_FORMAT("SHUTS        ", ""));
 	print_IR(IR_FORMAT("write_str:   ", ""));
@@ -460,7 +522,6 @@ Error IR_generate(const CodeBlock *blk)
 	print_IR(IR_FORMAT("INVOK    7   ", ""));
 	print_IR(IR_FORMAT("RET          ", ""));
 	update_indent(-2);
-	IR_dump_code_block(&ctx);
 	update_indent(1);
 
 	return ERR_OK;
