@@ -1,2 +1,7 @@
 sayHi:func(n:i64 = 10;) = {
+     write("hello,world!\n");
+}
+
+main:func() = {
+     sayHi();
 }
