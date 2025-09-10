@@ -1,5 +1,4 @@
 n:i64 = 10;
 main:func() = {
-     sayHi();
      write("hello,world!\n");
 }
