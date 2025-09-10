@@ -100,9 +100,8 @@ static int AST_dump_expression(const Expr *expr, int *n, int *b)
 		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
 			  child2);
 
-		print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, child1);
-
-		print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, child2);
+		// print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, child1); // cause segfault
+		// print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, child2);
 		return myId;
 	}
 	case EXPR_TYPE_OPEN_CURLY:
@@ -155,6 +154,9 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 				print_AST(
 					"  Expr_%d -> Expr_%d[style=dotted];\n",
 					myId, argId);
+
+				print_AST("  {rank=same; Expr_%d; Expr_%d};\n",
+					  myId, argId);
 				if (decl.has_init && decl.init != NULL) {
 					int childId = AST_dump_statement(
 						decl.init, n, b);
@@ -192,6 +194,7 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 			__STMT_BLOCK((*n)++, n, b, stmt->as.cond.body.begin);
 		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
 			  condId);
+		print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, condId);
 		print_AST("  Expr_%d -> Expr_%d;\n", myId, bodyId);
 		return myId;
 	}
