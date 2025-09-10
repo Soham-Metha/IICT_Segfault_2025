@@ -1,0 +1,4 @@
+
+|   |                                                                                                                              |
+| W | ERROR | 'WRITE8I' | Unknown instruction detected!                                                                          |
+|   |                                                                                                                              |
