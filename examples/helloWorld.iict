@@ -3,5 +3,5 @@ sayHi:func(n:i64 = 10;) = {
 }
 
 main:func() = {
-     sayHi();
+     sayHi(10);
 }
