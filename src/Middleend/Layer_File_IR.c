@@ -102,6 +102,7 @@ varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 		return VAR_TYPE_BOOL;
 	} break;
 	case VAR_TYPE_FUNC:
+		print_IR(IR_FORMAT("PUSH    E_%d    ", id));
 		return VAR_TYPE_FUNC;
 	case VAR_TYPE_VOID:
 		return VAR_TYPE_VOID;
