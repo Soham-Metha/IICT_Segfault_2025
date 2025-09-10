@@ -263,9 +263,9 @@ varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 	int id = ctx->n++;
 	varType type;
 	if (v->args)
-		push_var_def(ctx, v->name, v->type, id, v->args->count);
+		push_var_def(ctx, v->name, v->type, id, v->args);
 	else 
-		push_var_def(ctx, v->name, v->type, id, 0);
+		push_var_def(ctx, v->name, v->type, id, NULL);
 	type = dump_var_decl(v->name, v->type, id);
 	if (v->has_init) {
 		StmtNode nxt =
