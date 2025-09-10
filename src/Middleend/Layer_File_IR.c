@@ -147,7 +147,7 @@ varType dump_var_decl(String var_nm, String type, int id)
 	return VAR_TYPE_VOID;
 }
 
-varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
+varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, TypeList *list)
 {
 	print_IR(IR_FORMAT("; defining var:    %.*s     ", Str_Fmt(var_nm)));
 
@@ -159,13 +159,11 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type)
 
 		print_IR(IR_FORMAT("JMPU    E_%d               ", id));
 		if (compare_str(var_nm, STR("main"))) {
-			print_IR(IR_FORMAT("%.*s:                      ",
-					   Str_Fmt(var_nm)));
+			print_IR(IR_FORMAT("%.*s:                      ", Str_Fmt(var_nm)));
 		} else {
-			print_IR(IR_FORMAT(
-				"E_%d:                      ",
-				get_var_details(ctx, var_nm).mem_addr));
+			print_IR(IR_FORMAT("E_%d:                      ", get_var_details(ctx, var_nm).mem_addr));
 		};
+		dump_typelist(ctx,list);
 		varType func_out = IR_dump_statement(ctx);
 		if (func_out == VAR_TYPE_I64) {
 			print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
@@ -248,7 +246,7 @@ void dump_typelist(Block_Context_IR *ctx,TypeList *list)
 							.prev = ctx,
 							.var_def_cnt = 0 };
 
-			dump_var_defn(&blk_ctx, v->name, type);
+			dump_var_defn(&blk_ctx, v->name, type, v->args);
 			ctx->n = blk_ctx.n;
 		}
 	}
@@ -276,8 +274,7 @@ varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
 					     .prev = ctx,
 					     .var_def_cnt = 0 };
 
-		dump_typelist(&blk_ctx,v->args);
-		dump_var_defn(&blk_ctx, v->name, type);
+		dump_var_defn(&blk_ctx, v->name, type,v->args);
 		ctx->n = blk_ctx.n;
 	}
 	return type;
@@ -296,7 +293,7 @@ varType IR__STMT_VAR_DEFN(Block_Context_IR *ctx)
 				     .next = &nxt,
 				     .prev = ctx,
 				     .var_def_cnt = 0 };
-	dump_var_defn(&blk_ctx, v->name, type);
+	dump_var_defn(&blk_ctx, v->name, type, NULL);
 	ctx->n = blk_ctx.n;
 	return type;
 }
