@@ -1,4 +1,4 @@
-x:str = "Hi";
+x:str = "Hi\n";
 
 sayHi:func(n:i64, y:i64) = {
      write("hello,world!\n");
