@@ -76,6 +76,7 @@ static varType IR_dump_statement(Block_Context_IR *ctx);
 
 static varType IR_dump_code_block(Block_Context_IR *ctx);
 
+void dump_typelist(Block_Context_IR *ctx,TypeList *list);
 // ------------------------- INDIVIDUAL STATEMENT HANDLERS -------------------------
 
 varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
@@ -108,34 +109,6 @@ varType dump_var_accs(const Block_Context_IR *ctx, String var_nm)
 		break;
 	}
 	return VAR_TYPE_VOID;
-}
-
-void dump_typelist(Block_Context_IR *ctx,TypeList *list) 
-{
-	if(!list) return;
-	for (int i = 0; i < list->count; i++)
-	{
-		VarDecl *v = &list->var[i];
-		int id = ctx->n++;
-		varType type;
-		if (v->args)
-			push_var_def(ctx, v->name, v->type, id, v->args->count);
-		else 
-			push_var_def(ctx, v->name, v->type, id, 0);
-		type = dump_var_decl(v->name, v->type, id);
-		if (v->has_init) {
-			StmtNode nxt =
-				(StmtNode){ .next = NULL, .statement = *v->init };
-			Block_Context_IR blk_ctx = { .n = ctx->n,
-							.b = ctx->b,
-							.next = &nxt,
-							.prev = ctx,
-							.var_def_cnt = 0 };
-
-			dump_var_defn(&blk_ctx, v->name, type, v->args);
-			ctx->n = blk_ctx.n;
-		}
-	}
 }
 
 varType dump_var_decl(String var_nm, String type, int id)
@@ -250,6 +223,34 @@ varType dump_var_defn(Block_Context_IR *ctx, String var_nm, varType type, TypeLi
 		break;
 	}
 	return VAR_TYPE_VOID;
+}
+
+void dump_typelist(Block_Context_IR *ctx,TypeList *list) 
+{
+	if(!list) return;
+	for (int i = 0; i < list->count; i++)
+	{
+		VarDecl *v = &list->var[i];
+		int id = ctx->n++;
+		varType type;
+		if (v->args)
+			push_var_def(ctx, v->name, v->type, id, v->args->count);
+		else 
+			push_var_def(ctx, v->name, v->type, id, 0);
+		type = dump_var_decl(v->name, v->type, id);
+		if (v->has_init) {
+			StmtNode nxt =
+				(StmtNode){ .next = NULL, .statement = *v->init };
+			Block_Context_IR blk_ctx = { .n = ctx->n,
+							.b = ctx->b,
+							.next = &nxt,
+							.prev = ctx,
+							.var_def_cnt = 0 };
+
+			dump_var_defn(&blk_ctx, v->name, type, v->args);
+			ctx->n = blk_ctx.n;
+		}
+	}
 }
 
 varType IR__STMT_VAR_DECL(Block_Context_IR *ctx)
