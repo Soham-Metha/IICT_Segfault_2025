@@ -1,6 +1,6 @@
 x:str = "Hi";
 
-sayHi:func(n:i64=10, y:i64=0;) = {
+sayHi:func(n:i64=10;, y:i64=0;) = {
      write("hello,world!\n");
      y = y + 1;
      y < n -> { sayHi(); }
