@@ -1,7 +1,52 @@
-sayHi:func(n:i64 = 10;) = {
+x:str = "Hi";
+
+sayHi:func(n:i64, y:i64) = {
      write("hello,world!\n");
+     y < n -> { 
+          y = y+1;
+          sayHi(n, y ); 
+     }
+}
+
+sayBye:func() = {
+     write("bye,world!\n");
 }
 
 main:func() = {
-     sayHi(10);
+
+     sayHi(10,0);
+     x = "Hi";
+     % TODO: control directly jumps to main
+     % without defining the global variables
+     write(x);
+     % write(y); not yet supported
+     
+     (1) then {
+          sayBye();
+     }
+
+    x = "hello,world!";
+    write(x);
+
+    1+2+3;
 }
+
+% Language name: undecided
+% Created as a part of the 
+% IICT SEGFAULT 2025 hackathon
+% by Team Kernull
+
+% Grammar:
+% CodeBlock // Can be called program modules
+%  |-> StmtNode* begin
+%  |-> StmtNode* end
+%
+% StmtNode:
+%  |-> Stmt
+%  |-> StmtNode* next
+
+% Currently supported statements:
+% Variable declaration:
+% <var> : <type>;
+% Variable definition:
+% <var> : <type> = Stmt;
