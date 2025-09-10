@@ -18,12 +18,12 @@ static TypeDetailsLUT typeDetails[VAR_TYPE_CNT] = {
 			   .size = 8,
 			   .name = { .data = "i64", .len = 3 },
 			   .read = "READ8I",
-			   .write = "WRITE8I" },
+			   .write = "WRITE8" },
 	[VAR_TYPE_BOOL] = { .type = VAR_TYPE_BOOL,
 			    .size = 1,
 			    .name = { .data = "bool", .len = 4 },
 			    .read = "READ1U",
-			    .write = "WRITE1U" },
+			    .write = "WRITE1" },
 };
 
 void push_var_def(Block_Context_IR *ctx, String name, String type, int id,
