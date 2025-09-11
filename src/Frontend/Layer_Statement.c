@@ -28,27 +28,28 @@ Stmt stmt_check_stmt_conditional(Line_Context *ctx)
 
 	res.cond = expr;
 	result.type = STMT_CONDITIONAL;
-	result.as.cond = res;
+	result.as.cond = region_allocate(sizeof(res));
+	*result.as.cond = res;
 	return result;
 }
 
-StmtConditional get_stmt_conditional(Line_Context *ctx)
+StmtConditional *get_stmt_conditional(Line_Context *ctx)
 {
-	StmtConditional res = { 0 };
+	StmtConditional *res = region_allocate(sizeof(*res));
 
-	res.cond = expr_parse(ctx);
-	assert(res.cond.type == EXPR_TYPE_BIN_OPR ||
-	       res.cond.type == EXPR_TYPE_BOOL ||
-	       res.cond.type == EXPR_TYPE_NUMBER);
+	res->cond = expr_parse(ctx);
+	assert(res->cond.type == EXPR_TYPE_BIN_OPR ||
+	       res->cond.type == EXPR_TYPE_BOOL ||
+	       res->cond.type == EXPR_TYPE_NUMBER);
 	token_expect_next(ctx, TOKEN_TYPE_CLOSING_PAREN);
 	Token next = token_peek_next(ctx);
 
 	if (next.type == TOKEN_TYPE_THEN) {
 		token_consume(ctx);
-		res.repeat = false;
+		res->repeat = false;
 	} else if (next.type == TOKEN_TYPE_REPEAT) {
 		token_consume(ctx);
-		res.repeat = true;
+		res->repeat = true;
 	} else {
 		log_to_ctx(ctx, " GOT %d\n\n", next.type);
 		assert(0 && "EXPECTED THEN OR REPEAT");
