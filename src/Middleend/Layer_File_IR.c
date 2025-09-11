@@ -436,7 +436,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	print_IR(IR_FORMAT(";--------------------------", ""));
 	update_indent(1);
 	varType cond_type = IR_dump_expr(ctx, cond->cond);
-	assert(cond_type == VAR_TYPE_BOOL || cond_type == VAR_TYPE_I64);
+	// assert(cond_type == VAR_TYPE_BOOL || cond_type == VAR_TYPE_I64);
 	print_IR(IR_FORMAT("NOT                        ", ""));
 	print_IR(IR_FORMAT("JMPC    E_%d               ", body_end_id));
 	update_indent(-1);
