@@ -442,14 +442,12 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	print_IR(IR_FORMAT("E_%d:                      ", body_id));
 	print_IR(IR_FORMAT(";body start                ", ""));
 	print_IR(IR_FORMAT(";--------------------------", ""));
-	print_IR(IR_FORMAT("%%scope                    ", ""));
 	if (IR_dump_code_block(&blk_ctx) != VAR_TYPE_VOID) {
 		print_IR(IR_FORMAT("SPOP", ""));
 	}
 	if (cond->repeat) {
 		print_IR(IR_FORMAT("JMPU    E_%d", cond_id));
 	}
-	print_IR(IR_FORMAT("%%end                      ", ""));
 	print_IR(IR_FORMAT(";--------------------------", ""));
 	print_IR(IR_FORMAT("E_%d:                      ", body_end_id));
 	print_IR(IR_FORMAT(";body end                  ", ""));
