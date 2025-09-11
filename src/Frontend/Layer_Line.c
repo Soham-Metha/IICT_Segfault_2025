@@ -97,8 +97,23 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		}
 		case STMT_CONDITIONAL: {
 			statement.as.cond->body = stmt_fetch_next(ctx);
-			if (statement.as.cond->body.type==STMT_BLOCK_START) {
-				statement.as.cond->body.as.block = codeblock_generate(context).begin;
+			if (statement.as.cond->body.type == STMT_BLOCK_START) {
+				statement.as.cond->body.as.block =
+					codeblock_generate(context).begin;
+			} else if (statement.as.cond->body.type == STMT_VAR_DECL) {
+				if (statement.as.cond->body.as.var_decl.has_init &&
+				    statement.as.cond->body.as.var_decl.init->type ==
+					    STMT_BLOCK_START) {
+					statement.as.cond->body.as.var_decl.init->as.block =
+						codeblock_generate(context)
+							.begin;
+				}
+			} else if (statement.as.cond->body.type == STMT_VAR_DEFN) {
+				if (statement.as.cond->body.as.var_defn.val->type ==
+					STMT_BLOCK_START) {
+					statement.as.cond->body.as.var_defn.val->as.block =
+						codeblock_generate(context).begin;
+				}
 			}
 		} break;
 		case STMT_VAR_DECL:
