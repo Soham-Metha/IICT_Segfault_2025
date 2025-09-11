@@ -188,10 +188,10 @@ static int AST_dump_statement(const Stmt *stmt, int *n, int *b)
 	}
 	case STMT_CONDITIONAL: {
 		print_AST(AST("septagon", "lightslategrey", "%s"), myId,
-			  (stmt->as.cond.repeat) ? "While" : "If");
-		int condId = AST_dump_expression(&stmt->as.cond.cond, n, b);
+			  (stmt->as.cond->repeat) ? "While" : "If");
+		int condId = AST_dump_expression(&stmt->as.cond->cond, n, b);
 		int bodyId =
-			__STMT_BLOCK((*n)++, n, b, stmt->as.cond.body);
+			AST_dump_statement(&stmt->as.cond->body, n, b);
 		print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId,
 			  condId);
 		print_AST("  {rank=same; Expr_%d; Expr_%d};\n", myId, bodyId);
