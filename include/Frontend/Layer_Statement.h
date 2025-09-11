@@ -46,7 +46,7 @@ struct VarDefn {
 struct StmtConditional {
 	bool repeat;
 	Expr cond;
-	CodeBlock body;
+	StmtNode *body;
 };
 
 union StmtValue {

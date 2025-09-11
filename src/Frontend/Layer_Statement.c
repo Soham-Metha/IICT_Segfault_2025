@@ -66,6 +66,12 @@ VarDecl stmt_parse_var_decl(Line_Context *ctx)
 	if (compare_str(res.type, STR("func"))) {
 		res.args = parse_typelist(ctx);
 	}
+	if (compare_str(res.type, STR("ptr"))) {
+		res.args = region_allocate(sizeof(TypeList));
+		token_expect_next(ctx,TOKEN_TYPE_OPEN_PAREN);
+		res.args->var[res.args->count++] = stmt_parse_var_decl(ctx);
+		token_expect_next(ctx,TOKEN_TYPE_CLOSING_PAREN);
+	}
 	Token nxt = token_peek_next(ctx);
 	if (nxt.type == TOKEN_TYPE_EQUAL) {
 		token_consume(ctx);

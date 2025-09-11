@@ -24,6 +24,11 @@ static TypeDetailsLUT typeDetails[VAR_TYPE_CNT] = {
 			    .name = { .data = "bool", .len = 4 },
 			    .read = "READ1U",
 			    .write = "WRITE1" },
+	[VAR_TYPE_PTR] = { .type = VAR_TYPE_PTR,
+			    .size = 1,
+			    .name = { .data = "ptr", .len = 3 },
+			    .read = "nop",
+			    .write = "nop" },
 };
 
 void push_var_def(Block_Context_IR *ctx, String name, String type, int id,

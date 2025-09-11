@@ -1,4 +1,5 @@
 x:str = "Hi\n";
+% p:ptr(y:i64=10;)
 
 sayHi:func(n:i64, y:i64) = {
      write("hello,world!\n");
@@ -35,15 +36,6 @@ main:func() = {
 % Created as a part of the 
 % IICT SEGFAULT 2025 hackathon
 % by Team Kernull
-
-% Grammar:
-% CodeBlock // Can be called program modules
-%  |-> StmtNode* begin
-%  |-> StmtNode* end
-%
-% StmtNode:
-%  |-> Stmt
-%  |-> StmtNode* next
 
 % Currently supported statements:
 % Variable declaration:

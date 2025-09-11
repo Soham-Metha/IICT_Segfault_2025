@@ -97,7 +97,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		}
 		case STMT_CONDITIONAL: {
 			token_expect_next(ctx, TOKEN_TYPE_OPEN_CURLY);
-			statement.as.cond.body = codeblock_generate(context);
+			statement.as.cond.body = codeblock_generate(context).begin;
 		} break;
 		case STMT_VAR_DECL:
 			if (statement.as.var_decl.has_init &&
