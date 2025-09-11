@@ -417,7 +417,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 {
 	assert(ctx);
 	assert(ctx->next->statement.type == STMT_CONDITIONAL);
-	const StmtConditional *cond = &ctx->next->statement.as.cond;
+	const StmtConditional *cond = ctx->next->statement.as.cond;
 	int cond_id, body_id, body_end_id;
 	cond_id = ctx->n++;
 	body_id = ctx->n++;
@@ -428,7 +428,8 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR *ctx)
 	blk_ctx.b = ctx->b;
 	blk_ctx.prev = ctx;
 	blk_ctx.var_def_cnt = 0;
-	blk_ctx.next = cond->body;
+	StmtNode nxt = (StmtNode){.statement=cond->body, .next=NULL};
+	blk_ctx.next = &nxt;
 
 	print_IR(IR_FORMAT("E_%d:                      ", cond_id));
 	print_IR(IR_FORMAT(";cond start                ", ""));
