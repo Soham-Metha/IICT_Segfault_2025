@@ -85,7 +85,7 @@ cleanup:
 	if (file_ptr) {
 		fclose(file_ptr);
 	}
-	// free(file_contents);
+	free(file_contents);
 	return out;
 }
 
