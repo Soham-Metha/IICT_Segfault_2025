@@ -1,12 +1,10 @@
 x:str = "Hi\n";
 % p:ptr(y:i64=10;)
 
-sayHi:func(n:i64=10;, y:i64) = {
+sayHi:func(n:i64, y:i64) = {
      write("hello,world!\n");
-     y < n -> {
-          % write(y); not yet supported
-          sayHi(n, y+1 ); 
-     }
+     y < n -> sayHi(n, y+1); 
+     % write(y); not yet supported
 }
 
 sayBye:func(n:i64) = {
