@@ -405,9 +405,7 @@ static varType IR__STMT_BLOCK(Block_Context_IR *ctx)
 	blk_ctx.prev = ctx;
 	blk_ctx.var_def_cnt = 0;
 
-	print_IR(IR_FORMAT("%%scope", "none"));
 	varType ret = IR_dump_code_block(&blk_ctx);
-	print_IR(IR_FORMAT("%%end", "none"));
 
 	ctx->n = blk_ctx.n;
 	return ret;
