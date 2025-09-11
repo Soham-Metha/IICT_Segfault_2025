@@ -3,6 +3,7 @@
 
 #include <Utils/strings.h>
 #include <Middleend/Layer_Line.h>
+#include <Frontend/Layer_Statement.h>
 
 typedef enum {
 	VAR_TYPE_VOID,
