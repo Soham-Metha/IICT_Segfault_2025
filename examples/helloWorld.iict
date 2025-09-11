@@ -6,9 +6,9 @@ x:str = "Hi\n";
      y < n -> sayHi(n, y+1); 
      % write(y); not yet supported
 }
-0 -> sayHi:func(n:i64, y:i64) = {
+0 -> sayHi:func(y:i64) = {
      write("hello,world!\n");
-     y < n -> sayHi(n, y+1); 
+     y < 2 -> sayHi(n, y+1); 
      % write(y); not yet supported
 }
 
