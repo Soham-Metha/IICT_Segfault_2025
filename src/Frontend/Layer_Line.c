@@ -96,7 +96,6 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 			break;
 		}
 		case STMT_CONDITIONAL: {
-			token_expect_next(ctx, TOKEN_TYPE_OPEN_CURLY);
 			statement.as.cond->body = stmt_fetch_next(ctx);
 		} break;
 		case STMT_VAR_DECL:
