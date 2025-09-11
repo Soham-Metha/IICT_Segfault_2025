@@ -43,17 +43,11 @@ struct VarDefn {
 	Stmt *val;
 };
 
-struct StmtConditional {
-	bool repeat;
-	Expr cond;
-	Stmt *body;
-};
-
 union StmtValue {
 	Expr expr;
 	VarDecl var_decl;
 	VarDefn var_defn;
-	StmtConditional cond;
+	StmtConditional *cond;
 	Expr token;
 	Funcall *funcall;
 	StmtNode *block;
@@ -68,6 +62,12 @@ struct Stmt {
 struct StmtNode {
 	Stmt statement;
 	StmtNode *next;
+};
+
+struct StmtConditional {
+	bool repeat;
+	Expr cond;
+	Stmt body;
 };
 
 // struct PatternMatch {
