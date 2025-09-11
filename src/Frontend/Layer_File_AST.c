@@ -76,8 +76,8 @@ static int AST_dump_expression(const Expr* expr, int* n, int* b)
         return __EXPR_TYPE_TOKEN(myId, expr->as.str);
     case EXPR_TYPE_NUMBER:
         {
-            char   buf[32];
-            int    len     = snprintf(buf, sizeof(buf), "%" PRId64, expr->as.num);
+            char buf[32];
+            int len        = snprintf(buf, sizeof(buf), "%" PRId64, expr->as.num);
             String str_num = { (unsigned int)len, buf };
             return __EXPR_TYPE_TOKEN(myId, str_num);
         }
@@ -142,8 +142,8 @@ static int AST_dump_statement(const Stmt* stmt, int* n, int* b)
 
             if (stmt->as.var_decl.args)
                 for (int i = 0; i < stmt->as.var_decl.args->count; i++) {
-                    VarDecl decl  = stmt->as.var_decl.args->var[i];
-                    int     argId = (*n)++;
+                    VarDecl decl = stmt->as.var_decl.args->var[i];
+                    int argId    = (*n)++;
                     print_AST(AST("folder", "gold", "Decl: %.*s"), argId, Str_Fmt(decl.name));
                     print_AST("  Expr_%d -> Expr_%d[style=dotted];\n", myId, argId);
 

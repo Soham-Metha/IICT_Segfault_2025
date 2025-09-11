@@ -8,49 +8,49 @@
 
 BinOprLUT binOprLUT[BIN_OPR_CNT] = {
     [BIN_OPR_AND] = {
-        .type = BIN_OPR_AND,
-        .tokn = TOKEN_TYPE_AND,
-        .prec = BIN_OPR_P0 },
+                     .type = BIN_OPR_AND,
+                     .tokn = TOKEN_TYPE_AND,
+                     .prec = BIN_OPR_P0 },
     [BIN_OPR_OR] = {
-        .type = BIN_OPR_OR,
-        .tokn = TOKEN_TYPE_OR,
-        .prec = BIN_OPR_P0,
-    },
+                     .type = BIN_OPR_OR,
+                     .tokn = TOKEN_TYPE_OR,
+                     .prec = BIN_OPR_P0,
+                     },
     [BIN_OPR_LT] = {
-        .type = BIN_OPR_LT,
-        .tokn = TOKEN_TYPE_LT,
-        .prec = BIN_OPR_P1,
-    },
+                     .type = BIN_OPR_LT,
+                     .tokn = TOKEN_TYPE_LT,
+                     .prec = BIN_OPR_P1,
+                     },
     [BIN_OPR_GE] = {
-        .type = BIN_OPR_GE,
-        .tokn = TOKEN_TYPE_GE,
-        .prec = BIN_OPR_P1,
-    },
+                     .type = BIN_OPR_GE,
+                     .tokn = TOKEN_TYPE_GE,
+                     .prec = BIN_OPR_P1,
+                     },
     [BIN_OPR_NE] = {
-        .type = BIN_OPR_NE,
-        .tokn = TOKEN_TYPE_NE,
-        .prec = BIN_OPR_P1,
-    },
+                     .type = BIN_OPR_NE,
+                     .tokn = TOKEN_TYPE_NE,
+                     .prec = BIN_OPR_P1,
+                     },
     [BIN_OPR_EQ] = {
-        .type = BIN_OPR_EQ,
-        .tokn = TOKEN_TYPE_EQEQ,
-        .prec = BIN_OPR_P1,
-    },
+                     .type = BIN_OPR_EQ,
+                     .tokn = TOKEN_TYPE_EQEQ,
+                     .prec = BIN_OPR_P1,
+                     },
     [BIN_OPR_PLUS] = {
-        .type = BIN_OPR_PLUS,
-        .tokn = TOKEN_TYPE_PLUS,
-        .prec = BIN_OPR_P2,
-    },
+                     .type = BIN_OPR_PLUS,
+                     .tokn = TOKEN_TYPE_PLUS,
+                     .prec = BIN_OPR_P2,
+                     },
     [BIN_OPR_MINUS] = {
-        .type = BIN_OPR_MINUS,
-        .tokn = TOKEN_TYPE_MINUS,
-        .prec = BIN_OPR_P2,
-    },
+                     .type = BIN_OPR_MINUS,
+                     .tokn = TOKEN_TYPE_MINUS,
+                     .prec = BIN_OPR_P2,
+                     },
     [BIN_OPR_MULT] = {
-        .type = BIN_OPR_MULT,
-        .tokn = TOKEN_TYPE_MULT,
-        .prec = BIN_OPR_P3,
-    }
+                     .type = BIN_OPR_MULT,
+                     .tokn = TOKEN_TYPE_MULT,
+                     .prec = BIN_OPR_P3,
+                     }
 };
 
 bool bin_opr_get_def(TokenType tok, BinOprLUT* out)

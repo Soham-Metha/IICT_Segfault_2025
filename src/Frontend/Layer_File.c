@@ -92,15 +92,15 @@ Line_Context* file_fetch_next_line(File_Context* file)
 {
     if (file->line_num && file->lines[file->line_num - 1].line.len)
         return file_fetch_curr_line(file);
-    Line_Context* curr              = &(file->lines[file->line_num]);
+    Line_Context* curr               = &(file->lines[file->line_num]);
 
-    curr->file_name                 = file->file_path;
-    curr->line                      = split_str_by_delim(&file->contents, '\n');
-    curr->line.data[curr->line.len] = '\0';
-    curr->line_start                = curr->line.data;
-    file->line_num += 1;
-    curr->line_no = file->line_num;
-    curr->line    = trim(curr->line);
+    curr->file_name                  = file->file_path;
+    curr->line                       = split_str_by_delim(&file->contents, '\n');
+    curr->line.data[curr->line.len]  = '\0';
+    curr->line_start                 = curr->line.data;
+    file->line_num                  += 1;
+    curr->line_no                    = file->line_num;
+    curr->line                       = trim(curr->line);
 
     log_to_ctx(curr, LOG_FORMAT("", "--xx--", "", "none"));
     log_to_ctx(curr, LOG_FORMAT("[READING]", "[LINE]", "\"%.*s\"", Str_Fmt(curr->line)));
