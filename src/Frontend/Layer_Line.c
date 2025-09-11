@@ -98,7 +98,7 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 		case STMT_CONDITIONAL: {
 			statement.as.cond->body = stmt_fetch_next(ctx);
 			if (statement.as.cond->body.type==STMT_BLOCK_START) {
-				statement.as.block = codeblock_generate(context).begin;
+				statement.as.cond->body.as.block = codeblock_generate(context).begin;
 			}
 		} break;
 		case STMT_VAR_DECL:
