@@ -3,7 +3,7 @@ x:str = "Hi\n";
 
 sayHi:func(n:i64, y:i64) = {
      write("hello,world!\n");
-     y < n -> sayHi(n, y+1 ); 
+     y < n -> sayHi(n, y+1); 
      % write(y); not yet supported
 }
 
