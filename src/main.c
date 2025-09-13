@@ -1,81 +1,81 @@
-#include <Wrapper/IO.h>
 #include <Frontend/Layer_File.h>
+#include <Wrapper/IO.h>
 #include <Wrapper/UI.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
-const char *inputFile = (void *)0;
-const char *outputFile = (void *)0;
-bool use_tui = 0;
+const char* inputFile  = (void*)0;
+const char* outputFile = (void*)0;
+bool use_tui           = 0;
 
-static void usage(const char *progName)
+static void usage(const char* progName)
 {
-	print(NULL, WIN_STDOUT,
-	      "Usage: %s [OPTIONS]                      \n"
-	      "Options:                                 \n"
-	      "    -i <input>        Provide input path \n"
-	      "    -o <output>       Provide output path\n"
-	      "    -tui              Launch ncurses TUI \n"
-	      "    -h                Provide this helper\n"
-	      "\n",
-	      progName);
+    print(NULL, WIN_STDOUT,
+        "Usage: %s [OPTIONS]                      \n"
+        "Options:                                 \n"
+        "    -i <input>        Provide input path \n"
+        "    -o <output>       Provide output path\n"
+        "    -tui              Launch ncurses TUI \n"
+        "    -h                Provide this helper\n"
+        "\n",
+        progName);
 }
 
-char *getNextCmdLineArg(int *argc, char ***argv)
+char* getNextCmdLineArg(int* argc, char*** argv)
 {
-	assert(*argc > 0);
-	char *arg = **argv;
-	*argc -= 1;
-	*argv += 1;
-	return arg;
+    assert(*argc > 0);
+    char* arg = **argv;
+    *argc -= 1;
+    *argv += 1;
+    return arg;
 }
 
-void processFlag(const char *prog, const char *flag, int *argc, char ***argv)
+void processFlag(const char* prog, const char* flag, int* argc, char*** argv)
 {
-	switch (flag[1]) {
-	case 'i':
-		inputFile = getNextCmdLineArg(argc, argv);
-		return;
-	case 'o':
-		outputFile = getNextCmdLineArg(argc, argv);
-		return;
-	case 'h':
-		usage(prog);
-		exit(0);
-	case 't':
-		use_tui = 1;
-		return;
-	default:
-		usage(prog);
-		exit(1);
-	}
+    switch (flag[1]) {
+    case 'i':
+        inputFile = getNextCmdLineArg(argc, argv);
+        return;
+    case 'o':
+        outputFile = getNextCmdLineArg(argc, argv);
+        return;
+    case 'h':
+        usage(prog);
+        exit(0);
+    case 't':
+        use_tui = 1;
+        return;
+    default:
+        usage(prog);
+        exit(1);
+    }
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-	const char *program = getNextCmdLineArg(&argc, &argv);
+    const char* program = getNextCmdLineArg(&argc, &argv);
 
-	while (argc > 0) {
-		const char *flag = getNextCmdLineArg(&argc, &argv);
-		processFlag(program, flag, &argc, &argv);
-	}
+    while (argc > 0) {
+        const char* flag = getNextCmdLineArg(&argc, &argv);
+        processFlag(program, flag, &argc, &argv);
+    }
 
-	if (!inputFile || !outputFile) {
-		usage(program);
-		exit(1);
-	}
+    if (!inputFile || !outputFile) {
+        usage(program);
+        exit(1);
+    }
 
-	File_Context ctx = { 0 };
-	file_read(inputFile, &ctx);
+    File_Context ctx = { 0 };
+    file_read(inputFile, &ctx);
 
-	if (use_tui) {
-		onStartup(&ctx);
-		onShutdown();
-		return 0;
-	}
+    if (use_tui) {
+        onStartup(&ctx);
+        onShutdown();
+        return 0;
+    }
 
-	print(NULL, WIN_STDOUT, "\n\n");
-	region_free();
-	return 0;
+    print(NULL, WIN_STDOUT, "\n\n");
+    region_free();
+    return 0;
 }

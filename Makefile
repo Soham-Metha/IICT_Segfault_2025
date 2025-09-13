@@ -1,7 +1,7 @@
 BUILDS := ./build
 
 CC	   := gcc
-CFLAGS := -Wall -Wextra -Werror -Wfatal-errors -Wswitch-enum -pedantic -O3 -std=c2x
+CFLAGS := -Wall -Wextra -Werror -Wfatal-errors -Wswitch-enum -pedantic -O3 -std=c2x -ggdb
 LIBS   := -lncursesw -I ./include
 
 $(BUILDS):
