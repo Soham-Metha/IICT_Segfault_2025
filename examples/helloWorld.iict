@@ -22,13 +22,13 @@ sayBye:func(n:i64 = 10;) = {            % default values! (WIP,same as ptrs)
 main:func() = {
 
      write(x);                          % access global variables
-     sayHi(2,0);                        % call recursive function
+     sayHi(5,0);                        % call recursive function
 
      (1) then {
      % keywords "then" and "repeat" can be
      % used instead of '->' (conditional)
      % and '<->' (loops)
-          sayBye(2);
+          sayBye(5);
      }
 
      x = "End_of_main\n";               % update global variable
@@ -40,5 +40,10 @@ main:func() = {
 
     write(x);                           % back to the global variable
 
-    1+2+3;                              % return value
+    123;                              % return value
 }
+
+% all created in 10 days!!!
+
+% entry by: team kernull
+% at IICT SEGFAULT 2025
