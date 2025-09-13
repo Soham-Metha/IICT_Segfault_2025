@@ -20,4 +20,6 @@ Project for IICT Segfault Hackathon 2025.
 
 [x] i/o function wrappers
 
-[ ] actual compiler
+[x] actual compiler
+
+[ ] code optimizations
