@@ -1,42 +1,44 @@
-x:str = "Hi\n";
-% p:ptr(y:i64=10;)
+x:str = "Hi\n";                         
+% global variables, type system, 
+% supported types: string, int64, bools 
+% & pointers(WIP, can be parsed but not compiled)
 
-sayHi:func(n:i64, y:i64) = {
-     write("hello,world!\n");
-     y < n -> sayHi(n, y+1); 
-     % write(y); not yet supported
+sayHi:func(n:i64, y:i64) = {            % functions with parameter passing
+     print_i64(y);                      % numeric output
+     write("_hello,world!\n");          % string output
+     y < n -> sayHi(n, y+1);            % binary operations, conditional statements
+     % recursion!
 }
 
-sayBye:func(n:i64) = {
-     y:i64 = 0;
-     y < n <-> {
-          write("bye,world!\n");
+sayBye:func(n:i64 = 10;) = {            % default values! (WIP,same as ptrs)
+     y:i64 = 0;                         % local variables
+     y < n <-> {                        % loops
+          print_i64(y);
+          write("_bye,world!\n");
           y = y+1; 
      }
 }
 
 main:func() = {
 
-     sayHi(5,0);
-     write(x);
-     
+     write(x);                          % access global variables
+     sayHi(2,0);                        % call recursive function
+
      (1) then {
-          sayBye(5);
+     % keywords "then" and "repeat" can be
+     % used instead of '->' (conditional)
+     % and '<->' (loops)
+          sayBye(2);
      }
 
-    x = "hello,world!";
-    write(x);
+     x = "End_of_main\n";               % update global variable
+     {                                  % encapsulation with local scopes!
+          x:str = "Inside_local_scope\n";
+          % variable shadowing
+          write(x);
+     }
 
-    1+2+3; % return value
+    write(x);                           % back to the global variable
+
+    1+2+3;                              % return value
 }
-
-% Language name: undecided
-% Created as a part of the 
-% IICT SEGFAULT 2025 hackathon
-% by Team Kernull
-
-% Currently supported statements:
-% Variable declaration:
-% <var> : <type>;
-% Variable definition:
-% <var> : <type> = Stmt;

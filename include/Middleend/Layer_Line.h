@@ -9,6 +9,7 @@ typedef struct Block_Context_IR Block_Context_IR;
 typedef struct Var_IR {
     String name;
     int type;
+    int ret_type;
     int mem_addr;
     bool has_def;
     TypeList* list;

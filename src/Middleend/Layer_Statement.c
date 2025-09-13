@@ -50,7 +50,8 @@ void push_var_def(Block_Context_IR* ctx, String name, String type, int id,
         .list     = list,
         .has_def  = false,
         .type     = get_type_details_from_type_name(type).type,
-        .mem_addr = id
+        .mem_addr = id,
+        .ret_type = VAR_TYPE_VOID,
     };
 }
 
@@ -72,6 +73,19 @@ void set_var_as_defined(Block_Context_IR* ctx, String name)
         for (int i = curr->var_def_cnt - 1; i >= 0; i--) {
             if (compare_str(name, curr->var_defs[i].name)) {
                 curr->var_defs[i].has_def = true;
+                return;
+            }
+        }
+    }
+    assert(0 && "VAR NOT IN SCOPE");
+}
+
+void set_var_ret_type(Block_Context_IR* ctx, String name,varType ret)
+{
+    for (Block_Context_IR* curr = ctx; curr != NULL; curr = curr->prev) {
+        for (int i = curr->var_def_cnt - 1; i >= 0; i--) {
+            if (compare_str(name, curr->var_defs[i].name)) {
+                curr->var_defs[i].ret_type = ret;
                 return;
             }
         }

@@ -9,9 +9,9 @@ typedef struct File_Context File_Context;
 typedef struct Line_Context {
     String line;
     unsigned int line_no;
-    String logs[128];
-    const char* line_start;
     const char* file_name;
+    const char* line_start;
+    String logs[128];
     int log_cnt;
 } Line_Context;
 

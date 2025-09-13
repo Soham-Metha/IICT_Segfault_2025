@@ -189,11 +189,21 @@ varType dump_var_defn(Block_Context_IR* ctx, String var_nm, varType type, TypeLi
             varType func_out = IR_dump_statement(ctx);
             if (func_out == VAR_TYPE_I64) {
                 print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
+                print_IR(IR_FORMAT("PUSH     \"--------------------------\\n\"", ""));
+                print_IR(IR_FORMAT("PUSH     28", ""));
+                print_IR(IR_FORMAT("CALL     write_str", ""));
+                print_IR(IR_FORMAT("PUSH     \"Returned_with_value:_\"", ""));
+                print_IR(IR_FORMAT("PUSH     21", ""));
+                print_IR(IR_FORMAT("CALL     write_str", ""));
+                print_IR(IR_FORMAT("INVOK    3        ", ""));
+                print_IR(IR_FORMAT("PUSH     \"\\n__--------------------------\"", ""));
+                print_IR(IR_FORMAT("PUSH     30", ""));
+                print_IR(IR_FORMAT("CALL     write_str", ""));
             }
             print_IR(IR_FORMAT("RET                        ", ""));
             print_IR(IR_FORMAT(";--------------------------", ""));
             print_IR(IR_FORMAT("E_%d:                      ", id));
-            return VAR_TYPE_VOID;
+            return func_out;
         }
         break;
     case VAR_TYPE_STR:
@@ -345,15 +355,16 @@ varType IR__STMT_FUNCALL(Block_Context_IR* ctx, const Funcall* funcall)
     if (compare_str(funcall->name, STR("write"))) {
         for (const FuncallArg* arg = funcall->args; arg != NULL; arg = arg->next) {
             assert(IR_dump_expr(ctx, funcall->args->expr) == VAR_TYPE_STR);
-            print_IR(IR_FORMAT("CALL    write_str", "none"));
+            print_IR(IR_FORMAT("CALL    write_str", ""));
         }
         return VAR_TYPE_VOID;
     }
 
-    if (compare_str(funcall->name, STR("write"))) {
+    if (compare_str(funcall->name, STR("print_i64"))) {
         for (const FuncallArg* arg = funcall->args; arg != NULL; arg = arg->next) {
-            assert(IR_dump_expr(ctx, funcall->args->expr) == VAR_TYPE_STR);
-            print_IR(IR_FORMAT("CALL    write_str", "none"));
+            assert(IR_dump_expr(ctx, funcall->args->expr) == VAR_TYPE_I64);
+            print_IR(IR_FORMAT("SPOPR    [L2]", ""));
+            print_IR(IR_FORMAT("INVOK    3   ", ""));
         }
         return VAR_TYPE_VOID;
     }
@@ -395,8 +406,9 @@ static varType IR__STMT_BLOCK(Block_Context_IR* ctx)
     return ret;
 }
 
-static void IR__STMT_CONDITIONAL(Block_Context_IR* ctx)
+static varType IR__STMT_CONDITIONAL(Block_Context_IR* ctx)
 {
+    varType res = VAR_TYPE_VOID;
     assert(ctx);
     assert(ctx->next->statement.type == STMT_CONDITIONAL);
     const StmtConditional* cond = ctx->next->statement.as.cond;
@@ -426,9 +438,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR* ctx)
     print_IR(IR_FORMAT("E_%d:                      ", body_id));
     print_IR(IR_FORMAT(";body start                ", ""));
     print_IR(IR_FORMAT(";--------------------------", ""));
-    if (IR_dump_code_block(&blk_ctx) != VAR_TYPE_VOID) {
-        print_IR(IR_FORMAT("SPOP", ""));
-    }
+    res = IR_dump_code_block(&blk_ctx);
     if (cond->repeat) {
         print_IR(IR_FORMAT("JMPU    E_%d", cond_id));
     }
@@ -438,6 +448,7 @@ static void IR__STMT_CONDITIONAL(Block_Context_IR* ctx)
     print_IR(IR_FORMAT(";--------------------------", ""));
 
     ctx->n = blk_ctx.n;
+    return res;
 }
 // ------------------------------------------------------------- HELPERS ---------------------------------------------------------------------
 
@@ -503,7 +514,7 @@ static varType IR_dump_statement(Block_Context_IR* ctx)
         ret = IR__STMT_BLOCK(ctx);
         break;
     case STMT_CONDITIONAL:
-        IR__STMT_CONDITIONAL(ctx);
+        ret = IR__STMT_CONDITIONAL(ctx);
         break;
     case STMT_EXPR:
         ret = IR_dump_expr(ctx, stmt.as.expr);
