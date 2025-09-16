@@ -3,13 +3,13 @@
 #include <Wrapper/IO.h>
 #include <Frontend/Layer_File.h>
 
-enum {
+enum WindowID {
     UI_PROG,
     UI_LOGS,
-    UI_TOKEN_CHART,
-    UI_CNT
+    UI_IR,
+    UI_MC,
+    UI_CNT,
 };
-
 
 void onStartup(File_Context* ctx);
 
