@@ -4,6 +4,6 @@
 #include <Frontend/Layer_Line.h>
 #include <Utils/errors.h>
 
-Error IR_generate(const CodeBlock* blk);
+Error IR_generate(const CodeBlock *blk);
 
 #endif
