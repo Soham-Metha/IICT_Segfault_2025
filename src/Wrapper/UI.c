@@ -16,10 +16,10 @@ File_Context *ctx;
 unsigned int selected_line;
 
 static String WindowNames[UI_CNT] = {
-	[UI_PROG] = { .data = "PROGRAM", .len = 7 },
-	[UI_LOGS] = { .data = "LOGS", .len = 4 },
-	[UI_IR] = { .data = "Intermediate Representation", .len = 27 },
-	[UI_MC] = { .data = "Machine Code", .len = 12 },
+    [UI_PROG] = { .data = "PROGRAM",                     .len = 7  },
+    [UI_LOGS] = { .data = "LOGS",                        .len = 4  },
+    [UI_IR]   = { .data = "Intermediate Representation", .len = 27 },
+    [UI_MC]   = { .data = "Machine Code",                .len = 12 },
 };
 
 void initColors()
@@ -59,25 +59,25 @@ void create_all_windows()
 
 static void draw_bounds()
 {
-	bounds[UI_PROG] = newwin BOUNDS(min_x, min_y, mid_x, max_y);
-	bounds[UI_LOGS] = newwin BOUNDS(mid_x, min_x, max_x, mid_y);
-	bounds[UI_IR] = newwin BOUNDS(mid_x, mid_y, x_by4, max_y);
-	bounds[UI_MC] = newwin BOUNDS(x_by4, mid_y, max_x, max_y);
+    bounds[UI_PROG]  = newwin BOUNDS(min_x, min_y, mid_x, max_y);
+    bounds[UI_LOGS]  = newwin BOUNDS(mid_x, min_x, max_x, mid_y);
+    bounds[UI_IR]    = newwin BOUNDS(mid_x, mid_y, x_by4, max_y);
+    bounds[UI_MC]    = newwin BOUNDS(x_by4, mid_y, max_x, max_y);
 
-	windows[UI_PROG] = newwin INNER_BOUNDS(min_x, min_y, mid_x, max_y);
-	windows[UI_LOGS] = newwin INNER_BOUNDS(mid_x, min_x, max_x, mid_y);
-	windows[UI_IR] = newwin INNER_BOUNDS(mid_x, mid_y, x_by4, max_y);
-	windows[UI_MC] = newwin INNER_BOUNDS(x_by4, mid_y, max_x, max_y);
+    windows[UI_PROG] = newwin INNER_BOUNDS(min_x, min_y, mid_x, max_y);
+    windows[UI_LOGS] = newwin INNER_BOUNDS(mid_x, min_x, max_x, mid_y);
+    windows[UI_IR]   = newwin INNER_BOUNDS(mid_x, mid_y, x_by4, max_y);
+    windows[UI_MC]   = newwin INNER_BOUNDS(x_by4, mid_y, max_x, max_y);
 
-	for (int i = 0; i < UI_CNT; i++) {
-		box(bounds[i], 0, 0);
-		wattron(bounds[i], COLOR_PAIR(i + 2));
-		mvwprintw(bounds[i], 0, 2, "[ %.*s ]", Str_Fmt(WindowNames[i]));
-		wattroff(bounds[i], COLOR_PAIR(i + 2));
-		wrefresh(bounds[i]);
-		wbkgd(windows[i], COLOR_PAIR(i + 2));
-		// box(windows[i], 0, 0);
-	}
+    for (int i = 0; i < UI_CNT; i++) {
+        box(bounds[i], 0, 0);
+        wattron(bounds[i], COLOR_PAIR(i + 2));
+        mvwprintw(bounds[i], 0, 2, "[ %.*s ]", Str_Fmt(WindowNames[i]));
+        wattroff(bounds[i], COLOR_PAIR(i + 2));
+        wrefresh(bounds[i]);
+        wbkgd(windows[i], COLOR_PAIR(i + 2));
+        // box(windows[i], 0, 0);
+    }
 }
 
 static void draw_program()
@@ -144,66 +144,65 @@ static void draw_log()
 
 static void draw_ir_mc()
 {
-	werase(windows[UI_IR]);
-	mvwprintw(windows[UI_IR], 1, 1, "IR for line %d", selected_line + 1);
-	wrefresh(windows[UI_IR]);
+    werase(windows[UI_IR]);
+    mvwprintw(windows[UI_IR], 1, 1, "IR for line %d", selected_line + 1);
+    wrefresh(windows[UI_IR]);
 
-	werase(windows[UI_MC]);
-	mvwprintw(windows[UI_MC], 1, 1, "MC for line %d", selected_line + 1);
-	wrefresh(windows[UI_MC]);
+    werase(windows[UI_MC]);
+    mvwprintw(windows[UI_MC], 1, 1, "MC for line %d", selected_line + 1);
+    wrefresh(windows[UI_MC]);
 }
 
 static void refresh_ui()
 {
-	draw_bounds();
-	draw_program();
-	draw_log();
-	draw_ir_mc();
+    draw_bounds();
+    draw_program();
+    draw_log();
+    draw_ir_mc();
 }
 
 void onStartup(File_Context *ctx_in)
 {
-	initscr();
-	clear();
-	cbreak();
-	noecho();
-	curs_set(0);
-	keypad(stdscr, TRUE);
+    initscr();
+    clear();
+    cbreak();
+    noecho();
+    curs_set(0);
+    keypad(stdscr, TRUE);
 
-	initColors();
-	create_all_windows();
+    initColors();
+    create_all_windows();
 
-	ctx = ctx_in;
-	selected_line = 0;
-	int ch;
-	refresh_ui();
+    ctx           = ctx_in;
+    selected_line = 0;
+    int ch;
+    refresh_ui();
 
-	while ((ch = getch()) != 'q') {
-		switch (ch) {
-		case KEY_UP:
-			selected_line = (selected_line + ctx->line_num - 1) %
-					ctx->line_num;
-			break;
+    while ((ch = getch()) != 'q') {
+        switch (ch) {
+        case KEY_UP:
+            selected_line = (selected_line + ctx->line_num - 1) % ctx->line_num;
+            break;
 
-		case KEY_DOWN:
-			selected_line = (selected_line + 1) % ctx->line_num;
-			break;
-		// case 'p':
-		// 	mid_x =(mid_x == min_x)?LERP(min_x,max_x,0.4):min_x;
-		// 	break;
-		case 'l':
-			mid_y =(mid_y == max_y)?LERP(min_y,max_y,0.5):max_y;
-			break;
-		case 'i':
-			x_by4 = (x_by4 == mid_x)?LERP(mid_x, max_x, 0.5):mid_x;
-			break;
-		case 'm':
-			x_by4 =(x_by4 == max_x)?LERP(mid_x, max_x, 0.5):max_x;
-			break;
-		}
+        case KEY_DOWN:
+            selected_line = (selected_line + 1) % ctx->line_num;
+            break;
+        // case 'p':
+        // 	mid_x =(mid_x == min_x)?LERP(min_x,max_x,0.4):min_x;
+        // 	break;
+        case 'l':
+            mid_y = (mid_y == max_y) ? LERP(min_y, max_y, 0.5) : max_y;
+            break;
+        case 'i':
+            x_by4 = (x_by4 == mid_x) ? LERP(mid_x, max_x, 0.5) : mid_x;
+            break;
+        case 'm':
+            x_by4 = (x_by4 == max_x) ? LERP(mid_x, max_x, 0.5) : max_x;
+            break;
+        }
 
-		refresh_ui();
-	}
+        refresh_ui();
+    }
 }
 
 void onShutdown()

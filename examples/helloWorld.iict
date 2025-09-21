@@ -18,35 +18,25 @@ sayBye:func(n:i64) = {
 
 main:func() = {
 
-     sayHi(5,0);
-     write(x);
-     
+     write(x);                          % access global variables
+     sayHi(5,0);                        % call recursive function
+
      (1) then {
+     % keywords "then" and "repeat" can be
+     % used instead of '->' (conditional)
+     % and '<->' (loops)
           sayBye(5);
      }
 
     x = "hello,world!";
     write(x);
 
-    1+2+3; % return value
+    write(x);                           % back to the global variable
+
+    123;                              % return value
 }
 
-% Language name: undecided
-% Created as a part of the 
-% IICT SEGFAULT 2025 hackathon
-% by Team Kernull
+% all created in 10 days!!!
 
-% Grammar:
-% CodeBlock // Can be called program modules
-%  |-> StmtNode* begin
-%  |-> StmtNode* end
-%
-% StmtNode:
-%  |-> Stmt
-%  |-> StmtNode* next
-
-% Currently supported statements:
-% Variable declaration:
-% <var> : <type>;
-% Variable definition:
-% <var> : <type> = Stmt;
+% entry by: team kernull
+% at IICT SEGFAULT 2025

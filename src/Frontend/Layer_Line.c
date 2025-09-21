@@ -33,12 +33,9 @@ Error codeblock_append_stmt(CodeBlock *list, Stmt statement)
 
 void line_get_preprocessed_line(Line_Context *ctx)
 {
-	String processed_line = ctx->line;
-
-	size_t index;
-	if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
-		processed_line =
-			trim(split_str_by_delim(&ctx->line, COMMENT_SYMBOL));
+    size_t index;
+    if (get_index_of(ctx->line, COMMENT_SYMBOL, &index)) {
+        String processed_line = trim(split_str_by_delim(&ctx->line, COMMENT_SYMBOL));
 
 		log_to_ctx(ctx, LOG_FORMAT("[COMMENT FOUND]", "[LINE]",
 					   "\"%%%.*s\" ", Str_Fmt(ctx->line)));
@@ -131,14 +128,13 @@ bool line_parse_next(CodeBlock *blk, File_Context *context)
 
 CodeBlock codeblock_generate(File_Context *file)
 {
-	CodeBlock res = { 0 };
-	bool block_end = false;
+    CodeBlock res  = { 0 };
 
 	while (file->contents.len > 0) {
 		Line_Context *ctx = file_fetch_next_line(file);
 		line_get_preprocessed_line(ctx);
 
-		block_end = line_parse_next(&res, file);
+        bool block_end = line_parse_next(&res, file);
 
 		if (block_end)
 			break;

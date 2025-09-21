@@ -19,64 +19,65 @@ static bool isNumber(char x)
 
 const char *token_get_name(TokenType type)
 {
-	switch (type) {
-	case TOKEN_TYPE_STR:
-		return "token String literal";
-	case TOKEN_TYPE_CHAR:
-		return "token Character literal";
-	case TOKEN_TYPE_NUMBER:
-		return "token Numeric value";
-	case TOKEN_TYPE_NAME:
-		return "token Name value";
-	case TOKEN_TYPE_OPEN_PAREN:
-		return "token Open parenthesis";
-	case TOKEN_TYPE_CLOSING_PAREN:
-		return "token Closing parenthesis";
-	case TOKEN_TYPE_OPEN_CURLY:
-		return "token Open curly brace";
-	case TOKEN_TYPE_CLOSING_CURLY:
-		return "token Closing curly brace";
-	case TOKEN_TYPE_COMMA:
-		return "token Comma";
-	case TOKEN_TYPE_COLON:
-		return "token Colon";
-	case TOKEN_TYPE_EQUAL:
-		return "token Assignment operator";
-	case TOKEN_TYPE_EOL:
-		return "token End of line reached!";
-	case TOKEN_TYPE_THEN:
-		return "token Conditional pattern match";
-	case TOKEN_TYPE_REPEAT:
-		return "token Conditional retetition";
-	case TOKEN_TYPE_PLUS:
-		return "Binary operator +";
-	case TOKEN_TYPE_MINUS:
-		return "Binary operator -";
-	case TOKEN_TYPE_MULT:
-		return "Binary operator *";
-	case TOKEN_TYPE_LT:
-		return "Binary operator <";
-	case TOKEN_TYPE_GE:
-		return "Binary operator >=";
-	case TOKEN_TYPE_NE:
-		return "Binary operator !=";
-	case TOKEN_TYPE_AND:
-		return "Binary operator &&";
-	case TOKEN_TYPE_OR:
-		return "Binary operator ||";
-	case TOKEN_TYPE_EQEQ:
-		return "Binary operator ==";
-	case TOKEN_TYPE_STATEMENT_END:
-		return "Statement ended with";
-	case TOKEN_TYPE_CNT:
-	default: {
-		assert(0 && "token_get_name: unreachable");
-		exit(1);
-	}
-	}
+    switch (type) {
+    case TOKEN_TYPE_STR:
+        return "token String literal";
+    case TOKEN_TYPE_CHAR:
+        return "token Character literal";
+    case TOKEN_TYPE_NUMBER:
+        return "token Numeric value";
+    case TOKEN_TYPE_NAME:
+        return "token Name value";
+    case TOKEN_TYPE_OPEN_PAREN:
+        return "token Open parenthesis";
+    case TOKEN_TYPE_CLOSING_PAREN:
+        return "token Closing parenthesis";
+    case TOKEN_TYPE_OPEN_CURLY:
+        return "token Open curly brace";
+    case TOKEN_TYPE_CLOSING_CURLY:
+        return "token Closing curly brace";
+    case TOKEN_TYPE_COMMA:
+        return "token Comma";
+    case TOKEN_TYPE_COLON:
+        return "token Colon";
+    case TOKEN_TYPE_EQUAL:
+        return "token Assignment operator";
+    case TOKEN_TYPE_EOL:
+        return "token End of line reached!";
+    case TOKEN_TYPE_THEN:
+        return "token Conditional pattern match";
+    case TOKEN_TYPE_REPEAT:
+        return "token Conditional retetition";
+    case TOKEN_TYPE_PLUS:
+        return "Binary operator +";
+    case TOKEN_TYPE_MINUS:
+        return "Binary operator -";
+    case TOKEN_TYPE_MULT:
+        return "Binary operator *";
+    case TOKEN_TYPE_LT:
+        return "Binary operator <";
+    case TOKEN_TYPE_GE:
+        return "Binary operator >=";
+    case TOKEN_TYPE_NE:
+        return "Binary operator !=";
+    case TOKEN_TYPE_AND:
+        return "Binary operator &&";
+    case TOKEN_TYPE_OR:
+        return "Binary operator ||";
+    case TOKEN_TYPE_EQEQ:
+        return "Binary operator ==";
+    case TOKEN_TYPE_STATEMENT_END:
+        return "Statement ended with";
+    case TOKEN_TYPE_CNT:
+    default:
+        {
+            assert(0 && "token_get_name: unreachable");
+            exit(1);
+        }
+    }
 }
 
-Token token_expect_next(Line_Context *ctx, TokenType expected)
+Token token_expect_next(Line_Context* ctx, TokenType expected)
 {
 	update_indent(1);
 	Token token = token_peek_next(ctx);
@@ -214,20 +215,18 @@ Token token_peek_next(Line_Context *ctx)
 
 bool token_consume(Line_Context *ctx)
 {
-	(void)ctx;
-	if (cachedCnt > 0) {
-		update_indent(1);
-		log_to_ctx(ctx, LOG_FORMAT("", "[TOKN]", "<%s '%.*s'>",
-					   token_get_name(tok_cache[0].type),
-					   Str_Fmt(tok_cache[0].text)));
-		update_indent(-1);
-		for (int i = 0; i < cachedCnt; i++) {
-			tok_cache[i] = tok_cache[i + 1];
-		}
-		cachedCnt--;
-		return true;
-	}
-	return false;
+    (void)ctx;
+    if (cachedCnt > 0) {
+        update_indent(1);
+        log_to_ctx(ctx, LOG_FORMAT("", "[TOKN]", "<%s '%.*s'>", token_get_name(tok_cache[0].type), Str_Fmt(tok_cache[0].text)));
+        update_indent(-1);
+        for (int i = 0; i < cachedCnt; i++) {
+            tok_cache[i] = tok_cache[i + 1];
+        }
+        cachedCnt--;
+        return true;
+    }
+    return false;
 }
 
 Token token_peek_next_next(Line_Context *ctx)
