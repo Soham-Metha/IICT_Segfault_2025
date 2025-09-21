@@ -26,6 +26,7 @@ void print(Line_Context *ctx, int id, const char *str, ...)
 		va_copy(args_copy, args);
 		vfprintf(stdout, str, args_copy);
 		vfprintf(myIR, str, args);
+		va_end(args_copy);
 	} else {
 		assert(id == WIN_STDERR);
 		printf("\n\n%s:%d:%ld: ", ctx->file_name, ctx->line_no,
