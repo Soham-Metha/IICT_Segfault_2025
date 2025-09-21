@@ -55,6 +55,7 @@ void log_to_ctx(Line_Context *ctx, const char *str, ...)
 	printf("%s", log);
 
 	va_end(args);
+	va_end(args_copy);
 }
 
 int indent = 0;
