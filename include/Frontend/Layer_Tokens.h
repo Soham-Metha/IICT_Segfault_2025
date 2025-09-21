@@ -42,18 +42,10 @@ struct Token {
     String text;
 };
 
-extern int global_token_freq[TOKEN_TYPE_CNT];
-
-Token token_peek_next(Line_Context *ctx);
-const char *token_get_name(TokenType type);
-Token token_expect_next(Line_Context *ctx, TokenType expected);
-bool token_consume(Line_Context *ctx);
-Token token_peek_next_next(Line_Context *ctx);
-const char *token_get_name_forchart(TokenType type);
-
-void token_freq_reset(void);
-void token_freq_increment(TokenType type);
-int token_freq_get(TokenType type);
-
+Token token_peek_next(Line_Context* ctx);
+const char* token_get_name(TokenType type);
+Token token_expect_next(Line_Context* ctx, TokenType expected);
+bool token_consume(Line_Context* ctx);
+Token token_peek_next_next(Line_Context* ctx);
 
 #endif

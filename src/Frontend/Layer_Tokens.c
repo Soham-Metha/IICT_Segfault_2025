@@ -7,9 +7,6 @@
 Token tok_cache[MAX_CACHED_TOKENS];
 int cachedCnt = 0;
 
-// Global token frequency counter
-int global_token_freq[TOKEN_TYPE_CNT] = {0};
-
 static bool isName(char x)
 {
     return isalnum(x) || x == '_';
@@ -80,64 +77,7 @@ const char* token_get_name(TokenType type)
     }
 }
 
-const char *token_get_name_forchart(TokenType type)
-{
-    switch (type) {
-    case TOKEN_TYPE_STR:        return "STR";
-    case TOKEN_TYPE_CHAR:       return "CHR";
-    case TOKEN_TYPE_NUMBER:     return "NUM";
-    case TOKEN_TYPE_NAME:       return "NAME";
-    case TOKEN_TYPE_PLUS:       return "+";
-    case TOKEN_TYPE_MINUS:      return "-";
-    case TOKEN_TYPE_MULT:       return "*";
-    case TOKEN_TYPE_EQEQ:       return "==";
-    case TOKEN_TYPE_AND:        return "&&";
-    case TOKEN_TYPE_OR:         return "||";
-    case TOKEN_TYPE_LT:         return "<";
-    case TOKEN_TYPE_GE:         return ">=";
-    case TOKEN_TYPE_NE:         return "!=";
-    case TOKEN_TYPE_COMMA:      return ",";
-    case TOKEN_TYPE_COLON:      return ":";
-    case TOKEN_TYPE_EQUAL:      return "=";
-    case TOKEN_TYPE_OPEN_PAREN: return "(";
-    case TOKEN_TYPE_CLOSING_PAREN: return ")";
-    case TOKEN_TYPE_OPEN_CURLY: return "{";
-    case TOKEN_TYPE_CLOSING_CURLY: return "}";
-    case TOKEN_TYPE_STATEMENT_END: return ";";
-
-    case TOKEN_TYPE_REPEAT:     return "REP";
-    case TOKEN_TYPE_THEN:       return "THN";
-    case TOKEN_TYPE_EOL:        return "EOL";
-    case TOKEN_TYPE_CNT:        return "CNT";
-
-    default:
-        return "?";
-    }
-}
-
-void token_freq_reset(void)
-{
-    for (int i = 0; i < TOKEN_TYPE_CNT; i++) {
-        global_token_freq[i] = 0;
-    }
-}
-
-void token_freq_increment(TokenType type)
-{
-    if (type >= 0 && type < TOKEN_TYPE_CNT) {
-        global_token_freq[type]++;
-    }
-}
-
-int token_freq_get(TokenType type)
-{
-    if (type >= 0 && type < TOKEN_TYPE_CNT) {
-        return global_token_freq[type];
-    }
-    return 0;
-}
-
-Token token_expect_next(Line_Context *ctx, TokenType expected)
+Token token_expect_next(Line_Context* ctx, TokenType expected)
 {
     update_indent(1);
     Token token = token_peek_next(ctx);
@@ -270,21 +210,18 @@ Token token_peek_next(Line_Context* ctx)
 
 bool token_consume(Line_Context* ctx)
 {
-	if (cachedCnt > 0) {
-		token_freq_increment(tok_cache[0].type);
-		
-		update_indent(1);
-		log_to_ctx(ctx, LOG_FORMAT("", "[TOKN]", "<%s '%.*s'>",
-					   token_get_name(tok_cache[0].type),
-					   Str_Fmt(tok_cache[0].text)));
-		update_indent(-1);
-		for (int i = 0; i < cachedCnt; i++) {
-			tok_cache[i] = tok_cache[i + 1];
-		}
-		cachedCnt--;
-		return true;
-	}
-	return false;
+    (void)ctx;
+    if (cachedCnt > 0) {
+        update_indent(1);
+        log_to_ctx(ctx, LOG_FORMAT("", "[TOKN]", "<%s '%.*s'>", token_get_name(tok_cache[0].type), Str_Fmt(tok_cache[0].text)));
+        update_indent(-1);
+        for (int i = 0; i < cachedCnt; i++) {
+            tok_cache[i] = tok_cache[i + 1];
+        }
+        cachedCnt--;
+        return true;
+    }
+    return false;
 }
 
 Token token_peek_next_next(Line_Context* ctx)
