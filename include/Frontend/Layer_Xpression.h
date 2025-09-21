@@ -1,46 +1,46 @@
 #ifndef EXPR_LAYER_FRONTEND
 #define EXPR_LAYER_FRONTEND
+#include <Utils/strings.h>
 #include <Frontend/Layer_Line.h>
 #include <Frontend/Layer_Tokens.h>
-#include <Utils/strings.h>
 #include <stdint.h>
 
 typedef enum {
-    EXPR_TYPE_STR,
-    EXPR_TYPE_NUMBER,
-    EXPR_TYPE_FUNCALL,
-    EXPR_TYPE_VAR,
-    EXPR_TYPE_BOOL,
-    EXPR_TYPE_BIN_OPR,
+	EXPR_TYPE_STR,
+	EXPR_TYPE_NUMBER,
+	EXPR_TYPE_FUNCALL,
+	EXPR_TYPE_VAR,
+	EXPR_TYPE_BOOL,
+	EXPR_TYPE_BIN_OPR,
 
-    EXPR_TYPE_OPEN_CURLY,
-    EXPR_TYPE_CLOSING_CURLY,
-    EXPR_TYPE_STATEMENT_END,
-    EXPR_TYPE_THEN,
-    EXPR_TYPE_REPEAT,
-    EXPR_TYPE_COLON,
-    EXPR_TYPE_EQUAL,
+	EXPR_TYPE_OPEN_CURLY,
+	EXPR_TYPE_CLOSING_CURLY,
+	EXPR_TYPE_STATEMENT_END,
+	EXPR_TYPE_THEN,
+	EXPR_TYPE_REPEAT,
+	EXPR_TYPE_COLON,
+	EXPR_TYPE_EQUAL,
 } ExprType;
 
 typedef enum {
-    BIN_OPR_PLUS = 0,
-    BIN_OPR_MINUS,
-    BIN_OPR_MULT,
-    BIN_OPR_LT,
-    BIN_OPR_GE,
-    BIN_OPR_NE,
-    BIN_OPR_AND,
-    BIN_OPR_OR,
-    BIN_OPR_EQ,
-    BIN_OPR_CNT,
+	BIN_OPR_PLUS = 0,
+	BIN_OPR_MINUS,
+	BIN_OPR_MULT,
+	BIN_OPR_LT,
+	BIN_OPR_GE,
+	BIN_OPR_NE,
+	BIN_OPR_AND,
+	BIN_OPR_OR,
+	BIN_OPR_EQ,
+	BIN_OPR_CNT,
 } BinOprType;
 
 typedef enum {
-    BIN_OPR_P0 = 0,
-    BIN_OPR_P1 = 1,
-    BIN_OPR_P2 = 2,
-    BIN_OPR_P3 = 3,
-    COUNT_BIN_OPR_PRECEDENCE,
+	BIN_OPR_P0 = 0,
+	BIN_OPR_P1 = 1,
+	BIN_OPR_P2 = 2,
+	BIN_OPR_P3 = 3,
+	COUNT_BIN_OPR_PRECEDENCE,
 } BinOprPrec;
 
 typedef struct Funcall Funcall;
@@ -52,46 +52,46 @@ typedef struct BinOpr BinOpr;
 typedef struct BinOprLUT BinOprLUT;
 
 struct Funcall {
-    String name;
-    FuncallArg* args;
+	String name;
+	FuncallArg *args;
 };
 
 struct BinOprLUT {
-    BinOprType type;
-    BinOprPrec prec;
-    TokenType tokn;
+	BinOprType type;
+	BinOprPrec prec;
+	TokenType  tokn;
 };
 
 union ExprValue {
-    String str;
-    int64_t num;
-    Funcall funcall;
-    String var_nm;
-    bool boolean;
-    BinOpr* bin_opr;
-    Token token;
+	String str;
+	int64_t num;
+	Funcall funcall;
+	String var_nm;
+	bool boolean;
+	BinOpr *bin_opr;
+	Token token;
 };
 
 struct Expr {
-    ExprType type;
-    ExprValue as;
+	ExprType type;
+	ExprValue as;
 };
 
 struct BinOpr {
-    BinOprType type;
-    Expr lhs;
-    Expr rhs;
+	BinOprType type;
+	Expr lhs;
+	Expr rhs;
 };
 
 struct FuncallArg {
-    Expr expr;
-    FuncallArg* next;
+	Expr expr;
+	FuncallArg *next;
 };
 
-Expr expr_parse(Line_Context* ctx);
-Expr expr_peek_next(Line_Context* ctx);
-const char* expr_get_name(ExprType type);
-FuncallArg* parse_funcall_arglist(Line_Context* ctx);
-const char* bin_opr_get_name(BinOprType type);
+Expr expr_parse(Line_Context *ctx);
+Expr expr_peek_next(Line_Context *ctx);
+const char *expr_get_name(ExprType type);
+FuncallArg *parse_funcall_arglist(Line_Context *ctx);
+const char *bin_opr_get_name(BinOprType type);
 
 #endif

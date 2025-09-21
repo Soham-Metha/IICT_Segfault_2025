@@ -1,20 +1,17 @@
-x:str = "Hi\n";                         
-% global variables, type system, 
-% supported types: string, int64, bools 
-% & pointers(WIP, can be parsed but not compiled)
+x:str = "Hi\n";
 
-sayHi:func(n:i64, y:i64) = {            % functions with parameter passing
-     print_i64(y);                      % numeric output
-     write("_hello,world!\n");          % string output
-     y < n -> sayHi(n, y+1);            % binary operations, conditional statements
-     % recursion!
+sayHi:func(n:i64, y:i64) = {
+     write("hello,world!\n");
+     y < n -> {
+          % write(y); not yet supported
+          sayHi(n, y+1 ); 
+     }
 }
 
-sayBye:func(n:i64 = 10;) = {            % default values! (WIP,same as ptrs)
-     y:i64 = 0;                         % local variables
-     y < n <-> {                        % loops
-          print_i64(y);
-          write("_bye,world!\n");
+sayBye:func(n:i64) = {
+     y:i64 = 0;
+     y < n <-> {
+          write("bye,world!\n");
           y = y+1; 
      }
 }
@@ -31,12 +28,8 @@ main:func() = {
           sayBye(5);
      }
 
-     x = "End_of_main\n";               % update global variable
-     {                                  % encapsulation with local scopes!
-          x:str = "Inside_local_scope\n";
-          % variable shadowing
-          write(x);
-     }
+    x = "hello,world!";
+    write(x);
 
     write(x);                           % back to the global variable
 
