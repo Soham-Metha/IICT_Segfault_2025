@@ -7,7 +7,7 @@
 FILE *ast = NULL;
 FILE *myIR = NULL;
 
-void print(Line_Context* const ctx, int id, const char* str, ...)
+void print(Line_Context *ctx, int id, const char *str, ...)
 {
 	va_list args;
 	va_start(args, str);
