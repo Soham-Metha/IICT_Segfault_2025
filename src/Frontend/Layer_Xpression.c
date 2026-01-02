@@ -109,19 +109,21 @@ const char *expr_get_name(ExprType type)
 
 FuncallArg *parse_funcall_arglist(Line_Context *ctx)
 {
-    // split arguments from single comma seperated string to linked list of strings.
-    (void)token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
-    update_indent(1);
-    log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]", "- Arguments:", "none"));
+	// split arguments from single comma seperated string to linked list of strings.
+	Token token = token_expect_next(ctx, TOKEN_TYPE_OPEN_PAREN);
+	update_indent(1);
+	log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+				   "- Arguments:", "none"));
 
-    update_indent(1);
-    Token token = token_peek_next(ctx);
-    if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
-        token_consume(ctx);
-        log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]", " NO ARGS !", "none"));
-        update_indent(-2);
-        return NULL;
-    }
+	update_indent(1);
+	token = token_peek_next(ctx);
+	if (token.type == TOKEN_TYPE_CLOSING_PAREN) {
+		token_consume(ctx);
+		log_to_ctx(ctx, LOG_FORMAT("[IDENTIFICATION]", "[STMT]",
+					   " NO ARGS !", "none"));
+		update_indent(-2);
+		return NULL;
+	}
 
 	FuncallArg *first = NULL;
 	FuncallArg *last = NULL;
