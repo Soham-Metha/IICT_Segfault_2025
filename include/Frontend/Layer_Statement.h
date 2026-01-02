@@ -5,13 +5,13 @@
 #include <stdint.h>
 
 enum StmtType {
-	STMT_EXPR,
-	STMT_VAR_DECL,
-	STMT_VAR_DEFN,
-	STMT_BLOCK_START,
-	STMT_BLOCK_END,
-	STMT_MATCH,
-	STMT_CONDITIONAL,
+    STMT_EXPR,
+    STMT_VAR_DECL,
+    STMT_VAR_DEFN,
+    STMT_BLOCK_START,
+    STMT_BLOCK_END,
+    STMT_MATCH,
+    STMT_CONDITIONAL,
 };
 
 typedef struct VarDecl VarDecl;
@@ -25,49 +25,49 @@ typedef struct Line_Context Line_Context;
 typedef struct StmtConditional StmtConditional;
 typedef struct TypeList TypeList;
 struct VarDecl {
-	String name;
-	String type;
-	TypeList *args;
+    String name;
+    String type;
+    TypeList* args;
 
-	Stmt *init;
-	bool has_init;
+    Stmt* init;
+    bool has_init;
 };
 
 struct TypeList {
-	VarDecl var[5];
-	int count;
+    VarDecl var[5];
+    int count;
 };
 
 struct VarDefn {
-	String name;
-	Stmt *val;
-};
-
-struct StmtConditional {
-	bool repeat;
-	Expr cond;
-	CodeBlock body;
+    String name;
+    Stmt* val;
 };
 
 union StmtValue {
-	Expr expr;
-	VarDecl var_decl;
-	VarDefn var_defn;
-	StmtConditional cond;
-	Expr token;
-	Funcall *funcall;
-	StmtNode *block;
-	// PatternMatch    *match;
+    Expr expr;
+    VarDecl var_decl;
+    VarDefn var_defn;
+    StmtConditional* cond;
+    Expr token;
+    Funcall* funcall;
+    StmtNode* block;
+    // PatternMatch    *match;
 };
 
 struct Stmt {
-	StmtType type;
-	StmtValue as;
+    StmtType type;
+    StmtValue as;
 };
 
 struct StmtNode {
-	Stmt statement;
-	StmtNode *next;
+    Stmt statement;
+    StmtNode* next;
+};
+
+struct StmtConditional {
+    bool repeat;
+    Expr cond;
+    Stmt body;
 };
 
 // struct PatternMatch {
@@ -75,6 +75,6 @@ struct StmtNode {
 // 	Stmt *body;
 // };
 
-Stmt stmt_fetch_next(Line_Context *ctx);
+Stmt stmt_fetch_next(Line_Context* ctx);
 
 #endif
