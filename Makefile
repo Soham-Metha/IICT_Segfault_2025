@@ -19,7 +19,7 @@ $1: $2 | $(BUILDS)
 endef
 
 MAIN_FILE := ./src/main.c
-EXEC_FILE := $(BUILDS)/a
+EXEC_FILE := $(BUILDS)/orin
 SRC_FILES := $(wildcard ./src/Utils/*.c)
 SRC_FILES += $(wildcard ./src/Backend/*.c)
 SRC_FILES += $(wildcard ./src/Frontend/*.c)

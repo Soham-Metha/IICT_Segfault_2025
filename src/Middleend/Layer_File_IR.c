@@ -44,9 +44,9 @@ static const BinOprInstLUT bin_opr_inst_LUT[VAR_TYPE_CNT][BIN_OPR_CNT] = {
                        [BIN_OPR_GE]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "GEI" },
                        [BIN_OPR_NE]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "NEI" },
                        [BIN_OPR_EQ]    = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "EQI" },
-                       [BIN_OPR_PLUS]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nADDI    val([QT])\nPUSHR    ref([L2])" },
-                       [BIN_OPR_MINUS] = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nSUBI    val([QT])\nPUSHR    ref([L2])" },
-                       [BIN_OPR_MULT]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SPOPR   [QT]\nSPOPR   [L2]\nMULI    val([QT])\nPUSHR    ref([L2])" },
+                       [BIN_OPR_PLUS]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "ADDI" },
+                       [BIN_OPR_MINUS] = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "SUBI" },
+                       [BIN_OPR_MULT]  = { .allowed = true, .ret = VAR_TYPE_I64, .inst = "MULI" },
                        },
     [VAR_TYPE_BOOL] = {
                        [BIN_OPR_AND]   = { .allowed = true, .ret = VAR_TYPE_BOOL, .inst = "ANDB" },
@@ -174,6 +174,8 @@ varType dump_var_defn(Block_Context_IR* ctx, String var_nm, varType type, TypeLi
             } else {
                 print_IR(IR_FORMAT("E_%d:                      ", get_var_details(ctx, var_nm).mem_addr));
             };
+            print_IR(IR_FORMAT("", ""));
+            print_IR(IR_FORMAT("%%scope", ""));
             dump_typelist(ctx, list);
             if (list)
                 for (int i = list->count - 1; i >= 0; i--) {
@@ -187,6 +189,7 @@ varType dump_var_defn(Block_Context_IR* ctx, String var_nm, varType type, TypeLi
                     set_var_as_defined(ctx, v->name);
                 }
             varType func_out = IR_dump_statement(ctx);
+            print_IR(IR_FORMAT("%%end\n", ""));
             if (func_out == VAR_TYPE_I64) {
                 print_IR(IR_FORMAT("SPOPR    [L2]          ", ""));
                 print_IR(IR_FORMAT("PUSH     \"--------------------------\\n\"", ""));
@@ -563,9 +566,11 @@ Error IR_generate(const CodeBlock* blk)
 
     print_IR(IR_FORMAT("%%entry strt:", ""));
     IR_dump_code_block(&ctx);
+    update_indent(1);
     print_IR(IR_FORMAT("CALL    main ", ""));
     print_IR(IR_FORMAT("SHUTS        ", ""));
     print_IR(IR_FORMAT("write_str:   ", ""));
+    print_IR(IR_FORMAT("%%scope", ""));
     update_indent(1);
     print_IR(IR_FORMAT("SWAP     1   ", ""));
     print_IR(IR_FORMAT("SPOPR    [QT]", ""));
@@ -573,8 +578,8 @@ Error IR_generate(const CodeBlock* blk)
     print_IR(IR_FORMAT("SPOPR    [L0]", ""));
     print_IR(IR_FORMAT("INVOK    7   ", ""));
     print_IR(IR_FORMAT("RET          ", ""));
+    print_IR(IR_FORMAT("%%end\n", ""));
     update_indent(-2);
-    update_indent(1);
 
     return ERR_OK;
 }

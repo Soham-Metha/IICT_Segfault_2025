@@ -61,7 +61,7 @@ int main(int argc, char** argv)
         processFlag(program, flag, &argc, &argv);
     }
 
-    if (!inputFile || !outputFile) {
+    if (!inputFile) {
         usage(program);
         exit(1);
     }

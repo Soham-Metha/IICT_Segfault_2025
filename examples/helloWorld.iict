@@ -1,4 +1,4 @@
-x:str = "Hi\n";                         
+x:str = "Hi\n";
 % global variables, type system, 
 % supported types: string, int64, bools 
 % & pointers(WIP, can be parsed but not compiled)
